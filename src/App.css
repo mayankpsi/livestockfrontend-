@@ -1,0 +1,31 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap"); */
+  
+  html {
+    font-size: 62.5% !important;
+  }
+  body{
+   font-family: "Poppins" !important;
+  }
+  .fs14px{ font-size: 1.4rem !important;}
+ .fs16px{ font-size: 1.6rem !important;}
+ .fs18px{ font-size: 1.8rem !important;}
+ .fs20px{ font-size: 2rem !important;}
+ .fontWeight700 { font-weight:700px !important;}
+
+.MuiStepButton-root{
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+@media (max-width: 56.25em) {
+    html {
+      font-size: 55% !important;
+    }
+  }
