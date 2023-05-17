@@ -11,15 +11,13 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
-import AdminUIContainer from "../../../../layout/AdminUIContainer";
-import Overview from "../../../../components/gatewayDetail/overview";
-import BranchManager from "../../../../components/gatewayDetail/branchManager";
-import Analytics from "../../../../components/gatewayDetail/analytics";
-import Status from "../../../../components/gatewayDetail/status";
-import LiveStock from "../../../../components/gatewayDetail/liveStock";
-
-import { adminRequest } from "../../../../requestMethod";
-import { setLoader, useLoaderController } from "../../../../context/common";
+import AdminUIContainer from "../../../layout/AdminUIContainer";
+// import Overview from "../../../components/gatewayDetail/overview";
+// import BranchManager from "../../../../components/gatewayDetail/branchManager";
+// import Analytics from "../../../../components/gatewayDetail/analytics";
+// import Status from "../../../../components/gatewayDetail/status";
+import { adminRequest } from "../../../requestMethod";
+import { setLoader, useLoaderController } from "../../../context/common";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -195,14 +193,14 @@ const Index = (props) => {
 
           <Grid item md={12}>
             <TabPanel value={value} index={0}>
-              <Overview
+              {/* <Overview
                 title="Gateway Details"
                 data={details && details}
                 apiEndpoint="/site/updatesite"
-              />
+              /> */}
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <LiveStock />
+              {/* <Analytics /> */}
             </TabPanel>
             {/* <TabPanel value={value} index={2}>
               <BranchManager

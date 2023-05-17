@@ -39,13 +39,16 @@ const Index = (props) => {
         >
           <Grid item xs={4} sm={4} md={4} lg={4}>
             <Typography className="  fs16px  p_l-r10px fontWeight700">
-              UID{" "}
+              UID
             </Typography>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6}>
-            <Typography className="fs16px fontWeight700">User Name</Typography>
+            <Typography className="fs16px fontWeight700">
+              Device Name
+            </Typography>
           </Grid>
         </Grid>
+
         <Grid
           container
           item
@@ -56,13 +59,18 @@ const Index = (props) => {
           className="flex spaceBetween"
         >
           <Grid item xs={3} sm={3} md={3} lg={3} className="flex center">
-            <Typography className="  fs16px fontWeight700  ">Email </Typography>
+            <Typography className="  fs16px fontWeight700  ">Mac Id</Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={2} className="flex center">
-            <Typography className="  fs16px fontWeight700  ">Status</Typography>
+            <Typography className="  fs16px fontWeight700  ">
+              Assigned
+            </Typography>
           </Grid>
           <Grid item xs={2} sm={2} md={2} lg={2} className="flex center">
-            <Typography className="fs16px fontWeight700"> Device </Typography>
+            <Typography className="fs16px fontWeight700">
+              {" "}
+              Device status{" "}
+            </Typography>
           </Grid>
           <Grid item xs={4} sm={4} md={4} lg={4} className="flex centerJc">
             <Typography className="fs16px p_r10px fontWeight700 ">
@@ -138,7 +146,7 @@ const Index = (props) => {
                 </Grid>
                 <Grid item xs={4} sm={4} md={4} lg={4} className="flex center ">
                   <Stack direction="row" alignItems="center" spacing={2}>
-                    <AddSite_toUser Name={"user"} gatewayID={a?._id} />
+                    {/* <AddSite_toUser Name={"user"} gatewayID={a?._id} /> */}
 
                     <MdOutlineRemoveRedEye
                       className="fs24px"

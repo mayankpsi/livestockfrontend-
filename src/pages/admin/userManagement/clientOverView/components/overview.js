@@ -72,7 +72,12 @@ const Index = ({ data }) => {
             {inputDisabled ? "Edit" : "Save"}
           </Button>
         </Grid>
-        <Grid container className="spaceBetween mb20px p20px bRadius_8 border">
+        <Grid
+          container
+          item
+          className="spaceBetween mb20px p20px bRadius_8 border"
+          sx={{ rowGap: "20px " }}
+        >
           <Grid
             item
             xs={12}
@@ -82,7 +87,7 @@ const Index = ({ data }) => {
             className="flexDir  Width100"
           >
             <Typography className="fs16px mb10px b1c_color fontWeight600 ">
-              Client ID
+              User ID
             </Typography>
             <InputBase
               className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
@@ -100,13 +105,48 @@ const Index = ({ data }) => {
             className="flexDir  Width100"
           >
             <Typography className="fs16px mb10px b1c_color fontWeight600 ">
-              {" "}
-              Client Name
+              Name
             </Typography>
             <InputBase
               className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
               value={clientName}
               onChange={(e) => setClientName(e.target.value)}
+              disabled={inputDisabled}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            lg={6}
+            className="flexDir  Width100"
+          >
+            <Typography className="fs16px mb10px b1c_color fontWeight600 ">
+              Email
+            </Typography>
+            <InputBase
+              className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
+              // value={clientId}
+              // onChange={(e) => setClientId(e.target.value)}
+              disabled={inputDisabled}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            lg={6}
+            className="flexDir  Width100"
+          >
+            <Typography className="fs16px mb10px b1c_color fontWeight600 ">
+              Phone
+            </Typography>
+            <InputBase
+              className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
+              // value={clientId}
+              // onChange={(e) => setClientId(e.target.value)}
               disabled={inputDisabled}
             />
           </Grid>

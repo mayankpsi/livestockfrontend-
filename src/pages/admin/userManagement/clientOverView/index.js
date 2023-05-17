@@ -14,7 +14,7 @@ import { useSnackbar } from "notistack";
 
 import AdminUIContainer from "../../../../layout/AdminUIContainer";
 import Overview from "./components/overview";
-import Site from "./components/site";
+import Site from "./components/device";
 import { adminRequest } from "../../../../requestMethod";
 import { useLoaderController, setLoader } from "../../../../context/common";
 
@@ -134,7 +134,7 @@ const Index = (props) => {
                   key="2"
                 >
                   <Typography className="white_color fs16px bold Transform_Capital ">
-                    client 1
+                    {userDetails && userDetails[0]?.clientName}
                   </Typography>
                 </Link>
               </Breadcrumbs>
@@ -149,7 +149,7 @@ const Index = (props) => {
             // sx={{ border: "2px solid red" }}
           >
             <Typography className="fs16px fontWeight700 Transform_Capital ">
-              client1
+              {userDetails && userDetails[0]?.clientName}
             </Typography>
             {/* {value == 0 && (
               <Button className="fs14px Greenborder d_color Transform_Capital fontWeight700  p_l-r10-30px  mb10px">
@@ -157,6 +157,7 @@ const Index = (props) => {
               </Button>
             )} */}
           </Grid>
+
           <Grid
             container
             justifyContent="center"
@@ -176,8 +177,13 @@ const Index = (props) => {
                   label="Overview"
                   className="TabChangesDevice1 Transform_Capital  fs16px bold"
                 />
+
                 <Tab
-                  label="Sites"
+                  label="Devices"
+                  className="TabChangesDevice1 Transform_Capital fs16px bold bRadius_8"
+                />
+                <Tab
+                  label="Livestock"
                   className="TabChangesDevice1 Transform_Capital fs16px bold bRadius_8"
                 />
               </Tabs>
@@ -194,6 +200,10 @@ const Index = (props) => {
               )}
             </TabPanel>
             <TabPanel value={value} index={1}>
+              {/* {value == 1 && navigate("/order")} */}
+              <Site data={userDetails && userDetails} reRander={UserDetails} />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
               {/* {value == 1 && navigate("/order")} */}
               <Site data={userDetails && userDetails} reRander={UserDetails} />
             </TabPanel>
