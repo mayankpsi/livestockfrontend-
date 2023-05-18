@@ -122,8 +122,16 @@ const HeaderAdmin = () => {
                 navigate("/admin/site-management");
               }}
             >
-              site Management
+              Device Management
             </Button>
+            {/* <Button
+              className="fs14px  Transform_Capital fontWeight500 d_color Greenborder p_l-r10-30px bRadius_8 "
+              onClick={() => {
+                navigate("/admin/livestock");
+              }}
+            >
+              Livestock Management
+            </Button> */}
             <Button
               className="fs14px  Transform_Capital fontWeight500 d_color Greenborder p_l-r10-30px bRadius_8 "
               onClick={() => {
@@ -175,8 +183,8 @@ const HeaderAdmin = () => {
         }}
         PaperProps={{
           sx: {
-            width: 170,
-            backgroundColor: "#347D00",
+            width: 210,
+            backgroundColor: "#B58B5D",
             justifyContent: "space-between",
           },
         }}
@@ -212,7 +220,20 @@ const HeaderAdmin = () => {
           }}
         >
           <DnsIcon />
-          <Typography className="fs14px ml10px "> Site Management</Typography>
+          <Typography className="fs14px ml10px "> Device Management</Typography>
+        </MenuItem>
+        <MenuItem
+          dense={true}
+          className="flex  white_color fs16px "
+          onClick={() => {
+            navigate("/admin/livestock");
+          }}
+        >
+          <DnsIcon />
+          <Typography className="fs14px ml10px ">
+            {" "}
+            Livestock Management
+          </Typography>
         </MenuItem>
 
         <MenuItem

@@ -46,7 +46,9 @@ const Index = (props) => {
           </Typography>
           {/* </Grid> */}
           <Grid item xs={7} sm={7} md={7} lg={7} className=" flexStart">
-            <Typography className="fs16px fontWeight700">User Name </Typography>
+            <Typography className="fs16px fontWeight700">
+              Livestock Name{" "}
+            </Typography>
           </Grid>
         </Grid>
 
@@ -62,16 +64,18 @@ const Index = (props) => {
           className="flex flex-end"
           // sx={{  columnGap: "10" }}
         >
-          <Grid item xs={4} sm={4} md={4} lg={4} className="flex flexStart">
+          {/* <Grid item xs={4} sm={4} md={4} lg={4} className="flex flexStart">
             <Typography className="  fs16px fontWeight700  ">Email</Typography>
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={3} sm={3} md={3} lg={3} className="flex flex-end">
-            <Typography className="  fs16px fontWeight700  ">Status</Typography>
-          </Grid>
-          <Grid item xs={1} sm={1} md={1} lg={1} className="flex flexStart">
+          <Grid item xs={4} sm={4} md={4} lg={4} className="flex flex-end">
             <Typography className="  fs16px fontWeight700  ">
-              Devices
+              Device ID
+            </Typography>
+          </Grid>
+          <Grid item xs={3} sm={3} md={3} lg={3} className="flex flexStart">
+            <Typography className="  fs16px fontWeight700  ">
+              Device status
             </Typography>
           </Grid>
 
@@ -139,7 +143,7 @@ const Index = (props) => {
               // sx={{ border: "1px solid blue", display: "flex" }}
               className="flex flex-end"
             >
-              <Grid
+              {/* <Grid
                 item
                 xs={4}
                 sm={4}
@@ -150,8 +154,8 @@ const Index = (props) => {
                 <Typography className="  fs14px fontWeight700  ">
                   branch.manager@gmail.com
                 </Typography>
-              </Grid>
-              <Grid item xs={3} sm={3} md={3} lg={3} className="flex flex-end">
+              </Grid> */}
+              <Grid item xs={4} sm={4} md={4} lg={4} className="flex flex-end">
                 <Typography className="  fs16px fontWeight700  ">
                   {"Active"}
                 </Typography>
@@ -159,10 +163,10 @@ const Index = (props) => {
 
               <Grid
                 item
-                xs={1}
-                sm={1}
-                md={1}
-                lg={1}
+                xs={3}
+                sm={3}
+                md={3}
+                lg={3}
                 className="flex flexStart "
               >
                 <Typography className="fs16px fontWeight700">
@@ -178,15 +182,15 @@ const Index = (props) => {
                 className="flex flexEnd p_r30px "
               >
                 <Stack direction="row" alignItems="center" spacing={2}>
-                  <AddSite_toUser
+                  {/* <AddSite_toUser
                     Name={"site"}
                     gatewayID={a?._id}
                     reRander={props?.reRander}
-                  />
+                  /> */}
                   <MdOutlineRemoveRedEye
                     className="fs24px"
                     onClick={() =>
-                      navigate(`/admin/user-management/${a?._id}`, {
+                      navigate(`/admin/livestock/${a?._id}`, {
                         state: a,
                       })
                     }
@@ -214,7 +218,7 @@ const Index = (props) => {
             container
             item
             alignItems="center"
-            sx={{ flexDirection: "column", width: "30%" }}
+            sx={{ flexDirection: "column", width: "20%" }}
             className="Greenborder  bRadius_8 Cursor"
             onClick={() => {
               // navigate("/admin/site-management/add-site-management");
@@ -222,7 +226,7 @@ const Index = (props) => {
           >
             {/* <img src={Add} alt="loading" className="M20" /> */}
             <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
-              Go to Add User for Add User
+              LiveStock Not Available
             </Typography>
           </Grid>
         </Grid>

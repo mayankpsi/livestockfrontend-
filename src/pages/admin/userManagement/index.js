@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   Button,
   Container,
   Grid,
   Typography,
   Breadcrumbs,
-} from '@mui/material';
-import { useSnackbar } from 'notistack';
+} from "@mui/material";
+import { useSnackbar } from "notistack";
 
-import AdminUIContainer from '../../../layout/AdminUIContainer';
-import AddClient from './addClientDialog';
-import SiteManageTable from '../../../components/Admin/userManageTable';
+import AdminUIContainer from "../../../layout/AdminUIContainer";
+import AddClient from "./addClientDialog";
+import SiteManageTable from "../../../components/Admin/userManageTable";
 
-import { adminRequest } from '../../../requestMethod';
-import { useLoaderController, setLoader } from '../../../context/common';
+import { adminRequest } from "../../../requestMethod";
+import { useLoaderController, setLoader } from "../../../context/common";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -28,8 +28,8 @@ const Index = () => {
   const UserDetails = async () => {
     setLoader(dispatch, true);
     try {
-      const res = await adminRequest.get('/user/getclients');
-      console.log('AddSite ', res);
+      const res = await adminRequest.get("/user/getclients");
+      console.log("AddSite ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         setUserDetails(res.data);
@@ -37,18 +37,18 @@ const Index = () => {
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err.response.data.msg, {
-        variant: 'error',
+        variant: "error",
         autoHideDuration: 3000,
       });
     }
   };
 
   useEffect(() => {
-    UserDetails();
+    // UserDetails();
   }, []);
   useEffect(() => {
-    console.log('refreshrefreshrefresh', state);
-    UserDetails();
+    console.log("refreshrefreshrefresh", state);
+    // UserDetails();
   }, [state]);
   return (
     <>
@@ -57,7 +57,7 @@ const Index = () => {
           <Grid
             container
             alignItems="center"
-            style={{ height: '80px', width: '100%' }}
+            style={{ height: "80px", width: "100%" }}
             className="d_bgcolor "
           >
             <Container maxWidth="lg">

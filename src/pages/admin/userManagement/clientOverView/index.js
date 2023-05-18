@@ -15,6 +15,7 @@ import { useSnackbar } from "notistack";
 import AdminUIContainer from "../../../../layout/AdminUIContainer";
 import Overview from "./components/overview";
 import Site from "./components/device";
+import Livestock from "../../../../components/Admin/livestockManageTable";
 import { adminRequest } from "../../../../requestMethod";
 import { useLoaderController, setLoader } from "../../../../context/common";
 
@@ -205,7 +206,10 @@ const Index = (props) => {
             </TabPanel>
             <TabPanel value={value} index={2}>
               {/* {value == 1 && navigate("/order")} */}
-              <Site data={userDetails && userDetails} reRander={UserDetails} />
+              <Livestock
+                data={userDetails && userDetails}
+                reRander={UserDetails}
+              />
             </TabPanel>
           </Grid>
         </Container>

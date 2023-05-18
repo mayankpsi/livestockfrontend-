@@ -122,7 +122,7 @@ body {
 }
 
 .Greenborder1 {
-  border: 1px solid  #B58B5D !important;
+  border: 1px solid#B58B5D !important;
 }
 
 .borderRight {
@@ -372,7 +372,13 @@ body {
 }
 
 .bRadius_8-1Left {
-  border-radius: 8px 0px 0px 0px !important;
+  border-radius: 8px 0px 0px 8px !important;
+}
+.bRadius_8-1Left-tb {
+  border-radius: 8px 0px 0px 8px !important;
+}
+.bRadius_8-1BottomRight-tb {
+  border-radius: 0px 8px 8px 0px !important;
 }
 
 .bRadius_8-1Right {
@@ -385,6 +391,9 @@ body {
 
 .bRadius_8-1Bottomleft {
   border-radius: 0px 0px 0px 8px !important;
+}
+.bRadius_8-1topleft {
+  border-radius: 0px 8px 0px px !important;
 }
 
 .flex {
@@ -560,7 +569,7 @@ body {
 .imageDiv {
   width: 62px;
   height: 62px;
-  background: rgba(52, 125, 0, 0.25);
+  background: rgba(181, 139, 93, 1);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -706,7 +715,7 @@ body {
   margin: 20px auto;
   position: relative;
   background: currentColor;
-  color: rgb(0, 107, 41);
+  color: rgb(181, 139, 93);
   box-sizing: border-box;
   animation: animloader 0.3s 0.3s linear infinite alternate;
 }
@@ -807,4 +816,7 @@ input[type='number'] {
 
 .color-white {
   color: white !important;
+}
+.Gbtn.css-1rwt2y5-MuiButtonBase-root-MuiButton-root{
+  border:none !important;
 }

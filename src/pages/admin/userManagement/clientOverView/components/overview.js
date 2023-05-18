@@ -153,7 +153,7 @@ const Index = ({ data }) => {
         </Grid>
       </form>
       {/* <SiteManageTable data={data && data[0]} /> */}
-      <TableinfoUser data={data && data} />
+      {/* <TableinfoUser data={data && data} /> */}
     </>
   );
 };

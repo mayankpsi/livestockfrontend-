@@ -109,9 +109,14 @@ export default function () {
       name: "admin",
       key: "/admin/livestock",
       route: "/admin/livestock",
+      component: <AdminLiveStocks />,
+    },
+    {
+      name: "admin",
+      key: "/admin/livestock/:livestockName",
+      route: "/admin/livestock/:livestockName",
       component: <AdminLiveStocksOverview />,
     },
-
     // user
     {
       name: "user",

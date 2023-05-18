@@ -56,38 +56,39 @@ const Index = (props) => {
   const handleChange = (e, newValue) => {
     setValue(newValue);
   };
-  const getDetail = async () => {
-    let ID = localStorage.getItem("agro_id");
-    setLoader(dispatch, true);
-    try {
-      const res = await adminRequest.get(`/site/gatewaydetails/${gatewayName}`);
-      console.log("res>> overviewindex file", res?.data?.data);
-      if (res.status == 200) {
-        setLoader(dispatch, false);
-        setDetails([res?.data?.data]);
-        setSiteDetails(res?.data?.data?.branchManager);
-        setAddress({
-          gatewayPincode: res?.data?.data?.gatewayPincode,
-          gatewayCity: res?.data?.data?.gatewayCity,
-          gatewayState: res?.data?.data?.gatewayState,
-          gatewayCountry: res?.data?.data?.gatewayCountry,
-        });
-      } else {
-        console.log("error ");
-      }
-    } catch (err) {
-      console.log("error get site members", err);
-      setLoader(dispatch, false);
-      enqueueSnackbar(err?.response?.data?.msg, {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  };
+
+  // const getDetail = async () => {
+  //   let ID = localStorage.getItem("agro_id");
+  //   setLoader(dispatch, true);
+  //   try {
+  //     const res = await adminRequest.get(`/site/gatewaydetails/${gatewayName}`);
+  //     console.log("res>> overviewindex file", res?.data?.data);
+  //     if (res.status == 200) {
+  //       setLoader(dispatch, false);
+  //       setDetails([res?.data?.data]);
+  //       setSiteDetails(res?.data?.data?.branchManager);
+  //       setAddress({
+  //         gatewayPincode: res?.data?.data?.gatewayPincode,
+  //         gatewayCity: res?.data?.data?.gatewayCity,
+  //         gatewayState: res?.data?.data?.gatewayState,
+  //         gatewayCountry: res?.data?.data?.gatewayCountry,
+  //       });
+  //     } else {
+  //       console.log("error ");
+  //     }
+  //   } catch (err) {
+  //     console.log("error get site members", err);
+  //     setLoader(dispatch, false);
+  //     enqueueSnackbar(err?.response?.data?.msg, {
+  //       variant: "error",
+  //       autoHideDuration: 3000,
+  //     });
+  //   }
+  // };
 
   useEffect(() => {
     if (props.value) setValue(props.value);
-    getDetail();
+    // getDetail();
   }, [props, value]);
 
   useEffect(() => {
@@ -131,7 +132,7 @@ const Index = (props) => {
                   key="2"
                 >
                   <Typography className="white_color fs16px bold ">
-                    Site management
+                    Device management
                   </Typography>
                 </Link>
                 ,
