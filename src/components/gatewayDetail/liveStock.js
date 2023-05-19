@@ -145,23 +145,24 @@ const LiveStock = ({ title, data, apiEndpoint }) => {
             sm={12}
             md={5.5}
             lg={5.5}
-            className="flexDir spaceBetween mb20px p20px bRadius_8 border "
+            className="flexDir spaceBetween p20px  mb20px bRadius_8 border "
             sx={{ rowGap: "20px " }}
           >
             <Grid
               item
               xs={12}
               sm={12}
-              md={6}
-              lg={6}
+              md={9}
+              lg={9}
               className="flexDir  Width100 "
             >
               <Typography className="fs16px mb10px b1c_color fontWeight600 ">
                 Images
               </Typography>
+
               <InputBase
                 style={{ height: " 26rem" }}
-                className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
+                className=" border  fs16px p_t-l15px  bRadius_8 fontWeight700"
                 // value={clientId}
                 // onChange={(e) => setClientId(e.target.value)}
                 disabled={inputDisabled}

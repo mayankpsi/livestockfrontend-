@@ -68,7 +68,7 @@ const Index = () => {
   };
 
   useEffect(() => {
-    getSite();
+    // getSite();
   }, []);
   return (
     <>

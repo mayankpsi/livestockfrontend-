@@ -8,12 +8,14 @@ import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
 import Add from "../.././assets/images/AddSite.png";
 import DeletePopup from "../DeletePopupCard";
 import AddSite_toUser from "./AddSite_fromUser";
+import AddLivestock from "./addLivestock";
 
 const Index = (props) => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const UserDetails = props?.Details?.data;
+  const UserDetails = [];
+  // const UserDetails = props?.Details?.data;
 
   useEffect(() => {
     // console.log("DetailsDetails ", props?.fn);
@@ -214,22 +216,24 @@ const Index = (props) => {
           style={{ height: "400px" }}
           className=" border "
         >
-          <Grid
-            container
-            item
-            alignItems="center"
-            sx={{ flexDirection: "column", width: "20%" }}
-            className="Greenborder  bRadius_8 Cursor"
-            onClick={() => {
-              // navigate("/admin/site-management/add-site-management");
-            }}
-          >
-            {/* <img src={Add} alt="loading" className="M20" /> */}
-            <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
-              LiveStock Not Available
-            </Typography>
-          </Grid>
+          <AddLivestock />
         </Grid>
+        //   <Grid
+        //     container
+        //     item
+        //     alignItems="center"
+        //     sx={{ flexDirection: "column", width: "20%" }}
+        //     className="Greenborder  bRadius_8 Cursor"
+        //     onClick={() => {
+        //       // navigate("/admin/site-management/add-site-management");
+        //     }}
+        //   >
+        //     <img src={Add} alt="loading" className="M20" />
+        //     <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
+        //       LiveStock Not Available
+        //     </Typography>
+        //   </Grid>
+        //
       )}
     </>
   );

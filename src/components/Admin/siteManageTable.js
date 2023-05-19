@@ -4,8 +4,9 @@ import { Button, Grid, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
-import Add from "../.././assets/images/AddSite.png";
-import AddSite_toUser from "./AddSite_toUser";
+// import Add from "../.././assets/images/AddSite.png";
+// import AddSite_toUser from "./AddSite_toUser";
+import AddDevice from "./addDevice";
 import DeletePopup from "../DeletePopupCard";
 
 const Index = (props) => {
@@ -14,7 +15,7 @@ const Index = (props) => {
   const [siteDetails, setSiteDetails] = useState([]);
 
   useEffect(() => {
-    props && setSiteDetails(props.data.data);
+    // props && setSiteDetails(props.data.data);
   }, [props]);
   return (
     <>
@@ -176,21 +177,22 @@ const Index = (props) => {
           style={{ height: "400px" }}
           className=" border "
         >
-          <Grid
+          {/* <Grid
             container
             item
             alignItems="center"
             sx={{ flexDirection: "column", width: "20%" }}
             className="Greenborder  bRadius_8 Cursor"
             onClick={() => {
-              navigate("/admin/site-management/add-site-management");
+              // navigate("/admin/site-management/add-site-management");
             }}
           >
             <img src={Add} alt="loading" className="M20" />
             <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
               Add Site
             </Typography>
-          </Grid>
+          </Grid> */}
+          <AddDevice />
         </Grid>
       )}
     </>

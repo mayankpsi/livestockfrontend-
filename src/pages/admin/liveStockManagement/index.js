@@ -12,7 +12,6 @@ import { useSnackbar } from "notistack";
 import AdminUIContainer from "../../../layout/AdminUIContainer";
 // import AddClient from "./addClientDialog";
 import SiteManageTable from "../../../components/Admin/livestockManageTable";
-
 import { adminRequest } from "../../../requestMethod";
 import { useLoaderController, setLoader } from "../../../context/common";
 
@@ -44,11 +43,11 @@ const Index = () => {
   };
 
   useEffect(() => {
-    UserDetails();
+    // UserDetails();
   }, []);
   useEffect(() => {
     console.log("refreshrefreshrefresh", state);
-    UserDetails();
+    // UserDetails();
   }, [state]);
   return (
     <>

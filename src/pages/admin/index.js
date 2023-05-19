@@ -72,7 +72,7 @@ const AdminDashBoard = () => {
   };
 
   useEffect(() => {
-    getAllData();
+    // getAllData();
   }, []);
   useEffect(() => {
     console.log("nodeLengthnodeLength", nodeLength);
@@ -108,22 +108,22 @@ const AdminDashBoard = () => {
               }}
             >
               <DashboardCard
-                title="Clients"
+                title="Total Devices"
                 total={clientDetails && clientDetails?.length}
                 img={ClientImg}
               />
               <DashboardCard
-                title="Gateway"
+                title="Active Devices"
                 total={siteDetails && siteDetails?.length}
                 img={GatewayImg}
               />
               <DashboardCard
-                title="Branch Manager"
+                title="Safe LiveStocks"
                 total={totalBM}
                 img={BMImg}
               />
               <DashboardCard
-                title="Device"
+                title="UnSafe LiveStocks"
                 total={totalNodes}
                 img={DeviceImg}
               />
@@ -190,9 +190,9 @@ const AdminDashBoard = () => {
                       <Grid
                         item
                         className="flex centerJc Cursor"
-                        onClick={() =>
-                          navigate("/admin/site-management/add-site-management")
-                        }
+                        // onClick={() =>
+                        //   // navigate("/admin/site-management/add-site-management")
+                        // }
                       >
                         <IoIosAddCircleOutline className="fs20px white_color " />
                         <Typography className="fontWeight700 white_color fs14px ml5px">
@@ -392,14 +392,13 @@ const AdminDashBoard = () => {
                           }}
                           className=" Cursor"
                           onClick={() => {
-                            navigate(
-                              "/admin/site-management/add-site-management"
-                            );
+                            navigate();
+                            // "/admin/site-management/add-site-management"
                           }}
                         >
                           <img src={Add} alt="loading" className="" />
                           <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
-                            Add Site
+                            Add Devices
                           </Typography>
                         </Grid>
                       )}
@@ -684,16 +683,16 @@ const AdminDashBoard = () => {
                             navigate("/admin/user-management");
                           }}
                         >
-                          {/* <img
+                          <img
                             src={Add}
                             alt="loading"
                             className=""
                             style={{
                               color: "#B58B5D",
                             }}
-                          /> */}
+                          />
                           <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
-                            Add Site
+                            Add Livestock
                           </Typography>
                         </Grid>
                       )}

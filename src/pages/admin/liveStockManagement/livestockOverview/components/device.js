@@ -56,8 +56,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
             item
             xs={12}
             sm={12}
-            md={5.5}
-            lg={5.5}
+            md={12}
+            lg={12}
             className=" spaceBetween mb20px p20px bRadius_8  "
             sx={{ rowGap: "20px " }}
           >
@@ -65,8 +65,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
               item
               xs={12}
               sm={12}
-              md={12}
-              lg={12}
+              md={5.5}
+              lg={5.5}
               className="flexDir  Width100"
             >
               <Typography className="fs16px mb10px b1c_color fontWeight600 ">
@@ -83,8 +83,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
               item
               xs={12}
               sm={12}
-              md={12}
-              lg={12}
+              md={5.5}
+              lg={5.5}
               className="flexDir  Width100"
             >
               <Typography className="fs16px mb10px b1c_color fontWeight600 ">
@@ -101,8 +101,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
               item
               xs={12}
               sm={12}
-              md={12}
-              lg={12}
+              md={5.5}
+              lg={5.5}
               className="flexDir  Width100"
             >
               <Typography className="fs16px mb10px b1c_color fontWeight600 ">

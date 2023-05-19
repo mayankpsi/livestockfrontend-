@@ -60,13 +60,13 @@ const Overview = ({ title, data, apiEndpoint }) => {
       <Grid container className=" flex spaceBetween mb20px">
         <Grid
           item
-          md={2}
+          md={2.5}
           className="TabStyleAddDevice p20px flexDir bRadius_10"
           sx={{ rowGap: "2rem" }}
         >
           <Grid item className="Width100   flex spaceBetween">
             <img src={Heart} alt="heartbeat" />
-            <Typography className="fs12px  flexDir AlignStart">
+            <Typography className="fs14px  flexDir AlignStart">
               {" "}
               02:48 PM{" "}
             </Typography>
@@ -78,13 +78,13 @@ const Overview = ({ title, data, apiEndpoint }) => {
         </Grid>
         <Grid
           item
-          md={2}
+          md={2.5}
           className="TabStyleAddDevice p20px flexDir bRadius_10"
           sx={{ rowGap: "2rem" }}
         >
           <Grid item className="Width100   flex spaceBetween">
             <img src={Temp} alt="heartbeat" />
-            <Typography className="fs12px  flexDir AlignStart">
+            <Typography className="fs14px  flexDir AlignStart">
               {" "}
               02:48 PM{" "}
             </Typography>
@@ -96,13 +96,13 @@ const Overview = ({ title, data, apiEndpoint }) => {
         </Grid>
         <Grid
           item
-          md={2}
+          md={2.5}
           className="TabStyleAddDevice p20px flexDir bRadius_10"
           sx={{ rowGap: "2rem" }}
         >
           <Grid item className="Width100   flex spaceBetween">
             <img src={Feet} alt="heartbeat" />
-            <Typography className="fs12px  flexDir AlignStart">
+            <Typography className="fs14px  flexDir AlignStart">
               {" "}
               02:48 PM{" "}
             </Typography>
@@ -114,13 +114,13 @@ const Overview = ({ title, data, apiEndpoint }) => {
         </Grid>
         <Grid
           item
-          md={2}
+          md={2.5}
           className="TabStyleAddDevice p20px flexDir bRadius_10"
           sx={{ rowGap: "2rem" }}
         >
           <Grid item className="Width100   flex spaceBetween">
             <img src={Locpin} alt="heartbeat" />
-            <Typography className="fs12px  flexDir AlignStart">
+            <Typography className="fs14px  flexDir AlignStart">
               {" "}
               02:48 PM{" "}
             </Typography>
@@ -218,8 +218,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
               item
               xs={12}
               sm={12}
-              md={6}
-              lg={6}
+              md={9}
+              lg={9}
               className="flexDir  Width100 "
             >
               <Typography className="fs16px mb10px b1c_color fontWeight600 ">
@@ -261,7 +261,7 @@ const Overview = ({ title, data, apiEndpoint }) => {
         style={{
           columnGap: "10px",
         }}
-        className="flexDir mb20px"
+        className="flexDir mb30px "
       >
         <Typography className=" fs20px mb20px  fontWeight700">
           Device Status
