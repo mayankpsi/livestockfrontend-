@@ -2,7 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export const BASE_URL = "http://103.127.30.171:5000/api";
-// export const BASE_URL = "localhost:5000/api";
+// export const BASE_URL = "http://localhost:8000/";
 
 // export const BASE_CURL = "https://api.postmyad.live";
 

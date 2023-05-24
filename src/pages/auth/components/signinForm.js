@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { Grid, Typography, Button, Input } from "@mui/material";
 // import Visibility from "@mui/icons-material/Visibility";
@@ -9,17 +10,22 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { publicRequest } from "../../../requestMethod";
 import loader from "../../../components/loader";
 import { useLoaderController, setLoader } from "../../../context/common";
+import { handleSignin } from "../../../store/Slices/dashboardSlice";
 
 const SigninForm = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [controller, dispatch] = useLoaderController();
+  const dispatchS = useDispatch();
   const navigate = useNavigate();
 
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [showPasscode, setShowPasscode] = useState(false);
 
-  // const [loader, setLoader] = useState(false);
+  const data = {
+    userEmail,
+    userPassword,
+  };
 
   //   LoginWithEmail
   const Login = async () => {
@@ -173,6 +179,12 @@ const SigninForm = () => {
             onClick={() => {
               Login();
             }}
+
+            // onClick={(e) =>
+            //   dispatchS(handleSignin(data)).then(() => {
+            //     navigate("/admin/dashboard");
+            //   })
+            // }
           >
             Login
           </Button>

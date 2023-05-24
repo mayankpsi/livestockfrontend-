@@ -21,6 +21,10 @@ import Add from "../../assets/images/AddSite.png";
 
 import { useLoaderController, setLoader } from "../../context/common";
 import { adminRequest } from "../../requestMethod";
+import {
+  handleGetUser,
+  handleGetLiveStock,
+} from "../../store/Slices/dashboardSlice";
 
 const AdminDashBoard = () => {
   const navigate = useNavigate();
@@ -72,7 +76,7 @@ const AdminDashBoard = () => {
   };
 
   useEffect(() => {
-    // getAllData();
+    getAllData();
   }, []);
   useEffect(() => {
     console.log("nodeLengthnodeLength", nodeLength);
