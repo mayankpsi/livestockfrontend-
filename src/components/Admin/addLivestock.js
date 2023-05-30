@@ -71,8 +71,7 @@ const AddDevice = (props) => {
   const [open, setOpen] = useState(false);
   const [fullWidth, setFullWidth] = useState(true);
   const [maxWidth, setMaxWidth] = useState("sm");
-  const [userId, setUserId] = useState();
-  const [clientId, setClientId] = useState();
+
   const [siteDetails, setSiteDetails] = useState([]);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [filetype, setFileType] = useState(null);
@@ -81,15 +80,16 @@ const AddDevice = (props) => {
   const [imagestring, setImagestring] = useState("");
   const [videoLink, setVideoLink] = useState("");
 
-  //   const [clientId, setClientId] = useState("");
-  const [clientName, setClientName] = useState("");
+  const [liveStockId, setLiveStockId] = useState("");
+  const [liveStockName, setLiveStockName] = useState("");
+  const [liveStockDevice, setLiveStockDevice] = useState("");
 
   const saveData = async () => {
     setLoader(dispatch, true);
     let body = {
-      clientID: clientId,
-      clientName: clientName,
-      //   client_id: id,
+      // uID: liveStockNameId,
+      // name: liveStockName,
+      //   deviceID: liveStockDevice,
     };
     try {
       const res = await adminRequest.post(`/user/userupdate/`, body);
@@ -120,15 +120,19 @@ const AddDevice = (props) => {
     setOpen(false);
   };
 
-  const SiteDetails = async () => {
+  const addLiveStock = async () => {
     setLoader(dispatch, true);
-    let adminId = localStorage.getItem("agro_id");
+    let body = {
+      uID: liveStockId,
+      name: liveStockName,
+      deviceID: liveStockDevice,
+      image: file,
+    };
     try {
-      const res = await adminRequest.get(`/site/getSitesOnly/${adminId}`);
+      const res = await adminRequest.post(`/liveStock/create`, body);
       console.log("Sitefor user ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        setSiteDetails(res.data.data);
       }
     } catch (err) {
       setLoader(dispatch, false);
@@ -138,10 +142,6 @@ const AddDevice = (props) => {
       });
     }
   };
-
-  useEffect(() => {
-    // SiteDetails();
-  }, []);
 
   useEffect(() => {
     console.log("props>>props", props);
@@ -268,6 +268,7 @@ const AddDevice = (props) => {
                       {filetype === "video/mp4" ? (
                         <>
                           <input
+                            required
                             style={{
                               position: "absolute",
                               width: "100%",
@@ -329,6 +330,7 @@ const AddDevice = (props) => {
                           }}
                         />
                         <img
+                          required
                           src={file}
                           style={{
                             height: "250px",
@@ -369,9 +371,10 @@ const AddDevice = (props) => {
                   <InputBase
                     placeholder="Select Device"
                     className=" border p_t-l15px fs16px Width100  bRadius_8 fontWeight700"
-                    value={clientId}
-                    onChange={(e) => setClientId(e.target.value)}
+                    value={liveStockDevice}
+                    onChange={(e) => setLiveStockDevice(e.target.value)}
                     disabled={inputDisabled}
+                    required
                   />
                 </Grid>
                 <Grid
@@ -386,10 +389,11 @@ const AddDevice = (props) => {
                     Enter UID
                   </Typography>
                   <InputBase
+                    required
                     placeholder="Enter UID"
                     className=" border p_t-l15px fs16px Width100  bRadius_8 fontWeight700"
-                    value={clientName}
-                    onChange={(e) => setClientName(e.target.value)}
+                    value={liveStockId}
+                    onChange={(e) => setLiveStockId(e.target.value)}
                     disabled={inputDisabled}
                   />
                 </Grid>
@@ -405,10 +409,11 @@ const AddDevice = (props) => {
                     Enter Name
                   </Typography>
                   <InputBase
+                    required
                     placeholder="Enter Name"
                     className=" border p_t-l15px fs16px Width100  bRadius_8 fontWeight700"
-                    // value={clientId}
-                    // onChange={(e) => setClientId(e.target.value)}
+                    value={liveStockName}
+                    onChange={(e) => setLiveStockName(e.target.value)}
                     disabled={inputDisabled}
                   />
                 </Grid>
@@ -448,7 +453,7 @@ const AddDevice = (props) => {
           <Button
             className="fs16px  fontWeight600 white_color d_bgcolor p_l-r10-30px  "
             onClick={() => {
-              //   AssignSitefromUser();
+              addLiveStock();
             }}
           >
             Save

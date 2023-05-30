@@ -1,15 +1,15 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import routes from './routes';
+import { Routes, Route, Navigate } from "react-router-dom";
+import routes from "./routes";
 // import logo from './logo.svg';
-import './App.css';
+import "./App.css";
 
 function App() {
   // all-routes
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (
-        localStorage.getItem('agro_type') == route.name ||
-        route.name == 'auth'
+        localStorage.getItem("liveStock_user") == route.name ||
+        route.name == "auth"
       )
         return (
           <Route path={route.route} element={route.component} key={route.key} />

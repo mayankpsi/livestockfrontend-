@@ -33,24 +33,28 @@ const SigninForm = () => {
       // if (userEmail.length > 5 && userPassword.length > 5) {
       if (userPassword.length > 1) {
         if (userPassword.length > 1) {
-          let body = { clientID: userEmail, password: userPassword.trim() };
+          let body = { email: userEmail, password: userPassword.trim() };
 
           try {
             setLoader(dispatch, true);
-            const res = await publicRequest.post("/authUser/login", body);
+            const res = await publicRequest.post("/auth/sign-in", body);
             console.log("login ", res);
             setLoader(dispatch, false);
             if (res.status == 200 || res.status == 201) {
-              localStorage.setItem("agro_token", res.data.accessToken);
-              localStorage.setItem("agro_user", res.data.data.clientName);
-              localStorage.setItem("agro_type", res.data.data.role);
-              localStorage.setItem("agro_id", res.data.data._id);
+              localStorage.setItem(
+                "liveStock_token",
+                res.data.data.accessToken
+              );
+              localStorage.setItem("liveStock_user", res.data.data.user.name);
+              // localStorage.setItem("liveStock_type", res.data.user.role);
+              // localStorage.setItem("liveStock_id", res.data.data.user._id);
 
               enqueueSnackbar("login done", {
                 variant: "success",
                 autoHideDuration: 3000,
               });
-              window.location.href = `/${res.data.data.role}/dashboard`;
+              navigate("/admin/dashboard");
+              // window.location.href = `/${res.data.data.user.name}/dashboard`;
             } else {
               enqueueSnackbar(res?.response?.data?.msg, {
                 variant: "error",
@@ -60,7 +64,7 @@ const SigninForm = () => {
           } catch (err) {
             console.log(err);
             setLoader(dispatch, false);
-            enqueueSnackbar(err?.response?.data?.msg, {
+            enqueueSnackbar(err?.response?.data?.message, {
               variant: "error",
               autoHideDuration: 3000,
             });
