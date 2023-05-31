@@ -11,12 +11,12 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 // import AdminUI from "../../../../layout/AdminUI";
-import Overview from "../../../../components/device/overview";
-import Recommendation from "../../../../components/device/recommend";
-import Analytics from "../../../../components/device/analytics";
+// import Overview from '../../../../components/device/overview';
+// import Recommendation from '../../../../components/device/recommend';
+// import Analytics from '../../../../components/device/analytics';
 
-import Alert from "../../../../components/device/alerts";
-import AlertTable from "../../../../components/Common/alertTable";
+// import Alert from '../../../../components/device/alerts';
+// import AlertTable from '../../../../components/Common/alertTable';
 import AdminUIContainer from "../../../../layout/AdminUIContainer";
 // import Status from "../../../components/device/status";
 import { adminRequest } from "../../../../requestMethod";
@@ -119,7 +119,7 @@ const Index = (props) => {
                 </Link>
                 ,
                 <Link
-                  to="/admin/site-management"
+                  to="/admin/device-management"
                   className="white_color textDecorNone"
                   key="2"
                 >
@@ -129,7 +129,7 @@ const Index = (props) => {
                 </Link>
                 ,
                 <Link
-                  to={`/admin/site-management/${gatewayName}`}
+                  to={`/admin/device-management/${gatewayName}`}
                   className="white_color textDecorNone"
                   key="2"
                 >
@@ -139,7 +139,7 @@ const Index = (props) => {
                 </Link>
                 ,
                 <Link
-                  to={`/admin/site-management/${gatewayName}/${branchName}`}
+                  to={`/admin/device-management/${gatewayName}/${branchName}`}
                   className="white_color textDecorNone"
                   key="2"
                 >
@@ -149,7 +149,7 @@ const Index = (props) => {
                 </Link>
                 ,
                 <Link
-                  to={`/admin/site-management/${gatewayName}/${branchName}/${deviceId}`}
+                  to={`/admin/device-management/${gatewayName}/${branchName}/${deviceId}`}
                   className="white_color textDecorNone"
                   key="2"
                 >
@@ -211,25 +211,25 @@ const Index = (props) => {
 
           <Grid item md={12}>
             <TabPanel value={value} index={0}>
-              <Overview
+              {/* <Overview
                 title="Device Details"
                 data={details && details}
                 apiEndpoint="/site/updateNode"
-              />
+              /> */}
             </TabPanel>
             <TabPanel value={value} index={1}>
               {/* {value == 1 && navigate("/order")} */}
 
-              <Analytics data={details && details} />
+              {/* <Analytics data={details && details} /> */}
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <Recommendation />
+              {/* <Recommendation /> */}
             </TabPanel>
             <TabPanel value={value} index={3}>
-              <AlertTable />
+              {/* <AlertTable /> */}
             </TabPanel>
             <TabPanel value={value} index={4}>
-              <Alert data={details && details} />
+              {/* <Alert data={details && details} /> */}
             </TabPanel>
           </Grid>
         </Container>

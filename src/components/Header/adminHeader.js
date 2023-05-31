@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Grid,
   InputBase,
@@ -8,63 +8,63 @@ import {
   Divider,
   Typography,
   Button,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import DnsIcon from "@mui/icons-material/Dns";
-import AccountTreeIcon from "@mui/icons-material/AccountTree";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import LogoutIcon from "@mui/icons-material/Logout";
-import SettingsIcon from "@mui/icons-material/Settings";
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import DnsIcon from '@mui/icons-material/Dns';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
 
-import { BiMenu, BiBell } from "react-icons/bi";
-import { FaRegUserCircle } from "react-icons/fa";
+import { BiMenu, BiBell } from 'react-icons/bi';
+import { FaRegUserCircle } from 'react-icons/fa';
 
-import Dash from "../../assets/images/dashboard.png";
-import people from "../../assets/images/people.png";
-import GIF from "../../assets/images/Notification.gif";
+import Dash from '../../assets/images/dashboard.png';
+import people from '../../assets/images/people.png';
+import GIF from '../../assets/images/Notification.gif';
 
-import { styled } from "@mui/material/styles";
-import "../../assets/css/header.css";
-import "../../assets/css/style.css";
+import { styled } from '@mui/material/styles';
+import '../../assets/css/header.css';
+import '../../assets/css/style.css';
 
 const HeaderAdmin = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: "0px",
-    backgroundColor: "#ffffff",
-    "&:hover": {
-      backgroundColor: "#ffffff",
+  const Search = styled('div')(({ theme }) => ({
+    position: 'relative',
+    borderRadius: '0px',
+    backgroundColor: '#ffffff',
+    '&:hover': {
+      backgroundColor: '#ffffff',
     },
     marginLeft: 0,
-    width: "100%",
-    fontWeight: "400",
-    [theme.breakpoints.up("sm")]: {
-      width: "auto",
+    width: '100%',
+    fontWeight: '400',
+    [theme.breakpoints.up('sm')]: {
+      width: 'auto',
     },
   }));
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
+  const SearchIconWrapper = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 1),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }));
 
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
+    color: 'inherit',
+    '& .MuiInputBase-input': {
       // padding: theme.spacing(0.7, 0.7, 0.7, 0),
       // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(2)})`,
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        width: "90%",
-        "&:focus": {
-          width: "90%",
+      transition: theme.transitions.create('width'),
+      width: '100%',
+      [theme.breakpoints.up('sm')]: {
+        width: '90%',
+        '&:focus': {
+          width: '90%',
         },
       },
     },
@@ -113,13 +113,13 @@ const HeaderAdmin = () => {
             />
           </Search> */}
         </Grid>
-        <Grid item sx={{ columnGap: "1rem" }} className="flex">
-          <Grid item sx={{ columnGap: "1rem" }} className="flex">
-            {" "}
+        <Grid item sx={{ columnGap: '1rem' }} className="flex">
+          <Grid item sx={{ columnGap: '1rem' }} className="flex">
+            {' '}
             <Button
               className="fs14px  Transform_Capital fontWeight500 d_color Greenborder p_l-r10-30px bRadius_8 "
               onClick={() => {
-                navigate("/admin/site-management");
+                navigate('/admin/device-management');
               }}
             >
               Device Management
@@ -135,15 +135,15 @@ const HeaderAdmin = () => {
             <Button
               className="fs14px  Transform_Capital fontWeight500 d_color Greenborder p_l-r10-30px bRadius_8 "
               onClick={() => {
-                navigate("/admin/user-management");
+                navigate('/admin/user-management');
               }}
             >
               User Management
-            </Button>{" "}
+            </Button>{' '}
           </Grid>
 
           <Grid item className="flex center ">
-            {" "}
+            {' '}
             <NotificationsNoneIcon
               className=" g_color fs24px "
               onClick={handleNotify}
@@ -153,13 +153,13 @@ const HeaderAdmin = () => {
           <Grid
             item
             sx={{
-              border: "1px solid silver",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              columnGap: "10px",
-              padding: "5px",
-              borderRadius: "5px",
+              border: '1px solid silver',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              columnGap: '10px',
+              padding: '5px',
+              borderRadius: '5px',
             }}
             onClick={handleClick}
           >
@@ -179,36 +179,36 @@ const HeaderAdmin = () => {
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          "aria-labelledby": "basic-button",
+          'aria-labelledby': 'basic-button',
         }}
         PaperProps={{
           sx: {
             width: 210,
-            backgroundColor: "#B58B5D",
-            justifyContent: "space-between",
+            backgroundColor: '#B58B5D',
+            justifyContent: 'space-between',
           },
         }}
       >
         <MenuItem
           dense={true}
           sx={{
-            display: "flex",
-            justifyContent: "space-around",
-            justifyContent: "flex-start",
+            display: 'flex',
+            justifyContent: 'space-around',
+            justifyContent: 'flex-start',
           }}
         >
           <Typography className="fs16px white_color">Hello Admin</Typography>
         </MenuItem>
-        <Divider style={{ background: "white" }} />
+        <Divider style={{ background: 'white' }} />
         <MenuItem
           dense={true}
           className="flex  white_color fs16px "
           onClick={() => {
-            navigate("/admin/dashboard");
+            navigate('/admin/dashboard');
           }}
         >
           {/* <AccountTreeIcon /> */}
-          <img src={Dash} alt="" style={{ height: "15px" }} />
+          <img src={Dash} alt="" style={{ height: '15px' }} />
           <Typography className="fs14px ml10px"> Dashboard</Typography>
         </MenuItem>
 
@@ -216,7 +216,7 @@ const HeaderAdmin = () => {
           dense={true}
           className="flex  white_color fs16px "
           onClick={() => {
-            navigate("/admin/site-management");
+            navigate('/admin/device-management');
           }}
         >
           <DnsIcon />
@@ -226,12 +226,12 @@ const HeaderAdmin = () => {
           dense={true}
           className="flex  white_color fs16px "
           onClick={() => {
-            navigate("/admin/livestock");
+            navigate('/admin/livestock');
           }}
         >
           <DnsIcon />
           <Typography className="fs14px ml10px ">
-            {" "}
+            {' '}
             Livestock Management
           </Typography>
         </MenuItem>
@@ -240,11 +240,11 @@ const HeaderAdmin = () => {
           dense={true}
           className="flex  white_color fs16px "
           onClick={() => {
-            navigate("/admin/user-management");
+            navigate('/admin/user-management');
           }}
         >
           {/* <DnsIcon /> */}
-          <img src={people} alt="" style={{ height: "15px" }} />
+          <img src={people} alt="" style={{ height: '15px' }} />
 
           <Typography className="fs14px ml10px "> User Management</Typography>
         </MenuItem>
@@ -253,13 +253,13 @@ const HeaderAdmin = () => {
           dense={true}
           className="flex  white_color fs16px "
           onClick={() => {
-            localStorage.removeItem("agro_type");
-            localStorage.removeItem("agro_token");
-            localStorage.removeItem("agro_user");
-            navigate("/authentication/sign-in");
+            localStorage.removeItem('liveStock_token');
+            localStorage.removeItem('liveStock_user');
+
+            navigate('/authentication/sign-in');
           }}
         >
-          <LogoutIcon sx={{ color: "white" }} />
+          <LogoutIcon sx={{ color: 'white' }} />
           <Typography className="fs14px ml10px ">Logout</Typography>
         </MenuItem>
       </Menu>
@@ -274,45 +274,45 @@ const HeaderAdmin = () => {
           // width: '200px',
           elevation: 0,
           sx: {
-            overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
             mt: 1.5,
 
-            "& .MuiAvatar-root": {
+            '& .MuiAvatar-root': {
               width: 32,
               height: 32,
               ml: -0.5,
               mr: 1,
             },
-            "&:before": {
+            '&:before': {
               content: '""',
-              display: "block",
-              position: "absolute",
+              display: 'block',
+              position: 'absolute',
               top: 0,
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
             },
           },
         }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        sx={{ zIndex: "20000" }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        sx={{ zIndex: '20000' }}
         className="header-menu-ul"
       >
-        <Grid container sx={{ height: "460px", width: "400px" }}>
+        <Grid container sx={{ height: '460px', width: '400px' }}>
           <Grid
             container
             item
             xs={12}
             justifyContent="flexStart"
             sx={{
-              padding: "10px",
-              background: "#fff",
-              borderBottom: "1px solid #ddd",
-              boxShadow: "0px 1px 10px rgba(0, 0, 0, 0.1)",
+              padding: '10px',
+              background: '#fff',
+              borderBottom: '1px solid #ddd',
+              boxShadow: '0px 1px 10px rgba(0, 0, 0, 0.1)',
             }}
           >
             <Typography className="b1c_color fs18px ">Notifications</Typography>
@@ -329,11 +329,11 @@ const HeaderAdmin = () => {
             xs={12}
             // className="notification_scroll_div"
             sx={{
-              height: "400px",
-              background: "#fff",
-              color: "black",
-              padding: "10px 0",
-              overflow: "auto",
+              height: '400px',
+              background: '#fff',
+              color: 'black',
+              padding: '10px 0',
+              overflow: 'auto',
             }}
             direction="column"
             gap="5px"
@@ -348,8 +348,8 @@ const HeaderAdmin = () => {
                     // changeStatusNotification(a);
                   }}
                   sx={{
-                    cursor: "pointer",
-                    height: "70px",
+                    cursor: 'pointer',
+                    height: '70px',
                   }}
                 >
                   <Grid
@@ -362,9 +362,9 @@ const HeaderAdmin = () => {
                     <img
                       src={a?.image}
                       style={{
-                        width: "50px",
-                        borderRadius: "50%",
-                        height: "50px",
+                        width: '50px',
+                        borderRadius: '50%',
+                        height: '50px',
                       }}
                     />
                   </Grid>
@@ -377,12 +377,12 @@ const HeaderAdmin = () => {
                   >
                     <Grid item>
                       <Typography className="notification_msg">
-                        {"Order" + " " + a?.status}
+                        {'Order' + ' ' + a?.status}
                       </Typography>
                     </Grid>
                     <Grid item>
                       <Typography className="notification_msg">
-                        {a?.message + " " + a?.orderId}
+                        {a?.message + ' ' + a?.orderId}
                       </Typography>
                     </Grid>
                     {/* <Grid item>
@@ -401,25 +401,25 @@ const HeaderAdmin = () => {
                 container
                 justifyContent="center"
                 alignItems="center"
-                sx={{ width: "100%", height: "100%" }}
+                sx={{ width: '100%', height: '100%' }}
                 direction="column"
               >
                 <Grid container justifyContent="center">
-                  {" "}
+                  {' '}
                   <img
                     src={GIF}
                     alt="notification"
-                    style={{ width: "150px" }}
+                    style={{ width: '150px' }}
                   />
                 </Grid>
 
                 <Typography className="fs20px">
                   No notifications to show yet
                 </Typography>
-                <Typography className=" fs16px" sx={{ color: "#6D787D" }}>
+                <Typography className=" fs16px" sx={{ color: '#6D787D' }}>
                   You’ll see useful information here soon.
                 </Typography>
-                <Typography className=" fs16px" sx={{ color: "#6D787D" }}>
+                <Typography className=" fs16px" sx={{ color: '#6D787D' }}>
                   Stay tuned!
                 </Typography>
               </Grid>

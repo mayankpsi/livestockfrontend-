@@ -25,7 +25,7 @@ const BranchManager = ({ data, address }) => {
             <Button
               onClick={() => {
                 navigate(
-                  `/admin/site-management/${gatewayName}/add-branch-manager `,
+                  `/admin/device-management/${gatewayName}/add-branch-manager `,
                   {
                     state: {
                       address,

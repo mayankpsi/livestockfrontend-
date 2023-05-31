@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Grid, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
-import Add from "../.././assets/images/AddSite.png";
-import DeletePopup from "../DeletePopupCard";
-import AddSite_toUser from "./AddSite_fromUser";
-import AddLivestock from "./addLivestock";
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, Grid, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import { MdDeleteOutline, MdOutlineRemoveRedEye } from 'react-icons/md';
+import Add from '../.././assets/images/AddSite.png';
+import DeletePopup from '../DeletePopupCard';
+import AddSite_toUser from './AddSite_fromUser';
+import AddLivestock from './addLivestock';
 
 const Index = (props) => {
   const { state } = useLocation();
@@ -49,7 +49,7 @@ const Index = (props) => {
           {/* </Grid> */}
           <Grid item xs={7} sm={7} md={7} lg={7} className=" flexStart">
             <Typography className="fs16px fontWeight700">
-              Livestock Name{" "}
+              Livestock Name{' '}
             </Typography>
           </Grid>
         </Grid>
@@ -159,7 +159,7 @@ const Index = (props) => {
               </Grid> */}
               <Grid item xs={4} sm={4} md={4} lg={4} className="flex flex-end">
                 <Typography className="  fs16px fontWeight700  ">
-                  {"Active"}
+                  {'Active'}
                 </Typography>
               </Grid>
 
@@ -199,7 +199,7 @@ const Index = (props) => {
                   />
 
                   <DeletePopup
-                    Name={"user"}
+                    Name={'user'}
                     gatewayID={a?._id}
                     reRander={props?.reRander}
                   />
@@ -213,7 +213,7 @@ const Index = (props) => {
           container
           justifyContent="center"
           alignItems="center"
-          style={{ height: "400px" }}
+          style={{ height: '400px' }}
           className=" border "
         >
           <AddLivestock />
@@ -225,7 +225,7 @@ const Index = (props) => {
         //     sx={{ flexDirection: "column", width: "20%" }}
         //     className="Greenborder  bRadius_8 Cursor"
         //     onClick={() => {
-        //       // navigate("/admin/site-management/add-site-management");
+        //       // navigate("/admin/device-management/add-site-management");
         //     }}
         //   >
         //     <img src={Add} alt="loading" className="M20" />

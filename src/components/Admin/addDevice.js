@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogTitle,
@@ -10,9 +10,6 @@ import {
   Button,
   Grid,
   InputBase,
-  RadioGroup,
-  Radio,
-  FormControl,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -22,7 +19,7 @@ import HighlightOff from "@mui/icons-material/HighlightOff";
 import { adminRequest } from "../../requestMethod";
 import { useLoaderController, setLoader } from "../../context/common";
 import Add from "../.././assets/images/AddSite.png";
-import AddSite_toUser from "./AddSite_toUser";
+// import AddSite_toUser from "./AddSite_toUser";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -63,29 +60,24 @@ function BootstrapDialogTitle(props) {
 
 const AddDevice = (props) => {
   const navigate = useNavigate();
-  //   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
   const [controller, dispatch] = useLoaderController();
 
   const [open, setOpen] = useState(false);
   const [fullWidth, setFullWidth] = useState(true);
   const [maxWidth, setMaxWidth] = useState("sm");
-  const [userId, setUserId] = useState();
-  const [clientId, setClientId] = useState();
   const [siteDetails, setSiteDetails] = useState([]);
   const [inputDisabled, setInputDisabled] = useState(false);
 
-  const [update, setUpdate] = useState(true);
-
-  //   const [clientId, setClientId] = useState("");
-  const [clientName, setClientName] = useState("");
+  const [deviceId, setDeviceId] = useState("");
+  const [deviceName, setDeviceName] = useState("");
+  const [deviceMacId, setDeviceMacId] = useState("");
 
   const saveData = async () => {
     setLoader(dispatch, true);
     let body = {
-      clientID: clientId,
-      clientName: clientName,
-      //   client_id: id,
+      // clientID: clientId,
+      // clientName: clientName,
     };
     try {
       const res = await adminRequest.post(`/user/userupdate/`, body);
@@ -116,12 +108,16 @@ const AddDevice = (props) => {
     setOpen(false);
   };
 
-  const SiteDetails = async () => {
+  const AddDevice = async () => {
     setLoader(dispatch, true);
-    let adminId = localStorage.getItem("agro_id");
+    let body = {
+      uID: deviceId,
+      deviceName: deviceName,
+      macID: deviceMacId,
+    };
     try {
-      const res = await adminRequest.get(`/site/getSitesOnly/${adminId}`);
-      console.log("Sitefor user ", res);
+      const res = await adminRequest.post(`/devices/create`, body);
+      console.log("Devices add in livestock ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         setSiteDetails(res.data.data);
@@ -135,59 +131,8 @@ const AddDevice = (props) => {
     }
   };
 
-  //   const AssignSitefromUser = async () => {
-  //     setLoader(dispatch, true);
-  //     let body = {
-  //       site_id: clientId,
-  //       client_id: props?.gatewayID,
-  //     };
-
-  //     console.log('Assigning', body);
-
-  //     try {
-  //       const res = await adminRequest.post('/user/addSiteToClient', body);
-  //       console.log('Site Assign to user ', res);
-  //       setLoader(dispatch, false);
-  //       if (res.status == 200 || res.status == 201) {
-  //         enqueueSnackbar('Site Assign to user Successfully ', {
-  //           variant: 'success',
-  //           autoHideDuration: 3000,
-  //         });
-  //         props?.reRander();
-  //         handleClose();
-  //       }
-  //       // enqueueSnackbar(res?.response?.data?.msg, {
-  //       //   variant: "success",
-  //       //   autoHideDuration: 3000,
-  //       // });
-  //     } catch (err) {
-  //       setLoader(dispatch, false);
-  //       enqueueSnackbar(err.response.data.msg, {
-  //         variant: 'error',
-  //         autoHideDuration: 3000,
-  //       });
-  //     }
-  //   };
-
-  useEffect(() => {
-    // SiteDetails();
-  }, []);
-
-  useEffect(() => {
-    console.log("props>>props", props);
-  }, [props]);
-
   return (
     <>
-      {/* <Button
-        className="fs14px bRadius_8  Greenborder d_color Transform_Capital fontWeight700  p_l-r10-30px  mb10px"
-        onClick={() => {
-          handleClickOpen();
-        }}
-      >
-        Add
-      </Button> */}
-
       <Grid
         container
         item
@@ -220,7 +165,7 @@ const AddDevice = (props) => {
 
         <DialogContent>
           <Grid container className="flex spaceBetween ">
-            <form>
+            <form onSubmit={AddDevice}>
               <Grid
                 container
                 item
@@ -239,10 +184,11 @@ const AddDevice = (props) => {
                     UID
                   </Typography>
                   <InputBase
+                    required
                     placeholder="Enter UID"
                     className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                    value={clientId}
-                    onChange={(e) => setClientId(e.target.value)}
+                    value={deviceId}
+                    onChange={(e) => setDeviceId(e.target.value)}
                     disabled={inputDisabled}
                   />
                 </Grid>
@@ -258,10 +204,11 @@ const AddDevice = (props) => {
                     Device Name
                   </Typography>
                   <InputBase
+                    required
                     placeholder="Enter Name"
                     className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                    value={clientName}
-                    onChange={(e) => setClientName(e.target.value)}
+                    value={deviceName}
+                    onChange={(e) => setDeviceName(e.target.value)}
                     disabled={inputDisabled}
                   />
                 </Grid>
@@ -277,10 +224,11 @@ const AddDevice = (props) => {
                     Mac Id
                   </Typography>
                   <InputBase
+                    required
                     placeholder="Enter MacId"
                     className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                    // value={clientId}
-                    // onChange={(e) => setClientId(e.target.value)}
+                    value={deviceMacId}
+                    onChange={(e) => setDeviceMacId(e.target.value)}
                     disabled={inputDisabled}
                   />
                 </Grid>
@@ -317,9 +265,10 @@ const AddDevice = (props) => {
           </Button>
 
           <Button
+            type="submit"
             className="fs16px  fontWeight600 white_color d_bgcolor p_l-r10-30px  "
             onClick={() => {
-              //   AssignSitefromUser();
+              AddDevice();
             }}
           >
             submit

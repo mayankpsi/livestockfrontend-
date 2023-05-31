@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
   Container,
@@ -8,16 +8,17 @@ import {
   Breadcrumbs,
   Tabs,
   Tab,
-} from '@mui/material';
-import PropTypes from 'prop-types';
+} from "@mui/material";
+import PropTypes from "prop-types";
 // import AdminUIContainer from "../../../../layout/AdminUIContainer";
 // import Overview from "./components/overview";
 // import Site from "../clientOverView/components/site";
-
 // import Recommendation from "../../../components/device/recommend";
-import Overview from '../../../../components/gatewayDetail/overview';
-import Device from '../../../../components/branchManager/devices';
-import { BsArrowLeftShort } from 'react-icons/bs';
+
+import Overview from "../../../../components/deviceDetail/overview";
+import Device from "../../../../components/branchManager/devices";
+
+import { BsArrowLeftShort } from "react-icons/bs";
 // import Alert from "../../../components/device/alerts";
 // import AlertTable from "../../../components/Common/alertTable";
 // import Status from "../../../components/device/status";
@@ -55,7 +56,7 @@ const Index = ({ showDetail, data }) => {
 
   useEffect(() => {
     // if (props.value) setValue(props.value);
-    console.log('>>JJJJK', data[0]?.gateway);
+    console.log(">>JJJJK", data[0]?.gateway);
   }, []);
   return (
     <>
@@ -63,10 +64,10 @@ const Index = ({ showDetail, data }) => {
         container
         // alignItems="center"
         style={{
-          height: '70px',
-          width: '100%',
-          borderRadius: '10px',
-          paddingTop: '15px',
+          height: "70px",
+          width: "100%",
+          borderRadius: "10px",
+          paddingTop: "15px",
         }}
         className="d_bgcolor "
       >
@@ -105,11 +106,11 @@ const Index = ({ showDetail, data }) => {
           justifyContent="center"
           className="device-container"
           sx={{
-            marginTop: '-2rem',
-            marginBottom: '2rem',
+            marginTop: "-2rem",
+            marginBottom: "2rem",
           }}
         >
-          <Grid item sx={{ width: '100%' }}>
+          <Grid item sx={{ width: "100%" }}>
             <Tabs
               value={value}
               onChange={handleChange}

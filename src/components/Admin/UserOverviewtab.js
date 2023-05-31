@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
@@ -35,7 +35,6 @@ const Index = () => {
         sm={12}
         md={12}
         lg={12}
-        // sx={{ border: "1px solid black" }}
         className=" d_bgcolor fs16px white_color  p_t-b10px bRadius_8-2 "
       >
         <Grid
@@ -141,7 +140,7 @@ const Index = () => {
               </Grid>
               <Grid item xs={2} sm={2} md={2} lg={2} className="flex flexEnd">
                 <Typography className="  fs16px fontWeight700  ">
-                  {a.deviceName}
+                  {a?.deviceName}
                 </Typography>
               </Grid>
               <Grid item xs={2} sm={2} md={2} lg={2} className="flex flexEnd">
@@ -153,7 +152,7 @@ const Index = () => {
                 <Stack direction="row" alignItems="center" spacing={2}>
                   <MdOutlineRemoveRedEye
                     className="fs24px"
-                    onClick={() => navigate(`/admin/site-management/${a.id}`)}
+                    onClick={() => navigate(`/admin/device-management/${a.id}`)}
                   />
 
                   <MdDeleteOutline className="fs24px" />
@@ -177,7 +176,7 @@ const Index = () => {
             sx={{ flexDirection: "column", width: "20%" }}
             className="Greenborder  bRadius_8 Cursor"
             onClick={() => {
-              navigate("/admin/site-management/add-site-management");
+              // navigate('/admin/device-management/add-site-management');
             }}
           >
             <img src={Add} alt="loading" className="M20" />

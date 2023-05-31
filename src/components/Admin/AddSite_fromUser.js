@@ -272,7 +272,7 @@ const AddSite_toUser = (props) => {
                   sx={{ flexDirection: "column", width: "20%" }}
                   className="Greenborder  bRadius_8 Cursor"
                   onClick={() => {
-                    navigate("/admin/site-management/add-site-management");
+                    navigate("/admin/device-management/add-site-management");
                   }}
                 >
                   <img src={Add} alt="loading" className="M20" />

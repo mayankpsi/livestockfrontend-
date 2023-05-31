@@ -7,11 +7,9 @@ import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
 import { useSnackbar } from "notistack";
 
 import Loader from "../../components/loader";
-// import Header from "../../components/Header";
 
 import AdminUIContainer from "../../layout/AdminUIContainer";
 import DashboardCard from "../../components/DashboardCard";
-import CustomizedTables from "../../components/Admin/CustomizedTables";
 
 import ClientImg from "../../assets/images/Client.png";
 import GatewayImg from "../../assets/images/Gateway.png";
@@ -28,14 +26,15 @@ import {
 
 const AdminDashBoard = () => {
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const [controller, dispatch] = useLoaderController();
+
   const [clientDetails, setClientDetails] = useState("");
   const [siteDetails, setSiteDetails] = useState("");
   const [totalBM, setTotalBM] = useState(0);
   const [totalNodes, setTotalNodes] = useState(0);
   let BM = 0;
   let nodeLength = 0;
-  const { enqueueSnackbar } = useSnackbar();
   const data = [{}];
 
   const getAllData = async () => {
@@ -75,12 +74,12 @@ const AdminDashBoard = () => {
     }
   };
 
-  useEffect(() => {
-    getAllData();
-  }, []);
-  useEffect(() => {
-    console.log("nodeLengthnodeLength", nodeLength);
-  }, [nodeLength]);
+  // useEffect(() => {
+  //   getAllData();
+  // }, []);
+  // useEffect(() => {
+  //   console.log('nodeLengthnodeLength', nodeLength);
+  // }, [nodeLength]);
   return (
     <>
       <AdminUIContainer>
@@ -88,7 +87,7 @@ const AdminDashBoard = () => {
           style={{
             height: "140px",
             width: "100%",
-            backgroundColor: "#B58B5D",
+            backgroundCoaddLiveStocklor: "#B58B5D",
           }}
         >
           <Container maxWidth="lg">
@@ -184,7 +183,7 @@ const AdminDashBoard = () => {
                           <Button
                             className="fontWeight600 white_color fs14px  Transform_Capital"
                             style={{ padding: "0px" }}
-                            onClick={() => navigate("/admin/site-management")}
+                            onClick={() => navigate("/admin/device-management")}
                           >
                             See all
                           </Button>
@@ -195,11 +194,14 @@ const AdminDashBoard = () => {
                         item
                         className="flex centerJc Cursor"
                         // onClick={() =>
-                        //   // navigate("/admin/site-management/add-site-management")
+                        //   // navigate("/admin/device-management/add-site-management")
                         // }
                       >
                         <IoIosAddCircleOutline className="fs20px white_color " />
-                        <Typography className="fontWeight700 white_color fs14px ml5px">
+                        <Typography
+                          className="fontWeight700 white_color fs14px ml5px"
+                          onClick={() => navigate("/admin/device-management")}
+                        >
                           Add Devices
                         </Typography>
                       </Grid>
@@ -370,7 +372,7 @@ const AdminDashBoard = () => {
                                   <Button
                                     onClick={() =>
                                       navigate(
-                                        `/admin/site-management/${a?._id}`
+                                        `/admin/device-management/${a?._id}`
                                       )
                                     }
                                     style={{ padding: "0px" }}
@@ -396,8 +398,7 @@ const AdminDashBoard = () => {
                           }}
                           className=" Cursor"
                           onClick={() => {
-                            navigate();
-                            // "/admin/site-management/add-site-management"
+                            navigate("/admin/device-management");
                           }}
                         >
                           <img src={Add} alt="loading" className="" />
@@ -720,7 +721,7 @@ const AdminDashBoard = () => {
                     sx={{ flexDirection: "column", width: "20%" }}
                     className="Greenborder  bRadius_8 Cursor mt20px"
                     onClick={() => {
-                      navigate("/admin/site-management/add-site-management");
+                      navigate("/admin/device-management/add-site-management");
                     }}
                   >
                     <Grid container className="flexDir center centerJc">

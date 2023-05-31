@@ -11,7 +11,7 @@ import { adminRequest } from "../../requestMethod";
 
 const Overview = ({ title, data, apiEndpoint }) => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { deviceName } = useParams();
   const [controller, dispatch] = useLoaderController();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -19,26 +19,30 @@ const Overview = ({ title, data, apiEndpoint }) => {
   const [inputDisabled, setInputDisabled] = useState(true);
   const [update, setUpdate] = useState(true);
 
-  const [clientId, setClientId] = useState("");
-  const [clientName, setClientName] = useState("");
+  const [deviceId, setDeviceId] = useState("");
+  const [deviceName1, setDeviceName1] = useState("");
+  const [deviceMacId, setDeviceMacId] = useState("");
 
   const saveData = async () => {
     setLoader(dispatch, true);
     let body = {
-      clientID: clientId,
-      clientName: clientName,
-      client_id: id,
+      uID: deviceId,
+      macID: deviceMacId,
+      deviceName: deviceName1,
     };
     try {
-      const res = await adminRequest.post(`/user/userupdate/`, body);
+      const res = await adminRequest.post(
+        `/devices/update?deviceID=${deviceName}`,
+        body
+      );
       console.log("update user ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        enqueueSnackbar(res?.data?.msg, {
+        enqueueSnackbar(res?.data?.message, {
           variant: "success",
           autoHideDuration: 3000,
         });
-        navigate(`/admin/user-management/${id}`, { state: update });
+        // navigate(`/admin/user-management/${id}`, { state: update });
       }
     } catch (err) {
       setLoader(dispatch, false);
@@ -50,6 +54,39 @@ const Overview = ({ title, data, apiEndpoint }) => {
     setLoader(dispatch, false);
     setInputDisabled(true);
   };
+
+  const getDeviceDetail = async () => {
+    setLoader(dispatch, true);
+    try {
+      const res = await adminRequest.get(
+        `/devices/getDeviceById?deviceID=${deviceName}`
+      );
+      // console.log("res>> overviewindex file", res?.data?.data);
+      if (res.status == 200) {
+        setLoader(dispatch, false);
+        // setDetails([res?.data?.data]);
+      } else {
+        console.log("error ");
+      }
+    } catch (err) {
+      console.log("error get device", err);
+      setLoader(dispatch, false);
+      enqueueSnackbar(err?.response?.data?.message, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  };
+
+  useEffect(() => {
+    getDeviceDetail();
+  }, []);
+
+  useEffect(() => {
+    setDeviceId(data?.uID);
+    setDeviceName1(data?.deviceName);
+    setDeviceMacId(data?.macID);
+  }, [data]);
 
   return (
     <>
@@ -83,8 +120,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
             </Typography>
             <InputBase
               className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-              value={clientId}
-              onChange={(e) => setClientId(e.target.value)}
+              value={deviceId}
+              onChange={(e) => setDeviceId(e.target.value)}
               disabled={inputDisabled}
             />
           </Grid>
@@ -101,8 +138,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
             </Typography>
             <InputBase
               className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-              value={clientName}
-              onChange={(e) => setClientName(e.target.value)}
+              value={deviceName1}
+              onChange={(e) => setDeviceName1(e.target.value)}
               disabled={inputDisabled}
             />
           </Grid>
@@ -119,8 +156,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
             </Typography>
             <InputBase
               className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-              // value={clientId}
-              // onChange={(e) => setClientId(e.target.value)}
+              value={deviceMacId}
+              onChange={(e) => setDeviceMacId(e.target.value)}
               disabled={inputDisabled}
             />
           </Grid>
@@ -218,8 +255,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
             </Typography>
             <InputBase
               className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-              value={clientId}
-              onChange={(e) => setClientId(e.target.value)}
+              // value={clientId}
+              // onChange={(e) => setClientId(e.target.value)}
               disabled={inputDisabled}
             />
           </Grid>
@@ -236,8 +273,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
             </Typography>
             <InputBase
               className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-              value={clientName}
-              onChange={(e) => setClientName(e.target.value)}
+              // value={clientName}
+              // onChange={(e) => setClientName(e.target.value)}
               disabled={inputDisabled}
             />
           </Grid>

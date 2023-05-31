@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Grid, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
-import Add from "../../../../../assets/images/AddSite.png";
-import AddSite_fromUser from "../../../../../components/Admin/AddSite_fromAddUser.js";
-import DeletePopup from "../../../../../components/DeletePopupCard.js";
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, Grid, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import { MdDeleteOutline, MdOutlineRemoveRedEye } from 'react-icons/md';
+import Add from '../../../../../assets/images/AddSite.png';
+import AddSite_fromUser from '../../../../../components/Admin/AddSite_fromAddUser.js';
+import DeletePopup from '../../../../../components/DeletePopupCard.js';
 
 const Index = ({ data }) => {
   const { state } = useLocation();
@@ -16,8 +16,8 @@ const Index = ({ data }) => {
 
   useEffect(() => {
     // setSiteDetails(data[0]?.gateway);
-    console.log(">>>??", data[0]?.gateway);
-    console.log(">>>??", data);
+    console.log('>>>??', data[0]?.gateway);
+    console.log('>>>??', data);
   }, [data]);
   return (
     <>
@@ -46,12 +46,12 @@ const Index = ({ data }) => {
           >
             <Grid item xs={4} sm={4} md={4} lg={4}>
               <Typography className="  fs16px  p_l-r10px fontWeight700">
-                UID{" "}
+                UID{' '}
               </Typography>
             </Grid>
             <Grid item xs={4} sm={4} md={4} lg={4}>
               <Typography className="fs16px fontWeight700">
-                Site Name{" "}
+                Site Name{' '}
               </Typography>
             </Grid>
           </Grid>
@@ -74,7 +74,7 @@ const Index = ({ data }) => {
           </Grid> */}
             <Grid item xs={2} sm={2} md={2} lg={2} className="flex center">
               <Typography className="  fs16px fontWeight700  ">
-                Device{" "}
+                Device{' '}
               </Typography>
             </Grid>
             <Grid item xs={2} sm={2} md={2} lg={2} className="flex center">
@@ -188,7 +188,7 @@ const Index = ({ data }) => {
                         // onClick={() => showDetail(true)}
                       />
 
-                      <DeletePopup Name={"site from the user"} id={a?._id} />
+                      <DeletePopup Name={'site from the user'} id={a?._id} />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -200,17 +200,17 @@ const Index = ({ data }) => {
             container
             justifyContent="center"
             alignItems="center"
-            style={{ height: "400px" }}
+            style={{ height: '400px' }}
             className=" border "
           >
             <Grid
               container
               item
               alignItems="center"
-              sx={{ flexDirection: "column", width: "20%" }}
+              sx={{ flexDirection: 'column', width: '20%' }}
               className="Greenborder  bRadius_8 Cursor"
               onClick={() => {
-                // navigate("/admin/site-management/add-site-management");
+                // navigate("/admin/device-management/add-site-management");
               }}
             >
               <img src={Add} alt="loading" className="M20" />

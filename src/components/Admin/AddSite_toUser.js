@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogTitle,
@@ -12,20 +12,20 @@ import {
   RadioGroup,
   Radio,
   FormControl,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import { useSnackbar } from "notistack";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import HighlightOff from "@mui/icons-material/HighlightOff";
-import { adminRequest } from "../../requestMethod";
-import { useLoaderController, setLoader } from "../../context/common";
+import { useSnackbar } from 'notistack';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import HighlightOff from '@mui/icons-material/HighlightOff';
+import { adminRequest } from '../../requestMethod';
+import { useLoaderController, setLoader } from '../../context/common';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
+  '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
   },
-  "& .MuiDialogActions-root": {
+  '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
 }));
@@ -45,7 +45,7 @@ function BootstrapDialogTitle(props) {
           aria-label="close"
           onClick={onClose}
           sx={{
-            position: "absolute",
+            position: 'absolute',
             right: 9,
             top: 7,
           }}
@@ -65,7 +65,7 @@ const AddSite_toUser = (props) => {
 
   const [open, setOpen] = useState(false);
   const [fullWidth, setFullWidth] = useState(true);
-  const [maxWidth, setMaxWidth] = useState("md");
+  const [maxWidth, setMaxWidth] = useState('md');
   const [userId, setUserId] = useState();
   const [clientId, setClientId] = useState();
   const [userDetails, setUserDetails] = useState([]);
@@ -79,7 +79,7 @@ const AddSite_toUser = (props) => {
   const UserDetails = async () => {
     setLoader(dispatch, true);
     try {
-      const res = await adminRequest.get("/user/getclients");
+      const res = await adminRequest.get('/user/getclients');
       // console.log("AddSite ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
@@ -88,7 +88,7 @@ const AddSite_toUser = (props) => {
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err.response.data.msg, {
-        variant: "error",
+        variant: 'error',
         autoHideDuration: 3000,
       });
     }
@@ -101,33 +101,33 @@ const AddSite_toUser = (props) => {
     };
     // console.log("Assigning", body);
     try {
-      const res = await adminRequest.post("/user/addSiteToClient", body);
-      console.log("Site Assign to user ", res);
+      const res = await adminRequest.post('/user/addSiteToClient', body);
+      console.log('Site Assign to user ', res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        enqueueSnackbar("Site Assign to user Successfully ", {
-          variant: "success",
+        enqueueSnackbar('Site Assign to user Successfully ', {
+          variant: 'success',
           autoHideDuration: 3000,
         });
         handleClose();
       }
       if (res?.response?.status == 400) {
         enqueueSnackbar(res?.response?.data?.msg, {
-          variant: "error",
+          variant: 'error',
           autoHideDuration: 3000,
         });
       }
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err.response.data.msg, {
-        variant: "error",
+        variant: 'error',
         autoHideDuration: 3000,
       });
     }
   };
   useEffect(() => {
     UserDetails();
-    console.log("props of site add", props, clientId);
+    console.log('props of site add', props, clientId);
   }, []);
 
   return (
@@ -153,7 +153,7 @@ const AddSite_toUser = (props) => {
 
         <DialogContent>
           <Grid container className="flex spaceBetween">
-            {" "}
+            {' '}
             <Grid
               container
               item
@@ -181,7 +181,7 @@ const AddSite_toUser = (props) => {
                 placeholder="Search UserID / Name"
                 onChange={(e) => setUserId(e.target.value)}
               />
-            </Grid>{" "}
+            </Grid>{' '}
           </Grid>
 
           <Grid
@@ -192,7 +192,7 @@ const AddSite_toUser = (props) => {
             md={12}
             lg={12}
             sx={{
-              rowGap: "1rem",
+              rowGap: '1rem',
             }}
             // spaceBetween
             className=" flex flexStart  fs16px  p_t-b10px  "
@@ -248,7 +248,7 @@ const AddSite_toUser = (props) => {
             ) : (
               <Grid
                 container
-                style={{ height: "100px" }}
+                style={{ height: '100px' }}
                 className=" border center "
               >
                 {/* <Grid
@@ -258,7 +258,7 @@ const AddSite_toUser = (props) => {
                   sx={{ flexDirection: "column", width: "20%" }}
                   className="Greenborder  bRadius_8 Cursor"
                   onClick={() => {
-                    navigate("/admin/site-management/add-site-management");
+                    navigate("/admin/device-management/add-site-management");
                   }}
                 >
                   <img src={Add} alt="loading" className="M20" />

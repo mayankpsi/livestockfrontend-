@@ -3,23 +3,23 @@ import Auth from "./pages/auth/index";
 // admin
 
 import AdminDashboard from "./pages/admin";
-import AdminSiteManagement from "./pages/admin/siteManagement";
-import AdminAddSiteManagement from "./pages/admin/addSites";
+import AdminDeviceManagement from "./pages/admin/siteManagement";
+// import AdminAddSiteManagement from "./pages/admin/addSites";
 import AdminGatewayManagement from "./pages/admin/siteManagement/gatewayDetail/index";
-import AdminShowBranchManager from "./pages/admin/siteManagement/showBranchManager/index";
-import AdminAddBranchManager from "./pages/admin/siteManagement/addBranchManager/index";
+// import AdminShowBranchManager from "./pages/admin/siteManagement/showBranchManager/index";
+// import AdminAddBranchManager from './pages/admin/siteManagement/addBranchManager/index';
 import AdminShowDevice from "./pages/admin/siteManagement/device/index";
 import AdminUserManagementDashboard from "./pages/admin/userManagement";
 import AdminUserManagement from "./pages/admin/userManagement/clientOverView/index";
 import AdminLiveStocks from "./pages/admin/liveStockManagement/index";
 import AdminLiveStocksOverview from "./pages/admin/liveStockManagement/livestockOverview/index";
 // user
-import UserDashboard from "./pages/user";
-import SiteManagement from "./pages/user/siteManagement";
-import GatewayManagement from "./pages/user/gatewayDetail/index";
-import BranchManager from "./pages/user/branchManager";
-import Device from "./pages/user/device";
-import Setting from "./pages/user/settings";
+// import UserDashboard from "./pages/user";
+// import SiteManagement from "./pages/user/siteManagement";
+// import GatewayManagement from "./pages/user/gatewayDetail/index";
+// import BranchManager from "./pages/user/branchManager";
+// import Device from "./pages/user/device";
+// import Setting from "./pages/user/settings";
 
 import SuccessDialog from "./components/SuccessDialog";
 
@@ -58,39 +58,39 @@ export default function () {
     },
     {
       name: "admin",
-      key: "/admin/site-management",
-      route: "/admin/site-management",
-      component: <AdminSiteManagement />,
+      key: "/admin/device-management",
+      route: "/admin/device-management",
+      component: <AdminDeviceManagement />,
     },
     ,
+    // {
+    //   name: 'admin',
+    //   key: '/admin/device-management/add-site-management',
+    //   route: '/admin/device-management/add-site-management',
+    //   component: <AdminAddSiteManagement />,
+    // },
     {
       name: "admin",
-      key: "/admin/site-management/add-site-management",
-      route: "/admin/site-management/add-site-management",
-      component: <AdminAddSiteManagement />,
-    },
-    {
-      name: "admin",
-      key: "/admin/site-management/:gatewayName",
-      route: "/admin/site-management/:gatewayName",
+      key: "/admin/device-management/:deviceName",
+      route: "/admin/device-management/:deviceName",
       component: <AdminGatewayManagement />,
     },
+    // {
+    //   name: "admin",
+    //   key: "/admin/device-management/:gatewayName/:branchName",
+    //   route: "/admin/device-management/:gatewayName/:branchName",
+    //   component: <AdminShowBranchManager />,
+    // },
+    // {
+    //   name: 'admin',
+    //   key: '/admin/device-management/:gatewayName/add-branch-manager',
+    //   route: '/admin/device-management/:gatewayName/add-branch-manager',
+    //   component: <AdminAddBranchManager />,
+    // },
     {
       name: "admin",
-      key: "/admin/site-management/:gatewayName/:branchName",
-      route: "/admin/site-management/:gatewayName/:branchName",
-      component: <AdminShowBranchManager />,
-    },
-    {
-      name: "admin",
-      key: "/admin/site-management/:gatewayName/add-branch-manager",
-      route: "/admin/site-management/:gatewayName/add-branch-manager",
-      component: <AdminAddBranchManager />,
-    },
-    {
-      name: "admin",
-      key: "/admin/site-management/:gatewayName/:branchName/:deviceId",
-      route: "/admin/site-management/:gatewayName/:branchName/:deviceId",
+      key: "/admin/device-management/:gatewayName/:branchName/:deviceId",
+      route: "/admin/device-management/:gatewayName/:branchName/:deviceId",
       component: <AdminShowDevice />,
     },
     {
@@ -118,42 +118,42 @@ export default function () {
       component: <AdminLiveStocksOverview />,
     },
     // user
-    {
-      name: "user",
-      key: "/user/dashboard",
-      route: "/user/dashboard",
-      component: <UserDashboard />,
-    },
-    {
-      name: "user",
-      key: "/user/site-management",
-      route: "/user/site-management",
-      component: <SiteManagement />,
-    },
-    {
-      name: "user",
-      key: "/user/site-management/:gatewayName",
-      route: "/user/site-management/:gatewayName",
-      component: <GatewayManagement />,
-    },
-    {
-      name: "user",
-      key: "/user/site-management/:gatewayName/:branchName",
-      route: "/user/site-management/:gatewayName/:branchName",
-      component: <BranchManager />,
-    },
-    {
-      name: "user",
-      key: "/user/site-management/:gatewayName/:branchName/:deviceId",
-      route: "/user/site-management/:gatewayName/:branchName/:deviceId",
-      component: <Device />,
-    },
-    {
-      name: "user",
-      key: "/user/settings",
-      route: "/user/settings",
-      component: <Setting />,
-    },
+    // {
+    //   name: "user",
+    //   key: "/user/dashboard",
+    //   route: "/user/dashboard",
+    //   component: <UserDashboard />,
+    // },
+    // {
+    //   name: "user",
+    //   key: "/user/site-management",
+    //   route: "/user/site-management",
+    //   component: <SiteManagement />,
+    // },
+    // {
+    //   name: "user",
+    //   key: "/user/site-management/:gatewayName",
+    //   route: "/user/site-management/:gatewayName",
+    //   component: <GatewayManagement />,
+    // },
+    // {
+    //   name: "user",
+    //   key: "/user/site-management/:gatewayName/:branchName",
+    //   route: "/user/site-management/:gatewayName/:branchName",
+    //   component: <BranchManager />,
+    // },
+    // {
+    //   name: "user",
+    //   key: "/user/site-management/:gatewayName/:branchName/:deviceId",
+    //   route: "/user/site-management/:gatewayName/:branchName/:deviceId",
+    //   component: <Device />,
+    // },
+    // {
+    //   name: "user",
+    //   key: "/user/settings",
+    //   route: "/user/settings",
+    //   component: <Setting />,
+    // },
   ];
 
   return routes;

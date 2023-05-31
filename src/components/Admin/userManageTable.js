@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Grid, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
-import Add from "../.././assets/images/AddSite.png";
-import DeletePopup from "../DeletePopupCard";
-import AddSite_toUser from "./AddSite_fromUser";
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, Grid, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import { MdDeleteOutline, MdOutlineRemoveRedEye } from 'react-icons/md';
+import Add from '../.././assets/images/AddSite.png';
+import DeletePopup from '../DeletePopupCard';
+import AddSite_toUser from './AddSite_fromUser';
 
 const Index = (props) => {
   const { state } = useLocation();
@@ -153,7 +153,7 @@ const Index = (props) => {
               </Grid>
               <Grid item xs={3} sm={3} md={3} lg={3} className="flex flex-end">
                 <Typography className="  fs16px fontWeight700  ">
-                  {"Active"}
+                  {'Active'}
                 </Typography>
               </Grid>
 
@@ -179,7 +179,7 @@ const Index = (props) => {
               >
                 <Stack direction="row" alignItems="center" spacing={2}>
                   <AddSite_toUser
-                    Name={"site"}
+                    Name={'site'}
                     gatewayID={a?._id}
                     reRander={props?.reRander}
                   />
@@ -193,7 +193,7 @@ const Index = (props) => {
                   />
 
                   <DeletePopup
-                    Name={"user"}
+                    Name={'user'}
                     gatewayID={a?._id}
                     reRander={props?.reRander}
                   />
@@ -207,17 +207,17 @@ const Index = (props) => {
           container
           justifyContent="center"
           alignItems="center"
-          style={{ height: "400px" }}
+          style={{ height: '400px' }}
           className=" border "
         >
           <Grid
             container
             item
             alignItems="center"
-            sx={{ flexDirection: "column", width: "30%" }}
+            sx={{ flexDirection: 'column', width: '30%' }}
             className="Greenborder  bRadius_8 Cursor"
             onClick={() => {
-              // navigate("/admin/site-management/add-site-management");
+              // navigate("/admin/device-management/add-site-management");
             }}
           >
             {/* <img src={Add} alt="loading" className="M20" /> */}

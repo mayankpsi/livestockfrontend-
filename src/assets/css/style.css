@@ -46,7 +46,7 @@ input[type='radio']:checked:after {
   top: -2px;
   left: -1px;
   position: relative;
-  background-color: #B58B5D;
+  background-color: #b58b5d;
   content: '';
   display: inline-block;
   visibility: visible;
@@ -54,11 +54,11 @@ input[type='radio']:checked:after {
 }
 
 .d_color {
-  color:#B58B5D !important;
+  color: #b58b5d !important;
 }
 
 .d_bgcolor {
-  background-color:  #B58B5D !important;
+  background-color: #b58b5d !important;
 }
 
 .fontFamily {
@@ -118,7 +118,7 @@ body {
 }
 
 .Greenborder {
-  border: 2px solid #B58B5D !important;
+  border: 2px solid #b58b5d !important;
 }
 
 .Greenborder1 {
@@ -347,7 +347,6 @@ body {
   margin-left: 2rem !important;
 }
 
-
 .m_r20px {
   margin-right: 2rem !important;
 }
@@ -469,22 +468,24 @@ body {
 
 .auth-container {
   background-image: url('../images/Login.png');
-  background-size: cover;
+  background-size: contain;
   height: 100vh;
   width: 100vw;
   display: flex;
   align-items: center;
+  justify-content: end;
+  padding-right: 10%;
 }
 
 .auth-container input {
-  outline-color:  #B58B5D;
+  outline-color: #b58b5d;
 }
 
 .SignInBox {
   padding: 20px;
   width: 400px !important;
   min-height: 450px;
-  margin-left: 800px !important;
+  /* margin-left: 800px !important; */
   background-color: #ffffff;
   box-shadow: 14px 14px 40px rgba(0, 0, 0, 0.15);
   border-radius: 15px;
@@ -516,7 +517,7 @@ body {
 .SignInLogin {
   width: 100%;
   height: 48px !important;
-  background-color: #B58B5D !important;
+  background-color: #b58b5d !important;
   box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   border: none;
@@ -525,8 +526,8 @@ body {
 }
 
 .SignInLogin:hover {
-  color:  #B58B5D !important;
-  border: 2px solid #B58B5D !important;
+  color: #b58b5d !important;
+  border: 2px solid #b58b5d !important;
   background-color: #175b0c18 !important;
   /* box-shadow: 5px 3px 10px rgba(36, 101, 6, 0.1); */
 }
@@ -601,12 +602,12 @@ body {
 }
 
 .TabStyleAddDevice .MuiTabs-indicator {
-  background-color:#B58B5D !important;
+  background-color: #b58b5d !important;
   /* min-width: 0px !important; */
 }
 
 .TabStyleAddDevice .Mui-selected {
-  color: #B58B5D !important;
+  color: #b58b5d !important;
 }
 
 .TabStyleAddDevice {
@@ -698,7 +699,7 @@ body {
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
-  color:  #B58B5D !important;
+  color: #b58b5d !important;
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
@@ -811,12 +812,12 @@ input[type='number'] {
 }
 
 .agro-bg {
-  background-color:  #B58B5D!important;
+  background-color: #b58b5d !important;
 }
 
 .color-white {
   color: white !important;
 }
-.Gbtn.css-1rwt2y5-MuiButtonBase-root-MuiButton-root{
-  border:none !important;
+.Gbtn.css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
+  border: none !important;
 }

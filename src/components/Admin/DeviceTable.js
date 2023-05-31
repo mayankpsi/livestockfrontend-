@@ -12,10 +12,11 @@ import DeletePopup from "../DeletePopupCard";
 const Index = (props) => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const [siteDetails, setSiteDetails] = useState([]);
+  const [deviceDetails, setDeviceDetails] = useState([]);
 
   useEffect(() => {
-    // props && setSiteDetails(props.data.data);
+    props && setDeviceDetails(props?.data);
+    // console.log(props);
   }, [props]);
   return (
     <>
@@ -81,8 +82,8 @@ const Index = (props) => {
         </Grid>
       </Grid>
 
-      {siteDetails && siteDetails?.length > 0 ? (
-        siteDetails?.map((a, i) => {
+      {deviceDetails && deviceDetails?.length > 0 ? (
+        deviceDetails?.map((a, i) => {
           let nodeLength = 0;
           a?.branchManager?.map((item) => {
             nodeLength += item?.nodes?.length;
@@ -111,12 +112,12 @@ const Index = (props) => {
               >
                 <Grid item xs={4} sm={4} md={4} lg={4}>
                   <Typography className="  fs16px  p_l-r10px fontWeight700 d_color">
-                    {a?.gatewayID}
+                    {a?.uID}
                   </Typography>
                 </Grid>
                 <Grid item xs={6} sm={6} md={6} lg={6}>
                   <Typography className="fs16px fontWeight700 d_color Transform_Capital">
-                    {a?.gatewayName}
+                    {a?.deviceName}
                   </Typography>
                 </Grid>
               </Grid>
@@ -132,17 +133,17 @@ const Index = (props) => {
               >
                 <Grid item xs={3} sm={3} md={3} lg={3} className="flex center">
                   <Typography className="  fs16px fontWeight700  ">
-                    {a?.branchManager?.length}
+                    {a?.macID}
                   </Typography>
                 </Grid>
                 <Grid item xs={2} sm={2} md={2} lg={2} className="flex center ">
                   <Typography className="  fs16px fontWeight700 center  ">
-                    {nodeLength}
+                    {a?.status == true ? "Active" : "InActive"}
                   </Typography>
                 </Grid>
                 <Grid item xs={2} sm={2} md={2} lg={2} className="flex center">
                   <Typography className="fs16px fontWeight700 ">
-                    {a?.alert ? a?.alert : 0}
+                    {a?.status == true ? "Active" : "InActive"}
                   </Typography>
                 </Grid>
                 <Grid item xs={4} sm={4} md={4} lg={4} className="flex center ">
@@ -152,14 +153,14 @@ const Index = (props) => {
                     <MdOutlineRemoveRedEye
                       className="fs24px"
                       onClick={() =>
-                        navigate(`/admin/site-management/${a?._id}`)
+                        navigate(`/admin/device-management/${a?._id}`)
                       }
                     />
 
                     {/* <MdDeleteOutline className="fs24px" /> */}
 
                     <DeletePopup
-                      Name={"site"}
+                      Name={"Device"}
                       gatewayID={a?._id}
                       reRander={props?.reRander}
                     />
@@ -184,7 +185,7 @@ const Index = (props) => {
             sx={{ flexDirection: "column", width: "20%" }}
             className="Greenborder  bRadius_8 Cursor"
             onClick={() => {
-              // navigate("/admin/site-management/add-site-management");
+              // navigate("/admin/device-management/add-site-management");
             }}
           >
             <img src={Add} alt="loading" className="M20" />

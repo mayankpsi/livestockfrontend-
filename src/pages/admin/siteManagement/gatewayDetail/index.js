@@ -12,11 +12,11 @@ import {
 import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
 import AdminUIContainer from "../../../../layout/AdminUIContainer";
-import Overview from "../../../../components/gatewayDetail/overview";
-import BranchManager from "../../../../components/gatewayDetail/branchManager";
-import Analytics from "../../../../components/gatewayDetail/analytics";
-import Status from "../../../../components/gatewayDetail/status";
-import LiveStock from "../../../../components/gatewayDetail/liveStock";
+import Overview from "../../../../components/deviceDetail/overview";
+// import BranchManager from "../../../../components/deviceDetail/branchManager";
+// import Analytics from "../../../../components/gatewayDetail/analytics";
+// import Status from "../../../../components/gatewayDetail/status";
+import LiveStock from "../../../../components/deviceDetail/liveStock";
 
 import { adminRequest } from "../../../../requestMethod";
 import { setLoader, useLoaderController } from "../../../../context/common";
@@ -44,7 +44,7 @@ TabPanel.propTypes = {
 
 const Index = (props) => {
   const navigate = useNavigate();
-  const { gatewayName } = useParams();
+  const { deviceName } = useParams();
   const { enqueueSnackbar } = useSnackbar();
   const [controller, dispatch] = useLoaderController();
 
@@ -57,44 +57,37 @@ const Index = (props) => {
     setValue(newValue);
   };
 
-  // const getDetail = async () => {
-  //   let ID = localStorage.getItem("agro_id");
-  //   setLoader(dispatch, true);
-  //   try {
-  //     const res = await adminRequest.get(`/site/gatewaydetails/${gatewayName}`);
-  //     console.log("res>> overviewindex file", res?.data?.data);
-  //     if (res.status == 200) {
-  //       setLoader(dispatch, false);
-  //       setDetails([res?.data?.data]);
-  //       setSiteDetails(res?.data?.data?.branchManager);
-  //       setAddress({
-  //         gatewayPincode: res?.data?.data?.gatewayPincode,
-  //         gatewayCity: res?.data?.data?.gatewayCity,
-  //         gatewayState: res?.data?.data?.gatewayState,
-  //         gatewayCountry: res?.data?.data?.gatewayCountry,
-  //       });
-  //     } else {
-  //       console.log("error ");
-  //     }
-  //   } catch (err) {
-  //     console.log("error get site members", err);
-  //     setLoader(dispatch, false);
-  //     enqueueSnackbar(err?.response?.data?.msg, {
-  //       variant: "error",
-  //       autoHideDuration: 3000,
-  //     });
-  //   }
-  // };
+  const getDeviceDetail = async () => {
+    setLoader(dispatch, true);
+    try {
+      const res = await adminRequest.get(
+        `/devices/getDeviceById?deviceID=${deviceName}`
+      );
+      console.log("res>> overviewindex file", res?.data?.data);
+      if (res.status == 200) {
+        setLoader(dispatch, false);
+        setDetails(res?.data?.data);
+      } else {
+        console.log("error ");
+      }
+    } catch (err) {
+      console.log("error get device", err);
+      setLoader(dispatch, false);
+      enqueueSnackbar(err?.response?.data?.message, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  };
 
   useEffect(() => {
-    if (props.value) setValue(props.value);
-    // getDetail();
-  }, [props, value]);
+    // if (props.value) setValue(props.value);
+    getDeviceDetail();
+  }, []);
 
   useEffect(() => {
-    // console.log(details?.gatewayName, "gatewayNmae");
-    // console.log(details[0].gatewayName);
-  }, [details]);
+    console.log("deviceNamedeviceName", deviceName);
+  }, []);
   return (
     <>
       <AdminUIContainer>
@@ -127,22 +120,22 @@ const Index = (props) => {
                 </Link>
                 ,
                 <Link
-                  to="/admin/site-management"
+                  to="/admin/device-management"
                   className="white_color textDecorNone"
                   key="2"
                 >
                   <Typography className="white_color fs16px bold ">
-                    Device management
+                    Device Management
                   </Typography>
                 </Link>
                 ,
                 <Link
-                  to={`/admin/site-management/${gatewayName}`}
+                  to={`/admin/device-management/${deviceName}`}
                   className="white_color textDecorNone"
                   key="2"
                 >
                   <Typography className="white_color fs16px bold ">
-                    {details && details[0]?.gatewayName}
+                    {details && details?.deviceName}
                   </Typography>
                 </Link>
               </Breadcrumbs>
@@ -151,7 +144,7 @@ const Index = (props) => {
               className="fs24px white_color  fontWeight600 mt20px"
               // style={{ border: "1px solid red" }}
             >
-              {details && details[0]?.gatewayName}
+              {details && details?.deviceName}
               {/* Farm Land 1 */}
             </Typography>
           </Container>
@@ -197,9 +190,9 @@ const Index = (props) => {
           <Grid item md={12}>
             <TabPanel value={value} index={0}>
               <Overview
-                title="Gateway Details"
+                // title="Gateway Details"
                 data={details && details}
-                apiEndpoint="/site/updatesite"
+                apiEndpoint="/devices/update"
               />
             </TabPanel>
             <TabPanel value={value} index={1}>

@@ -14,7 +14,7 @@ import { useSnackbar } from "notistack";
 import AdminUIContainer from "../../../../layout/AdminUIContainer";
 import Overview from "../livestockOverview/components/overview";
 // import BranchManager from "../../../../components/gatewayDetail/branchManager";
-import Analytics from "../../../../components/gatewayDetail/analytics";
+import Analytics from "../../../../components/deviceDetail/analytics";
 import Health from "../livestockOverview/components/health";
 import Activity from "../livestockOverview/components/activity";
 import Devices from "../livestockOverview/components/device";
@@ -140,7 +140,7 @@ const Index = (props) => {
                 </Link>
                 ,
                 <Link
-                  to={`/admin/site-management/${gatewayName}`}
+                  to={`/admin/device-management/${gatewayName}`}
                   className="white_color textDecorNone"
                   key="2"
                 >

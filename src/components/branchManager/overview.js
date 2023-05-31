@@ -1,31 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  Button,
-  Container,
-  Grid,
-  Typography,
-  InputBase,
-  Divider,
-} from '@mui/material';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Grid, Divider } from "@mui/material";
 
-import CustomizedTables from '../Admin/CustomizedTables';
-import DetailForm from '../Common/detailForm';
-import DetailMap from '../Common/detailMap';
-import UnitTable from '../Common/unitTable';
+import DetailForm from "../Common/detailForm";
+import DetailMap from "../Common/detailMap";
+import UnitTable from "../Common/unitTable";
 
 const Overview = ({ title, data, apiEndpoint }) => {
   const navigate = useNavigate();
   const [updateMap, setUpdateMap] = useState();
 
-  console.log('Overview', data);
+  console.log("Overview", data);
   return (
     <>
       <Grid
         container
         style={{
-          flexDirection: 'row',
-          columnGap: '10px',
+          flexDirection: "row",
+          columnGap: "10px",
         }}
         className="mb20px flex"
       >
@@ -61,7 +53,7 @@ const Overview = ({ title, data, apiEndpoint }) => {
               updateLng={(e) => console.log(e)}
               changeable={true}
               update={(lat, lng) => setUpdateMap({ lat: lat, lng: lng })}
-              height={'470px'}
+              height={"470px"}
             />
           )}
         </Grid>

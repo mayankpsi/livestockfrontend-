@@ -120,16 +120,24 @@ const AddDevice = (props) => {
     setOpen(false);
   };
 
-  const addLiveStock = async () => {
+  const addLiveStock = async (e) => {
+    e.preventDefault();
     setLoader(dispatch, true);
-    let body = {
-      uID: liveStockId,
-      name: liveStockName,
-      deviceID: liveStockDevice,
-      image: file,
-    };
+
+    const formdata = new FormData();
+    formdata.append("uID", liveStockId);
+    formdata.append("name", liveStockName);
+    formdata.append("", file);
+    formdata.append("deviceID", liveStockDevice);
+
+    // let body = {
+    //   uID: liveStockId,
+    //   name: liveStockName,
+    //   deviceID: liveStockDevice,
+    //   image: file,
+    // };
     try {
-      const res = await adminRequest.post(`/liveStock/create`, body);
+      const res = await adminRequest.post(`/liveStock/create`, formdata);
       console.log("Sitefor user ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
@@ -142,10 +150,6 @@ const AddDevice = (props) => {
       });
     }
   };
-
-  useEffect(() => {
-    console.log("props>>props", props);
-  }, [props]);
 
   const onChangeFile = (event) => {
     if (event.target.files[0].type == "image/jpeg") {
@@ -185,6 +189,10 @@ const AddDevice = (props) => {
       };
     }
   };
+
+  useEffect(() => {
+    console.log("props>>props", props);
+  }, [props]);
 
   return (
     <>
@@ -226,10 +234,9 @@ const AddDevice = (props) => {
           {/* {`Assign ${props?.Name}`} */}
           Add LiveStock
         </BootstrapDialogTitle>
-
-        <DialogContent>
-          <Grid container className="flex spaceBetween ">
-            <form>
+        <form onSubmit={addLiveStock}>
+          <DialogContent>
+            <Grid container className="flex spaceBetween ">
               <Grid
                 container
                 item
@@ -265,7 +272,7 @@ const AddDevice = (props) => {
                       <Typography className="fs12px fontFamily">
                         (Format: jpg,jpeg)
                       </Typography>
-                      {filetype === "video/mp4" ? (
+                      {/* {filetype === "video/mp4" ? (
                         <>
                           <input
                             required
@@ -284,29 +291,30 @@ const AddDevice = (props) => {
                             }}
                           />
                         </>
-                      ) : (
-                        <>
-                          <input
-                            style={{
-                              position: "absolute",
-                              width: "100%",
-                              height: "100%",
-                              opacity: "0",
-                              border: "2px solid red",
-                            }}
-                            type="file"
-                            id="raised-button-file"
-                            accept="video/mp4, image/jpeg, image/jpg"
-                            // accept="video/*"
-                            // accept="image/jpg,image/jpeg"
-                            onChange={(e) => {
-                              onChangeFile(e);
-                              // handleVideoUpload(e);
-                            }}
-                            disabled={videoLink ? true : false}
-                          />
-                        </>
-                      )}
+                      ) : ( */}
+                      <>
+                        <input
+                          style={{
+                            position: "absolute",
+                            width: "100%",
+                            height: "100%",
+                            opacity: "0",
+                            border: "2px solid red",
+                          }}
+                          type="file"
+                          id="raised-button-file"
+                          accept="image/jpeg, image/jpg"
+                          // accept="video/*"
+                          // accept="image/jpg,image/jpeg"
+                          onChange={(e) => {
+                            onChangeFile(e);
+                            // handleVideoUpload(e);
+                          }}
+                          required
+                          disabled={videoLink ? true : false}
+                        />
+                      </>
+                      {/* )} */}
                     </Grid>
                   ) : (
                     <>
@@ -436,29 +444,28 @@ const AddDevice = (props) => {
                   </Button>
                 </Grid> */}
               </Grid>
-            </form>
-          </Grid>
-        </DialogContent>
+            </Grid>
+          </DialogContent>
 
-        <DialogActions>
-          <Button
-            className="fs14px  fontWeight600 d_color Greenborder p_l-r10-30px "
-            onClick={() => {
-              handleClose();
-            }}
-          >
-            Cancel
-          </Button>
+          <DialogActions>
+            <Button
+              className="fs14px  fontWeight600 d_color Greenborder p_l-r10-30px "
+              onClick={() => {
+                handleClose();
+              }}
+            >
+              Cancel
+            </Button>
 
-          <Button
-            className="fs16px  fontWeight600 white_color d_bgcolor p_l-r10-30px  "
-            onClick={() => {
-              addLiveStock();
-            }}
-          >
-            Save
-          </Button>
-        </DialogActions>
+            <Button
+              className="fs16px  fontWeight600 white_color d_bgcolor p_l-r10-30px  "
+              type="submit"
+              onClick={() => {}}
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </>
   );

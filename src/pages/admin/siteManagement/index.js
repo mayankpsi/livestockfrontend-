@@ -12,7 +12,7 @@ import {
 import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
 import AdminUIContainer from "../../../layout/AdminUIContainer";
-import SiteManageTable from "../../../components/Admin/siteManageTable";
+import DeviceTable from "../../../components/Admin/DeviceTable";
 import { adminRequest } from "../../../requestMethod";
 import { useLoaderController, setLoader } from "../../../context/common";
 
@@ -31,7 +31,6 @@ function TabPanel(props) {
     </div>
   );
 }
-
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
@@ -40,19 +39,21 @@ TabPanel.propTypes = {
 // siteManagement first page
 const Index = () => {
   const navigate = useNavigate();
-  const [siteDetails, setSiteDetails] = useState([]);
+  const [deviceDetails, setDeviceDetails] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const [controller, dispatch] = useLoaderController();
   const [value, setValue] = useState(0);
+  const [status, setStatus] = useState(false);
 
   const getSite = async () => {
-    let ID = localStorage.getItem("agro_id");
+    // let ID = localStorage.getItem('agro_id');
     setLoader(dispatch, true);
     try {
-      const res = await adminRequest.get(`/site/getsite/${ID}`);
+      const res = await adminRequest.get(`/devices/getAll?status=${status}`);
       setLoader(dispatch, false);
+      // console.log(res);
       if (res.status == 200) {
-        setSiteDetails(res?.data);
+        setDeviceDetails(res?.data?.data);
       }
     } catch (err) {
       setLoader(dispatch, false);
@@ -68,7 +69,7 @@ const Index = () => {
   };
 
   useEffect(() => {
-    // getSite();
+    getSite();
   }, []);
   return (
     <>
@@ -103,7 +104,7 @@ const Index = () => {
                 </Link>
                 ,
                 <Link
-                  to="/admin/site-management"
+                  to="/admin/device-management"
                   className="white_color textDecorNone"
                   key="2"
                 >
@@ -124,13 +125,13 @@ const Index = () => {
             // style={{ border: "1px solid blue" }}
           >
             <Typography className="fs20px  fontWeight700 d_color  ">
-              All Devices ({siteDetails && siteDetails?.length})
+              All Devices ({deviceDetails && deviceDetails?.length})
             </Typography>
 
             {/* <Button
                 className="fs16px  fontWeight600 d_color Greenborder p_l-r30px"
                 onClick={() => {
-                  navigate("/admin/site-management/add-site-management");
+                  navigate("/admin/device-management/add-site-management");
                 }}
               >
                 Add
@@ -167,18 +168,18 @@ const Index = () => {
 
           <Grid item md={12}>
             <TabPanel value={value} index={0}>
-              {siteDetails && (
-                <SiteManageTable
+              {deviceDetails && (
+                <DeviceTable
                   className=" mt30px "
-                  data={siteDetails}
+                  data={deviceDetails}
                   reRander={getSite}
                 />
               )}
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <SiteManageTable
+              <DeviceTable
                 className=" mt30px "
-                data={siteDetails && siteDetails}
+                data={deviceDetails && deviceDetails}
                 reRander={getSite}
               />
             </TabPanel>

@@ -165,7 +165,9 @@ const Index = ({ data }) => {
               >
                 <Button
                   onClick={() =>
-                    navigate(`/admin/site-management/${gatewayName}/${a._id} `)
+                    navigate(
+                      `/admin/device-management/${gatewayName}/${a._id} `
+                    )
                   }
                   style={{ padding: '0px' }}
                   className=" fs16px d_color fontWeight700 Transform_Capital"

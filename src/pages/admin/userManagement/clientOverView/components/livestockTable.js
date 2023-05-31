@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Grid, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
-import Add from "../../../.././assets/images/AddSite.png";
-import AddSite_toUser from "./AddSite_toUser";
-import DeletePopup from "../../../../DeletePopupCard";
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, Grid, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import { MdDeleteOutline, MdOutlineRemoveRedEye } from 'react-icons/md';
+import Add from '../../../.././assets/images/AddSite.png';
+import AddSite_toUser from './AddSite_toUser';
+import DeletePopup from '../../../../DeletePopupCard';
 
 const Index = (props) => {
   const { state } = useLocation();
@@ -150,14 +150,14 @@ const Index = (props) => {
                     <MdOutlineRemoveRedEye
                       className="fs24px"
                       onClick={() =>
-                        navigate(`/admin/site-management/${a?._id}`)
+                        navigate(`/admin/device-management/${a?._id}`)
                       }
                     />
 
                     {/* <MdDeleteOutline className="fs24px" /> */}
 
                     <DeletePopup
-                      Name={"site"}
+                      Name={'site'}
                       gatewayID={a?._id}
                       reRander={props?.reRander}
                     />
@@ -172,17 +172,17 @@ const Index = (props) => {
           container
           justifyContent="center"
           alignItems="center"
-          style={{ height: "400px" }}
+          style={{ height: '400px' }}
           className=" border "
         >
           <Grid
             container
             item
             alignItems="center"
-            sx={{ flexDirection: "column", width: "20%" }}
+            sx={{ flexDirection: 'column', width: '20%' }}
             className="Greenborder  bRadius_8 Cursor"
             onClick={() => {
-              navigate("/admin/site-management/add-site-management");
+              navigate('/admin/device-management/add-site-management');
             }}
           >
             <img src={Add} alt="loading" className="M20" />
