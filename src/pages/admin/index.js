@@ -29,8 +29,8 @@ const AdminDashBoard = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [controller, dispatch] = useLoaderController();
 
-  const [clientDetails, setClientDetails] = useState("");
-  const [siteDetails, setSiteDetails] = useState("");
+  const [livestockDetails, setLivestockDetails] = useState("");
+  const [deviceDetails, setDeviceDetails] = useState("");
   const [totalBM, setTotalBM] = useState(0);
   const [totalNodes, setTotalNodes] = useState(0);
   let BM = 0;
@@ -41,26 +41,27 @@ const AdminDashBoard = () => {
     try {
       setLoader(dispatch, true);
 
-      let adminId = localStorage.getItem("agro_id");
-      const promise1 = adminRequest.get("/user/getclients");
-      const promise2 = adminRequest.get(`/site/getsite/${adminId}`);
+      // let adminId = localStorage.getItem("agro_id");
+      const promise1 = adminRequest.get("devices/getAll");
+      const promise2 = adminRequest.get(`/liveStock/getAll`);
       const res = await Promise.all([promise1, promise2]);
       if (res[0].status == 200 || res[0].status == 201) {
-        setClientDetails(res[0].data.data);
+        console.log(res[0]);
+        setDeviceDetails(res[0].data.data);
       }
       if (res[1].status == 200 || res[1].status == 201) {
-        setSiteDetails(res[1].data.data);
-
-        let GD = res[1].data.data;
+        setLivestockDetails(res[1].data.data);
+        console.log(res[1]);
+        // let GD = res[1].data.data;
         let BMCount = 0;
         let NodeCount = 0;
-        for (let i = 0; i < GD.length; i++) {
-          let BMLength = GD[i].branchManager.length;
-          BMCount = BMCount + BMLength;
-          for (let j = 0; j < BMLength; j++) {
-            NodeCount = NodeCount + GD[i].branchManager[j].nodes.length;
-          }
-        }
+        // for (let i = 0; i < GD.length; i++) {
+        //   let BMLength = GD[i].branchManager.length;
+        //   BMCount = BMCount + BMLength;
+        //   for (let j = 0; j < BMLength; j++) {
+        //     NodeCount = NodeCount + GD[i].branchManager[j].nodes.length;
+        //   }
+        // }
         setTotalBM(BMCount);
         setTotalNodes(NodeCount);
       }
@@ -74,9 +75,10 @@ const AdminDashBoard = () => {
     }
   };
 
-  // useEffect(() => {
-  //   getAllData();
-  // }, []);
+  useEffect(() => {
+    getAllData();
+  }, []);
+
   // useEffect(() => {
   //   console.log('nodeLengthnodeLength', nodeLength);
   // }, [nodeLength]);
@@ -112,12 +114,12 @@ const AdminDashBoard = () => {
             >
               <DashboardCard
                 title="Total Devices"
-                total={clientDetails && clientDetails?.length}
+                total={deviceDetails && deviceDetails?.length}
                 img={ClientImg}
               />
               <DashboardCard
                 title="Active Devices"
-                total={siteDetails && siteDetails?.length}
+                total={totalBM}
                 img={GatewayImg}
               />
               <DashboardCard
@@ -290,8 +292,8 @@ const AdminDashBoard = () => {
                       }}
                       className=" border"
                     >
-                      {siteDetails && siteDetails.length > 0 ? (
-                        siteDetails.map((a, i) => {
+                      {deviceDetails && deviceDetails.length > 0 ? (
+                        deviceDetails.map((a, i) => {
                           a?.branchManager?.map((item) => {
                             nodeLength = item?.nodes?.length;
                           });
@@ -321,7 +323,7 @@ const AdminDashBoard = () => {
                                     className="  fs16px  p_l-r10px fontWeight700 b1c_color"
                                     // sx={{ border: '1px solid red' }}
                                   >
-                                    {a?.gatewayID}
+                                    {a?.uID}
                                   </Typography>
                                 </Grid>
                                 <Grid
@@ -330,10 +332,10 @@ const AdminDashBoard = () => {
                                   sm={6}
                                   md={6}
                                   lg={6}
-                                  className="AlignCenter flex "
+                                  className="AlignCenter flex"
                                 >
                                   <Typography className="fs16px fontWeight700 b1c_color">
-                                    {a?.gatewayName}
+                                    {a?.deviceName}
                                   </Typography>
                                 </Grid>
                               </Grid>
@@ -355,8 +357,10 @@ const AdminDashBoard = () => {
                                   lg={6}
                                   className="flex center"
                                 >
-                                  <Typography className="  fs16px fontWeight700 b1c_color ">
-                                    {a?.branchManager?.length}
+                                  <Typography className=" fs16px fontWeight700 b1c_color ">
+                                    {a?.status == true
+                                      ? " Active"
+                                      : " Inactive"}
                                   </Typography>
                                 </Grid>
 
@@ -366,7 +370,7 @@ const AdminDashBoard = () => {
                                   sm={6}
                                   md={6}
                                   lg={6}
-                                  className="flex  center  "
+                                  className="flex flexEnd  p_r30px "
                                   // sx={{ border: "1px solid red" }}
                                 >
                                   <Button
@@ -439,13 +443,13 @@ const AdminDashBoard = () => {
                         className="flexDir"
                       >
                         <Typography className="fontWeight700 white_color fs18px p_l-r5px">
-                          User
+                          LiveStocks
                         </Typography>
                         <Grid item className="flex ">
                           <Button
                             className="fontWeight600 white_color fs14px  Transform_Capital"
                             style={{ padding: "0px" }}
-                            onClick={() => navigate("/admin/user-management")}
+                            onClick={() => navigate("/admin/livestock")}
                           >
                             See all
                           </Button>
@@ -545,8 +549,8 @@ const AdminDashBoard = () => {
                       }}
                       className=" border "
                     >
-                      {clientDetails && clientDetails.length > 0 ? (
-                        clientDetails.map((a, i) => (
+                      {livestockDetails && livestockDetails.length > 0 ? (
+                        livestockDetails.map((a, i) => (
                           <Grid
                             key={i}
                             container
@@ -576,7 +580,7 @@ const AdminDashBoard = () => {
                                   className="  fs16px  p_l-r10px  fontWeight700 b1c_color"
                                   // sx={{ border: '1px solid red' }}
                                 >
-                                  {a?.clientID}
+                                  {a?.uID}
                                 </Typography>
                               </Grid>
                               <Grid
@@ -592,7 +596,7 @@ const AdminDashBoard = () => {
                                 }}
                               >
                                 <Typography className="fs16px fontWeight700 b1c_color">
-                                  {a?.clientName}
+                                  {a?.name}
                                 </Typography>
                               </Grid>
                             </Grid>
@@ -620,7 +624,7 @@ const AdminDashBoard = () => {
                                 }}
                               >
                                 <Typography className="  fs16px fontWeight700  ">
-                                  {a?.gateway?.length ? a?.gateway?.length : 0}
+                                  {a?.assignedDevice?.deviceName}
                                 </Typography>
                               </Grid>
 
@@ -630,17 +634,14 @@ const AdminDashBoard = () => {
                                 sm={6}
                                 md={6}
                                 lg={6}
-                                className="flex  center  "
+                                className="flex flexEnd  p_r30px "
                                 // sx={{ border: "1px solid red" }}
                               >
                                 <Button
                                   onClick={() =>
-                                    navigate(
-                                      `/admin/user-management/${a._id}`,
-                                      {
-                                        state: a,
-                                      }
-                                    )
+                                    navigate(`/admin/livestock/${a?._id}`, {
+                                      state: a,
+                                    })
                                   }
                                   style={{ padding: "0px" }}
                                   className=" fs16px d_color fontWeight700 Transform_Capital"

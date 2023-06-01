@@ -9,7 +9,7 @@ import { useSnackbar } from "notistack";
 import { useLoaderController, setLoader } from "../../context/common";
 import { adminRequest } from "../../requestMethod";
 
-const LiveStock = ({ title, data, apiEndpoint }) => {
+const LiveStock = ({ title, data, data1, apiEndpoint }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [controller, dispatch] = useLoaderController();
@@ -18,16 +18,16 @@ const LiveStock = ({ title, data, apiEndpoint }) => {
   const [updateMap, setUpdateMap] = useState();
   const [inputDisabled, setInputDisabled] = useState(true);
   const [update, setUpdate] = useState(true);
-
-  const [clientId, setClientId] = useState("");
-  const [clientName, setClientName] = useState("");
-
+  const [liveStockImage, setLiveStockImage] = useState("");
+  const [liveStockId, setLiveStockId] = useState("");
+  const [liveStockName1, setLiveStockName1] = useState("");
+  const [liveStockMacId, setLiveStockMacId] = useState("");
   const saveData = async () => {
     setLoader(dispatch, true);
     let body = {
-      clientID: clientId,
-      clientName: clientName,
-      client_id: id,
+      // clientID: clientId,
+      // clientName: clientName,
+      // client_id: id,
     };
     try {
       const res = await adminRequest.post(`/user/userupdate/`, body);
@@ -51,6 +51,13 @@ const LiveStock = ({ title, data, apiEndpoint }) => {
     setInputDisabled(true);
   };
 
+  useEffect(() => {
+    setLiveStockId(data?.uID);
+    setLiveStockName1(data?.name);
+    setLiveStockMacId(data1?.macID);
+    setLiveStockImage(data?.imgPath);
+  }, [data, data1]);
+
   return (
     <>
       <form>
@@ -62,9 +69,45 @@ const LiveStock = ({ title, data, apiEndpoint }) => {
             sm={12}
             md={5.5}
             lg={5.5}
-            className=" spaceBetween mb20px p20px bRadius_8 border "
+            className=" spaceBetween mb20px p20px bRadius_8  "
             sx={{ rowGap: "20px " }}
           >
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              className="flexDir  Width100"
+            >
+              <Typography className="fs16px mb10px b1c_color fontWeight600 ">
+                Device
+              </Typography>
+              <InputBase
+                className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
+                value={liveStockMacId}
+                onChange={(e) => setLiveStockMacId(e.target.value)}
+                disabled={inputDisabled}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              className="flexDir  Width100"
+            >
+              <Typography className="fs16px mb10px b1c_color fontWeight600 ">
+                Name
+              </Typography>
+              <InputBase
+                className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
+                value={liveStockName1}
+                onChange={(e) => setLiveStockName1(e.target.value)}
+                disabled={inputDisabled}
+              />
+            </Grid>
             <Grid
               item
               xs={12}
@@ -78,62 +121,8 @@ const LiveStock = ({ title, data, apiEndpoint }) => {
               </Typography>
               <InputBase
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                value={clientId}
-                onChange={(e) => setClientId(e.target.value)}
-                disabled={inputDisabled}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              className="flexDir  Width100"
-            >
-              <Typography className="fs16px mb10px b1c_color fontWeight600 ">
-                Device Name
-              </Typography>
-              <InputBase
-                className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                value={clientName}
-                onChange={(e) => setClientName(e.target.value)}
-                disabled={inputDisabled}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              className="flexDir  Width100"
-            >
-              <Typography className="fs16px mb10px b1c_color fontWeight600 ">
-                Mac Id
-              </Typography>
-              <InputBase
-                className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                // value={clientId}
-                // onChange={(e) => setClientId(e.target.value)}
-                disabled={inputDisabled}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              className="flexDir  Width100"
-            >
-              <Typography className="fs16px mb10px b1c_color fontWeight600 ">
-                Images
-              </Typography>
-              <InputBase
-                className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                // value={clientId}
-                // onChange={(e) => setClientId(e.target.value)}
+                value={liveStockId}
+                onChange={(e) => setLiveStockId(e.target.value)}
                 disabled={inputDisabled}
               />
             </Grid>
@@ -145,7 +134,7 @@ const LiveStock = ({ title, data, apiEndpoint }) => {
             sm={12}
             md={5.5}
             lg={5.5}
-            className="flexDir spaceBetween p20px  mb20px bRadius_8 border "
+            className="flexDir spaceBetween p20px  mb20px bRadius_8  "
             sx={{ rowGap: "20px " }}
           >
             <Grid
@@ -162,14 +151,15 @@ const LiveStock = ({ title, data, apiEndpoint }) => {
 
               <InputBase
                 style={{ height: " 26rem" }}
+                type="file"
                 className=" border  fs16px p_t-l15px  bRadius_8 fontWeight700"
-                // value={clientId}
-                // onChange={(e) => setClientId(e.target.value)}
+                // value={liveStockImage}
+                // onChange={(e) => setLiveStockImage(e.target.value)}
                 disabled={inputDisabled}
               />
             </Grid>
 
-            <Grid
+            {/* <Grid
               item
               xs={12}
               sm={12}
@@ -185,7 +175,7 @@ const LiveStock = ({ title, data, apiEndpoint }) => {
               >
                 {inputDisabled ? "Edit" : "Save"}
               </Button>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Grid>
       </form>

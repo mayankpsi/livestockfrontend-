@@ -3,12 +3,12 @@ import Auth from "./pages/auth/index";
 // admin
 
 import AdminDashboard from "./pages/admin";
-import AdminDeviceManagement from "./pages/admin/siteManagement";
+import AdminDeviceManagement from "./pages/admin/deviceManagement";
 // import AdminAddSiteManagement from "./pages/admin/addSites";
-import AdminGatewayManagement from "./pages/admin/siteManagement/gatewayDetail/index";
+import AdminGatewayManagement from "./pages/admin/deviceManagement/deviceDetail/index";
 // import AdminShowBranchManager from "./pages/admin/siteManagement/showBranchManager/index";
 // import AdminAddBranchManager from './pages/admin/siteManagement/addBranchManager/index';
-import AdminShowDevice from "./pages/admin/siteManagement/device/index";
+// import AdminShowDevice from "./pages/admin/siteManagement/device/index";
 import AdminUserManagementDashboard from "./pages/admin/userManagement";
 import AdminUserManagement from "./pages/admin/userManagement/clientOverView/index";
 import AdminLiveStocks from "./pages/admin/liveStockManagement/index";
@@ -71,8 +71,8 @@ export default function () {
     // },
     {
       name: "admin",
-      key: "/admin/device-management/:deviceName",
-      route: "/admin/device-management/:deviceName",
+      key: "/admin/device-management/:id",
+      route: "/admin/device-management/:id",
       component: <AdminGatewayManagement />,
     },
     // {
@@ -87,12 +87,12 @@ export default function () {
     //   route: '/admin/device-management/:gatewayName/add-branch-manager',
     //   component: <AdminAddBranchManager />,
     // },
-    {
-      name: "admin",
-      key: "/admin/device-management/:gatewayName/:branchName/:deviceId",
-      route: "/admin/device-management/:gatewayName/:branchName/:deviceId",
-      component: <AdminShowDevice />,
-    },
+    // {
+    //   name: "admin",
+    //   key: "/admin/device-management/:gatewayName/:branchName/:deviceId",
+    //   route: "/admin/device-management/:gatewayName/:branchName/:deviceId",
+    //   component: <AdminShowDevice />,
+    // },
     {
       name: "admin",
       key: "/admin/user-management",
@@ -113,8 +113,8 @@ export default function () {
     },
     {
       name: "admin",
-      key: "/admin/livestock/:livestockName",
-      route: "/admin/livestock/:livestockName",
+      key: "/admin/livestock/:livestockID",
+      route: "/admin/livestock/:livestockID",
       component: <AdminLiveStocksOverview />,
     },
     // user

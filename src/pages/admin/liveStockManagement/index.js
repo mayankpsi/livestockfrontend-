@@ -23,15 +23,16 @@ const Index = () => {
   const [userDetails, setUserDetails] = useState([]);
   const [userUpdate, setUserUpdate] = useState();
   // const [loader, setLoader] = useState(false);
+  const [allLiveStock, setAllLiveStock] = useState([]);
 
-  const UserDetails = async () => {
+  const getAllLiveStock = async () => {
     setLoader(dispatch, true);
     try {
-      const res = await adminRequest.get("/user/getclients");
-      console.log("AddSite ", res);
+      const res = await adminRequest.get("/liveStock/getAll");
+      // console.log('AddSite ', res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        setUserDetails(res.data);
+        setAllLiveStock(res?.data?.data);
       }
     } catch (err) {
       setLoader(dispatch, false);
@@ -44,9 +45,10 @@ const Index = () => {
 
   useEffect(() => {
     // UserDetails();
+    getAllLiveStock();
   }, []);
   useEffect(() => {
-    console.log("refreshrefreshrefresh", state);
+    // console.log('refreshrefreshrefresh', state);
     // UserDetails();
   }, [state]);
   return (
@@ -102,15 +104,15 @@ const Index = () => {
               // style={{ border: "1px solid blue" }}
             >
               <Typography className="fs20px  fontWeight700 b1c_color  ">
-                All LiveStock ({userDetails?.length})
+                All LiveStock ({allLiveStock?.length})
               </Typography>
 
               {/* <AddClient reRander={UserDetails} /> */}
             </Grid>
             <SiteManageTable
               className=" mt30px "
-              Details={userDetails}
-              reRander={UserDetails}
+              liveStock={allLiveStock}
+              // reRander={UserDetails}
             />
           </Container>
         </>

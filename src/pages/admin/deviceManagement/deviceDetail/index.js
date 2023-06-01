@@ -44,13 +44,14 @@ TabPanel.propTypes = {
 
 const Index = (props) => {
   const navigate = useNavigate();
-  const { deviceName } = useParams();
+  const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
   const [controller, dispatch] = useLoaderController();
 
   const [value, setValue] = useState(0);
-  const [siteDetails, setSiteDetails] = useState([]);
+  const [liveStockDetails, setliveStockDetails] = useState([]);
   const [details, setDetails] = useState();
+  const [liveStock_Id, setLiveStock_ID] = useState();
   const [address, setAddress] = useState({});
 
   const handleChange = (e, newValue) => {
@@ -61,12 +62,16 @@ const Index = (props) => {
     setLoader(dispatch, true);
     try {
       const res = await adminRequest.get(
-        `/devices/getDeviceById?deviceID=${deviceName}`
+        `/devices/getDeviceById?deviceID=${id}`
       );
       console.log("res>> overviewindex file", res?.data?.data);
       if (res.status == 200) {
         setLoader(dispatch, false);
         setDetails(res?.data?.data);
+        if (res?.data?.data?.liveStock) {
+          setLiveStock_ID(res?.data?.data?.liveStock);
+          // console.log(res?.data?.data?.liveStock, "Live");
+        }
       } else {
         console.log("error ");
       }
@@ -79,15 +84,39 @@ const Index = (props) => {
       });
     }
   };
+  const getDeviceLivestock = async () => {
+    setLoader(dispatch, true);
+    try {
+      const res = await adminRequest.get(
+        `liveStock/getLiveStockByID?liveStockID=${liveStock_Id}`
+      );
+      // console.log("res>> setliveDetails", res?.data?.data);
+      if (res.status == 200) {
+        setLoader(dispatch, false);
+        setliveStockDetails(res?.data?.data);
+      } else {
+        console.log("error ");
+      }
+    } catch (err) {
+      console.log("error get device", err);
+      setLoader(dispatch, false);
+      enqueueSnackbar(err?.response?.data?.message, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  };
+  // console.log("liveStockDetails", liveStockDetails);
 
   useEffect(() => {
-    // if (props.value) setValue(props.value);
     getDeviceDetail();
   }, []);
 
   useEffect(() => {
-    console.log("deviceNamedeviceName", deviceName);
-  }, []);
+    if (liveStock_Id?.length > 0) {
+      getDeviceLivestock();
+    }
+  }, [liveStock_Id]);
   return (
     <>
       <AdminUIContainer>
@@ -130,7 +159,7 @@ const Index = (props) => {
                 </Link>
                 ,
                 <Link
-                  to={`/admin/device-management/${deviceName}`}
+                  to={`/admin/device-management/${id}`}
                   className="white_color textDecorNone"
                   key="2"
                 >
@@ -192,11 +221,15 @@ const Index = (props) => {
               <Overview
                 // title="Gateway Details"
                 data={details && details}
+                liveStock={liveStockDetails && liveStockDetails}
                 apiEndpoint="/devices/update"
               />
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <LiveStock />
+              <LiveStock
+                data={liveStockDetails && liveStockDetails}
+                data1={details && details}
+              />
             </TabPanel>
             {/* <TabPanel value={value} index={2}>
               <BranchManager

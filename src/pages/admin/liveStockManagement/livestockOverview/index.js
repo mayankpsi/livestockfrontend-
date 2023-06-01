@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  Button,
   Container,
   Grid,
   Typography,
@@ -14,7 +13,7 @@ import { useSnackbar } from "notistack";
 import AdminUIContainer from "../../../../layout/AdminUIContainer";
 import Overview from "../livestockOverview/components/overview";
 // import BranchManager from "../../../../components/gatewayDetail/branchManager";
-import Analytics from "../../../../components/deviceDetail/analytics";
+import Location from "../../../../components/deviceDetail/analytics";
 import Health from "../livestockOverview/components/health";
 import Activity from "../livestockOverview/components/activity";
 import Devices from "../livestockOverview/components/device";
@@ -47,57 +46,45 @@ TabPanel.propTypes = {
 
 const Index = (props) => {
   const navigate = useNavigate();
-  const { gatewayName } = useParams();
+  const { livestockID } = useParams();
   const { enqueueSnackbar } = useSnackbar();
   const [controller, dispatch] = useLoaderController();
 
   const [value, setValue] = useState(0);
-  const [siteDetails, setSiteDetails] = useState([]);
   const [details, setDetails] = useState();
-  const [address, setAddress] = useState({});
-  const [branchDetail, setBranchDetail] = useState([]);
+  const [branchDetail, setbranchDetail] = useState();
+
   const handleChange = (e, newValue) => {
     setValue(newValue);
   };
-  //   const getDetail = async () => {
-  //     let ID = localStorage.getItem("agro_id");
-  //     setLoader(dispatch, true);
-  //     try {
-  //       const res = await adminRequest.get(`/site/gatewaydetails/${gatewayName}`);
-  //       console.log("res>> overviewindex file", res?.data?.data);
-  //       if (res.status == 200) {
-  //         setLoader(dispatch, false);
-  //         setDetails([res?.data?.data]);
-  //         setSiteDetails(res?.data?.data?.branchManager);
-  //         setBranchDetail(res?.data?.data?.branchManager);
-  //         setAddress({
-  //           gatewayPincode: res?.data?.data?.gatewayPincode,
-  //           gatewayCity: res?.data?.data?.gatewayCity,
-  //           gatewayState: res?.data?.data?.gatewayState,
-  //           gatewayCountry: res?.data?.data?.gatewayCountry,
-  //         });
-  //       } else {
-  //         console.log("error ");
-  //       }
-  //     } catch (err) {
-  //       console.log("error get site members", err);
-  //       setLoader(dispatch, false);
-  //       enqueueSnackbar(err?.response?.data?.msg, {
-  //         variant: "error",
-  //         autoHideDuration: 3000,
-  //       });
-  //     }
-  //   };
-
-  //   useEffect(() => {
-  //     if (props.value) setValue(props.value);
-  //     getDetail();
-  //   }, [props, value]);
+  const getLiveStockDetail = async () => {
+    setLoader(dispatch, true);
+    try {
+      const res = await adminRequest.get(
+        `/liveStock/getLiveStockByID?liveStockID=${livestockID}`
+      );
+      console.log("res>> liveStock file", res?.data?.data);
+      if (res.status == 200) {
+        setLoader(dispatch, false);
+        setDetails(res?.data?.data);
+      } else {
+        console.log("error ");
+      }
+    } catch (err) {
+      console.log("error get site members", err);
+      setLoader(dispatch, false);
+      enqueueSnackbar(err?.response?.data?.msg, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  };
 
   useEffect(() => {
-    // console.log(details?.gatewayName, "gatewayNmae");
-    // console.log(details[0].gatewayName);
-  }, [details]);
+    // if (props.value) setValue(props.value);
+    getLiveStockDetail();
+  }, []);
+
   return (
     <>
       <AdminUIContainer>
@@ -140,12 +127,12 @@ const Index = (props) => {
                 </Link>
                 ,
                 <Link
-                  to={`/admin/device-management/${gatewayName}`}
+                  to={`/admin/livestock/${livestockID}`}
                   className="white_color textDecorNone"
                   key="2"
                 >
                   <Typography className="white_color fs16px bold ">
-                    {details && details[0]?.gatewayName}
+                    {details && details[0]?.name}
                   </Typography>
                 </Link>
               </Breadcrumbs>
@@ -206,11 +193,11 @@ const Index = (props) => {
               <Overview
                 title="Gateway Details"
                 data={details && details}
-                apiEndpoint="/site/updatesite"
+                apiEndpoint={`/liveStock/update?liveStockID=${livestockID}`}
               />
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <Analytics />
+              <Location />
             </TabPanel>
             <TabPanel value={value} index={2}>
               {/* <BranchManager
@@ -223,7 +210,7 @@ const Index = (props) => {
               <Activity />
             </TabPanel>
             <TabPanel value={value} index={4}>
-              <Devices />
+              <Devices data={details && details} />
             </TabPanel>
           </Grid>
         </Container>

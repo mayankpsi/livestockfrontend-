@@ -43,15 +43,15 @@ const Index = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [controller, dispatch] = useLoaderController();
   const [value, setValue] = useState(0);
-  const [status, setStatus] = useState(false);
-
-  const getSite = async () => {
+  const [statusf, setStatusF] = useState(false);
+  const [statust, setStatusT] = useState(true);
+  const getDevices = async () => {
     // let ID = localStorage.getItem('agro_id');
     setLoader(dispatch, true);
     try {
-      const res = await adminRequest.get(`/devices/getAll?status=${status}`);
+      const res = await adminRequest.get(`/devices/getAll`);
       setLoader(dispatch, false);
-      // console.log(res);
+      console.log(res);
       if (res.status == 200) {
         setDeviceDetails(res?.data?.data);
       }
@@ -69,7 +69,7 @@ const Index = () => {
   };
 
   useEffect(() => {
-    getSite();
+    getDevices();
   }, []);
   return (
     <>
@@ -172,7 +172,7 @@ const Index = () => {
                 <DeviceTable
                   className=" mt30px "
                   data={deviceDetails}
-                  reRander={getSite}
+                  // reRander={getSite}
                 />
               )}
             </TabPanel>
@@ -180,7 +180,7 @@ const Index = () => {
               <DeviceTable
                 className=" mt30px "
                 data={deviceDetails && deviceDetails}
-                reRander={getSite}
+                // reRander={getSite}
               />
             </TabPanel>
           </Grid>

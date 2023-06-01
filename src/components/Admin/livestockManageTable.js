@@ -1,25 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, Grid, Typography } from '@mui/material';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import { MdDeleteOutline, MdOutlineRemoveRedEye } from 'react-icons/md';
-import Add from '../.././assets/images/AddSite.png';
-import DeletePopup from '../DeletePopupCard';
-import AddSite_toUser from './AddSite_fromUser';
-import AddLivestock from './addLivestock';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Button, Grid, Typography } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
+import Add from "../.././assets/images/AddSite.png";
+import DeletePopup from "../DeletePopupCard";
+import AddSite_toUser from "./AddSite_fromUser";
+import AddLivestock from "./addLivestock";
 
-const Index = (props) => {
+const Index = ({ liveStock }) => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [allLiveStock, setAllLiveStock] = useState([]);
 
   const UserDetails = [];
   // const UserDetails = props?.Details?.data;
 
   useEffect(() => {
-    // console.log("DetailsDetails ", props?.fn);
-  }, []);
+    // console.log('DetailsDetails ', liveStock);
+    setAllLiveStock(liveStock);
+  }, [liveStock]);
   return (
     <>
       <Grid
@@ -49,7 +51,7 @@ const Index = (props) => {
           {/* </Grid> */}
           <Grid item xs={7} sm={7} md={7} lg={7} className=" flexStart">
             <Typography className="fs16px fontWeight700">
-              Livestock Name{' '}
+              Livestock Name{" "}
             </Typography>
           </Grid>
         </Grid>
@@ -96,8 +98,8 @@ const Index = (props) => {
         </Grid>
       </Grid>
 
-      {UserDetails && UserDetails?.length > 0 ? (
-        UserDetails?.map((a, i) => (
+      {allLiveStock && allLiveStock?.length > 0 ? (
+        allLiveStock?.map((a, i) => (
           <Grid
             key={i}
             container
@@ -121,7 +123,7 @@ const Index = (props) => {
             >
               {/* <Grid item xs={4} sm={4} md={4} lg={4}> */}
               <Typography className="  fs16px  p_l-r10px fontWeight700 d_color">
-                {a?.clientID}
+                {a?.uID}
               </Typography>
               {/* </Grid> */}
               <Grid item xs={7} sm={7} md={7} lg={7} className="  flexStart">
@@ -129,7 +131,7 @@ const Index = (props) => {
                   className="fs16px fontWeight700 d_color Transform_Capital "
                   // align="center"
                 >
-                  {a?.clientName}
+                  {a?.name}
                 </Typography>
               </Grid>
             </Grid>
@@ -159,7 +161,7 @@ const Index = (props) => {
               </Grid> */}
               <Grid item xs={4} sm={4} md={4} lg={4} className="flex flex-end">
                 <Typography className="  fs16px fontWeight700  ">
-                  {'Active'}
+                  {a?.assignedDevice?.uID}
                 </Typography>
               </Grid>
 
@@ -172,7 +174,7 @@ const Index = (props) => {
                 className="flex flexStart "
               >
                 <Typography className="fs16px fontWeight700">
-                  {a?.gateway?.length ? a?.gateway?.length : 0}
+                  {a?.assignedDevice?.status ? "Active" : "Inactive"}
                 </Typography>
               </Grid>
               <Grid
@@ -199,9 +201,9 @@ const Index = (props) => {
                   />
 
                   <DeletePopup
-                    Name={'user'}
-                    gatewayID={a?._id}
-                    reRander={props?.reRander}
+                    Name={"user"}
+                    // gatewayID={a?._id}
+                    // reRander={props?.reRander}
                   />
                 </Stack>
               </Grid>
@@ -213,7 +215,7 @@ const Index = (props) => {
           container
           justifyContent="center"
           alignItems="center"
-          style={{ height: '400px' }}
+          style={{ height: "400px" }}
           className=" border "
         >
           <AddLivestock />

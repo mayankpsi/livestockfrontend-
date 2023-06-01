@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Grid, Divider, Typography, InputBase } from "@mui/material";
+import { Button, Grid, Typography, InputBase } from "@mui/material";
 import { BiWifi } from "react-icons/bi";
-import DetailForm from "../Common/detailForm";
-import DetailMap from "../Common/detailMap";
-import TableHead from "../User/BranchManagerTable";
+import { FaBatteryThreeQuarters } from "react-icons/fa";
+import AddLiveStock from "../Admin/addLivestock";
 import { useSnackbar } from "notistack";
 import { useLoaderController, setLoader } from "../../context/common";
 import { adminRequest } from "../../requestMethod";
 
-const Overview = ({ title, data, apiEndpoint }) => {
+const Overview = ({ title, data, liveStock, apiEndpoint }) => {
   const navigate = useNavigate();
   const { deviceName } = useParams();
   const [controller, dispatch] = useLoaderController();
@@ -22,6 +21,9 @@ const Overview = ({ title, data, apiEndpoint }) => {
   const [deviceId, setDeviceId] = useState("");
   const [deviceName1, setDeviceName1] = useState("");
   const [deviceMacId, setDeviceMacId] = useState("");
+
+  const [liveStockId, setLiveStockId] = useState("");
+  const [liveStockName1, setLiveStockName1] = useState("");
 
   const saveData = async () => {
     setLoader(dispatch, true);
@@ -55,38 +57,13 @@ const Overview = ({ title, data, apiEndpoint }) => {
     setInputDisabled(true);
   };
 
-  const getDeviceDetail = async () => {
-    setLoader(dispatch, true);
-    try {
-      const res = await adminRequest.get(
-        `/devices/getDeviceById?deviceID=${deviceName}`
-      );
-      // console.log("res>> overviewindex file", res?.data?.data);
-      if (res.status == 200) {
-        setLoader(dispatch, false);
-        // setDetails([res?.data?.data]);
-      } else {
-        console.log("error ");
-      }
-    } catch (err) {
-      console.log("error get device", err);
-      setLoader(dispatch, false);
-      enqueueSnackbar(err?.response?.data?.message, {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  };
-
-  useEffect(() => {
-    getDeviceDetail();
-  }, []);
-
   useEffect(() => {
     setDeviceId(data?.uID);
     setDeviceName1(data?.deviceName);
     setDeviceMacId(data?.macID);
-  }, [data]);
+    setLiveStockId(liveStock?.uID);
+    setLiveStockName1(liveStock?.name);
+  }, [data, liveStock]);
 
   return (
     <>
@@ -181,50 +158,6 @@ const Overview = ({ title, data, apiEndpoint }) => {
         </Grid>
       </form>
 
-      {/* <Grid
-        container
-        style={{
-          flexDirection: 'row',
-          columnGap: '10px',
-        }}
-        className="mb20px flex "
-      >
-        <Grid item lg={6} md={6} sm={12} xs={12}>
-          <DetailForm
-            title={title && title}
-            data={data && data}
-            apiEndpoint={apiEndpoint || ''}
-            updateMap={updateMap}
-          />
-        </Grid>
-
-        <Grid
-          item
-          lg={5.8}
-          md={5.8}
-          sm={12}
-          xs={12}
-          // sx={{ height: '510px ', overflow: 'hidden' }}
-        >
-          {data && data.length > 0 && data[0].gatewayGeoLatitude && (
-            <DetailMap
-              data={{
-                lat: updateMap
-                  ? updateMap.lat
-                  : parseFloat(data[0].gatewayGeoLatitude),
-                lng: updateMap
-                  ? updateMap.lng
-                  : parseFloat(data[0].gatewayGeoLongitude),
-              }}
-              updateLat={(e) => console.log(e)}
-              updateLng={(e) => console.log(e)}
-              update={(lat, lng) => setUpdateMap({ lat: lat, lng: lng })}
-              height={'470px'}
-            />
-          )}
-        </Grid>
-      </Grid> */}
-
       <Grid
         container
         style={{
@@ -236,49 +169,65 @@ const Overview = ({ title, data, apiEndpoint }) => {
           Assigned Livestock
         </Typography>
 
-        <Grid
-          container
-          item
-          className="spaceBetween mb20px p20px bRadius_8  "
-          sx={{ rowGap: "20px " }}
-        >
+        {data && data?.status == true ? (
           <Grid
+            container
             item
-            xs={12}
-            sm={12}
-            md={6}
-            lg={6}
-            className="flexDir  Width100"
+            className="spaceBetween mb20px p20px bRadius_8  "
+            sx={{ rowGap: "20px " }}
           >
-            <Typography className="fs16px mb10px b1c_color fontWeight600 ">
-              UID
-            </Typography>
-            <InputBase
-              className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-              // value={clientId}
-              // onChange={(e) => setClientId(e.target.value)}
-              disabled={inputDisabled}
-            />
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={6}
+              className="flexDir  Width100"
+            >
+              <Typography className="fs16px mb10px b1c_color fontWeight600 ">
+                UID
+              </Typography>
+              <InputBase
+                className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
+                value={liveStockId}
+                onChange={(e) => setLiveStockId(e.target.value)}
+                disabled={inputDisabled}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={6}
+              className="flexDir  Width100"
+            >
+              <Typography className="fs16px mb10px b1c_color fontWeight600 ">
+                Livestock Name
+              </Typography>
+              <InputBase
+                className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
+                value={liveStockName1}
+                onChange={(e) => setLiveStockName1(e.target.value)}
+                disabled={inputDisabled}
+              />
+            </Grid>
           </Grid>
+        ) : (
           <Grid
+            container
             item
-            xs={12}
-            sm={12}
-            md={6}
-            lg={6}
-            className="flexDir  Width100"
+            className=" flexDir center  mb20px p20px bRadius_8  "
+            // sx={{ rowGap: "20px " }}
           >
-            <Typography className="fs16px mb10px b1c_color fontWeight600 ">
-              Livestock Name
+            <Typography className="g_color fs10px">
+              {" "}
+              This device have no livestock assigned{" "}
             </Typography>
-            <InputBase
-              className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-              // value={clientName}
-              // onChange={(e) => setClientName(e.target.value)}
-              disabled={inputDisabled}
-            />
+            <AddLiveStock type={2} />
+            {/* reRander={UserDetails} */}
           </Grid>
-        </Grid>
+        )}
       </Grid>
 
       {/* <Divider className="Divider" /> */}
@@ -314,11 +263,24 @@ const Overview = ({ title, data, apiEndpoint }) => {
               // justifyContent: "space-between",
             }}
           >
-            <Typography className="fs16px g_color fontWeight700 ">
-              Power
-            </Typography>
+            <Grid
+              item
+              xs={6}
+              sm={6}
+              md={6}
+              lg={6}
+              className="flex AlignCenter "
+            >
+              <Typography className="fs16px fontWeight700 m_r10px  ">
+                <FaBatteryThreeQuarters className="Green_color" />
+              </Typography>{" "}
+              <Typography className="fs16px g_color fontWeight700 ">
+                Battery
+              </Typography>
+            </Grid>
+
             <Typography className="fs16px d_color fontWeight700 ">
-              ONLINE
+              {data && data?.status == true ? "ONLINE" : "OFFLINE "}
             </Typography>
           </Grid>
           <Grid
@@ -329,11 +291,35 @@ const Overview = ({ title, data, apiEndpoint }) => {
             lg={4}
             className="IntBorder  fs18px flex spaceBetween bRadius_8 p_l-r10px"
           >
+            <Grid
+              item
+              xs={6}
+              sm={6}
+              md={6}
+              lg={6}
+              className="flex AlignCenter spaceBetween "
+            >
+              {data && data?.wifiStatus == true ? (
+                <BiWifi className="fs20px Green_color fontWeight700 " />
+              ) : (
+                <BiWifi className="fs20px y_color fontWeight700 " />
+              )}
+              <Typography className="fs16px g_color fontWeight700 ">
+                Network Strength
+              </Typography>
+            </Grid>
+
             <Typography className="fs16px g_color fontWeight700 ">
-              {" "}
-              Wi-fi Strength
+              {data && data?.wifiStatus == true ? (
+                <Typography className="fs18px Green_color fontWeight600 ">
+                  Good
+                </Typography>
+              ) : (
+                <Typography className="fs18px y_color fontWeight600 ">
+                  Good
+                </Typography>
+              )}
             </Typography>
-            <BiWifi className="fs20px y_color fontWeight700 " />
           </Grid>
         </Grid>
       </Grid>

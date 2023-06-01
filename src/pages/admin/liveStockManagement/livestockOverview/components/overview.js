@@ -10,6 +10,8 @@ import Temp from "../../../../../assets/images/temp.png";
 import Feet from "../../../../../assets/images/feet.png";
 import Locpin from "../../../../../assets/images/locPin.png";
 import { useSnackbar } from "notistack";
+import { FaBatteryThreeQuarters } from "react-icons/fa";
+
 import { useLoaderController, setLoader } from "../../../../../context/common";
 import { adminRequest } from "../../../../../requestMethod";
 
@@ -23,18 +25,20 @@ const Overview = ({ title, data, apiEndpoint }) => {
   const [inputDisabled, setInputDisabled] = useState(true);
   const [update, setUpdate] = useState(true);
 
-  const [clientId, setClientId] = useState("");
-  const [clientName, setClientName] = useState("");
+  const [name, setName] = useState("");
+  const [uID, setUID] = useState("");
+  const [macId, setMacId] = useState("");
+  const [image, setImage] = useState("");
 
   const saveData = async () => {
     setLoader(dispatch, true);
     let body = {
-      clientID: clientId,
-      clientName: clientName,
-      client_id: id,
+      // clientID: clientId,
+      // clientName: clientName,
+      // client_id: id,
     };
     try {
-      const res = await adminRequest.post(`/user/userupdate/`, body);
+      const res = await adminRequest.post(`${apiEndpoint}`, body);
       console.log("update user ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
@@ -55,6 +59,11 @@ const Overview = ({ title, data, apiEndpoint }) => {
     setInputDisabled(true);
   };
 
+  useEffect(() => {
+    setUID(data?.uID);
+    setName(data?.name);
+    setMacId(data?.assignedDevice?.macID);
+  }, [data]);
   return (
     <>
       <Grid container className=" flex spaceBetween mb20px">
@@ -162,8 +171,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
               </Typography>
               <InputBase
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                value={clientId}
-                onChange={(e) => setClientId(e.target.value)}
+                value={uID}
+                onChange={(e) => setUID(e.target.value)}
                 disabled={inputDisabled}
               />
             </Grid>
@@ -180,8 +189,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
               </Typography>
               <InputBase
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                value={clientName}
-                onChange={(e) => setClientName(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 disabled={inputDisabled}
               />
             </Grid>
@@ -198,12 +207,13 @@ const Overview = ({ title, data, apiEndpoint }) => {
               </Typography>
               <InputBase
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                // value={clientId}
-                // onChange={(e) => setClientId(e.target.value)}
+                value={macId}
+                onChange={(e) => setMacId(e.target.value)}
                 disabled={inputDisabled}
               />
             </Grid>
           </Grid>
+
           <Grid
             container
             item
@@ -228,23 +238,25 @@ const Overview = ({ title, data, apiEndpoint }) => {
               <InputBase
                 style={{ height: " 27rem" }}
                 className=" TabStyleAddDevice p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                // value={clientId}
-                // onChange={(e) => setClientId(e.target.value)}
+                // value={image}
+                // onChange={(e) => setImage(e.target.value)}
                 disabled={inputDisabled}
               />
             </Grid>
 
             <Grid
+              container
               item
               xs={12}
               sm={12}
-              md={6}
-              lg={6}
-              className="flexDir flexEnd p_r30px  "
-              //   sx={{ border: "1px solid red" }}
+              md={7}
+              lg={7}
+              className="flex flexEnd  "
+              // p_r30px
+              // sx={{ border: "1px solid red" }}
             >
               <Button
-                className="fs14px  bRadius_8 Greenborder d_color Transform_Capital fontWeight700  p_l-r10-30px  mb10px"
+                className="fs14px  bRadius_8 Greenborder d_bgcolor  white_color Transform_Capital fontWeight700  p_l-r10-30px  mb10px"
                 onClick={() =>
                   inputDisabled ? setInputDisabled(false) : saveData()
                 }
@@ -285,11 +297,25 @@ const Overview = ({ title, data, apiEndpoint }) => {
               // justifyContent: "space-between",
             }}
           >
-            <Typography className="fs16px g_color fontWeight700 ">
-              Power
-            </Typography>
+            <Grid
+              item
+              xs={6}
+              sm={6}
+              md={6}
+              lg={6}
+              className="flex AlignCenter "
+            >
+              <Typography className="fs16px fontWeight700 m_r10px  ">
+                <FaBatteryThreeQuarters className="Green_color" />
+              </Typography>
+              <Typography className="fs16px g_color fontWeight700 ">
+                Battery
+              </Typography>
+            </Grid>
             <Typography className="fs16px d_color fontWeight700 ">
-              ONLINE
+              {data && data?.assignedDevice?.status == true
+                ? "ONLINE"
+                : "OFFLINE "}
             </Typography>
           </Grid>
           <Grid
@@ -300,11 +326,35 @@ const Overview = ({ title, data, apiEndpoint }) => {
             lg={4}
             className="IntBorder  fs18px flex spaceBetween bRadius_8 p_l-r10px"
           >
+            <Grid
+              item
+              xs={6}
+              sm={6}
+              md={6}
+              lg={6}
+              className="flex AlignCenter spaceBetween "
+            >
+              {data && data?.assignedDevice?.wifiStatus == true ? (
+                <BiWifi className="fs20px Green_color fontWeight700 " />
+              ) : (
+                <BiWifi className="fs20px y_color fontWeight700 " />
+              )}
+              <Typography className="fs16px g_color fontWeight700 ">
+                Network Strength
+              </Typography>
+            </Grid>
+
             <Typography className="fs16px g_color fontWeight700 ">
-              {" "}
-              Wi-fi Strength
+              {data && data?.wifiStatus == true ? (
+                <Typography className="fs18px Green_color fontWeight600 ">
+                  Good
+                </Typography>
+              ) : (
+                <Typography className="fs18px y_color fontWeight600 ">
+                  Good
+                </Typography>
+              )}
             </Typography>
-            <BiWifi className="fs20px y_color fontWeight700 " />
           </Grid>
         </Grid>
       </Grid>

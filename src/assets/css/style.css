@@ -85,6 +85,9 @@ input[type='radio']:checked:after {
   color: #ffb900 !important;
 }
 
+.Green_color {
+  color: #347D00 !important;
+}
 .Red_color {
   color: red !important;
 }

@@ -46,7 +46,9 @@ const Overview = ({ title, data, apiEndpoint }) => {
     setLoader(dispatch, false);
     setInputDisabled(true);
   };
-
+  useEffect(() => {
+    // console.log("data={details && details}", data);
+  }, []);
   return (
     <>
       <form>
@@ -74,8 +76,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
               </Typography>
               <InputBase
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                value={clientId}
-                onChange={(e) => setClientId(e.target.value)}
+                // value={data?.assignedDevice?.deviceName}
+                // onChange={(e) => setClientId(e.target.value)}
                 disabled={inputDisabled}
               />
             </Grid>
@@ -92,8 +94,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
               </Typography>
               <InputBase
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                value={clientName}
-                onChange={(e) => setClientName(e.target.value)}
+                value={data?.assignedDevice?.deviceName}
+                // onChange={(e) => setClientName(e.target.value)}
                 disabled={inputDisabled}
               />
             </Grid>
@@ -110,7 +112,7 @@ const Overview = ({ title, data, apiEndpoint }) => {
               </Typography>
               <InputBase
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                // value={clientId}
+                value={data?.assignedDevice?.macID}
                 // onChange={(e) => setClientId(e.target.value)}
                 disabled={inputDisabled}
               />

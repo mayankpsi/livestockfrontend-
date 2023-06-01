@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogTitle,
@@ -10,9 +10,8 @@ import {
   Button,
   Grid,
   InputBase,
-  RadioGroup,
-  Radio,
-  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
@@ -24,6 +23,7 @@ import { useLoaderController, setLoader } from "../../context/common";
 import Add from "../.././assets/images/AddSite.png";
 import Upload from "../.././assets/images/folderUpload.png";
 import AddSite_toUser from "./AddSite_toUser";
+import axios from "axios";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -83,6 +83,8 @@ const AddDevice = (props) => {
   const [liveStockId, setLiveStockId] = useState("");
   const [liveStockName, setLiveStockName] = useState("");
   const [liveStockDevice, setLiveStockDevice] = useState("");
+  const [liveStockPicture, setLiveStockPicture] = useState("");
+  const [allDevice, setAllDevice] = useState("");
 
   const saveData = async () => {
     setLoader(dispatch, true);
@@ -118,29 +120,40 @@ const AddDevice = (props) => {
   };
   const handleClose = () => {
     setOpen(false);
+    setLiveStockId("");
+    setLiveStockName("");
+    setLiveStockPicture("");
   };
 
   const addLiveStock = async (e) => {
     e.preventDefault();
     setLoader(dispatch, true);
 
-    const formdata = new FormData();
-    formdata.append("uID", liveStockId);
-    formdata.append("name", liveStockName);
-    formdata.append("", file);
-    formdata.append("deviceID", liveStockDevice);
+    const formData = new FormData();
+    formData.set("uID", liveStockId);
+    formData.set("name", liveStockName);
+    formData.append("liveStockImage", liveStockPicture);
+    formData.set("liveStockImageName", liveStockPicture.name);
+    formData.set("deviceID", liveStockDevice);
 
-    // let body = {
-    //   uID: liveStockId,
-    //   name: liveStockName,
-    //   deviceID: liveStockDevice,
-    //   image: file,
-    // };
     try {
-      const res = await adminRequest.post(`/liveStock/create`, formdata);
+      const res = await axios.post(
+        `http://localhost:8080/api/v1/liveStock/create`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("liveStock_token")}`,
+            "Content-Type": "text/html; charset=utf-8",
+          },
+        }
+      );
       console.log("Sitefor user ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
+        enqueueSnackbar("live stock created", {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
       }
     } catch (err) {
       setLoader(dispatch, false);
@@ -190,36 +203,59 @@ const AddDevice = (props) => {
     }
   };
 
+  const getDevices = async () => {
+    // let ID = localStorage.getItem('agro_id');
+    setLoader(dispatch, true);
+    try {
+      const res = await adminRequest.get(`/devices/getAll?status=${false}`);
+      setLoader(dispatch, false);
+      // console.log(res);
+      if (res.status == 200) {
+        setAllDevice(res?.data?.data);
+      }
+    } catch (err) {
+      setLoader(dispatch, false);
+      enqueueSnackbar(err?.response?.data?.msg, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  };
+
   useEffect(() => {
-    console.log("props>>props", props);
-  }, [props]);
+    // console.log("props>>props", props);
+    getDevices();
+  }, []);
 
   return (
     <>
-      {/* <Button
-        className="fs14px bRadius_8  Greenborder d_color Transform_Capital fontWeight700  p_l-r10-30px  mb10px"
-        onClick={() => {
-          handleClickOpen();
-        }}
-      >
-        Add
-      </Button> */}
-
-      <Grid
-        container
-        item
-        alignItems="center"
-        sx={{ flexDirection: "column", width: "20%" }}
-        className="Greenborder  bRadius_8 Cursor"
-        onClick={() => {
-          handleClickOpen();
-        }}
-      >
-        <img src={Add} alt="loading" className="M20" />
-        <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
-          Add Site
-        </Typography>
-      </Grid>
+      {props && props.type == 1 ? (
+        <Grid
+          container
+          item
+          alignItems="center"
+          sx={{ flexDirection: "column", width: "20%" }}
+          className="Greenborder  bRadius_8 Cursor"
+          onClick={() => {
+            handleClickOpen();
+          }}
+        >
+          <img src={Add} alt="loading" className="M20" />
+          <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
+            Add Site
+          </Typography>
+        </Grid>
+      ) : (
+        <Button
+          className="fs16px bRadius_8  d_bgcolor  white_color  Transform_Capital fontWeight700    p_l-r13-60px mb10px"
+          onClick={() => {
+            handleClickOpen();
+          }}
+          // p_l-r10-30px
+        >
+          Assign LiveStock
+        </Button>
+      )}
 
       <Dialog
         onClose={handleClose}
@@ -307,6 +343,7 @@ const AddDevice = (props) => {
                           // accept="video/*"
                           // accept="image/jpg,image/jpeg"
                           onChange={(e) => {
+                            setLiveStockPicture(e.target.files[0]);
                             onChangeFile(e);
                             // handleVideoUpload(e);
                           }}
@@ -376,14 +413,37 @@ const AddDevice = (props) => {
                   <Typography className="fs16px mb10px b1c_color fontWeight600 ">
                     Device
                   </Typography>
-                  <InputBase
+                  {/* <InputBase
+                    // select
+                    // label="Select"
                     placeholder="Select Device"
                     className=" border p_t-l15px fs16px Width100  bRadius_8 fontWeight700"
                     value={liveStockDevice}
                     onChange={(e) => setLiveStockDevice(e.target.value)}
                     disabled={inputDisabled}
                     required
-                  />
+                  /> */}
+
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    className=" border   Width100  bRadius_8 fontWeight700"
+                    value={liveStockDevice}
+                    onChange={(e) => setLiveStockDevice(e.target.value)}
+                    disabled={inputDisabled}
+                    required
+                  >
+                    {allDevice.length > 0 &&
+                      allDevice.map((device) => (
+                        <MenuItem
+                          value={device._id}
+                          key={device._id}
+                          className="fs14px "
+                        >
+                          {device.deviceName}
+                        </MenuItem>
+                      ))}
+                  </Select>
                 </Grid>
                 <Grid
                   item
@@ -460,7 +520,7 @@ const AddDevice = (props) => {
             <Button
               className="fs16px  fontWeight600 white_color d_bgcolor p_l-r10-30px  "
               type="submit"
-              onClick={() => {}}
+              // onClick={() => {}}
             >
               Save
             </Button>

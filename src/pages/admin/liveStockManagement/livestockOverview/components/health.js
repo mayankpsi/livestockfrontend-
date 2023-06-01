@@ -21,13 +21,13 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-
 import { PointElement, LineElement } from "chart.js";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
+import faker from "faker";
 import { Line } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
 
@@ -67,7 +67,20 @@ const Health = () => {
   const [controller, dispatch] = useLoaderController();
   const [depth, setDepth] = useState("depth1");
   const [active, setActive] = useState(0);
-  const [labels, setLabels] = useState([]);
+  const [labels, setLabels] = useState([
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ]);
   const [lastDate, setLastDate] = useState("");
   const [NoData, setNoData] = useState("false");
 
@@ -176,7 +189,9 @@ const Health = () => {
     datasets: [
       {
         label: "heartbeat",
-        data: user,
+        // data: user,
+        data: labels.map(() => faker.datatype.number({ min: 60, max: 90 })),
+
         borderColor: "rgba(181, 139, 93, 1)",
         tension: 0.5,
         background: "rgba(181, 139, 93, 1)",
@@ -189,7 +204,8 @@ const Health = () => {
     datasets: [
       {
         label: "Temperature",
-        data: user,
+        // data: user,
+        data: labels.map(() => faker.datatype.number({ min: 90, max: 102 })),
         borderColor: "rgba(181, 139, 93, 1)",
         barRadius: 10,
         tension: 0.5,

@@ -16,7 +16,7 @@ import PropTypes from "prop-types";
 // import Recommendation from "../../../components/device/recommend";
 
 import Overview from "../../../../components/deviceDetail/overview";
-import Device from "../../../../components/branchManager/devices";
+// import Device from "../../../../components/branchManager/devices";
 
 import { BsArrowLeftShort } from "react-icons/bs";
 // import Alert from "../../../components/device/alerts";
