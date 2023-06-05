@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogTitle,
@@ -12,20 +12,20 @@ import {
   RadioGroup,
   Radio,
   FormControl,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 
-import { useSnackbar } from 'notistack';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import HighlightOff from '@mui/icons-material/HighlightOff';
-import { adminRequest } from '../../requestMethod';
-import { useLoaderController, setLoader } from '../../context/common';
+import { useSnackbar } from "notistack";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import HighlightOff from "@mui/icons-material/HighlightOff";
+import { adminRequest } from "../../requestMethod";
+import { useLoaderController, setLoader } from "../../context/common";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
+  "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
-  '& .MuiDialogActions-root': {
+  "& .MuiDialogActions-root": {
     padding: theme.spacing(1),
   },
 }));
@@ -45,7 +45,7 @@ function BootstrapDialogTitle(props) {
           aria-label="close"
           onClick={onClose}
           sx={{
-            position: 'absolute',
+            position: "absolute",
             right: 9,
             top: 7,
           }}
@@ -65,10 +65,10 @@ const AddSite_toAddUser = (props) => {
 
   const [open, setOpen] = useState(false);
   const [fullWidth, setFullWidth] = useState(true);
-  const [maxWidth, setMaxWidth] = useState('md');
+  const [maxWidth, setMaxWidth] = useState("md");
   const [userId, setUserId] = useState();
-  const [clientId, setClientId] = useState();
-  const [siteDetails, setSiteDetails] = useState([]);
+  const [LivestockId, setLivestockId] = useState();
+  const [Livestock, setLiveStock] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -76,20 +76,19 @@ const AddSite_toAddUser = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const SiteDetails = async () => {
+  const LivestockDetail = async () => {
     setLoader(dispatch, true);
-    let adminId = localStorage.getItem('agro_id');
     try {
-      const res = await adminRequest.get(`/site/getSitesOnly/${adminId}`);
-      console.log('Sitefor user ', res);
+      const res = await adminRequest.get(`/liveStock/getAll?status=false`);
+      console.log("Sitefor user ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        setSiteDetails(res.data.data);
+        setLiveStock(res.data.data);
       }
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err.response.data.msg, {
-        variant: 'error',
+        variant: "error",
         autoHideDuration: 3000,
       });
     }
@@ -98,19 +97,17 @@ const AddSite_toAddUser = (props) => {
   const AssignSitefromUser = async () => {
     setLoader(dispatch, true);
     let body = {
-      site_id: clientId,
-      client_id: props?.gatewayID,
+      liveStockID: LivestockId,
+      deviceID: props?.D_Id,
     };
-
-    console.log('Assigning', body);
-
+    console.log("Assigning", body);
     try {
-      const res = await adminRequest.post('/user/addSiteToClient', body);
-      console.log('Site Assign to user ', res);
+      const res = await adminRequest.post("/devices/assign-liveStock", body);
+      console.log("live Assign to Device ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        enqueueSnackbar('Site Assign to user Successfully ', {
-          variant: 'success',
+        enqueueSnackbar("Site Assign to user Successfully ", {
+          variant: "success",
           autoHideDuration: 3000,
         });
         props?.reRander();
@@ -123,28 +120,29 @@ const AddSite_toAddUser = (props) => {
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err.response.data.msg, {
-        variant: 'error',
+        variant: "error",
         autoHideDuration: 3000,
       });
     }
   };
   useEffect(() => {
-    SiteDetails();
+    LivestockDetail();
   }, []);
 
   useEffect(() => {
-    console.log('props>>props', props);
+    console.log("props>>props", props);
   }, [props]);
 
   return (
     <>
       <Button
-        className="fs14px bRadius_8  Greenborder d_color Transform_Capital fontWeight700  p_l-r10-30px  mb10px"
+        className="fs16px bRadius_8  d_bgcolor  white_color  Transform_Capital fontWeight700    p_l-r13-60px mb10px"
         onClick={() => {
           handleClickOpen();
         }}
+        // p_l-r10-30px
       >
-        Add
+        Assign LiveStock
       </Button>
 
       {/* <ControlPointIcon
@@ -168,7 +166,7 @@ const AddSite_toAddUser = (props) => {
 
         <DialogContent>
           <Grid container className="flex spaceBetween">
-            {' '}
+            {" "}
             <Grid
               container
               item
@@ -196,7 +194,7 @@ const AddSite_toAddUser = (props) => {
                 placeholder="Search UserID / Name"
                 onChange={(e) => setUserId(e.target.value)}
               />
-            </Grid>{' '}
+            </Grid>{" "}
           </Grid>
 
           <Grid
@@ -207,13 +205,13 @@ const AddSite_toAddUser = (props) => {
             md={12}
             lg={12}
             sx={{
-              rowGap: '1rem',
+              rowGap: "1rem",
             }}
             // spaceBetween
             className=" flex flexStart  fs16px  p_t-b10px  "
           >
-            {siteDetails && siteDetails.length > 0 ? (
-              siteDetails.map((a, i) => (
+            {Livestock && Livestock.length > 0 ? (
+              Livestock.map((a, i) => (
                 <Grid
                   key={i}
                   container
@@ -239,7 +237,7 @@ const AddSite_toAddUser = (props) => {
                       value={a?._id}
                       className="Cursor"
                       // style={{ backgroundColor: "green" }}
-                      onChange={(e) => setClientId(e.target.value)}
+                      onChange={(e) => setLivestockId(e.target.value)}
                     />
                   </Grid>
                   <Grid
@@ -252,10 +250,10 @@ const AddSite_toAddUser = (props) => {
                     // For="specifyColor"
                   >
                     <Typography className="  fs14px  p_l-r10px fontWeight700 g_color">
-                      {a?.gatewayID}
+                      {a?.uID}
                     </Typography>
                     <Typography className="fs16px  p_l-r10px fontWeight700 Transform_Capital ">
-                      {a?.gatewayName}
+                      {a?.deviceName}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -263,8 +261,8 @@ const AddSite_toAddUser = (props) => {
             ) : (
               <Grid
                 container
-                style={{ height: '100px' }}
-                className=" border center "
+                style={{ height: "100px" }}
+                className=" border  flex center "
               >
                 {/* <Grid
                   container
@@ -275,13 +273,12 @@ const AddSite_toAddUser = (props) => {
                   onClick={() => {
                     navigate("/admin/device-management/add-site-management");
                   }}
-                >
-                  <img src={Add} alt="loading" className="M20" />
-                  <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
-                    Add Site
-                  </Typography>
-                </Grid> */}
+                > */}
+                <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
+                  There is no available LiveStock
+                </Typography>
               </Grid>
+              // </Grid>
             )}
           </Grid>
         </DialogContent>

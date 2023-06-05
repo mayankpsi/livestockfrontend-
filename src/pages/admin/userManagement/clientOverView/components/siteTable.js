@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Button, Grid, Typography } from '@mui/material';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import { MdDeleteOutline, MdOutlineRemoveRedEye } from 'react-icons/md';
-import Add from '../../../../../assets/images/AddSite.png';
-import AddSite_fromUser from '../../../../../components/Admin/AddSite_fromAddUser.js';
-import DeletePopup from '../../../../../components/DeletePopupCard.js';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Button, Grid, Typography } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
+import Add from "../../../../../assets/images/AddSite.png";
+// import AddSite_fromUser from '../../../../../components/Admin/AddSite_fromAddUser.js';
+import DeletePopup from "../../../../../components/DeletePopupCard.js";
 
 const Index = ({ showDetail, data, reRander }) => {
   const { state } = useLocation();
@@ -16,25 +16,25 @@ const Index = ({ showDetail, data, reRander }) => {
   const [siteDetails, setSiteDetails] = useState([
     {
       id: 1,
-      siteName: 'gdhsgadh',
-      bmName: 'gdhsgadh',
+      siteName: "gdhsgadh",
+      bmName: "gdhsgadh",
       deviceName: 1,
       alert: 4,
     },
   ]);
   useEffect(() => {
     setSiteDetails(data && data.length > 0 && data[0].gateway);
-    console.log('>>>??lll', data);
+    console.log(">>>??lll", data);
   }, [data]);
   return (
     <>
       <Grid container>
         <Grid container className="flex flexEnd">
-          <AddSite_fromUser
+          {/* <AddSite_fromUser
             Name={'site'}
             gatewayID={data && data.length > 0 && data[0]?._id}
             reRander={reRander}
-          />
+          /> */}
         </Grid>
         <Grid
           container
@@ -57,12 +57,12 @@ const Index = ({ showDetail, data, reRander }) => {
           >
             <Grid item xs={4} sm={4} md={4} lg={4}>
               <Typography className="  fs16px  p_l-r10px fontWeight700">
-                UID{' '}
+                UID{" "}
               </Typography>
             </Grid>
             <Grid item xs={6} sm={6} md={6} lg={6}>
               <Typography className="fs16px fontWeight700">
-                Device Name{' '}
+                Device Name{" "}
               </Typography>
             </Grid>
           </Grid>
@@ -202,7 +202,7 @@ const Index = ({ showDetail, data, reRander }) => {
                         onClick={() => showDetail(true)}
                       />
 
-                      <DeletePopup Name={'site from the user'} id={a?._id} />
+                      <DeletePopup Name={"site from the user"} id={a?._id} />
                       {/* </Stack> */}
                     </Grid>
                   </Grid>
@@ -215,14 +215,14 @@ const Index = ({ showDetail, data, reRander }) => {
             container
             justifyContent="center"
             alignItems="center"
-            style={{ height: '400px' }}
+            style={{ height: "400px" }}
             className=" border "
           >
             <Grid
               container
               item
               alignItems="center"
-              sx={{ flexDirection: 'column', width: '20%' }}
+              sx={{ flexDirection: "column", width: "20%" }}
               className="Greenborder  bRadius_8 Cursor"
               onClick={() => {
                 // navigate("/admin/device-management/add-site-management");

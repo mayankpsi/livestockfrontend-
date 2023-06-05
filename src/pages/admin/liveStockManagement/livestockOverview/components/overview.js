@@ -63,7 +63,12 @@ const Overview = ({ title, data, apiEndpoint }) => {
     setUID(data?.uID);
     setName(data?.name);
     setMacId(data?.assignedDevice?.macID);
+    setImage(data?.imgPath?.split("uploads")[1]);
   }, [data]);
+
+  useEffect(() => {
+    console.log("Successfully images", image);
+  }, [image]);
   return (
     <>
       <Grid container className=" flex spaceBetween mb20px">
@@ -235,12 +240,17 @@ const Overview = ({ title, data, apiEndpoint }) => {
               <Typography className="fs16px mb10px b1c_color fontWeight600 ">
                 Images
               </Typography>
-              <InputBase
-                style={{ height: " 27rem" }}
+              {/* <InputBase
+                style={{ height: ' 27rem' }}
                 className=" TabStyleAddDevice p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
                 // value={image}
                 // onChange={(e) => setImage(e.target.value)}
                 disabled={inputDisabled}
+              /> */}
+              <img
+                src={`http://localhost:8080/uploads/${image}`}
+                style={{ height: " 27rem", objectFit: "contain" }}
+                className=" TabStyleAddDevice p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
               />
             </Grid>
 

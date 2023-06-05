@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button, Grid, Typography, InputBase } from "@mui/material";
-import { useSnackbar } from "notistack";
-import { useLoaderController, setLoader } from "../../../../../context/common";
-import { adminRequest } from "../../../../../requestMethod";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Grid, Typography, InputBase } from '@mui/material';
+import { useSnackbar } from 'notistack';
+import { useLoaderController, setLoader } from '../../../../../context/common';
+import { adminRequest } from '../../../../../requestMethod';
 
 const Overview = ({ title, data, apiEndpoint }) => {
   const navigate = useNavigate();
@@ -15,8 +15,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
   const [inputDisabled, setInputDisabled] = useState(true);
   const [update, setUpdate] = useState(true);
 
-  const [clientId, setClientId] = useState("");
-  const [clientName, setClientName] = useState("");
+  const [clientId, setClientId] = useState('');
+  const [clientName, setClientName] = useState('');
 
   const saveData = async () => {
     setLoader(dispatch, true);
@@ -27,11 +27,11 @@ const Overview = ({ title, data, apiEndpoint }) => {
     };
     try {
       const res = await adminRequest.post(`/user/userupdate/`, body);
-      console.log("update user ", res);
+      console.log('update user ', res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         enqueueSnackbar(res?.data?.msg, {
-          variant: "success",
+          variant: 'success',
           autoHideDuration: 3000,
         });
         navigate(`/admin/user-management/${id}`, { state: update });
@@ -39,7 +39,7 @@ const Overview = ({ title, data, apiEndpoint }) => {
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err.response.data.msg, {
-        variant: "error",
+        variant: 'error',
         autoHideDuration: 3000,
       });
     }
@@ -47,7 +47,7 @@ const Overview = ({ title, data, apiEndpoint }) => {
     setInputDisabled(true);
   };
   useEffect(() => {
-    // console.log("data={details && details}", data);
+    // console.log('data={details && details}', data);
   }, []);
   return (
     <>
@@ -61,7 +61,7 @@ const Overview = ({ title, data, apiEndpoint }) => {
             md={12}
             lg={12}
             className=" spaceBetween mb20px p20px bRadius_8  "
-            sx={{ rowGap: "20px " }}
+            sx={{ rowGap: '20px ' }}
           >
             <Grid
               item
@@ -76,7 +76,7 @@ const Overview = ({ title, data, apiEndpoint }) => {
               </Typography>
               <InputBase
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-                // value={data?.assignedDevice?.deviceName}
+                value={data?.assignedDevice?.uID}
                 // onChange={(e) => setClientId(e.target.value)}
                 disabled={inputDisabled}
               />

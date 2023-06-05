@@ -3,12 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Grid, Typography, InputBase } from "@mui/material";
 import { BiWifi } from "react-icons/bi";
 import { FaBatteryThreeQuarters } from "react-icons/fa";
-import AddLiveStock from "../Admin/addLivestock";
+import AddLiveStockToDevice from "../Admin/addLivestockinDevice";
 import { useSnackbar } from "notistack";
 import { useLoaderController, setLoader } from "../../context/common";
 import { adminRequest } from "../../requestMethod";
 
-const Overview = ({ title, data, liveStock, apiEndpoint }) => {
+const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
   const navigate = useNavigate();
   const { deviceName } = useParams();
   const [controller, dispatch] = useLoaderController();
@@ -224,7 +224,11 @@ const Overview = ({ title, data, liveStock, apiEndpoint }) => {
               {" "}
               This device have no livestock assigned{" "}
             </Typography>
-            <AddLiveStock type={2} />
+            <AddLiveStockToDevice
+              D_Id={deviceMacId && deviceMacId}
+              Name={"LiveStock"}
+              reRender={reRander}
+            />
             {/* reRander={UserDetails} */}
           </Grid>
         )}

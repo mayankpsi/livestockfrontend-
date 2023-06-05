@@ -132,7 +132,7 @@ const Index = (props) => {
                   key="2"
                 >
                   <Typography className="white_color fs16px bold ">
-                    {details && details[0]?.name}
+                    {details && details?.name}
                   </Typography>
                 </Link>
               </Breadcrumbs>
@@ -141,7 +141,7 @@ const Index = (props) => {
               className="fs24px white_color  fontWeight600 mt20px"
               // style={{ border: "1px solid red" }}
             >
-              {details && details[0]?.gatewayName}
+              {details && details?.name}
               {/* Farm Land 1 */}
             </Typography>
           </Container>

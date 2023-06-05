@@ -62,7 +62,7 @@ function BootstrapDialogTitle(props) {
   );
 }
 
-const AddDevice = (props) => {
+const AddLivestock = (props) => {
   const navigate = useNavigate();
   //   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -130,11 +130,11 @@ const AddDevice = (props) => {
     setLoader(dispatch, true);
 
     const formData = new FormData();
-    formData.set("uID", liveStockId);
-    formData.set("name", liveStockName);
+    formData.append("uID", liveStockId);
+    formData.append("name", liveStockName);
     formData.append("liveStockImage", liveStockPicture);
-    formData.set("liveStockImageName", liveStockPicture.name);
-    formData.set("deviceID", liveStockDevice);
+    formData.append("liveStockImageName", liveStockPicture.name);
+    formData.append("deviceID", liveStockDevice);
 
     try {
       const res = await axios.post(
@@ -157,7 +157,7 @@ const AddDevice = (props) => {
       }
     } catch (err) {
       setLoader(dispatch, false);
-      enqueueSnackbar(err.response.data.msg, {
+      enqueueSnackbar(err?.response, {
         variant: "error",
         autoHideDuration: 3000,
       });
@@ -531,4 +531,4 @@ const AddDevice = (props) => {
   );
 };
 
-export default AddDevice;
+export default AddLivestock;

@@ -121,6 +121,12 @@ const AddDevice = (props) => {
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         setSiteDetails(res.data.data);
+        handleClose();
+        props.reRender();
+
+        setDeviceId("");
+        setDeviceName("");
+        setDeviceMacId("");
       }
     } catch (err) {
       setLoader(dispatch, false);
@@ -133,21 +139,33 @@ const AddDevice = (props) => {
 
   return (
     <>
-      <Grid
-        container
-        item
-        alignItems="center"
-        sx={{ flexDirection: "column", width: "20%" }}
-        className="Greenborder  bRadius_8 Cursor"
-        onClick={() => {
-          handleClickOpen();
-        }}
-      >
-        <img src={Add} alt="loading" className="M20" />
-        <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
-          Add Site
-        </Typography>
-      </Grid>
+      {props && props.type == 1 ? (
+        <Grid
+          container
+          item
+          alignItems="center"
+          sx={{ flexDirection: "column", width: "20%" }}
+          className="Greenborder  bRadius_8 Cursor"
+          onClick={() => {
+            handleClickOpen();
+          }}
+        >
+          <img src={Add} alt="loading" className="M20" />
+          <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
+            Add Site
+          </Typography>
+        </Grid>
+      ) : (
+        <Button
+          className="fs16px bRadius_8  d_bgcolor  white_color  Transform_Capital fontWeight700   p_l-r10-30px mb10px"
+          onClick={() => {
+            handleClickOpen();
+          }}
+          // p_l-r10-30px
+        >
+          addDevice
+        </Button>
+      )}
 
       <Dialog
         onClose={handleClose}

@@ -223,6 +223,7 @@ const Index = (props) => {
                 data={details && details}
                 liveStock={liveStockDetails && liveStockDetails}
                 apiEndpoint="/devices/update"
+                reRander={getDeviceDetail}
               />
             </TabPanel>
             <TabPanel value={value} index={1}>

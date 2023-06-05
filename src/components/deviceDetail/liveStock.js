@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button, Grid, Divider, Typography, InputBase } from "@mui/material";
-import { BiWifi } from "react-icons/bi";
-import DetailForm from "../Common/detailForm";
-import DetailMap from "../Common/detailMap";
-import TableHead from "../User/BranchManagerTable";
-import { useSnackbar } from "notistack";
-import { useLoaderController, setLoader } from "../../context/common";
-import { adminRequest } from "../../requestMethod";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Grid, Divider, Typography, InputBase } from '@mui/material';
+import { BiWifi } from 'react-icons/bi';
+import DetailForm from '../Common/detailForm';
+import DetailMap from '../Common/detailMap';
+import TableHead from '../User/BranchManagerTable';
+import { useSnackbar } from 'notistack';
+import { useLoaderController, setLoader } from '../../context/common';
+import { adminRequest } from '../../requestMethod';
 
 const LiveStock = ({ title, data, data1, apiEndpoint }) => {
   const navigate = useNavigate();
@@ -18,10 +18,10 @@ const LiveStock = ({ title, data, data1, apiEndpoint }) => {
   const [updateMap, setUpdateMap] = useState();
   const [inputDisabled, setInputDisabled] = useState(true);
   const [update, setUpdate] = useState(true);
-  const [liveStockImage, setLiveStockImage] = useState("");
-  const [liveStockId, setLiveStockId] = useState("");
-  const [liveStockName1, setLiveStockName1] = useState("");
-  const [liveStockMacId, setLiveStockMacId] = useState("");
+  const [liveStockImage, setLiveStockImage] = useState('');
+  const [liveStockId, setLiveStockId] = useState('');
+  const [liveStockName1, setLiveStockName1] = useState('');
+  const [liveStockMacId, setLiveStockMacId] = useState('');
   const saveData = async () => {
     setLoader(dispatch, true);
     let body = {
@@ -31,11 +31,11 @@ const LiveStock = ({ title, data, data1, apiEndpoint }) => {
     };
     try {
       const res = await adminRequest.post(`/user/userupdate/`, body);
-      console.log("update user ", res);
+      console.log('update user ', res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         enqueueSnackbar(res?.data?.msg, {
-          variant: "success",
+          variant: 'success',
           autoHideDuration: 3000,
         });
         navigate(`/admin/user-management/${id}`, { state: update });
@@ -43,7 +43,7 @@ const LiveStock = ({ title, data, data1, apiEndpoint }) => {
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err.response.data.msg, {
-        variant: "error",
+        variant: 'error',
         autoHideDuration: 3000,
       });
     }
@@ -55,7 +55,7 @@ const LiveStock = ({ title, data, data1, apiEndpoint }) => {
     setLiveStockId(data?.uID);
     setLiveStockName1(data?.name);
     setLiveStockMacId(data1?.macID);
-    setLiveStockImage(data?.imgPath);
+    setLiveStockImage(data?.imgPath?.split('uploads')[1]);
   }, [data, data1]);
 
   return (
@@ -70,7 +70,7 @@ const LiveStock = ({ title, data, data1, apiEndpoint }) => {
             md={5.5}
             lg={5.5}
             className=" spaceBetween mb20px p20px bRadius_8  "
-            sx={{ rowGap: "20px " }}
+            sx={{ rowGap: '20px ' }}
           >
             <Grid
               item
@@ -135,7 +135,7 @@ const LiveStock = ({ title, data, data1, apiEndpoint }) => {
             md={5.5}
             lg={5.5}
             className="flexDir spaceBetween p20px  mb20px bRadius_8  "
-            sx={{ rowGap: "20px " }}
+            sx={{ rowGap: '20px ' }}
           >
             <Grid
               item
@@ -149,13 +149,18 @@ const LiveStock = ({ title, data, data1, apiEndpoint }) => {
                 Images
               </Typography>
 
-              <InputBase
-                style={{ height: " 26rem" }}
+              {/* <InputBase
+                style={{ height: ' 26rem' }}
                 type="file"
                 className=" border  fs16px p_t-l15px  bRadius_8 fontWeight700"
                 // value={liveStockImage}
                 // onChange={(e) => setLiveStockImage(e.target.value)}
                 disabled={inputDisabled}
+              /> */}
+              <img
+                src={`http://localhost:8080/uploads/${liveStockImage}`}
+                style={{ height: ' 26rem', objectFit: 'contain' }}
+                className=" border  fs16px p_t-l15px  bRadius_8 fontWeight700"
               />
             </Grid>
 

@@ -12,6 +12,8 @@ import { useSnackbar } from "notistack";
 import AdminUIContainer from "../../../layout/AdminUIContainer";
 // import AddClient from "./addClientDialog";
 import SiteManageTable from "../../../components/Admin/livestockManageTable";
+import AddLiveStock from "../../../components/Admin/addLivestock";
+
 import { adminRequest } from "../../../requestMethod";
 import { useLoaderController, setLoader } from "../../../context/common";
 
@@ -107,12 +109,12 @@ const Index = () => {
                 All LiveStock ({allLiveStock?.length})
               </Typography>
 
-              {/* <AddClient reRander={UserDetails} /> */}
+              <AddLiveStock type={3} />
             </Grid>
             <SiteManageTable
               className=" mt30px "
               liveStock={allLiveStock}
-              // reRander={UserDetails}
+              reRander={getAllLiveStock}
             />
           </Container>
         </>

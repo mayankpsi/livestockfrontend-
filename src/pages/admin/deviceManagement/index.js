@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
 import AdminUIContainer from "../../../layout/AdminUIContainer";
 import DeviceTable from "../../../components/Admin/DeviceTable";
+import AddDevice from "../../../components/Admin/addDevice";
 import { adminRequest } from "../../../requestMethod";
 import { useLoaderController, setLoader } from "../../../context/common";
 
@@ -45,31 +46,46 @@ const Index = () => {
   const [value, setValue] = useState(0);
   const [statusf, setStatusF] = useState(false);
   const [statust, setStatusT] = useState(true);
-  const getDevices = async () => {
-    // let ID = localStorage.getItem('agro_id');
-    setLoader(dispatch, true);
-    try {
-      const res = await adminRequest.get(`/devices/getAll`);
-      setLoader(dispatch, false);
-      console.log(res);
-      if (res.status == 200) {
-        setDeviceDetails(res?.data?.data);
-      }
-    } catch (err) {
-      setLoader(dispatch, false);
-      enqueueSnackbar(err?.response?.data?.msg, {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-  };
+  const [assignedDevice, setAssignedDevice] = useState([]);
+  const [idleDevice, setIdleDevice] = useState([]);
+
+  // const getDevices = async () => {
+  //   // let ID = localStorage.getItem('agro_id');
+  //   setLoader(dispatch, true);
+  //   try {
+  //     const res = await adminRequest.get(`/devices/getAll`);
+  //     setLoader(dispatch, false);
+  //     console.log('///', res);
+  //     if (res.status == 200) {
+  //       setDeviceDetails(res?.data?.data);
+  //     }
+  //   } catch (err) {
+  //     setLoader(dispatch, false);
+  //     enqueueSnackbar(err?.response?.data?.msg, {
+  //       variant: 'error',
+  //       autoHideDuration: 3000,
+  //     });
+  //   }
+  // };
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
   };
 
+  const getAllData = async () => {
+    const promise1 = adminRequest.get("/devices/getAll?status=true");
+    const promise2 = adminRequest.get("/devices/getAll?status=false");
+
+    Promise.all([promise1, promise2]).then(function (values) {
+      console.log(values);
+      setAssignedDevice(values[0]?.data?.data);
+      setIdleDevice(values[1]?.data?.data);
+    });
+  };
+
   useEffect(() => {
-    getDevices();
+    // getDevices();
+    getAllData();
   }, []);
   return (
     <>
@@ -125,7 +141,7 @@ const Index = () => {
             // style={{ border: "1px solid blue" }}
           >
             <Typography className="fs20px  fontWeight700 d_color  ">
-              All Devices ({deviceDetails && deviceDetails?.length})
+              All Devices
             </Typography>
 
             {/* <Button
@@ -136,6 +152,7 @@ const Index = () => {
               >
                 Add
               </Button> */}
+            <AddDevice type={2} reRender={getAllData} />
           </Grid>
 
           <Grid
@@ -168,19 +185,19 @@ const Index = () => {
 
           <Grid item md={12}>
             <TabPanel value={value} index={0}>
-              {deviceDetails && (
+              {assignedDevice && (
                 <DeviceTable
                   className=" mt30px "
-                  data={deviceDetails}
-                  // reRander={getSite}
+                  data={assignedDevice}
+                  reRander={getAllData}
                 />
               )}
             </TabPanel>
             <TabPanel value={value} index={1}>
               <DeviceTable
                 className=" mt30px "
-                data={deviceDetails && deviceDetails}
-                // reRander={getSite}
+                data={idleDevice && idleDevice}
+                reRander={getAllData}
               />
             </TabPanel>
           </Grid>

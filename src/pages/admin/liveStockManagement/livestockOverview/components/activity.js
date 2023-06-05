@@ -23,51 +23,56 @@ import {
 } from "chart.js";
 
 import { PointElement, LineElement } from "chart.js";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-import { Line } from "react-chartjs-2";
+import faker from "faker";
+
 import { Bar } from "react-chartjs-2";
 
-import { DateRange } from "react-date-range";
-import format from "date-fns/format";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 // import UnitTable from "../Common/unitTable";
 import { adminRequest } from "../../../../../requestMethod";
 import { setLoader, useLoaderController } from "../../../../../context/common";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import VisibilitySensor from "react-visibility-sensor";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
-  // LinearScale,
   BarElement,
   Title,
   Tooltip,
   Legend,
   Filler
 );
+
 const Health = () => {
   const currentDate = moment().format("YYYY-MM-DD");
   const [startDate, setStartDate] = useState(new Date());
-  const [user, setUser] = useState([]);
-  const [date, setDateValue] = useState(currentDate);
-  const [open, setOpen] = useState(false);
-  const [orderType, setOrderType] = useState("N");
-  const [details, setDetails] = useState();
-  const { gatewayName, branchName, deviceId } = useParams();
   const [controller, dispatch] = useLoaderController();
   const [depth, setDepth] = useState("depth1");
   const [active, setActive] = useState(0);
-  const [labels, setLabels] = useState([]);
+  const [labels, setLabels] = useState([
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ]);
   const [lastDate, setLastDate] = useState("");
   const [NoData, setNoData] = useState("false");
 
@@ -171,30 +176,16 @@ const Health = () => {
     "December",
   ];
 
-  const dataChart = {
-    labels,
-    datasets: [
-      {
-        label: "Activity",
-        data: user,
-        borderColor: "rgba(181, 139, 93, 1)",
-        tension: 0.5,
-        background: "rgba(181, 139, 93, 1)",
-      },
-    ],
-  };
-
   const dataChart1 = {
     labels,
     datasets: [
       {
-        label: "Temperature",
-        data: user,
+        label: "Activity",
+        data: labels.map(() => faker.datatype.number({ min: 90, max: 3000 })),
         // borderColor: "rgba(52, 125, 0, 100)",
         barRadius: 10,
-
         tension: 0.5,
-        backgroundColor: "#347D00",
+        backgroundColor: "rgba(181, 139, 93, 1)",
       },
     ],
   };
@@ -202,23 +193,6 @@ const Health = () => {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
   const isSm = useMediaQuery(theme.breakpoints.up("sm"));
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-      },
-    },
-  };
 
   const options1 = {
     responsive: true,
@@ -241,7 +215,7 @@ const Health = () => {
 
   return (
     <>
-      <Grid container className="flex  flexEnd p20px mb10px ">
+      <Grid container className="flex  center p20px mb10px ">
         <ButtonGroup
           //   variant="contained"
           aria-label=" d_bgcolor bRadius_8 border Gbtn "
@@ -257,7 +231,61 @@ const Health = () => {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid container className="flex center">
+
+      <Grid container className="flex spaceBetween">
+        <Grid
+          container
+          item
+          xs={12}
+          sm={12}
+          md={5.5}
+          lg={5.5}
+          className="  Width100  p20px bRadius_10, flecdir."
+          sx={{ position: "relative", columnGap: "span" }}
+        >
+          {NoData == "true" && (
+            <Grid
+              container
+              className=" fs16px Width100 flex center"
+              sx={{
+                position: "absolute",
+                top: "50%",
+                // opacity: 0.1,
+              }}
+            >
+              <Typography className="fs20px d_color Transform_Capital fontWeight700  ">
+                No Data Found
+              </Typography>
+            </Grid>
+          )}
+
+          {
+            // <div>
+            //   <div style={{ width: "100%" }}>
+            <VisibilitySensor>
+              {({ isVisible }) => {
+                const percentage = isVisible ? 2300 : 0;
+                return (
+                  <div style={{ width: 400, height: 300 }}>
+                    <CircularProgressbar
+                      value={percentage % 5000}
+                      text={`${percentage}steps`}
+                      styles={buildStyles({
+                        textColor: "#b58b5d",
+                        textSize: "10px",
+                        pathColor: "#b58b5d",
+                        trailColor: "#FFF9F0",
+                      })}
+                    />
+                  </div>
+                );
+              }}
+            </VisibilitySensor>
+            //   </div>
+            // </div>
+          }
+        </Grid>
+
         <Grid
           container
           item
@@ -287,11 +315,9 @@ const Health = () => {
             // <Bar options={options1} data={dataChart1} />
             <></>
           ) : (
-            <Line
-              options={options}
-              data={dataChart}
-              className=" pl10px  pr10px pb15px "
-            />
+            <Grid container style={{ height: "400px" }}>
+              <Bar options={options1} data={dataChart1} />
+            </Grid>
           )}
         </Grid>
       </Grid>
@@ -300,3 +326,4 @@ const Health = () => {
 };
 
 export default Health;
+// https://www.npmjs.com/package/react-circular-progressbar

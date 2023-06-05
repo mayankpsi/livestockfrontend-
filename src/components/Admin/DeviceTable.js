@@ -63,7 +63,7 @@ const Index = (props) => {
           <Grid item xs={3} sm={3} md={3} lg={3} className="flex center">
             <Typography className="  fs16px fontWeight700  ">Mac Id</Typography>
           </Grid>
-          <Grid item xs={2} sm={2} md={2} lg={2} className="flex center">
+          <Grid item xs={2} sm={2} md={3} lg={3} className="flex  center">
             <Typography className="  fs16px fontWeight700  ">
               Assigned
             </Typography>
@@ -136,9 +136,16 @@ const Index = (props) => {
                     {a?.macID}
                   </Typography>
                 </Grid>
-                <Grid item xs={2} sm={2} md={2} lg={2} className="flex center ">
+                <Grid
+                  item
+                  xs={2}
+                  sm={2}
+                  md={3}
+                  lg={3}
+                  className="flex  center "
+                >
                   <Typography className="  fs16px fontWeight700 center  ">
-                    {a?.status == true ? "Active" : "InActive"}
+                    {a?.status == true ? "Active" : "Assign livestock"}
                   </Typography>
                 </Grid>
                 <Grid item xs={2} sm={2} md={2} lg={2} className="flex center">
@@ -161,7 +168,7 @@ const Index = (props) => {
 
                     <DeletePopup
                       Name={"Device"}
-                      gatewayID={a?._id}
+                      DeviceId={a?._id}
                       reRander={props?.reRander}
                     />
                   </Stack>

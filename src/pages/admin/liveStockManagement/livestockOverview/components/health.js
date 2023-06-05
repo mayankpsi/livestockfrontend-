@@ -256,7 +256,7 @@ const Health = () => {
 
   return (
     <>
-      <Grid container className="flex  flexEnd p20px mb10px ">
+      <Grid container className="flex  center p20px mb10px ">
         <ButtonGroup
           //   variant="contained"
           aria-label=" d_bgcolor bRadius_8 border Gbtn "
@@ -281,7 +281,7 @@ const Health = () => {
           sm={12}
           md={5.5}
           lg={5.5}
-          className=" fs16px Width100 border  p20px bRadius_10, flecdir."
+          className=" fs16px Width100 border  p20px bRadius_10, "
           sx={{ position: "relative", columnGap: "span" }}
         >
           {NoData == "true" && (
@@ -352,12 +352,6 @@ const Health = () => {
               className=" pl10px  pr10px pb15px "
             />
           )}
-
-          {/* <Line
-              options={options}
-              data={dataChart}
-              className=" pl10px  pr10px pb15px "
-            /> */}
         </Grid>
       </Grid>
     </>

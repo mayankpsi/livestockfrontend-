@@ -59,7 +59,7 @@ BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
-export default function MaxWidthDialog({ Name, gatewayID, reRander }) {
+export default function MaxWidthDialog({ Name, DeviceId, reRander }) {
   const [controller, dispatch] = useLoaderController();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -74,16 +74,18 @@ export default function MaxWidthDialog({ Name, gatewayID, reRander }) {
   };
 
   const Deactived = async () => {
-    if (Name == "user") {
+    if (Name == "Device") {
       setLoader(dispatch, true);
       try {
         let UserId = localStorage.getItem("saps_id");
-        console.log("userIdddgeting in deactivated>>>>", gatewayID);
-        const res = await adminRequest.delete(`user/deleteUser/${gatewayID}`);
+        console.log("userIdddgeting in deactivated>>>>", DeviceId);
+        const res = await adminRequest.delete(
+          `/devices/delete?deviceID=${DeviceId}`
+        );
         console.log(res);
         setLoader(dispatch, false);
         if (res.status == 200 || res.status == 201) {
-          enqueueSnackbar("Clients Deleted", {
+          enqueueSnackbar("Device Deleted", {
             variant: "success",
             autoHideDuration: 3000,
           });
@@ -91,9 +93,35 @@ export default function MaxWidthDialog({ Name, gatewayID, reRander }) {
           handleClose();
         }
       } catch (err) {
+        console.log("error in deactived account ", err);
+        setLoader(dispatch, false);
+        enqueueSnackbar(err, {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      }
+    } else if (Name == "liveStock") {
+      setLoader(dispatch, true);
+      try {
+        console.log("userIdddgeting in deactivated>>>>", DeviceId);
+        const res = await adminRequest.delete(
+          `liveStock/delete?liveStockID=${DeviceId}`
+        );
+        console.log(res);
+        setLoader(dispatch, false);
+        if (res.status == 200 || res.status == 201) {
+          enqueueSnackbar("liveStock Deleted", {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+          setLoader(dispatch, false);
+          reRander();
+          handleClose();
+        }
+      } catch (err) {
         console.log("error in deactived account ");
         setLoader(dispatch, false);
-        enqueueSnackbar(err.response.data.msg, {
+        enqueueSnackbar(err?.response.data.msg, {
           variant: "error",
           autoHideDuration: 3000,
         });
@@ -101,8 +129,8 @@ export default function MaxWidthDialog({ Name, gatewayID, reRander }) {
     } else {
       setLoader(dispatch, true);
       try {
-        console.log("userIdddgeting in deactivated>>>>", gatewayID);
-        const res = await adminRequest.delete(`site/deletesite/${gatewayID}`);
+        console.log("userIdddgeting in deactivated>>>>", DeviceId);
+        const res = await adminRequest.delete(`site/deletesite/${DeviceId}`);
         console.log(res);
         setLoader(dispatch, false);
         if (res.status == 200 || res.status == 201) {
@@ -117,7 +145,7 @@ export default function MaxWidthDialog({ Name, gatewayID, reRander }) {
       } catch (err) {
         console.log("error in deactived account ");
         setLoader(dispatch, false);
-        enqueueSnackbar(err.response.data.msg, {
+        enqueueSnackbar(err?.response.data.msg, {
           variant: "error",
           autoHideDuration: 3000,
         });

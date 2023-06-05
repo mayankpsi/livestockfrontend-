@@ -10,7 +10,7 @@ import DeletePopup from "../DeletePopupCard";
 import AddSite_toUser from "./AddSite_fromUser";
 import AddLivestock from "./addLivestock";
 
-const Index = ({ liveStock }) => {
+const Index = ({ liveStock, reRander }) => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [allLiveStock, setAllLiveStock] = useState([]);
@@ -201,9 +201,9 @@ const Index = ({ liveStock }) => {
                   />
 
                   <DeletePopup
-                    Name={"user"}
-                    // gatewayID={a?._id}
-                    // reRander={props?.reRander}
+                    Name={"liveStock"}
+                    DeviceId={a?._id}
+                    reRander={reRander}
                   />
                 </Stack>
               </Grid>
