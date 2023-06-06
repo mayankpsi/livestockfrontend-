@@ -80,14 +80,15 @@ const AddSite_toAddUser = (props) => {
     setLoader(dispatch, true);
     try {
       const res = await adminRequest.get(`/liveStock/getAll?status=false`);
-      console.log("Sitefor user ", res);
+
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        setLiveStock(res.data.data);
+        setLiveStock(res?.data.data);
       }
+      console.log("livestock for Devices ", res);
     } catch (err) {
       setLoader(dispatch, false);
-      enqueueSnackbar(err.response.data.msg, {
+      enqueueSnackbar(err, {
         variant: "error",
         autoHideDuration: 3000,
       });
@@ -221,6 +222,8 @@ const AddSite_toAddUser = (props) => {
                   md={2.8}
                   lg={2.8}
                   className="border  bRadius_8 m_r10px  "
+                  // value={a?.uID},
+                  // onClick{(e) =>{ setLivestockId(e.target.value)}}
                 >
                   <Grid
                     item
@@ -253,7 +256,7 @@ const AddSite_toAddUser = (props) => {
                       {a?.uID}
                     </Typography>
                     <Typography className="fs16px  p_l-r10px fontWeight700 Transform_Capital ">
-                      {a?.deviceName}
+                      {a?.name}
                     </Typography>
                   </Grid>
                 </Grid>

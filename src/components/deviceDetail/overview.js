@@ -56,6 +56,23 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
     setLoader(dispatch, false);
     setInputDisabled(true);
   };
+  const LiveStockRemove = async (id) => {
+    let body = {
+      liveStockID: liveStock?._id,
+      deviceID: data?._id,
+    };
+    try {
+      const res = await adminRequest.post("/devices/unassign-liveStock ", body);
+      console.log(res);
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        enqueueSnackbar(res?.data?.message, {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        reRander();
+      }
+    } catch (err) {}
+  };
 
   useEffect(() => {
     setDeviceId(data?.uID);
@@ -63,6 +80,8 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
     setDeviceMacId(data?.macID);
     setLiveStockId(liveStock?.uID);
     setLiveStockName1(liveStock?.name);
+    console.log("Setting unassign", data);
+    console.log("Setting unassign liveStock liveStock", liveStock);
   }, [data, liveStock]);
 
   return (
@@ -174,14 +193,14 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
             container
             item
             className="spaceBetween mb20px p20px bRadius_8  "
-            sx={{ rowGap: "20px " }}
+            sx={{ rowGap: "20px ", border: " 1px solid red " }}
           >
             <Grid
               item
               xs={12}
               sm={12}
-              md={6}
-              lg={6}
+              md={5}
+              lg={5}
               className="flexDir  Width100"
             >
               <Typography className="fs16px mb10px b1c_color fontWeight600 ">
@@ -198,8 +217,8 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
               item
               xs={12}
               sm={12}
-              md={6}
-              lg={6}
+              md={5}
+              lg={5}
               className="flexDir  Width100"
             >
               <Typography className="fs16px mb10px b1c_color fontWeight600 ">
@@ -212,6 +231,23 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
                 disabled={inputDisabled}
               />
             </Grid>
+
+            <Grid
+              item
+              xs={2}
+              sm={2}
+              md={2}
+              lg={2}
+              className="flexDir  Width100"
+            >
+              <Button
+                className="fs14px  bRadius_8 Greenborder d_color Transform_Capital fontWeight700   mb10px"
+                onClick={() => LiveStockRemove()}
+              >
+                LiveStock Remove
+              </Button>
+            </Grid>
+            {/* p_l-r10-30px */}
           </Grid>
         ) : (
           <Grid
@@ -225,7 +261,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
               This device have no livestock assigned{" "}
             </Typography>
             <AddLiveStockToDevice
-              D_Id={deviceMacId && deviceMacId}
+              D_Id={data && data?._id}
               Name={"LiveStock"}
               reRender={reRander}
             />

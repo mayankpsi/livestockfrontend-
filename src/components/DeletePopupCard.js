@@ -108,17 +108,23 @@ export default function MaxWidthDialog({ Name, DeviceId, reRander }) {
           `liveStock/delete?liveStockID=${DeviceId}`
         );
         console.log(res);
-        setLoader(dispatch, false);
         if (res.status == 200 || res.status == 201) {
-          enqueueSnackbar("liveStock Deleted", {
-            variant: "success",
-            autoHideDuration: 3000,
-          });
-          setLoader(dispatch, false);
-          reRander();
-          handleClose();
+          const res1 = await adminRequest.delete(
+            `liveStock/delete?liveStockID=${DeviceId}`
+          );
+
+          if (res1.status == 200 || res1.status == 201) {
+            enqueueSnackbar("liveStock Deleted", {
+              variant: "success",
+              autoHideDuration: 3000,
+            });
+            setLoader(dispatch, false);
+            reRander();
+            handleClose();
+          }
         }
       } catch (err) {
+        setLoader(dispatch, false);
         console.log("error in deactived account ");
         setLoader(dispatch, false);
         enqueueSnackbar(err?.response.data.msg, {
@@ -152,9 +158,7 @@ export default function MaxWidthDialog({ Name, DeviceId, reRander }) {
       }
     }
   };
-  // useEffect(() => {
-  //   console.log('deleteAccount', Name, 'iddd gatewayID', gatewayID);
-  // }, [Name]);
+
   return (
     <React.Fragment>
       <MdDeleteOutline className="fs24px" onClick={handleClickOpen} />

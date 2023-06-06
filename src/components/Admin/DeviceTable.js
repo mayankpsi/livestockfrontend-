@@ -84,10 +84,10 @@ const Index = (props) => {
 
       {deviceDetails && deviceDetails?.length > 0 ? (
         deviceDetails?.map((a, i) => {
-          let nodeLength = 0;
-          a?.branchManager?.map((item) => {
-            nodeLength += item?.nodes?.length;
-          });
+          // let nodeLength = 0;
+          // a?.branchManager?.map((item) => {
+          //   nodeLength += item?.nodes?.length;
+          // });
 
           return (
             <Grid

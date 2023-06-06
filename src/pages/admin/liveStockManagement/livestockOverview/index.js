@@ -13,7 +13,7 @@ import { useSnackbar } from "notistack";
 import AdminUIContainer from "../../../../layout/AdminUIContainer";
 import Overview from "../livestockOverview/components/overview";
 // import BranchManager from "../../../../components/gatewayDetail/branchManager";
-import Location from "../../../../components/deviceDetail/analytics";
+// import Location from "../../../../components/deviceDetail/analytics";
 import Health from "../livestockOverview/components/health";
 import Activity from "../livestockOverview/components/activity";
 import Devices from "../livestockOverview/components/device";
@@ -197,7 +197,7 @@ const Index = (props) => {
               />
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <Location />
+              {/* <Location /> */}
             </TabPanel>
             <TabPanel value={value} index={2}>
               {/* <BranchManager
