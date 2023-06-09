@@ -65,7 +65,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
       const res = await adminRequest.post("/devices/unassign-liveStock ", body);
       console.log(res);
       if (res.statusCode == 200 || res.statusCode == 201) {
-        enqueueSnackbar(res?.data?.message, {
+        enqueueSnackbar(res?.message, {
           variant: "success",
           autoHideDuration: 3000,
         });
@@ -193,7 +193,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
             container
             item
             className="spaceBetween mb20px p20px bRadius_8  "
-            sx={{ rowGap: "20px ", border: " 1px solid red " }}
+            sx={{ rowGap: "20px "}}
           >
             <Grid
               item

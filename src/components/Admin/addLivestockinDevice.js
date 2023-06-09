@@ -84,6 +84,7 @@ const AddSite_toAddUser = (props) => {
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         setLiveStock(res?.data.data);
+        
       }
       console.log("livestock for Devices ", res);
     } catch (err) {
@@ -107,7 +108,7 @@ const AddSite_toAddUser = (props) => {
       console.log("live Assign to Device ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        enqueueSnackbar("Site Assign to user Successfully ", {
+        enqueueSnackbar("LiveStock Assign to Device Successfully ", {
           variant: "success",
           autoHideDuration: 3000,
         });

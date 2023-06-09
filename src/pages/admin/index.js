@@ -105,11 +105,12 @@ const AdminDashBoard = () => {
               container
               item
               xs={12}
-              className="flex"
+              className="flex spaceBetween"
               style={{
                 flexDirection: "row",
                 rowGap: "2rem",
                 columnGap: "2rem",
+                // border:"1px solid red"
               }}
             >
               <DashboardCard

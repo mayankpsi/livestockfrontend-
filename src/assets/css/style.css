@@ -476,8 +476,8 @@ body {
   width: 100vw;
   display: flex;
   align-items: center;
-  justify-content: end;
-  padding-right: 10%;
+  justify-content: center;
+  /* padding-right: 10%; */
 }
 
 .auth-container input {

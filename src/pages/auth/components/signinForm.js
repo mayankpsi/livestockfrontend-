@@ -38,11 +38,12 @@ const SigninForm = () => {
         // localStorage.setItem("liveStock_type", res.data.user.role);
         // localStorage.setItem("liveStock_id", res.data.data.user._id);
 
+        window.location.href = `/${res.data.data.user.name}/dashboard`;
         enqueueSnackbar('login done', {
           variant: 'success',
           autoHideDuration: 3000,
         });
-        navigate('/admin/dashboard');
+        // navigate('/admin/dashboard');
         // window.location.href = `/${res.data.data.user.name}/dashboard`;
       } else {
         enqueueSnackbar(res?.response?.data?.msg, {
