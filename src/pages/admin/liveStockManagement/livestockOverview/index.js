@@ -202,6 +202,7 @@ const Index = (props) => {
                 title="Gateway Details"
                 data={details && details}
                 apiEndpoint={`/liveStock/update?liveStockID=${livestockID}`}
+                reRender={getLiveStockDetail}
               />
             </TabPanel>
             <TabPanel value={value} index={1}>

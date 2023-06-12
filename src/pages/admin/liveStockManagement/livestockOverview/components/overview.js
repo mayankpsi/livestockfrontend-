@@ -12,11 +12,12 @@ import Feet from "../../../../../assets/images/feet.png";
 import Locpin from "../../../../../assets/images/locPin.png";
 import { useSnackbar } from "notistack";
 import { FaBatteryThreeQuarters } from "react-icons/fa";
+import EditLivestock from "../../../../../components/Admin/editLiveStock";
 
 import { useLoaderController, setLoader } from "../../../../../context/common";
 import { adminRequest } from "../../../../../requestMethod";
 
-const Overview = ({ title, data, apiEndpoint }) => {
+const Overview = ({ title, data, apiEndpoint, reRender }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [controller, dispatch] = useLoaderController();
@@ -267,14 +268,15 @@ const Overview = ({ title, data, apiEndpoint }) => {
               // p_r30px
               // sx={{ border: "1px solid red" }}
             >
-              <Button
+              <EditLivestock data={data} reRender={reRender} />
+              {/* <Button
                 className="fs14px  bRadius_8 Greenborder d_bgcolor  white_color Transform_Capital fontWeight700  p_l-r10-30px  mb10px"
                 onClick={() =>
                   inputDisabled ? setInputDisabled(false) : saveData()
                 }
               >
                 {inputDisabled ? "Edit" : "Save"}
-              </Button>
+              </Button> */}
             </Grid>
           </Grid>
         </Grid>

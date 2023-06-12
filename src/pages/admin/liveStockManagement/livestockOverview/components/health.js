@@ -58,12 +58,10 @@ ChartJS.register(
 const Health = () => {
   const currentDate = moment().format("YYYY-MM-DD");
   const [startDate, setStartDate] = useState(new Date());
-  const [user, setUser] = useState([]);
-  const [date, setDateValue] = useState(currentDate);
-  const [open, setOpen] = useState(false);
+
   const [orderType, setOrderType] = useState("N");
   const [details, setDetails] = useState();
-  const { gatewayName, branchName, deviceId } = useParams();
+
   const [controller, dispatch] = useLoaderController();
   const [depth, setDepth] = useState("depth1");
   const [active, setActive] = useState(0);
@@ -81,6 +79,7 @@ const Health = () => {
     "November",
     "December",
   ]);
+  const [dataType, setDateType] = useState("monthly");
   const [lastDate, setLastDate] = useState("");
   const [NoData, setNoData] = useState("false");
 
@@ -214,6 +213,86 @@ const Health = () => {
     ],
   };
 
+  // const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [datasets, setDataSets] = useState([]);
+  const [dates, setAnalyticsDate] = useState([
+    "12:00am",
+    "12:30am",
+
+    "01:00am",
+    "01:30am",
+
+    "02:00am",
+    "02:30am",
+
+    "03:00am",
+    "03:30am",
+
+    "04:00am",
+    "04:30am",
+
+    "05:00am",
+    "05:30am",
+
+    "06:00am",
+    "06:30am",
+
+    "07:00am",
+    "07:30am",
+
+    "08:00am",
+    "08:30am",
+
+    "09:00am",
+    "09:30am",
+
+    "10:00am",
+    "10:30am",
+
+    "11:00am",
+    "11:30am",
+
+    "12:00pm",
+    "12:30pm",
+
+    "01:00pm",
+    "01:30pm",
+
+    "02:00pm",
+    "02:30pm",
+
+    "03:00pm",
+    "03:30pm",
+
+    "04:00pm",
+    "04:30pm",
+
+    "05:00pm",
+    "05:30pm",
+
+    "06:00pm",
+    "06:30pm",
+
+    "07:00pm",
+    "07:30pm",
+
+    "08:00pm",
+    "08:30pm",
+
+    "09:00pm",
+    "09:30pm",
+
+    "10:00pm",
+    "10:30pm",
+
+    "11:00pm",
+    "11:30pm",
+
+    "12:00pm",
+    "12:30pm",
+  ]);
+
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
   const isSm = useMediaQuery(theme.breakpoints.up("sm"));
@@ -254,6 +333,76 @@ const Health = () => {
     barThickness: 20,
   };
 
+  useEffect(() => {
+    if (dataType === "today") {
+      setLabels(times);
+    }
+    if (dataType === "last7days") {
+      const endDate = new Date().toISOString()?.split("T")[0];
+      let d = new Date(); // today!
+      let x = 7; // go back 7 days!
+      d.setDate(d.getDate() - x);
+      setStartDate(d.toISOString()?.split("T")[0]);
+      setEndDate(endDate);
+      console.log("endDate", endDate, "d", d);
+    }
+    if (dataType === "monthly") {
+      const endDate = new Date().toISOString()?.split("T")[0];
+      let d = new Date(); // today!
+      let x = 30; // go back 30 days!
+      d.setDate(d.getDate() - x);
+      setStartDate(d.toISOString()?.split("T")[0]);
+      setEndDate(endDate);
+    }
+  }, [dataType]);
+
+  useEffect(() => {
+    if (dataType === "today") {
+      setDataSets([
+        {
+          label: "heartbeat",
+          // data: user,
+          data: labels.map(() => faker.datatype.number({ min: 60, max: 90 })),
+          borderColor: "rgba(181, 139, 93, 1)",
+          tension: 0.5,
+          background: "rgba(181, 139, 93, 1)",
+        },
+      ]);
+    } else if (dataType === "last7days") {
+      setDataSets([
+        {
+          label: "heartbeat",
+          // data: user,
+          data: labels.map(() => faker.datatype.number({ min: 60, max: 90 })),
+          borderColor: "rgba(181, 139, 93, 1)",
+          tension: 0.5,
+          background: "rgba(181, 139, 93, 1)",
+        },
+      ]);
+    } else if (dataType === "monthly") {
+      setDataSets([
+        {
+          label: "heartbeat",
+          // data: user,
+          data: labels.map(() => faker.datatype.number({ min: 60, max: 90 })),
+          borderColor: "rgba(181, 139, 93, 1)",
+          tension: 0.5,
+          background: "rgba(181, 139, 93, 1)",
+        },
+      ]);
+    }
+  }, [dataType]);
+
+  const data = {
+    labels:
+      dates && dataType == "today"
+        ? dates
+        : dates.length === 24
+        ? times
+        : dates?.length == 12,
+
+    datasets: datasets,
+  };
   return (
     <>
       <Grid container className="flex  center p20px mb10px ">
@@ -261,13 +410,22 @@ const Health = () => {
           //   variant="contained"
           aria-label=" d_bgcolor bRadius_8 border Gbtn "
         >
-          <Button className="fs14px p10px white_color d_bgcolor bRadius_8-1Left-tb Gbtn p_l-r13-60px ">
+          <Button
+            className="fs14px p10px white_color d_bgcolor bRadius_8-1Left-tb Gbtn p_l-r13-60px "
+            onClick={() => setDateType("today")}
+          >
             Today
           </Button>
-          <Button className=" fs14px p10px  d_bgcolor white_color Gbtn">
+          <Button
+            className=" fs14px p10px  d_bgcolor white_color Gbtn"
+            onClick={() => setDateType("last7days")}
+          >
             Week
           </Button>
-          <Button className=" fs14px p10px d_bgcolor bRadius_8-1BottomRight-tb  white_color Gbtn p_l-r13-60px ">
+          <Button
+            className=" fs14px p10px d_bgcolor bRadius_8-1BottomRight-tb  white_color Gbtn p_l-r13-60px "
+            onClick={() => setDateType("monthly")}
+          >
             Month
           </Button>
         </ButtonGroup>
@@ -305,7 +463,7 @@ const Health = () => {
           ) : (
             <Line
               options={options}
-              data={dataChart}
+              data={data}
               className=" pl10px  pr10px pb15px "
             />
           )}

@@ -22,10 +22,10 @@ html {
 }
 
 body {
-  font-family: 'Poppins' !important;
+  font-family: "Poppins" !important;
 }
 
-input[type='radio']:after {
+input[type="radio"]:after {
   width: 15px;
   height: 15px;
   border-radius: 15px;
@@ -33,13 +33,13 @@ input[type='radio']:after {
   left: -1px;
   position: relative;
   background-color: #d1d3d1;
-  content: '';
+  content: "";
   display: inline-block;
   visibility: visible;
   border: 2px solid white;
 }
 
-input[type='radio']:checked:after {
+input[type="radio"]:checked:after {
   width: 15px;
   height: 15px;
   border-radius: 15px;
@@ -47,7 +47,7 @@ input[type='radio']:checked:after {
   left: -1px;
   position: relative;
   background-color: #b58b5d;
-  content: '';
+  content: "";
   display: inline-block;
   visibility: visible;
   border: 2px solid white !important;
@@ -86,7 +86,7 @@ input[type='radio']:checked:after {
 }
 
 .Green_color {
-  color: #347D00 !important;
+  color: #347d00 !important;
 }
 .Red_color {
   color: red !important;
@@ -105,7 +105,7 @@ input[type='radio']:checked:after {
 }
 
 body {
-  font-family: 'Poppins' !important;
+  font-family: "Poppins" !important;
 }
 
 .textDecorNone {
@@ -416,13 +416,13 @@ body {
 }
 
 .Divider {
-  background-color: '#347d00';
+  background-color: "#347d00";
   height: 0.2rem;
   margin-bottom: 3rem;
 }
 
 .DividerDDD {
-  background-color: '#ddd';
+  background-color: "#ddd";
   height: 0.1rem;
   margin-bottom: 3rem;
 }
@@ -441,6 +441,10 @@ body {
 .spaceBetween {
   justify-content: space-between !important;
   align-items: center !important;
+}
+.spaceBetweenflexEnd {
+  justify-content: space-between !important;
+  align-items: flex-end !important;
 }
 
 .spaceBetween1 {
@@ -470,7 +474,7 @@ body {
 }
 
 .auth-container {
-  background-image: url('../images/Login.png');
+  background-image: url("../images/Login.png");
   background-size: contain;
   height: 100vh;
   width: 100vw;
@@ -673,7 +677,7 @@ body {
 }
 
 .Selectmenustyle {
-  font-family: 'Oswald' !important;
+  font-family: "Oswald" !important;
   width: 100% !important;
   height: 100% !important;
   font-size: 13px !important;
@@ -690,7 +694,7 @@ body {
 .filterButtonDesign {
   border: 1px solid #ddd !important;
   text-transform: capitalize !important;
-  background-color: 'transparent';
+  background-color: "transparent";
   color: #6f6f6f !important;
   padding: 0.7rem 1rem !important;
   border-radius: 8px !important;
@@ -726,7 +730,7 @@ body {
 
 .loader::after,
 .loader::before {
-  content: '';
+  content: "";
   width: 8px;
   height: 40px;
   border-radius: 4px;
@@ -784,7 +788,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 

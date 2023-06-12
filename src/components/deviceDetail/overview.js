@@ -195,7 +195,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRender }) => {
           <Grid
             container
             item
-            className="spaceBetween mb20px p20px bRadius_8  "
+            className="spaceBetweenflexEnd mb20px p20px bRadius_8  "
             sx={{
               rowGap: "20px ",
             }}
@@ -237,14 +237,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRender }) => {
               />
             </Grid>
 
-            <Grid
-              item
-              xs={2}
-              sm={2}
-              md={2}
-              lg={2}
-              className="flexDir  Width100"
-            >
+            <Grid item xs={2} sm={2} md={2} lg={2} className=" Width100 ">
               <Button
                 className="fs14px  bRadius_8 Greenborder d_color Transform_Capital fontWeight700"
                 onClick={() => LiveStockRemove()}
@@ -299,7 +292,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRender }) => {
             item
             xs={5.6}
             sm={5.8}
-            md={4}
+            md={4.5}
             lg={4}
             className="IntBorder  fs18px flex spaceBetween bRadius_8 p_l-r10px"
             sx={{
@@ -332,7 +325,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRender }) => {
             item
             xs={5.6}
             sm={5.8}
-            md={4}
+            md={4.5}
             lg={4}
             className="IntBorder  fs18px flex spaceBetween bRadius_8 p_l-r10px"
           >
@@ -343,6 +336,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRender }) => {
               md={6}
               lg={6}
               className="flex AlignCenter spaceBetween "
+              style={{ columnGap: " 1rem " }}
             >
               {data && data?.wifiStatus == true ? (
                 <BiWifi className="fs20px Green_color fontWeight700 " />
