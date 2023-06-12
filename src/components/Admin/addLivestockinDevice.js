@@ -84,9 +84,8 @@ const AddSite_toAddUser = (props) => {
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         setLiveStock(res?.data.data);
-        
       }
-      console.log("livestock for Devices ", res);
+      // console.log("livestock for Devices ", res);
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err, {
@@ -112,8 +111,8 @@ const AddSite_toAddUser = (props) => {
           variant: "success",
           autoHideDuration: 3000,
         });
-        props?.reRander();
         handleClose();
+        props?.reRender();
       }
       // enqueueSnackbar(res?.response?.data?.msg, {
       //   variant: "success",
@@ -132,7 +131,7 @@ const AddSite_toAddUser = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log("props>>props", props);
+    // console.log("props>>props", props);
   }, [props]);
 
   return (

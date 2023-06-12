@@ -112,7 +112,7 @@ const AddSite_toUser = (props) => {
           variant: 'success',
           autoHideDuration: 3000,
         });
-        props?.reRander();
+        props?.reRender();
         handleClose();
       }
       if (res?.response?.status == 400) {

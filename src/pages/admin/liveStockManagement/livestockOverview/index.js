@@ -12,11 +12,14 @@ import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
 import AdminUIContainer from "../../../../layout/AdminUIContainer";
 import Overview from "../livestockOverview/components/overview";
+
 // import BranchManager from "../../../../components/gatewayDetail/branchManager";
 // import Location from "../../../../components/deviceDetail/analytics";
 import Health from "../livestockOverview/components/health";
 import Activity from "../livestockOverview/components/activity";
 import Devices from "../livestockOverview/components/device";
+
+import Location from "./components/location";
 
 // import Status from "../../../../components/gatewayDetail/status";
 import { adminRequest } from "../../../../requestMethod";
@@ -63,9 +66,10 @@ const Index = (props) => {
       const res = await adminRequest.get(
         `/liveStock/getLiveStockByID?liveStockID=${livestockID}`
       );
+      setLoader(dispatch, false);
+
       console.log("res>> liveStock file", res?.data?.data);
       if (res.status == 200) {
-        setLoader(dispatch, false);
         setDetails(res?.data?.data);
       } else {
         console.log("error ");
@@ -171,18 +175,22 @@ const Index = (props) => {
                 <Tab
                   label="Location"
                   className="TabChangesDevice Transform_Capital fs16px bold bRadius_8"
+                  disabled={details?.assignedDevice ? false : true}
                 />
                 <Tab
                   label="Health"
                   className="TabChangesDevice Transform_Capital fs16px bold"
+                  disabled={details?.assignedDevice ? false : true}
                 />
                 <Tab
                   label="Activity"
                   className="TabChangesDevice Transform_Capital fs16px bold"
+                  disabled={details?.assignedDevice ? false : true}
                 />
                 <Tab
                   label="Device"
                   className="TabChangesDevice Transform_Capital fs16px bold"
+                  disabled={details?.assignedDevice ? false : true}
                 />
               </Tabs>
             </Grid>
@@ -197,7 +205,7 @@ const Index = (props) => {
               />
             </TabPanel>
             <TabPanel value={value} index={1}>
-              {/* <Location /> */}
+              <Location details={details && details?.geolocation} />
             </TabPanel>
             <TabPanel value={value} index={2}>
               {/* <BranchManager

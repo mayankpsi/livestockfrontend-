@@ -181,7 +181,7 @@ const Index = (props) => {
                   <AddSite_toUser
                     Name={'site'}
                     gatewayID={a?._id}
-                    reRander={props?.reRander}
+                    reRender={props?.reRender}
                   />
                   <MdOutlineRemoveRedEye
                     className="fs24px"
@@ -195,7 +195,7 @@ const Index = (props) => {
                   <DeletePopup
                     Name={'user'}
                     gatewayID={a?._id}
-                    reRander={props?.reRander}
+                    reRender={props?.reRender}
                   />
                 </Stack>
               </Grid>

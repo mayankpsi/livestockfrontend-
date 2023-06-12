@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Grid, Typography, InputBase } from "@mui/material";
 import { BiWifi } from "react-icons/bi";
-import  moment from "moment";
+import moment from "moment";
 // import DetailForm from "../Common/detailForm";
 // import DetailMap from "../Common/detailMap";
 // import TableHead from "../User/BranchManagerTable";
@@ -30,7 +30,7 @@ const Overview = ({ title, data, apiEndpoint }) => {
   const [uID, setUID] = useState("");
   const [macId, setMacId] = useState("");
   const [image, setImage] = useState("");
-   const date = new Date();
+  const date = new Date();
   const saveData = async () => {
     setLoader(dispatch, true);
     let body = {
@@ -82,11 +82,9 @@ const Overview = ({ title, data, apiEndpoint }) => {
           <Grid item className="Width100   flex spaceBetween">
             <img src={Heart} alt="heartbeat" />
             <Typography className="fs14px  flexDir AlignStart">
-        
               {/* 02:48 PM */}
-           
-              {date && moment(date).format("LT")}
 
+              {date && moment(date).format("LT")}
             </Typography>
           </Grid>
           <Grid item className="Width100 flex spaceBetween">
@@ -139,7 +137,6 @@ const Overview = ({ title, data, apiEndpoint }) => {
           <Grid item className="Width100   flex spaceBetween">
             <img src={Locpin} alt="live-location" />
             <Typography className="fs14px  flexDir AlignStart">
-          
               {date && moment(date).format("LT")}
             </Typography>
           </Grid>
@@ -194,7 +191,7 @@ const Overview = ({ title, data, apiEndpoint }) => {
               className="flexDir  Width100"
             >
               <Typography className="fs16px mb10px b1c_color fontWeight600 ">
-                Device Name
+                LiveStock Name
               </Typography>
               <InputBase
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
@@ -217,8 +214,8 @@ const Overview = ({ title, data, apiEndpoint }) => {
               <InputBase
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
                 value={macId}
-                onChange={(e) => setMacId(e.target.value)}
-                disabled={inputDisabled}
+                // onChange={(e) => setMacId(e.target.value)}
+                disabled
               />
             </Grid>
           </Grid>

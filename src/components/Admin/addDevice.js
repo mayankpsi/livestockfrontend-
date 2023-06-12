@@ -108,7 +108,8 @@ const AddDevice = (props) => {
     setOpen(false);
   };
 
-  const AddDevice = async () => {
+  const AddDevice = async (e) => {
+    e.preventDefault()
     setLoader(dispatch, true);
     let body = {
       uID: deviceId,
@@ -117,25 +118,29 @@ const AddDevice = (props) => {
     };
     try {
       const res = await adminRequest.post(`/devices/create`, body);
-      console.log("Devices add in livestock ", res);
+      // console.log("Devices add in livestock ", res, res.data, res.data.data);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        setSiteDetails(res.data.data);
-        handleClose();
-        props.reRender();
-
+        enqueueSnackbar(res?.data?.message||"device successfully created", {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
         setDeviceId("");
         setDeviceName("");
         setDeviceMacId("");
+        setSiteDetails(res.data.data);
+        handleClose();
+        props.reRender();
       }
     } catch (err) {
       setLoader(dispatch, false);
-      enqueueSnackbar(err.response.data.msg, {
+      enqueueSnackbar(err?.response?.data?.msg||"Someting wrong", {
         variant: "error",
         autoHideDuration: 3000,
       });
     }
   };
+
 
   return (
     <>
@@ -180,10 +185,10 @@ const AddDevice = (props) => {
           {/* {`Assign ${props?.Name}`} */}
           Add Device
         </BootstrapDialogTitle>
+        <form onSubmit={AddDevice}>
 
         <DialogContent>
           <Grid container className="flex spaceBetween ">
-            <form onSubmit={AddDevice}>
               <Grid
                 container
                 item
@@ -268,7 +273,6 @@ const AddDevice = (props) => {
                   </Button>
                 </Grid> */}
               </Grid>
-            </form>
           </Grid>
         </DialogContent>
 
@@ -285,13 +289,15 @@ const AddDevice = (props) => {
           <Button
             type="submit"
             className="fs16px  fontWeight600 white_color d_bgcolor p_l-r10-30px  "
-            onClick={() => {
-              AddDevice();
-            }}
+            // onClick={() => {
+            //   AddDevice();
+            // }}
           >
             submit
           </Button>
         </DialogActions>
+        </form>
+
       </Dialog>
     </>
   );

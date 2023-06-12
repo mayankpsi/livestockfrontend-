@@ -8,9 +8,9 @@ import { useSnackbar } from "notistack";
 import { useLoaderController, setLoader } from "../../context/common";
 import { adminRequest } from "../../requestMethod";
 
-const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
+const Overview = ({ title, data, liveStock, apiEndpoint, reRender }) => {
   const navigate = useNavigate();
-  const { deviceName } = useParams();
+  const { id } = useParams();
   const [controller, dispatch] = useLoaderController();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -34,7 +34,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
     };
     try {
       const res = await adminRequest.post(
-        `/devices/update?deviceID=${deviceName}`,
+        `/devices/update?deviceID=${id}`,
         body
       );
       console.log("update user ", res);
@@ -44,6 +44,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
           variant: "success",
           autoHideDuration: 3000,
         });
+        reRender();
         // navigate(`/admin/user-management/${id}`, { state: update });
       }
     } catch (err) {
@@ -62,14 +63,16 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
       deviceID: data?._id,
     };
     try {
+      setLoader(dispatch, true);
       const res = await adminRequest.post("/devices/unassign-liveStock ", body);
       console.log(res);
-      if (res.statusCode == 200 || res.statusCode == 201) {
-        enqueueSnackbar(res?.message, {
+      setLoader(dispatch, false);
+      if (res.status == 200 || res.status == 201) {
+        enqueueSnackbar("unassign LiveStock successfully", {
           variant: "success",
           autoHideDuration: 3000,
         });
-        reRander();
+        reRender();
       }
     } catch (err) {}
   };
@@ -193,7 +196,9 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
             container
             item
             className="spaceBetween mb20px p20px bRadius_8  "
-            sx={{ rowGap: "20px "}}
+            sx={{
+              rowGap: "20px ",
+            }}
           >
             <Grid
               item
@@ -210,7 +215,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
                 value={liveStockId}
                 onChange={(e) => setLiveStockId(e.target.value)}
-                disabled={inputDisabled}
+                disabled
               />
             </Grid>
             <Grid
@@ -228,7 +233,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
                 className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
                 value={liveStockName1}
                 onChange={(e) => setLiveStockName1(e.target.value)}
-                disabled={inputDisabled}
+                disabled
               />
             </Grid>
 
@@ -241,7 +246,7 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
               className="flexDir  Width100"
             >
               <Button
-                className="fs14px  bRadius_8 Greenborder d_color Transform_Capital fontWeight700   mb10px"
+                className="fs14px  bRadius_8 Greenborder d_color Transform_Capital fontWeight700"
                 onClick={() => LiveStockRemove()}
               >
                 LiveStock Remove
@@ -263,9 +268,9 @@ const Overview = ({ title, data, liveStock, apiEndpoint, reRander }) => {
             <AddLiveStockToDevice
               D_Id={data && data?._id}
               Name={"LiveStock"}
-              reRender={reRander}
+              reRender={reRender}
             />
-            {/* reRander={UserDetails} */}
+            {/* reRender={UserDetails} */}
           </Grid>
         )}
       </Grid>

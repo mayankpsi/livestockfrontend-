@@ -459,11 +459,11 @@ const AdminDashBoard = () => {
                       <Grid
                         item
                         className="flex  centerJc Cursor"
-                        onClick={() => navigate("/admin/user-management")}
+                        onClick={() => navigate("/admin/livestock")}
                       >
                         <IoIosAddCircleOutline className="fs20px white_color " />
                         <Typography className="fontWeight700 white_color fs14px ml5px">
-                          Add User
+                          Add livestock
                         </Typography>
                       </Grid>
                     </Grid>
@@ -687,7 +687,7 @@ const AdminDashBoard = () => {
                           }}
                           className=" Cursor"
                           onClick={() => {
-                            navigate("/admin/user-management");
+                            navigate("/admin/livestock");
                           }}
                         >
                           <img

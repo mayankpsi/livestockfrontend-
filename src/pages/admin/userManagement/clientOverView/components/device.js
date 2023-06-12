@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import SiteManageTable from "./siteTable";
 import SiteDetail from "../../siteDetail";
 
-const Index = ({ data, reRander }) => {
+const Index = ({ data, reRender }) => {
   const { state } = useLocation();
 
   const [showSiteDetail, setShowSiteDetail] = useState(false);
@@ -23,7 +23,7 @@ const Index = ({ data, reRander }) => {
         <SiteManageTable
           showDetail={showDetail}
           data={data && data}
-          reRander={reRander}
+          reRender={reRender}
         />
       )}
     </>

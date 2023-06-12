@@ -49,7 +49,7 @@ const Index = (props) => {
   const [controller, dispatch] = useLoaderController();
 
   const [value, setValue] = useState(0);
-  const [liveStockDetails, setliveStockDetails] = useState([]);
+  const [liveStockDetails, setliveStockDetails] = useState();
   const [details, setDetails] = useState();
   const [liveStock_Id, setLiveStock_ID] = useState();
   const [address, setAddress] = useState({});
@@ -203,6 +203,7 @@ const Index = (props) => {
                 <Tab
                   label="Livestocks"
                   className="TabChangesDevice Transform_Capital fs16px bold bRadius_8"
+                  disabled={liveStockDetails ? false : true}
                 />
                 {/* <Tab
                   label="Livestocks"
@@ -223,7 +224,7 @@ const Index = (props) => {
                 data={details && details}
                 liveStock={liveStockDetails && liveStockDetails}
                 apiEndpoint="/devices/update"
-                reRander={getDeviceDetail}
+                reRender={getDeviceDetail}
               />
             </TabPanel>
             <TabPanel value={value} index={1}>

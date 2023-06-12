@@ -16,7 +16,7 @@ const Index = (props) => {
 
   useEffect(() => {
     props && setDeviceDetails(props?.data);
-    // console.log(props);
+    // console.log(">>",props);
   }, [props]);
   return (
     <>
@@ -38,6 +38,8 @@ const Index = (props) => {
           md={4}
           lg={4}
           // sx={{ border: "1px solid red" }}
+          // justifyContent="center"
+          alignItems="center"
         >
           <Grid item xs={4} sm={4} md={4} lg={4}>
             <Typography className="  fs16px  p_l-r10px fontWeight700">
@@ -58,6 +60,8 @@ const Index = (props) => {
           sm={8}
           md={8}
           lg={8}
+          alignItems="center"
+
           className="flex spaceBetween"
         >
           <Grid item xs={3} sm={3} md={3} lg={3} className="flex center">
@@ -167,9 +171,11 @@ const Index = (props) => {
                     {/* <MdDeleteOutline className="fs24px" /> */}
 
                     <DeletePopup
-                      Name={"Device"}
+                      Name={a?.status?"Device1":"Device2"}
                       DeviceId={a?._id}
-                      reRander={props?.reRander}
+                    liveStockId={a?.liveStock}
+
+                      reRender={props?.reRender}
                     />
                   </Stack>
                 </Grid>
@@ -200,7 +206,7 @@ const Index = (props) => {
               Add Site
             </Typography>
           </Grid> */}
-          <AddDevice />
+          <AddDevice reRender={props?.reRender}/>
         </Grid>
       )}
     </>

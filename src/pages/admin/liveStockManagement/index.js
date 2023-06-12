@@ -109,12 +109,14 @@ const Index = () => {
                 All LiveStock ({allLiveStock?.length})
               </Typography>
 
-              <AddLiveStock type={3} />
+              <AddLiveStock type={3}
+              reRender={getAllLiveStock}
+              />
             </Grid>
             <SiteManageTable
               className=" mt30px "
               liveStock={allLiveStock}
-              reRander={getAllLiveStock}
+              reRender={getAllLiveStock}
             />
           </Container>
         </>

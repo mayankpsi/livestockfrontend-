@@ -59,7 +59,7 @@ BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
-export default function MaxWidthDialog({ Name, DeviceId, reRander }) {
+export default function MaxWidthDialog({ Name, DeviceId,liveStockId, reRender }) {
   const [controller, dispatch] = useLoaderController();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -74,24 +74,30 @@ export default function MaxWidthDialog({ Name, DeviceId, reRander }) {
   };
 
   const Deactived = async () => {
-    if (Name == "Device") {
+    if (Name == "Device1"|| Name=="Device2") {
       setLoader(dispatch, true);
       try {
-        let UserId = localStorage.getItem("saps_id");
-        console.log("userIdddgeting in deactivated>>>>", DeviceId);
-        const res = await adminRequest.delete(
+        if(Name=="Device1"){
+           await adminRequest.post(
+            `devices/unassign-liveStock`,{
+              "liveStockID":liveStockId,
+              "deviceID":DeviceId
+            }
+          );
+        }
+        const res1 = await adminRequest.delete(
           `/devices/delete?deviceID=${DeviceId}`
         );
-        console.log(res);
         setLoader(dispatch, false);
-        if (res.status == 200 || res.status == 201) {
+        if (res1.status == 200 || res1.status == 201) {
+
           enqueueSnackbar("Device Deleted", {
             variant: "success",
             autoHideDuration: 3000,
           });
-          reRander();
+          reRender();
           handleClose();
-        }
+                }        
       } catch (err) {
         console.log("error in deactived account ", err);
         setLoader(dispatch, false);
@@ -100,29 +106,33 @@ export default function MaxWidthDialog({ Name, DeviceId, reRander }) {
           autoHideDuration: 3000,
         });
       }
-    } else if (Name == "liveStock") {
+    }
+    
+    else if (Name == "liveStock") {
       setLoader(dispatch, true);
       try {
-        console.log("userIdddgeting in deactivated>>>>", DeviceId);
-        const res = await adminRequest.delete(
-          `liveStock/delete?liveStockID=${DeviceId}`
-        );
-        console.log(res);
-        if (res.status == 200 || res.status == 201) {
+        if(DeviceId){
+           await adminRequest.post(
+            `devices/unassign-liveStock`,{
+              "liveStockID":liveStockId,
+              "deviceID":DeviceId
+            }
+          );
+        }
+        
           const res1 = await adminRequest.delete(
-            `liveStock/delete?liveStockID=${DeviceId}`
+            `liveStock/delete?liveStockID=${liveStockId}`
           );
 
           if (res1.status == 200 || res1.status == 201) {
-            enqueueSnackbar("liveStock Deleted", {
+            enqueueSnackbar("liveStock successfully Deleted", {
               variant: "success",
               autoHideDuration: 3000,
             });
             setLoader(dispatch, false);
-            reRander();
+            reRender();
             handleClose();
           }
-        }
       } catch (err) {
         setLoader(dispatch, false);
         console.log("error in deactived account ");
@@ -145,7 +155,7 @@ export default function MaxWidthDialog({ Name, DeviceId, reRander }) {
             autoHideDuration: 3000,
           });
           setLoader(dispatch, false);
-          reRander();
+          reRender();
           handleClose();
         }
       } catch (err) {
@@ -180,7 +190,7 @@ export default function MaxWidthDialog({ Name, DeviceId, reRander }) {
           }}
         >
           <Typography className="fs18px  ">
-            {`Are you sure you want to delete the ${Name && Name}?`}
+            {`Are you sure you want to delete the ${Name=="Device1"||Name=="Device2"?"Device": Name} ?`}
           </Typography>
         </DialogContent>
         <DialogActions>

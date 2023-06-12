@@ -106,12 +106,12 @@ const Index = () => {
                 All User ({userDetails?.length})
               </Typography>
 
-              <AddClient reRander={UserDetails} />
+              <AddClient reRender={UserDetails} />
             </Grid>
             <SiteManageTable
               className=" mt30px "
               Details={userDetails}
-              reRander={UserDetails}
+              reRender={UserDetails}
             />
           </Container>
         </>

@@ -202,13 +202,13 @@ const Index = (props) => {
             </TabPanel>
             <TabPanel value={value} index={1}>
               {/* {value == 1 && navigate("/order")} */}
-              <Site data={userDetails && userDetails} reRander={UserDetails} />
+              <Site data={userDetails && userDetails} reRender={UserDetails} />
             </TabPanel>
             <TabPanel value={value} index={2}>
               {/* {value == 1 && navigate("/order")} */}
               <Livestock
                 data={userDetails && userDetails}
-                reRander={UserDetails}
+                reRender={UserDetails}
               />
             </TabPanel>
           </Grid>

@@ -150,10 +150,13 @@ const AddLivestock = (props) => {
       console.log("Sitefor user ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
+        handleClose()
+        getDevices()
         enqueueSnackbar("live stock created", {
           variant: "success",
           autoHideDuration: 3000,
         });
+        props.reRender()
       }
     } catch (err) {
       setLoader(dispatch, false);

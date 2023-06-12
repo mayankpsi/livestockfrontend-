@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 // import { useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
-import { Grid, Typography, Button, Input } from '@mui/material';
+import { useSnackbar } from "notistack";
+import { Grid, Typography, Button, Input } from "@mui/material";
 // import Visibility from "@mui/icons-material/Visibility";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-import { publicRequest } from '../../../requestMethod';
-import loader from '../../../components/loader';
-import { useLoaderController, setLoader } from '../../../context/common';
-import { handleSignin } from '../../../store/Slices/dashboardSlice';
+import { publicRequest } from "../../../requestMethod";
+import loader from "../../../components/loader";
+import { useLoaderController, setLoader } from "../../../context/common";
+import { handleSignin } from "../../../store/Slices/dashboardSlice";
 
 const SigninForm = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [controller, dispatch] = useLoaderController();
   const navigate = useNavigate();
 
-  const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
   const [showPasscode, setShowPasscode] = useState(false);
 
   //   LoginWithEmail
@@ -29,25 +29,25 @@ const SigninForm = () => {
 
     try {
       setLoader(dispatch, true);
-      const res = await publicRequest.post('/auth/sign-in', body);
-      console.log('login ', res);
+      const res = await publicRequest.post("/auth/sign-in", body);
+      console.log("login ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        localStorage.setItem('liveStock_token', res.data.data.accessToken);
-        localStorage.setItem('liveStock_user', res.data.data.user.name);
+        localStorage.setItem("liveStock_token", res.data.data.accessToken);
+        localStorage.setItem("liveStock_user", res.data.data.user.name);
         // localStorage.setItem("liveStock_type", res.data.user.role);
         // localStorage.setItem("liveStock_id", res.data.data.user._id);
 
         window.location.href = `/${res.data.data.user.name}/dashboard`;
-        enqueueSnackbar('login done', {
-          variant: 'success',
+        enqueueSnackbar("login done", {
+          variant: "success",
           autoHideDuration: 3000,
         });
         // navigate('/admin/dashboard');
         // window.location.href = `/${res.data.data.user.name}/dashboard`;
       } else {
         enqueueSnackbar(res?.response?.data?.msg, {
-          variant: 'error',
+          variant: "error",
           autoHideDuration: 3000,
         });
       }
@@ -55,14 +55,14 @@ const SigninForm = () => {
       console.log(err);
       setLoader(dispatch, false);
       enqueueSnackbar(err?.response?.data?.message, {
-        variant: 'error',
+        variant: "error",
         autoHideDuration: 3000,
       });
     }
   };
 
   useEffect(() => {
-    if (localStorage.getItem('liveStock_token')) navigate(`/admin/dashboard`);
+    if (localStorage.getItem("liveStock_token")) navigate(`/admin/dashboard`);
   }, []);
 
   return (
@@ -74,11 +74,11 @@ const SigninForm = () => {
         <Grid
           item
           style={{
-            rowGap: '.5rem',
+            rowGap: ".5rem",
           }}
           className="flexDir AlignStart "
         >
-          <Typography className="GreyText">Username</Typography>
+          <Typography className="GreyText">Useremail</Typography>
           <input
             className="inp p_l15px fs14px"
             value={userEmail}
@@ -89,16 +89,16 @@ const SigninForm = () => {
         <Grid
           item
           style={{
-            rowGap: '.5rem',
+            rowGap: ".5rem",
           }}
           className=" mt5px flexDir AlignStart "
         >
           <Typography className="GreyText">Password</Typography>
 
-          <Grid style={{ position: 'relative' }}>
+          <Grid style={{ position: "relative" }}>
             <input
               className="inpeyepassword  p_l15px fs14px Width100 "
-              type={showPasscode ? 'text' : 'password'}
+              type={showPasscode ? "text" : "password"}
               value={userPassword}
               onChange={(e) => setUserPassword(e.target.value)}
               required
@@ -107,7 +107,7 @@ const SigninForm = () => {
             <Grid
               item
               sx={{
-                position: 'absolute',
+                position: "absolute",
                 top: 12,
                 right: 10,
                 height: 20,

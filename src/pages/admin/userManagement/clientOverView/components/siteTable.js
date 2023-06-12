@@ -9,7 +9,7 @@ import Add from "../../../../../assets/images/AddSite.png";
 // import AddSite_fromUser from '../../../../../components/Admin/AddSite_fromAddUser.js';
 import DeletePopup from "../../../../../components/DeletePopupCard.js";
 
-const Index = ({ showDetail, data, reRander }) => {
+const Index = ({ showDetail, data, reRender }) => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -33,7 +33,7 @@ const Index = ({ showDetail, data, reRander }) => {
           {/* <AddSite_fromUser
             Name={'site'}
             gatewayID={data && data.length > 0 && data[0]?._id}
-            reRander={reRander}
+            reRender={reRender}
           /> */}
         </Grid>
         <Grid

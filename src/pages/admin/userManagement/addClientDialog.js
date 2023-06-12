@@ -56,7 +56,7 @@ function BootstrapDialogTitle(props) {
   );
 }
 
-export default function CustomizedDialogs({ reRander }) {
+export default function CustomizedDialogs({ reRender }) {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [controller, dispatch] = useLoaderController();
@@ -148,7 +148,7 @@ export default function CustomizedDialogs({ reRander }) {
           setUserId("");
           setUserPassword("");
           setUserConfirmPassword("");
-          reRander();
+          reRender();
           handleClose();
         } else {
           enqueueSnackbar(res?.response?.data?.msg, {

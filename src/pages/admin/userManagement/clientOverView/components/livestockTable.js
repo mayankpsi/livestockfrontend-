@@ -159,7 +159,7 @@ const Index = (props) => {
                     <DeletePopup
                       Name={'site'}
                       gatewayID={a?._id}
-                      reRander={props?.reRander}
+                      reRender={props?.reRender}
                     />
                   </Stack>
                 </Grid>

@@ -10,7 +10,7 @@ import DeletePopup from "../DeletePopupCard";
 import AddSite_toUser from "./AddSite_fromUser";
 import AddLivestock from "./addLivestock";
 
-const Index = ({ liveStock, reRander }) => {
+const Index = ({ liveStock, reRender }) => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [allLiveStock, setAllLiveStock] = useState([]);
@@ -19,7 +19,7 @@ const Index = ({ liveStock, reRander }) => {
   // const UserDetails = props?.Details?.data;
 
   useEffect(() => {
-    // console.log('DetailsDetails ', liveStock);
+    // console.log('liveStock Details ', liveStock);
     setAllLiveStock(liveStock);
   }, [liveStock]);
   return (
@@ -189,7 +189,7 @@ const Index = ({ liveStock, reRander }) => {
                   {/* <AddSite_toUser
                     Name={"site"}
                     gatewayID={a?._id}
-                    reRander={props?.reRander}
+                    reRender={props?.reRender}
                   /> */}
                   <MdOutlineRemoveRedEye
                     className="fs24px"
@@ -202,8 +202,9 @@ const Index = ({ liveStock, reRander }) => {
 
                   <DeletePopup
                     Name={"liveStock"}
-                    DeviceId={a?._id}
-                    reRander={reRander}
+                    DeviceId={a?.assignedDevice?._id}
+                    liveStockId={a?._id}
+                    reRender={reRender}
                   />
                 </Stack>
               </Grid>
@@ -218,7 +219,9 @@ const Index = ({ liveStock, reRander }) => {
           style={{ height: "400px" }}
           className=" border "
         >
-          <AddLivestock />
+          <AddLivestock
+            reRender={reRender}
+          />
         </Grid>
         //   <Grid
         //     container

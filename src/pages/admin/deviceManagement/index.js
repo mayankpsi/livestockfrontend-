@@ -73,11 +73,15 @@ const Index = () => {
   };
 
   const getAllData = async () => {
+    setLoader(dispatch, true);
+
     const promise1 = adminRequest.get("/devices/getAll?status=true");
     const promise2 = adminRequest.get("/devices/getAll?status=false");
 
     Promise.all([promise1, promise2]).then(function (values) {
       console.log(values);
+    setLoader(dispatch, false);
+
       setAssignedDevice(values[0]?.data?.data);
       setIdleDevice(values[1]?.data?.data);
     });
@@ -189,7 +193,7 @@ const Index = () => {
                 <DeviceTable
                   className=" mt30px "
                   data={assignedDevice}
-                  reRander={getAllData}
+                  reRender={getAllData}
                 />
               )}
             </TabPanel>
@@ -197,7 +201,7 @@ const Index = () => {
               <DeviceTable
                 className=" mt30px "
                 data={idleDevice && idleDevice}
-                reRander={getAllData}
+                reRender={getAllData}
               />
             </TabPanel>
           </Grid>
@@ -205,7 +209,7 @@ const Index = () => {
           {/* <SiteManageTable
               className=" mt30px "
               data={siteDetails}
-              reRander={getSite}
+              reRender={getSite}
             /> */}
         </Container>
         {/* </> */}
