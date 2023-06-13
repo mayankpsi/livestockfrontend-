@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 
-import {
-  Grid,
-  Typography,
-  Divider,
-  TextField,
-  FormControl,
-  ButtonGroup,
-  Button,
-} from "@mui/material";
+import { Grid, Typography, ButtonGroup, Button } from "@mui/material";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,16 +13,9 @@ import {
   Filler,
 } from "chart.js";
 import { PointElement, LineElement } from "chart.js";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
 import faker from "faker";
 import { Line } from "react-chartjs-2";
-import { Bar } from "react-chartjs-2";
 
-import { DateRange } from "react-date-range";
 import format from "date-fns/format";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
@@ -40,8 +24,6 @@ import { useTheme } from "@mui/material/styles";
 // import UnitTable from "../Common/unitTable";
 import { adminRequest } from "../../../../../requestMethod";
 import { setLoader, useLoaderController } from "../../../../../context/common";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 ChartJS.register(
   CategoryScale,
@@ -57,6 +39,7 @@ ChartJS.register(
 );
 const Health = () => {
   const currentDate = moment().format("YYYY-MM-DD");
+
   const [startDate, setStartDate] = useState(new Date());
 
   const [orderType, setOrderType] = useState("N");
@@ -79,7 +62,7 @@ const Health = () => {
     "November",
     "December",
   ]);
-  const [dataType, setDateType] = useState("monthly");
+  const [dataType, setDateType] = useState("today");
   const [lastDate, setLastDate] = useState("");
   const [NoData, setNoData] = useState("false");
 
@@ -87,7 +70,8 @@ const Health = () => {
     let days = [];
     for (let i = 0; i < length; i++)
       days.push(moment(currentDate).subtract(i, "days").format("DD/MM/YYYY"));
-
+    console.log(days);
+    setLabels(days);
     return days;
   };
 
@@ -168,21 +152,6 @@ const Health = () => {
     "12:30pm",
   ];
 
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
   const dataChart = {
     labels,
     datasets: [
@@ -204,7 +173,7 @@ const Health = () => {
       {
         label: "Temperature",
         // data: user,
-        data: labels.map(() => faker.datatype.number({ min: 90, max: 102 })),
+        data: labels.map(() => faker.datatype.number({ min: 90, max: 110 })),
         borderColor: "rgba(181, 139, 93, 1)",
         barRadius: 10,
         tension: 0.5,
@@ -332,27 +301,26 @@ const Health = () => {
     barRadius: 20,
     barThickness: 20,
   };
+  function dateRange(startDate, endDate, steps = 1) {
+    const dateArray = [];
+    let currentDate = new Date(startDate);
+    while (currentDate <= new Date(endDate)) {
+      dateArray.push(new Date(currentDate).toISOString().split("T")[0]);
+      currentDate.setUTCDate(currentDate.getUTCDate() + steps);
+    }
+
+    return dateArray;
+  }
 
   useEffect(() => {
     if (dataType === "today") {
       setLabels(times);
     }
     if (dataType === "last7days") {
-      const endDate = new Date().toISOString()?.split("T")[0];
-      let d = new Date(); // today!
-      let x = 7; // go back 7 days!
-      d.setDate(d.getDate() - x);
-      setStartDate(d.toISOString()?.split("T")[0]);
-      setEndDate(endDate);
-      console.log("endDate", endDate, "d", d);
+      getDays(7);
     }
     if (dataType === "monthly") {
-      const endDate = new Date().toISOString()?.split("T")[0];
-      let d = new Date(); // today!
-      let x = 30; // go back 30 days!
-      d.setDate(d.getDate() - x);
-      setStartDate(d.toISOString()?.split("T")[0]);
-      setEndDate(endDate);
+      getDays(30);
     }
   }, [dataType]);
 
@@ -373,7 +341,7 @@ const Health = () => {
         {
           label: "heartbeat",
           // data: user,
-          data: labels.map(() => faker.datatype.number({ min: 60, max: 90 })),
+          data: labels.map(() => faker.datatype.number({ min: 60, max: 100 })),
           borderColor: "rgba(181, 139, 93, 1)",
           tension: 0.5,
           background: "rgba(181, 139, 93, 1)",
@@ -408,22 +376,37 @@ const Health = () => {
       <Grid container className="flex  center p20px mb10px ">
         <ButtonGroup
           //   variant="contained"
-          aria-label=" d_bgcolor bRadius_8 border Gbtn "
+          aria-label="  bRadius_8 border Gbtn Greenborder "
         >
           <Button
-            className="fs14px p10px white_color d_bgcolor bRadius_8-1Left-tb Gbtn p_l-r13-60px "
+            className={
+              dataType === "today"
+                ? "fs14px p10px white_color d_bgcolor bRadius_8-1Left-tb  p_l-r13-60px"
+                : "fs14px p10px Greenborder  d_color bRadius_8-1Left-tb "
+            }
+            // className="fs14px p10px white_color d_bgcolor bRadius_8-1Left-tb Gbtn p_l-r13-60px "
             onClick={() => setDateType("today")}
           >
             Today
           </Button>
           <Button
-            className=" fs14px p10px  d_bgcolor white_color Gbtn"
+            // className=" fs14px p10px  d_bgcolor white_color Gbtn"
+            className={
+              dataType === "last7days"
+                ? "fs14px p10px  d_bgcolor white_color Gbtn"
+                : "fs14px p10px Greenborder  d_color "
+            }
             onClick={() => setDateType("last7days")}
           >
             Week
           </Button>
           <Button
-            className=" fs14px p10px d_bgcolor bRadius_8-1BottomRight-tb  white_color Gbtn p_l-r13-60px "
+            className={
+              dataType === "monthly"
+                ? "fs14px p10px d_bgcolor bRadius_8-1BottomRight-tb  white_color Gbtn p_l-r13-60px"
+                : "fs14px p10px Greenborder bRadius_8-1BottomRight-tb  d_color  p_l-r13-60px"
+            }
+            // className="  "
             onClick={() => setDateType("monthly")}
           >
             Month
@@ -431,15 +414,30 @@ const Health = () => {
         </ButtonGroup>
       </Grid>
 
-      <Grid container className="flex spaceBetween">
+      <Grid container className="flex spaceBetween" style={{ rowGap: "2rem" }}>
         <Grid
           container
           item
           xs={12}
           sm={12}
-          md={5.5}
-          lg={5.5}
-          className=" fs16px Width100 border  p20px bRadius_10, "
+          md={12}
+          lg={12}
+          className="  Width100  "
+        >
+          {" "}
+          <Typography className="fs24px fontWeight700 d_color Transform_Capital">
+            {" "}
+            Heartbeat
+          </Typography>
+        </Grid>
+        <Grid
+          container
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          className=" fs16px Width100 border  p20px bRadius_10 "
           sx={{ position: "relative", columnGap: "span" }}
         >
           {NoData == "true" && (
@@ -463,16 +461,25 @@ const Health = () => {
           ) : (
             <Line
               options={options}
-              data={data}
+              data={dataChart}
               className=" pl10px  pr10px pb15px "
             />
           )}
-
-          {/* <Line
-              options={options}
-              data={dataChart}
-              className=" pl10px  pr10px pb15px "
-            /> */}
+        </Grid>
+        <Grid
+          container
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          className="  Width100  "
+        >
+          {" "}
+          <Typography className="fs24px fontWeight700 d_color Transform_Capital">
+            {" "}
+            Temperature
+          </Typography>
         </Grid>
 
         <Grid
@@ -480,10 +487,10 @@ const Health = () => {
           item
           xs={12}
           sm={12}
-          md={5.5}
-          lg={5.5}
+          md={12}
+          lg={12}
           className=" fs16px Width100 border  p20px bRadius_10 "
-          sx={{ position: "relative" }}
+          // sx={{ position: "relative" }}
         >
           {NoData == "true" && (
             <Grid
