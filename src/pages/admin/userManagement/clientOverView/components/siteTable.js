@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Button, Grid, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
+import { Grid, Typography } from "@mui/material";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Add from "../../../../../assets/images/AddSite.png";
-// import AddSite_fromUser from '../../../../../components/Admin/AddSite_fromAddUser.js';
 import DeletePopup from "../../../../../components/DeletePopupCard.js";
 
 const Index = ({ showDetail, data, reRender }) => {

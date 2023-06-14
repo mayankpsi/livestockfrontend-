@@ -31,6 +31,8 @@ const Overview = ({ title, data, apiEndpoint, reRender }) => {
   const [uID, setUID] = useState("");
   const [macId, setMacId] = useState("");
   const [image, setImage] = useState("");
+  const [updateModel, setUpdateModel] = useState(false);
+
   const date = new Date();
   const saveData = async () => {
     setLoader(dispatch, true);
@@ -268,15 +270,23 @@ const Overview = ({ title, data, apiEndpoint, reRender }) => {
               // p_r30px
               // sx={{ border: "1px solid red" }}
             >
-              <EditLivestock data={data} reRender={reRender} />
-              {/* <Button
+              <Button
                 className="fs14px  bRadius_8 Greenborder d_bgcolor  white_color Transform_Capital fontWeight700  p_l-r10-30px  mb10px"
-                onClick={() =>
-                  inputDisabled ? setInputDisabled(false) : saveData()
-                }
+                onClick={() => {
+                  // handleClickOpen();
+                  setUpdateModel(true);
+                }}
+                // p_l-r10-30px
               >
-                {inputDisabled ? "Edit" : "Save"}
-              </Button> */}
+                edit
+              </Button>
+              {updateModel && (
+                <EditLivestock
+                  data={data}
+                  reRender={reRender}
+                  closeModel={() => setUpdateModel(false)}
+                />
+              )}
             </Grid>
           </Grid>
         </Grid>

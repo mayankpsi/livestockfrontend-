@@ -80,6 +80,9 @@ input[type="radio"]:checked:after {
 .g_color {
   color: #696969 !important;
 }
+.date_color {
+  color: #535353 !important;
+}
 
 .y_color {
   color: #ffb900 !important;

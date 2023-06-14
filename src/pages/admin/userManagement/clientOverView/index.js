@@ -82,7 +82,7 @@ const Index = (props) => {
   };
 
   useEffect(() => {
-    UserDetails();
+    // UserDetails();
   }, [id]);
   // useEffect(() => {
   //   UserDetails();

@@ -62,13 +62,13 @@ function BootstrapDialogTitle(props) {
   );
 }
 
-const EditLivestock = ({ data, reRender }) => {
+const EditLivestock = ({ data, reRender, closeModel }) => {
   const navigate = useNavigate();
   //   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
   const [controller, dispatch] = useLoaderController();
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [fullWidth, setFullWidth] = useState(true);
   const [maxWidth, setMaxWidth] = useState("sm");
 
@@ -83,46 +83,16 @@ const EditLivestock = ({ data, reRender }) => {
   const [liveStockId, setLiveStockId] = useState("");
   const [liveStockName, setLiveStockName] = useState("");
   const [liveStockDevice, setLiveStockDevice] = useState("");
-  const [liveStockPicture, setLiveStockPicture] = useState("");
+  const [liveStockPicture, setLiveStockPicture] = useState(null);
   const [allDevice, setAllDevice] = useState("");
-
-  const saveData = async () => {
-    setLoader(dispatch, true);
-    let body = {
-      // uID: liveStockNameId,
-      // name: liveStockName,
-      //   deviceID: liveStockDevice,
-    };
-    try {
-      const res = await adminRequest.post(`/user/userupdate/`, body);
-      console.log("update user ", res);
-      setLoader(dispatch, false);
-      if (res.status == 200 || res.status == 201) {
-        enqueueSnackbar(res?.data?.msg, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-        // navigate(`/admin/user-management/${id}`, { state: update });
-      }
-    } catch (err) {
-      setLoader(dispatch, false);
-      enqueueSnackbar(err.response.data.msg, {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-    setLoader(dispatch, false);
-    setInputDisabled(true);
-  };
+  const [imageChanges, setImageChanges] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
-    setLiveStockId("");
-    setLiveStockName("");
-    setLiveStockPicture("");
+    closeModel();
   };
 
   const editLiveStock = async (e) => {
@@ -130,15 +100,18 @@ const EditLivestock = ({ data, reRender }) => {
     setLoader(dispatch, true);
 
     const formData = new FormData();
+    formData.append("id", data?._id);
     formData.append("uID", liveStockId);
     formData.append("name", liveStockName);
-    formData.append("liveStockImage", liveStockPicture);
-    formData.append("liveStockImageName", liveStockPicture.name);
-    formData.append("deviceID", liveStockDevice);
+    formData.append("imageChanges", imageChanges);
+    if (imageChanges) {
+      formData.append("liveStockImage", liveStockPicture);
+      formData.append("liveStockImageName", liveStockPicture.name);
+    }
 
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/v1/liveStock/create`,
+        `http://localhost:8080/api/v1/liveStock/update`,
         formData,
         {
           headers: {
@@ -151,8 +124,7 @@ const EditLivestock = ({ data, reRender }) => {
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         handleClose();
-        // getDevices();
-        enqueueSnackbar("live stock edited", {
+        enqueueSnackbar("LiveStock successfully updated", {
           variant: "success",
           autoHideDuration: 3000,
         });
@@ -206,9 +178,16 @@ const EditLivestock = ({ data, reRender }) => {
     }
   };
 
+  useEffect(() => {
+    setLiveStockName(data?.name);
+    setLiveStockId(data?.uID);
+    setFileType("jpeg");
+    setLiveStockPicture(data?.imgPath?.split("uploads")[1]);
+  }, [data]);
+
   return (
     <>
-      <Button
+      {/* <Button
         className="fs14px  bRadius_8 Greenborder d_bgcolor  white_color Transform_Capital fontWeight700  p_l-r10-30px  mb10px"
         onClick={() => {
           handleClickOpen();
@@ -216,7 +195,7 @@ const EditLivestock = ({ data, reRender }) => {
         // p_l-r10-30px
       >
         edit
-      </Button>
+      </Button> */}
 
       <Dialog
         onClose={handleClose}
@@ -257,7 +236,6 @@ const EditLivestock = ({ data, reRender }) => {
                       container
                       item
                       md={12}
-                      // htmlFor="raised-button-file"
                       className="flexDir center border p10px bRadius_8"
                       variant="raised"
                       style={{ position: "relative" }}
@@ -269,26 +247,7 @@ const EditLivestock = ({ data, reRender }) => {
                       <Typography className="fs12px fontFamily">
                         (Format: jpg,jpeg)
                       </Typography>
-                      {/* {filetype === "video/mp4" ? (
-                        <>
-                          <input
-                            required
-                            style={{
-                              position: "absolute",
-                              width: "100%",
-                              height: "100%",
-                              opacity: "0",
-                            }}
-                            type="file"
-                            id="raised-button-file"
-                            accept="video/mp4 image/jpeg,image/jpg"
-                            onChange={(e) => {
-                              onChangeFile(e);
-                              // handleVideoUpload(e);
-                            }}
-                          />
-                        </>
-                      ) : ( */}
+
                       <>
                         <input
                           style={{
@@ -301,9 +260,8 @@ const EditLivestock = ({ data, reRender }) => {
                           type="file"
                           id="raised-button-file"
                           accept="image/jpeg, image/jpg"
-                          // accept="video/*"
-                          // accept="image/jpg,image/jpeg"
                           onChange={(e) => {
+                            setImageChanges(true);
                             setLiveStockPicture(e.target.files[0]);
                             onChangeFile(e);
                             // handleVideoUpload(e);
@@ -337,7 +295,11 @@ const EditLivestock = ({ data, reRender }) => {
                         />
                         <img
                           required
-                          src={file}
+                          src={
+                            !imageChanges
+                              ? `http://localhost:8080/uploads/${liveStockPicture}`
+                              : file
+                          }
                           style={{
                             height: "250px",
                             width: "100%",
@@ -438,7 +400,6 @@ const EditLivestock = ({ data, reRender }) => {
             <Button
               className="fs16px  fontWeight600 white_color d_bgcolor p_l-r10-30px  "
               type="submit"
-              // onClick={() => {}}
             >
               Save
             </Button>

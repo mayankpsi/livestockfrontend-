@@ -41,8 +41,6 @@ const Health = () => {
   const currentDate = moment().format("YYYY-MM-DD");
 
   const [startDate, setStartDate] = useState(new Date());
-
-  const [orderType, setOrderType] = useState("N");
   const [details, setDetails] = useState();
 
   const [controller, dispatch] = useLoaderController();
@@ -301,6 +299,7 @@ const Health = () => {
     barRadius: 20,
     barThickness: 20,
   };
+
   function dateRange(startDate, endDate, steps = 1) {
     const dateArray = [];
     let currentDate = new Date(startDate);
