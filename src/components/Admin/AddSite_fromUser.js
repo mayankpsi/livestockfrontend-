@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogTitle,
@@ -12,20 +12,20 @@ import {
   RadioGroup,
   Radio,
   FormControl,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 
-import { useSnackbar } from 'notistack';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import HighlightOff from '@mui/icons-material/HighlightOff';
-import { adminRequest } from '../../requestMethod';
-import { useLoaderController, setLoader } from '../../context/common';
+import { useSnackbar } from "notistack";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import HighlightOff from "@mui/icons-material/HighlightOff";
+import { adminRequest } from "../../requestMethod";
+import { useLoaderController, setLoader } from "../../context/common";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
+  "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
-  '& .MuiDialogActions-root': {
+  "& .MuiDialogActions-root": {
     padding: theme.spacing(1),
   },
 }));
@@ -45,7 +45,7 @@ function BootstrapDialogTitle(props) {
           aria-label="close"
           onClick={onClose}
           sx={{
-            position: 'absolute',
+            position: "absolute",
             right: 9,
             top: 7,
           }}
@@ -65,7 +65,7 @@ const AddSite_toUser = (props) => {
 
   const [open, setOpen] = useState(false);
   const [fullWidth, setFullWidth] = useState(true);
-  const [maxWidth, setMaxWidth] = useState('md');
+  const [maxWidth, setMaxWidth] = useState("md");
   const [userId, setUserId] = useState();
   const [clientId, setClientId] = useState();
   const [siteDetails, setSiteDetails] = useState([]);
@@ -79,10 +79,10 @@ const AddSite_toUser = (props) => {
   };
   const SiteDetails = async () => {
     setLoader(dispatch, true);
-    let adminId = localStorage.getItem('agro_id');
+    let adminId = localStorage.getItem("agro_id");
     try {
       const res = await adminRequest.get(`/site/getSitesOnly/${adminId}`);
-      console.log('Sitefor user ', res);
+      console.log("Sitefor user ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         setSiteDetails(res.data.data);
@@ -90,7 +90,7 @@ const AddSite_toUser = (props) => {
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err.response.data.msg, {
-        variant: 'error',
+        variant: "error",
         autoHideDuration: 3000,
       });
     }
@@ -102,14 +102,14 @@ const AddSite_toUser = (props) => {
       client_id: props?.gatewayID,
     };
 
-    console.log('Assigning', body);
+    console.log("Assigning", body);
 
     try {
-      const res = await adminRequest.post('/user/addSiteToClient', body);
+      const res = await adminRequest.post("/user/addSiteToClient", body);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        enqueueSnackbar('Site Assign to user Successfully ', {
-          variant: 'success',
+        enqueueSnackbar("Site Assign to user Successfully ", {
+          variant: "success",
           autoHideDuration: 3000,
         });
         props?.reRender();
@@ -117,20 +117,20 @@ const AddSite_toUser = (props) => {
       }
       if (res?.response?.status == 400) {
         enqueueSnackbar(res?.response?.data?.msg, {
-          variant: 'error',
+          variant: "error",
           autoHideDuration: 3000,
         });
       }
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err.response.data.msg, {
-        variant: 'error',
+        variant: "error",
         autoHideDuration: 3000,
       });
     }
   };
   useEffect(() => {
-    SiteDetails();
+    // SiteDetails();
   }, []);
 
   return (
@@ -165,7 +165,7 @@ const AddSite_toUser = (props) => {
 
         <DialogContent>
           <Grid container className="flex spaceBetween">
-            {' '}
+            {" "}
             <Grid
               container
               item
@@ -204,7 +204,7 @@ const AddSite_toUser = (props) => {
             md={12}
             lg={12}
             sx={{
-              rowGap: '1rem',
+              rowGap: "1rem",
             }}
             // spaceBetween
             className=" flex flexStart  fs16px  p_t-b10px  "
@@ -262,7 +262,7 @@ const AddSite_toUser = (props) => {
                 container
                 justifyContent="center"
                 alignItems="center"
-                style={{ height: '100px' }}
+                style={{ height: "100px" }}
                 className=" border "
               >
                 {/* <Grid

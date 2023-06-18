@@ -65,7 +65,7 @@ const Index = (props) => {
 
   const UserDetails = async () => {
     try {
-      const res = await adminRequest.get(`/user/getClientDetails/${id}`);
+      const res = await adminRequest.get(`/user/getUserByID?userID=${id}`);
       console.log("userdetails,userdetails ", res);
       setLoader(dispatch, true);
       if (res.status == 200 || res.status == 201) {
@@ -82,7 +82,7 @@ const Index = (props) => {
   };
 
   useEffect(() => {
-    // UserDetails();
+    UserDetails();
   }, [id]);
   // useEffect(() => {
   //   UserDetails();

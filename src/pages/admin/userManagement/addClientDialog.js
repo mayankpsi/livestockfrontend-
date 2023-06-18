@@ -78,9 +78,9 @@ export default function CustomizedDialogs({ reRender }) {
   const [userName, setUserName] = useState("");
   const [userId, setUserId] = useState();
   const [userPassword, setUserPassword] = useState("");
-  const [userConfirmPassword, setUserConfirmPassword] = useState("");
   const [showPasscode, setShowPasscode] = useState(false);
-  const [showConfirmPasscode, setShowConfirmPasscode] = useState(false);
+  const [userPhone, setUserPhone] = useState("");
+  const [email, setEmail] = useState("");
 
   const passwordRequirements = [
     "min one number required",
@@ -114,7 +114,8 @@ export default function CustomizedDialogs({ reRender }) {
     setOpen(false);
   };
 
-  const RegisterUser = async () => {
+  const createUser = async (e) => {
+    e.preventDefault();
     if (
       !hasNumber ||
       !hasSpecialCharacter ||
@@ -129,16 +130,19 @@ export default function CustomizedDialogs({ reRender }) {
       return;
     }
 
-    if (userPassword == userConfirmPassword) {
+    if (userPassword) {
       let body = {
-        clientName: userName,
-        clientID: userId,
-        clientPassword: userPassword.trim(),
+        userID: userId,
+        name: userName,
+        email: email,
+        password: userPassword.trim(),
+        phone: userPhone.trim(),
       };
       setLoader(dispatch, true);
       try {
-        const res = await adminRequest.post("/authUser/register", body);
+        const res = await adminRequest.post("/user/create", body);
         setLoader(dispatch, false);
+        console.log(res);
         if (res.status == 200 || res.status == 201) {
           enqueueSnackbar("User Registered done", {
             variant: "success",
@@ -147,18 +151,20 @@ export default function CustomizedDialogs({ reRender }) {
           setUserName("");
           setUserId("");
           setUserPassword("");
-          setUserConfirmPassword("");
+          setEmail("");
+          setUserPhone("");
           reRender();
           handleClose();
         } else {
-          enqueueSnackbar(res?.response?.data?.msg, {
+          enqueueSnackbar(res?.response?.data?.message, {
             variant: "error",
             autoHideDuration: 3000,
           });
         }
       } catch (err) {
         setLoader(dispatch, false);
-        enqueueSnackbar(err?.response?.data?.msg, {
+        console.log(err);
+        enqueueSnackbar(err?.response?.data?.message, {
           variant: "error",
           autoHideDuration: 3000,
         });
@@ -193,8 +199,8 @@ export default function CustomizedDialogs({ reRender }) {
         >
           Add User
         </BootstrapDialogTitle>
-        <form>
-          {/* onSubmit={() => RegisterUser()} */}
+        <form onSubmit={(e) => createUser(e)}>
+          {/*  */}
           <DialogContent>
             {/* <Grid container className=" fs18px mt10px  fontWeight600 ">
               Enter Client Detail
@@ -251,8 +257,8 @@ export default function CustomizedDialogs({ reRender }) {
                 <input
                   className="inp  p_l-r10px fs16px "
                   type="text"
-                  // value={userName}
-                  // onChange={(e) => setUserName(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </Grid>
@@ -359,8 +365,8 @@ export default function CustomizedDialogs({ reRender }) {
                 <input
                   className="inp  p_l-r10px fs16px "
                   type="number"
-                  // value={userName}
-                  // onChange={(e) => setUserName(e.target.value)}
+                  value={userPhone}
+                  onChange={(e) => setUserPhone(e.target.value)}
                   required
                 />
               </Grid>
@@ -437,11 +443,8 @@ export default function CustomizedDialogs({ reRender }) {
               className="fs16px  fontWeight600 white_color d_bgcolor p_l-r10-30px  "
             /> */}
             <Button
-              // type="submit"
+              type="submit"
               className="fs16px  fontWeight600 white_color d_bgcolor p_l-r10-30px  "
-              onClick={() => {
-                RegisterUser();
-              }}
             >
               submit
             </Button>

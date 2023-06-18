@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Button, Grid, Typography, InputBase } from "@mui/material";
 // import SiteManageTable from "../../../../../components/Admin/userManageTable";
 import TableinfoUser from "./overviewTable";
@@ -8,13 +8,13 @@ import { adminRequest } from "../../../../../requestMethod";
 import { useSnackbar } from "notistack";
 import SiteDetail from "../../siteDetail";
 
-const Index = ({ data }) => {
-  const { state } = useLocation();
+const Index = ({ data, reRender }) => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [controller, dispatch] = useLoaderController();
-  const [clientId, setClientId] = useState("");
-  const [clientName, setClientName] = useState("");
+  const [Id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [update, setUpdate] = useState(true);
   const [showSiteDetail, setShowSiteDetail] = useState(false);
 
@@ -24,20 +24,18 @@ const Index = ({ data }) => {
   const saveData = async () => {
     setLoader(dispatch, true);
     let body = {
-      clientID: clientId,
-      clientName: clientName,
-      client_id: id,
+      phone: phone,
+      name: name,
     };
     try {
-      const res = await adminRequest.post(`/user/userupdate/`, body);
+      const res = await adminRequest.post(`/user/update?id=${data?._id}`, body);
       console.log("update user ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        enqueueSnackbar(res?.data?.msg, {
+        enqueueSnackbar(res?.data?.message, {
           variant: "success",
           autoHideDuration: 3000,
         });
-        navigate(`/admin/user-management/${id}`, { state: update });
       }
     } catch (err) {
       setLoader(dispatch, false);
@@ -49,13 +47,17 @@ const Index = ({ data }) => {
     setLoader(dispatch, false);
     setInputDisabled(true);
   };
+
   const showDetail = (val) => {
     setShowSiteDetail(val);
   };
 
   useEffect(() => {
-    setClientId(state?.clientID);
-    setClientName(state?.clientName);
+    setId(data?.userID);
+    setName(data?.name);
+    setEmail(data?.email);
+    setPhone(data?.phone);
+
     console.log("Client", data);
   }, [data]);
 
@@ -91,9 +93,10 @@ const Index = ({ data }) => {
             </Typography>
             <InputBase
               className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-              value={clientId}
-              onChange={(e) => setClientId(e.target.value)}
-              disabled={inputDisabled}
+              value={Id}
+              onChange={(e) => setId(e.target.value)}
+              // disabled={inputDisabled}
+              disabled={true}
             />
           </Grid>
           <Grid
@@ -109,8 +112,8 @@ const Index = ({ data }) => {
             </Typography>
             <InputBase
               className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-              value={clientName}
-              onChange={(e) => setClientName(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               disabled={inputDisabled}
             />
           </Grid>
@@ -127,9 +130,10 @@ const Index = ({ data }) => {
             </Typography>
             <InputBase
               className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-              // value={clientId}
-              // onChange={(e) => setClientId(e.target.value)}
-              disabled={inputDisabled}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              // disabled={inputDisabled}
+              disabled={true}
             />
           </Grid>
           <Grid
@@ -145,8 +149,8 @@ const Index = ({ data }) => {
             </Typography>
             <InputBase
               className=" border p_t-l15px fs16px Width80  bRadius_8 fontWeight700"
-              // value={clientId}
-              // onChange={(e) => setClientId(e.target.value)}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               disabled={inputDisabled}
             />
           </Grid>

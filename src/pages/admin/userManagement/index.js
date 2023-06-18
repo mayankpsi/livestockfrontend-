@@ -28,11 +28,11 @@ const Index = () => {
   const UserDetails = async () => {
     setLoader(dispatch, true);
     try {
-      const res = await adminRequest.get("/user/getclients");
+      const res = await adminRequest.get("/user/getAll");
       console.log("AddSite ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        setUserDetails(res.data);
+        setUserDetails(res?.data?.data);
       }
     } catch (err) {
       setLoader(dispatch, false);
@@ -44,12 +44,9 @@ const Index = () => {
   };
 
   useEffect(() => {
-    // UserDetails();
+    UserDetails();
   }, []);
-  useEffect(() => {
-    console.log("refreshrefreshrefresh", state);
-    // UserDetails();
-  }, [state]);
+
   return (
     <>
       <AdminUIContainer>
