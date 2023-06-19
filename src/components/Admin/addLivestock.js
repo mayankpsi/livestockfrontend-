@@ -135,17 +135,17 @@ const AddLivestock = (props) => {
     formData.append("liveStockImage", liveStockPicture);
     formData.append("liveStockImageName", liveStockPicture.name);
     formData.append("deviceID", liveStockDevice);
-
+    // console.log("formData formData", formData);
     try {
-      const res = await axios.post(
-        `http://localhost:8080/api/v1/liveStock/create`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("liveStock_token")}`,
-            "Content-Type": "text/html; charset=utf-8",
-          },
-        }
+      const res = await adminRequest.post(
+        `/liveStock/create`,
+        formData
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("liveStock_token")}`,
+        //     "Content-Type": "text/html; charset=utf-8",
+        //   },
+        // }
       );
       console.log("Sitefor user ", res);
       setLoader(dispatch, false);

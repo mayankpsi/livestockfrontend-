@@ -110,15 +110,15 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
     }
 
     try {
-      const res = await axios.post(
-        `http://localhost:8080/api/v1/liveStock/update`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("liveStock_token")}`,
-            "Content-Type": "text/html; charset=utf-8",
-          },
-        }
+      const res = await adminRequest.post(
+        `/liveStock/update`,
+        formData
+        // {http://localhost:8080/api/v1
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("liveStock_token")}`,
+        //     "Content-Type": "text/html; charset=utf-8",
+        //   },
+        // }
       );
       console.log("Sitefor user ", res);
       setLoader(dispatch, false);
