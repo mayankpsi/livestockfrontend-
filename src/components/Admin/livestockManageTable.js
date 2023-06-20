@@ -7,7 +7,7 @@ import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
 import Add from "../.././assets/images/AddSite.png";
 import DeletePopup from "../DeletePopupCard";
-import AddSite_toUser from "./AddSite_fromUser";
+import AddSite_toUser from "./AddDevice_fromUser";
 import AddLivestock from "./addLivestock";
 
 const Index = ({ liveStock, reRender }) => {
@@ -219,9 +219,7 @@ const Index = ({ liveStock, reRender }) => {
           style={{ height: "400px" }}
           className=" border "
         >
-          <AddLivestock
-            reRender={reRender}
-          />
+          <AddLivestock reRender={reRender} />
         </Grid>
         //   <Grid
         //     container

@@ -7,7 +7,7 @@ import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
 import Add from "../.././assets/images/AddSite.png";
 import DeletePopup from "../DeletePopupCard";
-import AddSite_toUser from "./AddSite_fromUser";
+import AddSite_toUser from "./AddDevice_fromUser";
 
 const Index = (props) => {
   const { state } = useLocation();
@@ -180,7 +180,7 @@ const Index = (props) => {
                 <Stack direction="row" alignItems="center" spacing={2}>
                   <AddSite_toUser
                     Name={"site"}
-                    gatewayID={item?._id}
+                    ID={item?._id}
                     reRender={props?.reRender}
                   />
                   <MdOutlineRemoveRedEye

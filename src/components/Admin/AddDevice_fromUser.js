@@ -67,8 +67,8 @@ const AddSite_toUser = (props) => {
   const [fullWidth, setFullWidth] = useState(true);
   const [maxWidth, setMaxWidth] = useState("md");
   const [userId, setUserId] = useState();
-  const [clientId, setClientId] = useState();
-  const [siteDetails, setSiteDetails] = useState([]);
+  const [deviceID, setDeviceID] = useState();
+  const [DeviceDetail, setDeviceDetail] = useState();
   const [siteAdUsersUp, setSiteAdUsersUp] = useState(true);
 
   const handleClickOpen = () => {
@@ -77,15 +77,15 @@ const AddSite_toUser = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const SiteDetails = async () => {
+  const DeviceDetails = async () => {
     setLoader(dispatch, true);
-    let adminId = localStorage.getItem("agro_id");
+    // let adminId = localStorage.getItem("agro_id");
     try {
-      const res = await adminRequest.get(`/site/getSitesOnly/${adminId}`);
-      console.log("Sitefor user ", res);
+      const res = await adminRequest.get(`/devices/getAll?status=true`);
+      console.log("Device for user ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
-        setSiteDetails(res.data.data);
+        setDeviceDetail(res?.data?.data);
       }
     } catch (err) {
       setLoader(dispatch, false);
@@ -95,17 +95,17 @@ const AddSite_toUser = (props) => {
       });
     }
   };
-  const AssignSitefromUser = async () => {
+  const AssignDevicefromUser = async () => {
     setLoader(dispatch, true);
     let body = {
-      site_id: clientId,
-      client_id: props?.gatewayID,
+      userID: props?.ID,
+      deviceID: deviceID,
     };
 
     console.log("Assigning", body);
 
     try {
-      const res = await adminRequest.post("/user/addSiteToClient", body);
+      const res = await adminRequest.post("/user/assign-device", body);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         enqueueSnackbar("Site Assign to user Successfully ", {
@@ -130,7 +130,7 @@ const AddSite_toUser = (props) => {
     }
   };
   useEffect(() => {
-    // SiteDetails();
+    DeviceDetails();
   }, []);
 
   return (
@@ -150,6 +150,7 @@ const AddSite_toUser = (props) => {
           handleClickOpen();
         }}
       />
+
       <Dialog
         onClose={handleClose}
         fullWidth={fullWidth}
@@ -209,8 +210,8 @@ const AddSite_toUser = (props) => {
             // spaceBetween
             className=" flex flexStart  fs16px  p_t-b10px  "
           >
-            {siteDetails && siteDetails.length > 0 ? (
-              siteDetails.map((a, i) => (
+            {DeviceDetail && DeviceDetail.length > 0 ? (
+              DeviceDetail.map((item, i) => (
                 <Grid
                   key={i}
                   container
@@ -233,10 +234,10 @@ const AddSite_toUser = (props) => {
                       type="radio"
                       id="specifyColor"
                       name="fav_language"
-                      value={a?._id}
+                      value={item?._id}
                       // className=" d_color  "
                       // style={{ backgroundColor: "green" }}
-                      onChange={(e) => setClientId(e.target.value)}
+                      onChange={(e) => setDeviceID(e.target.value)}
                     />
                   </Grid>
                   <Grid
@@ -249,10 +250,10 @@ const AddSite_toUser = (props) => {
                     // For="specifyColor"
                   >
                     <Typography className="  fs14px  p_l-r10px fontWeight700 g_color">
-                      {a?.gatewayID}
+                      {item?.macID}
                     </Typography>
                     <Typography className="fs16px  p_l-r10px fontWeight700 Transform_Capital ">
-                      {a?.gatewayName}
+                      {item?.deviceName}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -298,7 +299,7 @@ const AddSite_toUser = (props) => {
           <Button
             className="fs16px  fontWeight600 white_color d_bgcolor p_l-r10-30px  "
             onClick={() => {
-              AssignSitefromUser();
+              AssignDevicefromUser();
             }}
           >
             submit
