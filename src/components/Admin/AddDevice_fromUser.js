@@ -81,7 +81,7 @@ const AddSite_toUser = (props) => {
     setLoader(dispatch, true);
     // let adminId = localStorage.getItem("agro_id");
     try {
-      const res = await adminRequest.get(`/devices/getAll?status=true`);
+      const res = await adminRequest.get(`/devices/getFreeDeviceForUser`);
       console.log("Device for user ", res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
