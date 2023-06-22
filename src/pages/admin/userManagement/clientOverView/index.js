@@ -14,7 +14,7 @@ import { useSnackbar } from "notistack";
 
 import AdminUIContainer from "../../../../layout/AdminUIContainer";
 import Overview from "./components/overview";
-import Site from "./components/device";
+import Device from "./components/device";
 import Livestock from "../../../../components/Admin/livestockManageTable";
 import { adminRequest } from "../../../../requestMethod";
 import { useLoaderController, setLoader } from "../../../../context/common";
@@ -57,7 +57,10 @@ const Index = (props) => {
   const [controller, dispatch] = useLoaderController();
 
   const [value, setValue] = useState(0);
+  const [livestockArr, setlivestockArr] = useState();
   const [userDetails, setUserDetails] = useState();
+  const [userDeviceDetails, setUserDeviceDetails] = useState();
+  const [userId, setUserId] = useState();
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
@@ -70,7 +73,8 @@ const Index = (props) => {
       setLoader(dispatch, true);
       if (res.status == 200 || res.status == 201) {
         setLoader(dispatch, false);
-        setUserDetails(res.data.data);
+        setUserDetails(res?.data?.data);
+        UserDeviceDetails();
       }
     } catch (err) {
       setLoader(dispatch, false);
@@ -81,12 +85,42 @@ const Index = (props) => {
     }
   };
 
+  const UserDeviceDetails = async () => {
+    try {
+      const res = await adminRequest.get(
+        `/user/getDeviceByUserID?userID=${id}`
+      );
+      console.log("userdetails,userdetails Devices", res);
+      setLoader(dispatch, true);
+      if (res.status == 200 || res.status == 201) {
+        setLoader(dispatch, false);
+        setUserDeviceDetails(res?.data?.data);
+        let temp = [];
+
+        res?.data?.data?.map((item) => {
+          temp.push(item?.liveStock);
+        });
+        setlivestockArr(temp);
+      }
+    } catch (err) {
+      setLoader(dispatch, false);
+      console.log(err);
+      enqueueSnackbar(err.response.data.msg, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  };
   useEffect(() => {
     UserDetails();
   }, [id]);
-  // useEffect(() => {
-  //   UserDetails();
-  // }, [state]);
+
+  useEffect(() => {
+    UserDetails();
+  }, [userId]);
+  useEffect(() => {
+    console.log(livestockArr, "yyyyy");
+  }, [livestockArr]);
 
   return (
     <>
@@ -202,12 +236,15 @@ const Index = (props) => {
             </TabPanel>
             <TabPanel value={value} index={1}>
               {/* {value == 1 && navigate("/order")} */}
-              <Site data={userDetails && userDetails} reRender={UserDetails} />
+              <Device
+                data={userDeviceDetails && userDeviceDetails}
+                reRender={UserDeviceDetails}
+              />
             </TabPanel>
             <TabPanel value={value} index={2}>
               {/* {value == 1 && navigate("/order")} */}
               <Livestock
-                data={userDetails && userDetails}
+                liveStock={livestockArr && livestockArr}
                 reRender={UserDetails}
               />
             </TabPanel>

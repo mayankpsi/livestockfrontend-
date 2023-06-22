@@ -9,17 +9,9 @@ const Index = ({ showDetail, data, reRender }) => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
-  const [siteDetails, setSiteDetails] = useState([
-    {
-      id: 1,
-      siteName: "gdhsgadh",
-      bmName: "gdhsgadh",
-      deviceName: 1,
-      alert: 4,
-    },
-  ]);
+  const [deviceDetail, setDeviceDetails] = useState();
   useEffect(() => {
-    setSiteDetails(data && data.length > 0 && data[0].gateway);
+    setDeviceDetails(data && data.length > 0 && data);
     console.log(">>>??lll", data);
   }, [data]);
   return (
@@ -104,12 +96,12 @@ const Index = ({ showDetail, data, reRender }) => {
           </Grid>
         </Grid>
 
-        {siteDetails && siteDetails.length > 0 ? (
-          siteDetails.map((a, i) => {
-            let nodeLength = 0;
-            a?.branchManager?.map((item) => {
-              nodeLength += item?.nodes?.length;
-            });
+        {deviceDetail && deviceDetail.length > 0 ? (
+          deviceDetail.map((item, i) => {
+            // let nodeLength = 0;
+            // item?.branchManager?.map((item) => {
+            //   nodeLength += item?.nodes?.length;
+            // });
             return (
               <>
                 <Grid
@@ -134,12 +126,12 @@ const Index = ({ showDetail, data, reRender }) => {
                   >
                     <Grid item xs={4} sm={4} md={4} lg={4}>
                       <Typography className="  fs16px  p_l-r10px fontWeight700 d_color Transform_Capital">
-                        {a?.gatewayID}
+                        {item?.uID}
                       </Typography>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} lg={6}>
                       <Typography className="fs16px fontWeight700 d_color Transform_Capital ">
-                        {a?.gatewayName}
+                        {item?.deviceName}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -169,7 +161,9 @@ const Index = ({ showDetail, data, reRender }) => {
                       className="flex center"
                     >
                       <Typography className="  fs16px fontWeight700  ">
-                        {nodeLength}
+                        {item?.liveStock
+                          ? item?.liveStock?.name
+                          : "noLivestock"}
                       </Typography>
                     </Grid>
                     <Grid
@@ -180,8 +174,8 @@ const Index = ({ showDetail, data, reRender }) => {
                       lg={3}
                       className="flex center"
                     >
-                      <Typography className="fs16px fontWeight700 Red_color ">
-                        {a?.alert ? a?.alert : 0}
+                      <Typography className="fs16px fontWeight700  ">
+                        {item?.status ? "true" : "false"}
                       </Typography>
                     </Grid>
                     <Grid
@@ -198,7 +192,7 @@ const Index = ({ showDetail, data, reRender }) => {
                         onClick={() => showDetail(true)}
                       />
 
-                      <DeletePopup Name={"site from the user"} id={a?._id} />
+                      <DeletePopup Name={"site from the user"} id={item?._id} />
                       {/* </Stack> */}
                     </Grid>
                   </Grid>
@@ -224,9 +218,9 @@ const Index = ({ showDetail, data, reRender }) => {
                 // navigate("/admin/device-management/add-site-management");
               }}
             >
-              <img src={Add} alt="loading" className="M20" />
+              {/* <img src={Add} alt="loading" className="M20" /> */}
               <Typography className="fs18px mt10px d_color fontWeight700 mb10px">
-                Add Site
+                No Device
               </Typography>
             </Grid>
           </Grid>

@@ -161,7 +161,7 @@ const Index = ({ liveStock, reRender }) => {
               </Grid> */}
               <Grid item xs={4} sm={4} md={4} lg={4} className="flex flex-end">
                 <Typography className="  fs16px fontWeight700  ">
-                  {a?.assignedDevice?.uID}
+                  {a?.assignedDevice?.uID ? a?.assignedDevice?.uID : "true"}
                 </Typography>
               </Grid>
 
@@ -199,13 +199,13 @@ const Index = ({ liveStock, reRender }) => {
                       })
                     }
                   />
-
+                  {/* 
                   <DeletePopup
                     Name={"liveStock"}
                     DeviceId={a?.assignedDevice?._id}
                     liveStockId={a?._id}
                     reRender={reRender}
-                  />
+                  /> */}
                 </Stack>
               </Grid>
             </Grid>
@@ -219,7 +219,10 @@ const Index = ({ liveStock, reRender }) => {
           style={{ height: "400px" }}
           className=" border "
         >
-          <AddLivestock reRender={reRender} />
+          {/* <AddLivestock reRender={reRender} /> */}
+          <Typography className="fs16ps d_color">
+            No Livestock Assign to user{" "}
+          </Typography>
         </Grid>
         //   <Grid
         //     container

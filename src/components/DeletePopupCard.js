@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Button,
-  Box,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -15,7 +13,7 @@ import { useSnackbar } from "notistack";
 
 import { styled } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
-import { MdDeleteOutline, MdOutlineRemoveRedEye } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
 import { adminRequest } from "../requestMethod";
 import { setLoader, useLoaderController } from "../context/common";
 
@@ -59,10 +57,17 @@ BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
-export default function MaxWidthDialog({ Name, DeviceId,liveStockId, reRender }) {
+export default function MaxWidthDialog({
+  Name,
+  DeviceId,
+  liveStockId,
+  userID,
+  deviceID,
+  reRender,
+}) {
   const [controller, dispatch] = useLoaderController();
   const { enqueueSnackbar } = useSnackbar();
-  const navigate = useNavigate();
+
   const [open, setOpen] = useState(false);
   const [fullWidth] = useState(true);
   const [maxWidth] = useState("xs");
@@ -74,30 +79,27 @@ export default function MaxWidthDialog({ Name, DeviceId,liveStockId, reRender })
   };
 
   const Deactived = async () => {
-    if (Name == "Device1"|| Name=="Device2") {
+    if (Name == "Device1" || Name == "Device2") {
       setLoader(dispatch, true);
       try {
-        if(Name=="Device1"){
-           await adminRequest.post(
-            `devices/unassign-liveStock`,{
-              "liveStockID":liveStockId,
-              "deviceID":DeviceId
-            }
-          );
+        if (Name == "Device1") {
+          await adminRequest.post(`devices/unassign-liveStock`, {
+            liveStockID: liveStockId,
+            deviceID: DeviceId,
+          });
         }
         const res1 = await adminRequest.delete(
           `/devices/delete?deviceID=${DeviceId}`
         );
         setLoader(dispatch, false);
         if (res1.status == 200 || res1.status == 201) {
-
           enqueueSnackbar("Device Deleted", {
             variant: "success",
             autoHideDuration: 3000,
           });
           reRender();
           handleClose();
-                }        
+        }
       } catch (err) {
         console.log("error in deactived account ", err);
         setLoader(dispatch, false);
@@ -106,33 +108,29 @@ export default function MaxWidthDialog({ Name, DeviceId,liveStockId, reRender })
           autoHideDuration: 3000,
         });
       }
-    }
-    
-    else if (Name == "liveStock") {
+    } else if (Name == "liveStock") {
       setLoader(dispatch, true);
       try {
-        if(DeviceId){
-           await adminRequest.post(
-            `devices/unassign-liveStock`,{
-              "liveStockID":liveStockId,
-              "deviceID":DeviceId
-            }
-          );
+        if (DeviceId) {
+          await adminRequest.post(`devices/unassign-liveStock`, {
+            liveStockID: liveStockId,
+            deviceID: DeviceId,
+          });
         }
-        
-          const res1 = await adminRequest.delete(
-            `liveStock/delete?liveStockID=${liveStockId}`
-          );
 
-          if (res1.status == 200 || res1.status == 201) {
-            enqueueSnackbar("liveStock successfully Deleted", {
-              variant: "success",
-              autoHideDuration: 3000,
-            });
-            setLoader(dispatch, false);
-            reRender();
-            handleClose();
-          }
+        const res1 = await adminRequest.delete(
+          `liveStock/delete?liveStockID=${liveStockId}`
+        );
+
+        if (res1.status == 200 || res1.status == 201) {
+          enqueueSnackbar("liveStock successfully Deleted", {
+            variant: "success",
+            autoHideDuration: 3000,
+          });
+          setLoader(dispatch, false);
+          reRender();
+          handleClose();
+        }
       } catch (err) {
         setLoader(dispatch, false);
         console.log("error in deactived account ");
@@ -142,15 +140,20 @@ export default function MaxWidthDialog({ Name, DeviceId,liveStockId, reRender })
           autoHideDuration: 3000,
         });
       }
-    } else {
+    } else if (Name == "user") {
       setLoader(dispatch, true);
       try {
-        console.log("userIdddgeting in deactivated>>>>", DeviceId);
-        const res = await adminRequest.delete(`site/deletesite/${DeviceId}`);
-        console.log(res);
-        setLoader(dispatch, false);
-        if (res.status == 200 || res.status == 201) {
-          enqueueSnackbar("Site Deleted", {
+        if (userID) {
+          await adminRequest.post(`/user/unassign-device`, {
+            userID: userID,
+            deviceID: deviceID,
+          });
+        }
+
+        const res1 = await adminRequest.delete(`/user/delete?userID=${userID}`);
+
+        if (res1.status == 200 || res1.status == 201) {
+          enqueueSnackbar("User successfully Deleted", {
             variant: "success",
             autoHideDuration: 3000,
           });
@@ -159,6 +162,7 @@ export default function MaxWidthDialog({ Name, DeviceId,liveStockId, reRender })
           handleClose();
         }
       } catch (err) {
+        setLoader(dispatch, false);
         console.log("error in deactived account ");
         setLoader(dispatch, false);
         enqueueSnackbar(err?.response.data.msg, {
@@ -168,6 +172,9 @@ export default function MaxWidthDialog({ Name, DeviceId,liveStockId, reRender })
       }
     }
   };
+  useEffect(() => {
+    console.log("yyggvggz", deviceID, userID);
+  }, [userID]);
 
   return (
     <React.Fragment>
@@ -190,7 +197,9 @@ export default function MaxWidthDialog({ Name, DeviceId,liveStockId, reRender })
           }}
         >
           <Typography className="fs18px  ">
-            {`Are you sure you want to delete the ${Name=="Device1"||Name=="Device2"?"Device": Name} ?`}
+            {`Are you sure you want to delete the ${
+              Name == "Device1" || Name == "Device2" ? "Device" : Name
+            } ?`}
           </Typography>
         </DialogContent>
         <DialogActions>

@@ -194,7 +194,8 @@ const Index = (props) => {
 
                   <DeletePopup
                     Name={"user"}
-                    gatewayID={item?._id}
+                    userID={item?._id}
+                    deviceID={item?.device[0]}
                     reRender={props?.reRender}
                   />
                 </Stack>
