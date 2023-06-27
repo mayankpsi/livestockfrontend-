@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogTitle,
@@ -12,24 +12,24 @@ import {
   InputBase,
   Select,
   MenuItem,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import CloseIcon from "@mui/icons-material/Close";
-import { useSnackbar } from "notistack";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import HighlightOff from "@mui/icons-material/HighlightOff";
-import { adminRequest } from "../../requestMethod";
-import { useLoaderController, setLoader } from "../../context/common";
-import Add from "../.././assets/images/AddSite.png";
-import Upload from "../.././assets/images/folderUpload.png";
-import AddSite_toUser from "./AddSite_toUser";
-import axios from "axios";
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
+import { useSnackbar } from 'notistack';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import HighlightOff from '@mui/icons-material/HighlightOff';
+import { adminFileRequest, adminRequest } from '../../requestMethod';
+import { useLoaderController, setLoader } from '../../context/common';
+import Add from '../.././assets/images/AddSite.png';
+import Upload from '../.././assets/images/folderUpload.png';
+import AddSite_toUser from './AddSite_toUser';
+import axios from 'axios';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
+  '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
   },
-  "& .MuiDialogActions-root": {
+  '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
 }));
@@ -49,7 +49,7 @@ function BootstrapDialogTitle(props) {
           aria-label="close"
           onClick={onClose}
           sx={{
-            position: "absolute",
+            position: 'absolute',
             right: 9,
             top: 7,
           }}
@@ -70,59 +70,30 @@ const AddLivestock = (props) => {
 
   const [open, setOpen] = useState(false);
   const [fullWidth, setFullWidth] = useState(true);
-  const [maxWidth, setMaxWidth] = useState("sm");
+  const [maxWidth, setMaxWidth] = useState('sm');
 
   const [siteDetails, setSiteDetails] = useState([]);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [filetype, setFileType] = useState(null);
   const [file, setFile] = useState(null);
   const [update, setUpdate] = useState(true);
-  const [imagestring, setImagestring] = useState("");
-  const [videoLink, setVideoLink] = useState("");
+  const [imagestring, setImagestring] = useState('');
+  const [videoLink, setVideoLink] = useState('');
 
-  const [liveStockId, setLiveStockId] = useState("");
-  const [liveStockName, setLiveStockName] = useState("");
-  const [liveStockDevice, setLiveStockDevice] = useState("");
-  const [liveStockPicture, setLiveStockPicture] = useState("");
-  const [allDevice, setAllDevice] = useState("");
-
-  const saveData = async () => {
-    setLoader(dispatch, true);
-    let body = {
-      // uID: liveStockNameId,
-      // name: liveStockName,
-      //   deviceID: liveStockDevice,
-    };
-    try {
-      const res = await adminRequest.post(`/user/userupdate/`, body);
-      console.log("update user ", res);
-      setLoader(dispatch, false);
-      if (res.status == 200 || res.status == 201) {
-        enqueueSnackbar(res?.data?.msg, {
-          variant: "success",
-          autoHideDuration: 3000,
-        });
-        // navigate(`/admin/user-management/${id}`, { state: update });
-      }
-    } catch (err) {
-      setLoader(dispatch, false);
-      enqueueSnackbar(err.response.data.msg, {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-    }
-    setLoader(dispatch, false);
-    setInputDisabled(true);
-  };
+  const [liveStockId, setLiveStockId] = useState('');
+  const [liveStockName, setLiveStockName] = useState('');
+  const [liveStockDevice, setLiveStockDevice] = useState('');
+  const [liveStockPicture, setLiveStockPicture] = useState('');
+  const [allDevice, setAllDevice] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
-    setLiveStockId("");
-    setLiveStockName("");
-    setLiveStockPicture("");
+    setLiveStockId('');
+    setLiveStockName('');
+    setLiveStockPicture('');
   };
 
   const addLiveStock = async (e) => {
@@ -130,14 +101,14 @@ const AddLivestock = (props) => {
     setLoader(dispatch, true);
 
     const formData = new FormData();
-    formData.append("uID", liveStockId);
-    formData.append("name", liveStockName);
-    formData.append("liveStockImage", liveStockPicture);
-    formData.append("liveStockImageName", liveStockPicture.name);
-    formData.append("deviceID", liveStockDevice);
+    formData.append('uID', liveStockId);
+    formData.append('name', liveStockName);
+    formData.append('liveStockImage', liveStockPicture);
+    formData.append('liveStockImageName', liveStockPicture.name);
+    formData.append('deviceID', liveStockDevice);
     // console.log("formData formData", formData);
     try {
-      const res = await adminRequest.post(
+      const res = await adminFileRequest.post(
         `/liveStock/create`,
         formData
         // {
@@ -147,13 +118,13 @@ const AddLivestock = (props) => {
         //   },
         // }
       );
-      console.log("Sitefor user ", res);
+      console.log('Sitefor user ', res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         handleClose();
         getDevices();
-        enqueueSnackbar("live stock created", {
-          variant: "success",
+        enqueueSnackbar('live stock created', {
+          variant: 'success',
           autoHideDuration: 3000,
         });
         props.reRender();
@@ -161,14 +132,14 @@ const AddLivestock = (props) => {
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err?.response, {
-        variant: "error",
+        variant: 'error',
         autoHideDuration: 3000,
       });
     }
   };
 
   const onChangeFile = (event) => {
-    if (event.target.files[0].type == "image/jpeg") {
+    if (event.target.files[0].type == 'image/jpeg') {
       //   if (event.target.files[0]?.size / 1000000 > 5) {
       //     setImageSizeDialogue(true);
       //     return;
@@ -177,7 +148,7 @@ const AddLivestock = (props) => {
       setFile(URL.createObjectURL(event.target.files[0]));
       setFileType(event.target.files[0].type);
       //   setLoading(false);
-      console.log("filetype Image ==> ", event.target.files[0].type);
+      console.log('filetype Image ==> ', event.target.files[0].type);
       setFileType(event.target.files[0].type); //==> getting File type of here
       let Milliseconds =
         String(new Date().getFullYear()) +
@@ -186,8 +157,8 @@ const AddLivestock = (props) => {
         String(new Date().getHours()) +
         String(new Date().getMinutes()) +
         String(new Date().getMilliseconds());
-      let a = event.target.files[0].name.split(".")[0];
-      console.log("Image Oriiginal Name ===> ", a);
+      let a = event.target.files[0].name.split('.')[0];
+      console.log('Image Oriiginal Name ===> ', a);
       //   setImageoriginalname(a);
       //   // props.data.handleCampaignData(a, "imageoriginalname");
       //   let trimmedstr = a
@@ -196,8 +167,8 @@ const AddLivestock = (props) => {
       //   console.log("Unique Image => ", `${UserID}_${trimmedstr}`);
       //   setTrimmedname(`${UserID}_${trimmedstr}`);
       // props.data.handleCampaignData(trimmedstr, "contentname");
-      let extension = ".".concat(event.target.files[0].name.split(".")[1]);
-      console.log("Image Extension ===>", extension);
+      let extension = '.'.concat(event.target.files[0].name.split('.')[1]);
+      console.log('Image Extension ===>', extension);
       //Converting to Base 64 ===>
 
       const onLoad = (fileString) => {
@@ -219,7 +190,7 @@ const AddLivestock = (props) => {
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err?.response?.data?.msg, {
-        variant: "error",
+        variant: 'error',
         autoHideDuration: 3000,
       });
     }
@@ -237,7 +208,7 @@ const AddLivestock = (props) => {
           container
           item
           alignItems="center"
-          sx={{ flexDirection: "column", width: "20%" }}
+          sx={{ flexDirection: 'column', width: '20%' }}
           className="Greenborder  bRadius_8 Cursor"
           onClick={() => {
             handleClickOpen();
@@ -280,7 +251,7 @@ const AddLivestock = (props) => {
                 container
                 item
                 className="spaceBetween mb20px p20px bRadius_8  "
-                sx={{ rowGap: "20px " }}
+                sx={{ rowGap: '20px ' }}
               >
                 <Grid
                   item
@@ -294,7 +265,7 @@ const AddLivestock = (props) => {
                     Images
                   </Typography>
 
-                  {!filetype || filetype == "jpg" ? (
+                  {!filetype || filetype == 'jpg' ? (
                     <Grid
                       container
                       item
@@ -302,7 +273,7 @@ const AddLivestock = (props) => {
                       // htmlFor="raised-button-file"
                       className="flexDir center border p10px bRadius_8"
                       variant="raised"
-                      style={{ position: "relative" }}
+                      style={{ position: 'relative' }}
                     >
                       <img src={Add} alt="loading" className="" />
                       <Typography className="fs14px fontFamily">
@@ -334,11 +305,11 @@ const AddLivestock = (props) => {
                       <>
                         <input
                           style={{
-                            position: "absolute",
-                            width: "100%",
-                            height: "100%",
-                            opacity: "0",
-                            border: "2px solid red",
+                            position: 'absolute',
+                            width: '100%',
+                            height: '100%',
+                            opacity: '0',
+                            border: '2px solid red',
                           }}
                           type="file"
                           id="raised-button-file"
@@ -361,37 +332,37 @@ const AddLivestock = (props) => {
                       <Typography
                         className="mt10px"
                         style={{
-                          width: "100%",
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "flex-end",
-                          alignItems: "flex-end",
+                          width: '100%',
+                          marginLeft: 'auto',
+                          marginRight: 'auto',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'flex-end',
+                          alignItems: 'flex-end',
                         }}
                       >
                         <CloseIcon
                           onClick={() => setFileType(null)}
                           style={{
-                            width: "20px",
-                            cursor: "pointer",
+                            width: '20px',
+                            cursor: 'pointer',
                           }}
                         />
                         <img
                           required
                           src={file}
                           style={{
-                            height: "250px",
-                            width: "100%",
-                            marginLeft: "auto",
-                            marginRight: "auto",
-                            objectFit: "contain",
+                            height: '250px',
+                            width: '100%',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            objectFit: 'contain',
                           }}
                           // className="dotted-border"
                         />
                       </Typography>
                       <input
-                        style={{ display: "none" }}
+                        style={{ display: 'none' }}
                         type="file"
                         id="raised-button-file"
                         accept="image/jpeg,image/jpg,video/mp4"

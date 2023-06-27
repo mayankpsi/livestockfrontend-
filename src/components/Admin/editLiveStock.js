@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogTitle,
@@ -12,24 +12,24 @@ import {
   InputBase,
   Select,
   MenuItem,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import CloseIcon from "@mui/icons-material/Close";
-import { useSnackbar } from "notistack";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import HighlightOff from "@mui/icons-material/HighlightOff";
-import { adminRequest } from "../../requestMethod";
-import { useLoaderController, setLoader } from "../../context/common";
-import Add from "../.././assets/images/AddSite.png";
-import Upload from "../.././assets/images/folderUpload.png";
-import AddSite_toUser from "./AddSite_toUser";
-import axios from "axios";
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
+import { useSnackbar } from 'notistack';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import HighlightOff from '@mui/icons-material/HighlightOff';
+import { adminRequest, adminFileRequest } from '../../requestMethod';
+import { useLoaderController, setLoader } from '../../context/common';
+import Add from '../.././assets/images/AddSite.png';
+import Upload from '../.././assets/images/folderUpload.png';
+import AddSite_toUser from './AddSite_toUser';
+import axios from 'axios';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
+  '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
   },
-  "& .MuiDialogActions-root": {
+  '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
 }));
@@ -49,7 +49,7 @@ function BootstrapDialogTitle(props) {
           aria-label="close"
           onClick={onClose}
           sx={{
-            position: "absolute",
+            position: 'absolute',
             right: 9,
             top: 7,
           }}
@@ -70,21 +70,21 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
 
   const [open, setOpen] = useState(true);
   const [fullWidth, setFullWidth] = useState(true);
-  const [maxWidth, setMaxWidth] = useState("sm");
+  const [maxWidth, setMaxWidth] = useState('sm');
 
   const [siteDetails, setSiteDetails] = useState([]);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [filetype, setFileType] = useState(null);
   const [file, setFile] = useState(null);
   const [update, setUpdate] = useState(true);
-  const [imagestring, setImagestring] = useState("");
-  const [videoLink, setVideoLink] = useState("");
+  const [imagestring, setImagestring] = useState('');
+  const [videoLink, setVideoLink] = useState('');
 
-  const [liveStockId, setLiveStockId] = useState("");
-  const [liveStockName, setLiveStockName] = useState("");
-  const [liveStockDevice, setLiveStockDevice] = useState("");
+  const [liveStockId, setLiveStockId] = useState('');
+  const [liveStockName, setLiveStockName] = useState('');
+  const [liveStockDevice, setLiveStockDevice] = useState('');
   const [liveStockPicture, setLiveStockPicture] = useState(null);
-  const [allDevice, setAllDevice] = useState("");
+  const [allDevice, setAllDevice] = useState('');
   const [imageChanges, setImageChanges] = useState(false);
 
   const handleClickOpen = () => {
@@ -100,17 +100,17 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
     setLoader(dispatch, true);
 
     const formData = new FormData();
-    formData.append("id", data?._id);
-    formData.append("uID", liveStockId);
-    formData.append("name", liveStockName);
-    formData.append("imageChanges", imageChanges);
+    formData.append('id', data?._id);
+    formData.append('uID', liveStockId);
+    formData.append('name', liveStockName);
+    formData.append('imageChanges', imageChanges);
     if (imageChanges) {
-      formData.append("liveStockImage", liveStockPicture);
-      formData.append("liveStockImageName", liveStockPicture.name);
+      formData.append('liveStockImage', liveStockPicture);
+      formData.append('liveStockImageName', liveStockPicture.name);
     }
 
     try {
-      const res = await adminRequest.post(
+      const res = await adminFileRequest.post(
         `/liveStock/update`,
         formData
         // {http://localhost:8080/api/v1
@@ -120,12 +120,12 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
         //   },
         // }
       );
-      console.log("Sitefor user ", res);
+      console.log('Sitefor user ', res);
       setLoader(dispatch, false);
       if (res.status == 200 || res.status == 201) {
         handleClose();
-        enqueueSnackbar("LiveStock successfully updated", {
-          variant: "success",
+        enqueueSnackbar('LiveStock successfully updated', {
+          variant: 'success',
           autoHideDuration: 3000,
         });
         reRender();
@@ -133,14 +133,14 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
     } catch (err) {
       setLoader(dispatch, false);
       enqueueSnackbar(err?.response, {
-        variant: "error",
+        variant: 'error',
         autoHideDuration: 3000,
       });
     }
   };
 
   const onChangeFile = (event) => {
-    if (event.target.files[0].type == "image/jpeg") {
+    if (event.target.files[0].type == 'image/jpeg') {
       //   if (event.target.files[0]?.size / 1000000 > 5) {
       //     setImageSizeDialogue(true);
       //     return;
@@ -149,7 +149,7 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
       setFile(URL.createObjectURL(event.target.files[0]));
       setFileType(event.target.files[0].type);
       //   setLoading(false);
-      console.log("filetype Image ==> ", event.target.files[0].type);
+      console.log('filetype Image ==> ', event.target.files[0].type);
       setFileType(event.target.files[0].type); //==> getting File type of here
       let Milliseconds =
         String(new Date().getFullYear()) +
@@ -158,8 +158,8 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
         String(new Date().getHours()) +
         String(new Date().getMinutes()) +
         String(new Date().getMilliseconds());
-      let a = event.target.files[0].name.split(".")[0];
-      console.log("Image Oriiginal Name ===> ", a);
+      let a = event.target.files[0].name.split('.')[0];
+      console.log('Image Oriiginal Name ===> ', a);
       //   setImageoriginalname(a);
       //   // props.data.handleCampaignData(a, "imageoriginalname");
       //   let trimmedstr = a
@@ -168,8 +168,8 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
       //   console.log("Unique Image => ", `${UserID}_${trimmedstr}`);
       //   setTrimmedname(`${UserID}_${trimmedstr}`);
       // props.data.handleCampaignData(trimmedstr, "contentname");
-      let extension = ".".concat(event.target.files[0].name.split(".")[1]);
-      console.log("Image Extension ===>", extension);
+      let extension = '.'.concat(event.target.files[0].name.split('.')[1]);
+      console.log('Image Extension ===>', extension);
       //Converting to Base 64 ===>
 
       const onLoad = (fileString) => {
@@ -181,8 +181,8 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
   useEffect(() => {
     setLiveStockName(data?.name);
     setLiveStockId(data?.uID);
-    setFileType("jpeg");
-    setLiveStockPicture(data?.imgPath?.split("uploads")[1]);
+    setFileType('jpeg');
+    setLiveStockPicture(data?.imgPath?.split('uploads')[1]);
   }, [data]);
 
   return (
@@ -217,7 +217,7 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
                 container
                 item
                 className="spaceBetween mb20px p20px bRadius_8  "
-                sx={{ rowGap: "20px " }}
+                sx={{ rowGap: '20px ' }}
               >
                 <Grid
                   item
@@ -231,14 +231,14 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
                     Images
                   </Typography>
 
-                  {!filetype || filetype == "jpg" ? (
+                  {!filetype || filetype == 'jpg' ? (
                     <Grid
                       container
                       item
                       md={12}
                       className="flexDir center border p10px bRadius_8"
                       variant="raised"
-                      style={{ position: "relative" }}
+                      style={{ position: 'relative' }}
                     >
                       <img src={Add} alt="loading" className="" />
                       <Typography className="fs14px fontFamily">
@@ -251,11 +251,11 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
                       <>
                         <input
                           style={{
-                            position: "absolute",
-                            width: "100%",
-                            height: "100%",
-                            opacity: "0",
-                            border: "2px solid red",
+                            position: 'absolute',
+                            width: '100%',
+                            height: '100%',
+                            opacity: '0',
+                            border: '2px solid red',
                           }}
                           type="file"
                           id="raised-button-file"
@@ -277,20 +277,20 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
                       <Typography
                         className="mt10px"
                         style={{
-                          width: "100%",
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "flex-end",
-                          alignItems: "flex-end",
+                          width: '100%',
+                          marginLeft: 'auto',
+                          marginRight: 'auto',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'flex-end',
+                          alignItems: 'flex-end',
                         }}
                       >
                         <CloseIcon
                           onClick={() => setFileType(null)}
                           style={{
-                            width: "20px",
-                            cursor: "pointer",
+                            width: '20px',
+                            cursor: 'pointer',
                           }}
                         />
                         <img
@@ -301,17 +301,17 @@ const EditLivestock = ({ data, reRender, closeModel }) => {
                               : file
                           }
                           style={{
-                            height: "250px",
-                            width: "100%",
-                            marginLeft: "auto",
-                            marginRight: "auto",
-                            objectFit: "contain",
+                            height: '250px',
+                            width: '100%',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            objectFit: 'contain',
                           }}
                           // className="dotted-border"
                         />
                       </Typography>
                       <input
-                        style={{ display: "none" }}
+                        style={{ display: 'none' }}
                         type="file"
                         id="raised-button-file"
                         accept="image/jpeg,image/jpg,video/mp4"
