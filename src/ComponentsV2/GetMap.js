@@ -16,19 +16,7 @@ const livestocks = [
   {
     id: 1,
     position: { lat: 28.507555017373573, lng: 77.40205505767113 },
-  },
-  {
-    id: 2,
-    position: { lat: 28.50710247195052, lng: 77.40224817671145 },
-  },
-  {
-    id: 3,
-    position: { lat: 28.50672534928168, lng: 77.4019477693154 },
-  },
-  {
-    id: 4,
-    position: { lat: 28.506942194980983, lng: 77.40160444657704 },
-  },
+  }
 ];
 
 const MAP_KEY = "AIzaSyBoq0tt73i_mEUB4gsGN8_ClQpD9d9RqFE";
@@ -54,7 +42,7 @@ const GetMap = ({ mapWidth, mapHeight, isLivestocks,livestockData,geofenceCoordi
               position={position}
               icon={{
                 url: Mark,
-                scaledSize: window && window.google && new window.google.maps.Size(100, 100),
+                scaledSize: window && window.google && new window.google.maps.Size(50, 50),
               }}
               //   onClick={() => handleActiveMarker(id)}
             />

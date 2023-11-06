@@ -6,6 +6,7 @@ import { CollarContextProvider } from "./context/CollarContext";
 import { LivestockContextProvider } from "./context/LivestockContext";
 import { ProfileContextProvider } from "./context/profileContext";
 import { AuthContextProvider } from "./context/AuthContext";
+import { AlertsContextProvider } from "./context/AlertsContext";
 import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
 import "./assets/css/style.css";
 import "./assets/css/header.css";
@@ -23,21 +24,23 @@ const theme = createTheme({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-      <AuthContextProvider>
+    <AuthContextProvider>
       <MapContentProvider>
         <CollarContextProvider>
           <LivestockContextProvider>
             <ProfileContextProvider>
-              <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <Routes>
-                  <Route path="/*" element={<App />} />
-                </Routes>
-              </ThemeProvider>
+              <AlertsContextProvider>
+                <ThemeProvider theme={theme}>
+                  <CssBaseline />
+                  <Routes>
+                    <Route path="/*" element={<App />} />
+                  </Routes>
+                </ThemeProvider>
+              </AlertsContextProvider>
             </ProfileContextProvider>
           </LivestockContextProvider>
         </CollarContextProvider>
       </MapContentProvider>
-      </AuthContextProvider>
+    </AuthContextProvider>
   </BrowserRouter>
 );

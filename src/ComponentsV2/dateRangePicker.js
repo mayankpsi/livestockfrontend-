@@ -12,7 +12,7 @@ export default function CustomDateRangePicker({selectedDate,setSelectedDate}) {
   const calenderRef = useRef(null);
 
   useEffect(() => {
-   document.addEventListener("click", handleClickOutsideTheCalender, true)
+   document?.addEventListener("click", handleClickOutsideTheCalender, true)
   },[]);
 
   const handleClickOutsideTheCalender = (e) => {
@@ -24,7 +24,7 @@ export default function CustomDateRangePicker({selectedDate,setSelectedDate}) {
   return (
     <Stack sx={{position:'relative'}}>
       <Stack direction="row" gap={1}>
-      <TextField value={`${format(selectedDate[0].startDate, "MM/dd/yyyy")} - ${format(selectedDate[0].endDate, "MM/dd/yyyy")}`} placeholder="MM/DD/YYYY" onClick={()=> setShowInput(!showInput)}/>
+      <TextField value={`${format(selectedDate[0]?.startDate, "MM/dd/yyyy")} - ${format(selectedDate[0]?.endDate, "MM/dd/yyyy")}`} placeholder="MM/DD/YYYY" onClick={()=> setShowInput(!showInput)}/>
       </Stack>
       <Stack ref={calenderRef} sx={{position:'absolute',top:'60px',left:'-150px', zIndex:'1000000' }}>
       {
