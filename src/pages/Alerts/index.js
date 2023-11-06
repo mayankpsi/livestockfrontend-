@@ -6,6 +6,7 @@ import {
   ExportAsCSV,
   CustomPagination,
   NoData,
+  TabPaneV2,
 } from "../../ComponentsV2";
 import { Container, Stack } from "@mui/material";
 import { TypographyPrimary } from "../../ComponentsV2/themeComponents";
@@ -64,8 +65,6 @@ const AlertsPage = () => {
     return res;
   };
 
-
-
   return (
     <AdminUIContainer
       openModal={showConfirmModal.open}
@@ -82,7 +81,9 @@ const AlertsPage = () => {
         <Breadcrumb data={BreadcrumbData} />
         <TypographyPrimary>Alerts</TypographyPrimary>
         <Stack sx={{ width: "100%", py: 3 }}>
-          <TableV2
+
+          <Stack py={2}>
+          <TabPaneV2
             paneText="showing 10 out of 20 Alerts"
             paneTextColor="#000"
             btnText={
@@ -97,6 +98,9 @@ const AlertsPage = () => {
             btnBg="#B58B5D"
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
+            />
+          </Stack>
+          <TableV2
             tableHeadData={tableHeadData}
             tableRowData={getTableFormattedData(AllAlertData)}
           />

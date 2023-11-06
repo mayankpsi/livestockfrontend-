@@ -31,3 +31,4 @@ export { default as ConfirmWindowModal } from "./ConfirmWindowModal";
 export { default as ConfirmWindowModalContent } from "./ConfirmWindow";
 export { default as SnackbarAlert } from "./SnackbarAlert";
 export { default as NoData } from "./NoData";
+export { default as TabPaneV2 } from "./TabPaneV2";

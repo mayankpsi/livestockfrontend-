@@ -11,69 +11,15 @@ import {
   Box,
   Stack,
 } from "@mui/material";
-import { TypographyPrimary, ButtonPrimary } from "./themeComponents";
-import CustomDateRangePicker from "./dateRangePicker";
 
 export default function TableV2({
-  paneText,
-  paneTextColor,
-  isBtn,
-  btnText,
-  btnColor,
-  btnBg,
-  datePicker,
   tableHeadData,
   tableRowData,
   tableColors,
-  onBtnClick,
-  selectedDate, setSelectedDate
 }) {
 
   return (
     <TableContainer component={Paper} sx={{ border: "1px solid #dddddd" }}>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        px={1.5}
-      >
-        <TypographyPrimary
-          sx={{
-            textTransform: "capitalize",
-            color: paneTextColor,
-            fontSize: "2rem",
-          }}
-        >
-          {paneText}
-        </TypographyPrimary>
-        <Box display="flex" justifyContent="center" alignItems="center" gap={2}>
-          {!datePicker ? (
-            <Stack
-              direction="row"
-              justifyContent="flex-end"
-              height="37px"
-              gap={1}
-              width="100%"
-            >
-              <CustomDateRangePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-            </Stack>
-          ) : null}
-          {!isBtn && (
-            <ButtonPrimary
-              sx={{
-                fontSize: "1.2rem",
-                padding: "5px 15px",
-                color: btnColor,
-                background: btnBg,
-              }}
-              onClick={onBtnClick}
-            >
-              {btnText}
-            </ButtonPrimary>
-          )}
-        </Box>
-      </Stack>
-      {/* <Table sx={{ minWidth: 650 }} size="large" aria-label="a dense table"> */}
       <Table size="large" aria-label="a dense table">
         <TableHead>
           <TableRow>

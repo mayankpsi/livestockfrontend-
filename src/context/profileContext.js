@@ -21,7 +21,7 @@ export const ProfileContextProvider = ({ children }) => {
     confirmPassword: "",
   });
   const [editProfile, setEditProfile] = useState(true);
-  const [inputError,setInputError ] = useState({fieldName:"",errorMessage:""});
+  const [inputError,setInputError ] = useState({error:false,errorMessage:""});
 
   // HANDLE PROFILE CHANGE AND UPDATE
   const handleProfileChange = (data) => {
@@ -29,8 +29,29 @@ export const ProfileContextProvider = ({ children }) => {
     setShowProfileData({ ...showProfileData, [name]: value });
   };
 
-  const handleProfileEdit = () => {
-    console.log(showProfileData,"hellonjxdhjbcgvhj");
+  const handleProfileEdit = async () => {
+    const body = {
+      name: showProfileData?.fullName,
+      address: {
+        line:showProfileData?.address,
+        pincode:showProfileData?.pincode,
+        state:showProfileData?.state,
+        country:showProfileData?.country
+      }
+    }
+    if(!inputError.error){
+      try {
+        const res = await request({ url:`/auth/update-user`, method:"PATCH",data:body});
+        if(res.status === 200){
+          setEditProfile(true)
+         alert("success")
+        }else{
+          throw new Error("something went wrong :/")
+        }
+      } catch (error) {
+          console.log(error?.message)
+      }
+    }
   };
 
   // HANDLE PASSWORD CHANGE
@@ -50,8 +71,6 @@ export const ProfileContextProvider = ({ children }) => {
     } catch (error) {
       
     }
-    
-    console.log();
   };
 
   useEffect(() => {
@@ -88,13 +107,14 @@ export const ProfileContextProvider = ({ children }) => {
             });
             // res.data[0].PostOffice[0].State
             // res.data[0].PostOffice[0].Country
+            setInputError({error:false, errorMessage:""})
           } else {
             setShowProfileData({
               ...showProfileData,
               state: "",
               country: "",
             });
-            setInputError({fieldName:"pincode", errorMessage:"Pin code not found"})
+            setInputError({error:true, errorMessage:"Pin code not found"})
           }
         })
         .catch((err)=> console.log(err))

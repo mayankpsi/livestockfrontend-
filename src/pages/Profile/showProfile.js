@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { Stack, TextField, Box, Button, MenuItem } from "@mui/material";
 import { TypographyPrimary } from "../../ComponentsV2/themeComponents";
 import { styled } from "@mui/system";
@@ -6,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { showProfileSchema } from "../../utils/validationSchema";
 import useProfileContext from "../../hooks/useProfileContext";
-import { Formik } from "formik";
+import { useEffect } from "react";
 
 const common = {
   fontSize: "1.5rem",
@@ -55,12 +54,13 @@ const ShowProfile = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({ resolver: yupResolver(showProfileSchema) });
 
   const { editProfile, setEditProfile } = useProfileContext();
 
-  const getTextFiled = (label, name, value, type, disable) => {
+  const getTextFiled = (label, name, value, type, disable,inputError) => {
     return (
       <TextField
         fullWidth
@@ -77,8 +77,8 @@ const ShowProfile = () => {
         name={name}
         {...register(name, { required: true })}
         onChange={handleProfileChange}
-        error={errors?.[name]}
-        helperText={errors?.[name]?.message}
+        error={errors?.[name] || inputError?.error }
+        helperText={errors?.[name]?.message || inputError?.errorMessage}
         placeholder={`Please Enter your ${label}`}
         multiline={type === "textArea" ? true : false}
         rows={type === "textArea" ? 6 : 2}
@@ -101,32 +101,16 @@ const ShowProfile = () => {
     inputError,
   } = useProfileContext();
 
-  // const handleProfileEditSubmit = () => {
-  //   const { fieldName, errorMessage } = inputError;
-  //   if (fieldName || errorMessage) {
-  //     setFieldError(fieldName, errorMessage);
-  //   } else {
-  //     handleProfileEdit();
-  //   }
-  // };
-  // handleSubmit(handleProfileEditSubmit)
+  useEffect(()=> {
+    setValue("email", showProfileData?.email);
+    setValue("phoneNumber", showProfileData?.phoneNumber);
+    setValue("fullName", showProfileData?.fullName);
+  },[showProfileData])
 
   return (
     <Stack width="100%">
       <TypographyPrimary sx={{ fontSize: "2rem" }}>Profile</TypographyPrimary>
-      <Formik
-        onSubmit={(values, { setFieldError }) => {
-          // const { fieldName, errorMessage } = inputError;
-          console.log(inputError, "hellonjxdhjbcgvhj");
-          if (inputError?.fieldName || inputError?.errorMessage) {
-            setFieldError(inputError?.fieldName, inputError?.errorMessage);
-          } else {
-            handleProfileEdit();
-          }
-        }}
-      >
-        {(props) => (
-          <form onSubmit={props.handleSubmit}>
+      <form onSubmit={handleSubmit(handleProfileEdit)}>
             <Stack>
               <Stack
                 gap={3}
@@ -147,7 +131,7 @@ const ShowProfile = () => {
                     "email",
                     showProfileData?.email,
                     "email",
-                    editProfile
+                    true
                   )}
                 </Box>
                 <Box display="flex" gap={5}>
@@ -156,14 +140,15 @@ const ShowProfile = () => {
                     "phoneNumber",
                     showProfileData?.phoneNumber,
                     "number",
-                    editProfile
+                    true
                   )}
                   {getTextFiled(
                     "Pincode",
                     "pincode",
                     showProfileData?.pincode,
                     "number",
-                    editProfile
+                    editProfile,
+                    inputError
                   )}
                 </Box>
                 <Box display="flex" gap={5}>
@@ -206,8 +191,11 @@ const ShowProfile = () => {
                     </ButtonOutlined>
                     <ButtonPrimary
                       variant="contained"
-                      // type="submit"
-                      onClick={() => setEditProfile(false)}
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setEditProfile(false)
+                      }}
                     >
                       Edit Profile
                     </ButtonPrimary>
@@ -233,8 +221,6 @@ const ShowProfile = () => {
               </Box>
             </Stack>
           </form>
-        )}
-      </Formik>
     </Stack>
   );
 };

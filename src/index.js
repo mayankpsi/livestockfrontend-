@@ -13,13 +13,50 @@ import "./assets/css/header.css";
 import "./index.css";
 import App from "./App";
 
+const labelFontSize = "1.5rem";
 const theme = createTheme({
   palette: {
     primary: {
       main: "#B58B5D",
     },
   },
+  components: {
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: labelFontSize,
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          fontSize: labelFontSize,
+        },
+      },
+    },
+  },
 });
+
+// 
+// const theme = createTheme({
+//   components: {
+//     MuiInputLabel: {
+//       styleOverrides: {
+//         root: {
+//           fontSize: labelFontSize,
+//         },
+//       },
+//     },
+//     MuiOutlinedInput: {
+//       styleOverrides: {
+//         root: {
+//           fontSize: labelFontSize,
+//         },
+//       },
+//     },
+//   },
+// });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

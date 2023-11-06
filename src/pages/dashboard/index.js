@@ -53,6 +53,7 @@ const AdminDashBoard = () => {
       request({ url: "/devices/isDeviceWithInGeofence" }),
     ])
       .then((res) => {
+        console.log(res,"sjxbhxbvsxgvxsgv")
         const [res1, res2] = res;
         if (res1?.status === 200) {
           const { data } = res1?.data;
@@ -72,7 +73,6 @@ const AdminDashBoard = () => {
         }
         if (res2?.status === 200) {
           const { data } = res2?.data;
-
           const formattedData = data?.map((ele) => ({
             id: ele?.liveStockId,
             position: {

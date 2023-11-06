@@ -65,7 +65,6 @@ export const AuthContextProvider = ({ children }) => {
           userName: res.data.data.user.name
         };
         localStorage.setItem("userData", JSON.stringify(loginCredentials));
-
         setOnUserLogin({ email: "", password: "" })
         navigate(from, { replace: true });
       } else if (res?.response?.data?.statusCode === 401) {

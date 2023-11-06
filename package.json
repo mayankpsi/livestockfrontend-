@@ -22,6 +22,7 @@
     "dayjs": "^1.11.10",
     "express": "^4.18.2",
     "formik": "^2.4.5",
+    "localforage": "^1.10.0",
     "moment": "^2.29.4",
     "notistack": "^2.0.8",
     "react": "^18.2.0",

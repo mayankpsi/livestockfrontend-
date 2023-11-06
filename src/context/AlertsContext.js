@@ -83,6 +83,7 @@ export const AlertsContextProvider = ({ children }) => {
           setAllAlertData(formattedData);
           setPageCount(res?.data?.data?.pageCount);
         } else {
+          setAllAlertData([]);
           throw new Error("something went wrong");
         }
         // const formattedData =
@@ -102,7 +103,7 @@ export const AlertsContextProvider = ({ children }) => {
     setOpenBackdropLoader(true);
     handleConfirmWindowClose();
     const res = await request({
-      url: `/liveStock/DeleteSingleLiveStockAlerts?alertID=${alertDeletedId}`,
+      url: `/liveStock/DeleteLiveStockAlerts?alertID=${alertDeletedId}`,
       method: "DELETE",
     });
     if (res?.status === 200) {
