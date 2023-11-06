@@ -42,7 +42,7 @@ const GetMap = ({ mapWidth, mapHeight, isLivestocks,livestockData,geofenceCoordi
               position={position}
               icon={{
                 url: Mark,
-                scaledSize: window && window.google && new window.google.maps.Size(50, 50),
+                scaledSize: window && window.google && new window.google.maps.Size(30, 30),
               }}
               //   onClick={() => handleActiveMarker(id)}
             />

@@ -79,10 +79,9 @@ const AlertsPage = () => {
       <Container maxWidth="xl" sx={{ marginTop: 8 }}>
         <BackdropLoader open={openBackdropLoader} />
         <Breadcrumb data={BreadcrumbData} />
-        <TypographyPrimary>Alerts</TypographyPrimary>
-        <Stack sx={{ width: "100%", py: 3 }}>
-
-          <Stack py={2}>
+        <TypographyPrimary sx={{fontSize:'24px'}}>Alerts</TypographyPrimary>
+        <Stack sx={{ width: "100%", pb: 3 }}>
+          <Stack pb={2}>
           <TabPaneV2
             paneText="showing 10 out of 20 Alerts"
             paneTextColor="#000"
