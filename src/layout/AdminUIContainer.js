@@ -1,34 +1,39 @@
 import React from "react";
-import { Container, Grid } from "@mui/material";
+import {Grid, Stack } from "@mui/material";
+import {HeaderAdmin, Sidebar, ConfirmWindowModal,SnackbarAlert} from "../ComponentsV2";
 
-import HeaderAdmin from "../components/Header/adminHeader";
-import Loader from "../components/loader";
+const AdminUIContainer = ({ children, openModal,onConfirm,showConfirmBtn, handleModalClose,openAlert,closeAlert,alertMessage,alertType}) => {
 
-import { useLoaderController, setLoader } from "../context/common";
-
-const AdminUIContainer = ({ children }) => {
-  const [controller, dispatch] = useLoaderController();
-  const { loading } = controller;
   return (
     <>
+    <ConfirmWindowModal openModal={openModal} onConfirm={onConfirm} showConfirmBtn={showConfirmBtn}  onCancel={handleModalClose} handleClose={handleModalClose}/>
+     <SnackbarAlert open={openAlert} closeAlert={closeAlert} message={alertMessage} type={alertType}/>
       <Grid sx={{ marginBottom: "20px" }}>
-        {loading && <Loader />}
-        <Grid
-          sx={{
-            padding: "15px 0",
-            position: "sticky",
-            top: "0px",
-            backgroundColor: "white",
-            zIndex: 999,
-            // border: "1px solid red",
-            boxShadow: "0px 5px 5px -7px black",
-          }}
-        >
-          <Container maxWidth="lg">
+        <Stack direction="coloumn">
+          <Grid
+            sx={{
+              width: "18%",
+              position: "relative",
+              display: { lg: "inline", md: "none", sm:'none' },
+            }}
+          >
+            <Sidebar />
+          </Grid>
+          <Grid
+            sx={{
+              padding: "15px 0",
+              top: "0px",
+              backgroundColor: "white",
+              zIndex: 999,
+              height: "10vh",
+              boxShadow: "0px 5px 5px -7px black",
+              width: { lg: "85%", md: "100%", sm:'100%' },
+            }}
+          >
             <HeaderAdmin />
-          </Container>
-        </Grid>
-        {children}
+            {children}
+          </Grid>
+        </Stack>
       </Grid>
     </>
   );
