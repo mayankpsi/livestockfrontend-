@@ -67,6 +67,7 @@ export const AuthContextProvider = ({ children }) => {
         localStorage.setItem("userData", JSON.stringify(loginCredentials));
         setOnUserLogin({ email: "", password: "" })
         navigate(from, { replace: true });
+        window.location.reload();
       } else if (res?.response?.data?.statusCode === 401) {
         //res.response.data.statusCode - 401 - email not registered
         // res.response.data.statusCode - 401 - incorrect password

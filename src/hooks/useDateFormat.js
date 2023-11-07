@@ -24,7 +24,13 @@ const useDateFormat = () => {
    return moment(date).format("YYYY-MM-DD")
  }
 
-  return {formattedDate, paginationDateFormat};
+ const getRoundOffDigit = (value,afterDecimal) => {
+     const rounded = Math.round(value * 10) / 10;
+     const deciOne = rounded.toFixed(afterDecimal);
+     return deciOne;
+ };
+
+  return {formattedDate, paginationDateFormat,getRoundOffDigit};
 }
 
 export default useDateFormat;

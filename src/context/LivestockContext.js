@@ -107,6 +107,18 @@ export const LivestockContextProvider = ({ children }) => {
   const [deleteLivestockId, setDeleteLivestockId] = useState(null);
   const { formattedDate } = useDateFormat();
 
+  // PAGINATION AND RANGE DATE
+  const [selectedDate, setSelectedDate] = useState([
+    {
+      startDate: new Date("2023-11-01"),
+      endDate: new Date("2023-11-01"),
+      key: "selection",
+    },
+  ]);
+  const [paginationPageNo, setPaginationPageNo] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
+  const pageLimit = 10;
+
   //GET ALL LIVESTOCK
   useEffect(() => {
     setOpenBackdropLoader(true);
@@ -349,7 +361,14 @@ export const LivestockContextProvider = ({ children }) => {
         onSnackbarAlertClose,
         handleLivestockDeleteConfirm,
         openSnackbarAlert,
-        openBackdropLoader
+        openBackdropLoader,
+        selectedDate,
+        setSelectedDate,
+        paginationPageNo,
+        setPaginationPageNo,
+        pageCount,
+        setPageCount,
+        pageLimit,
       }}
     >
       {children}

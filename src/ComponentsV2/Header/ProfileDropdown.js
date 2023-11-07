@@ -18,6 +18,9 @@ export default function ProfileMenu() {
     }else if(type === "logout"){
         navigate('/');
         localStorage.removeItem("userData");
+        localStorage.removeItem("geofenceCreation");
+        localStorage.removeItem("currentTab");
+        window.location.reload();
     }
     setAnchorEl(null);
   };

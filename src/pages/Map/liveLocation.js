@@ -35,6 +35,14 @@ const LiveLocation = () => {
           mapWidth="100%"
           mapHeight="500px"
           geofenceCoordinates={geofenceCoordinates}
+          isLivestocks={true}
+          livestockData={getLivestockStatus?.map(ele => ({
+            id:ele?.liveStockId,
+            position:{
+              lat:ele?.location?.latitude,
+              lng:ele?.location?.longitude,
+            }
+          }))}
         />
       </Stack>
       {

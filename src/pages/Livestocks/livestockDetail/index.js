@@ -69,7 +69,7 @@ const LivestockDetails = () => {
     },
     {
       label: "alerts",
-      child: <Alerts />,
+      child: <Alerts data={data} />,
     },
     {
       label: "collar",

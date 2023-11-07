@@ -44,6 +44,7 @@ const AlertsPage = () => {
     onSnackbarAlertClose,
     AllAlertData,
     pageCount,
+    paginationPageNo,
     setPaginationPageNo,
   } = useAlertsContext();
 
@@ -79,24 +80,25 @@ const AlertsPage = () => {
       <Container maxWidth="xl" sx={{ marginTop: 8 }}>
         <BackdropLoader open={openBackdropLoader} />
         <Breadcrumb data={BreadcrumbData} />
-        <TypographyPrimary sx={{fontSize:'24px'}}>Alerts</TypographyPrimary>
+        <TypographyPrimary sx={{ fontSize: "24px" }}>Alerts</TypographyPrimary>
         <Stack sx={{ width: "100%", pb: 3 }}>
           <Stack pb={2}>
-          <TabPaneV2
-            paneText="showing 10 out of 20 Alerts"
-            paneTextColor="#000"
-            btnText={
-              <ExportAsCSV
-                headers={tableHeadData}
-                data={AllAlertData}
-                fileName="alerts">
-                Export
-              </ExportAsCSV>
-            }
-            btnColor="#fff"
-            btnBg="#B58B5D"
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
+            <TabPaneV2
+              paneText="showing 10 out of 20 Alerts"
+              paneTextColor="#000"
+              btnText={
+                <ExportAsCSV
+                  headers={tableHeadData}
+                  data={AllAlertData}
+                  fileName="alerts"
+                >
+                  Export
+                </ExportAsCSV>
+              }
+              btnColor="#fff"
+              btnBg="#B58B5D"
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
             />
           </Stack>
           <TableV2
@@ -108,6 +110,7 @@ const AlertsPage = () => {
           <Stack direction="row" justifyContent="center">
             <CustomPagination
               size="large"
+              page={paginationPageNo}
               count={pageCount}
               onPageChange={(pageNo) => setPaginationPageNo(pageNo)}
             />

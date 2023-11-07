@@ -5,6 +5,7 @@ import { styled } from "@mui/system";
 import { ButtonPrimary, ButtonOutlinedRound } from "../../ComponentsV2/themeComponents";
 import useLivestockContext from "../../hooks/useLivestockContext";
 import useMapContext from "../../hooks/useMapContext";
+import useDateFormat from "../../hooks/useDateFormat";
 
 const CreateGeoFence = () => {
   const {
@@ -37,7 +38,8 @@ const CreateGeoFence = () => {
     textAlign: "justify",
   });
 
-  const submitState = localStorage.getItem("geofenceCreation") === "showEdit"
+  const submitState = localStorage.getItem("geofenceCreation") === "showEdit";
+  const {getRoundOffDigit} = useDateFormat()
 
   return (
     <Stack direction="row" justifyContent="space-between" mt={3} sx={{gap:{xl:5, lg:5, md:3, sm:2}}} >
@@ -66,6 +68,7 @@ const CreateGeoFence = () => {
               <ParaV2 variant="h5" sx={{ marginBottom: 0 }}>
                 Address:
               </ParaV2>
+              {console.log(geofenceCoordinates,"djbdhcbhdbhcdhchd")}
               <ParaV3 variant="h5">{geofenceCoordinates?.address}</ParaV3>
               <ParaV2 variant="h5">Lat: {geofenceCoordinates?.lat}</ParaV2>
               <ParaV2 variant="h5">Lng: {geofenceCoordinates?.lng}</ParaV2>

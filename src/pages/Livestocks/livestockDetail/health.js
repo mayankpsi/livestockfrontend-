@@ -51,6 +51,20 @@ const btnData = [
   },
 ];
 
+
+const healthData = [
+  {
+    id: 1,
+    time: 0,
+    temp: 46,
+  },
+  {
+    id: 2,
+    time: 2.4,
+    temp: 28,
+  },
+]
+
 const data = [
   {
     id: 1,
@@ -83,6 +97,11 @@ const data = [
     userGain: 1000,
   },
   {
+    id: 10,
+    year: 2016,
+    userGain: 1000,
+  },
+  {
     id: 2,
     year: 2017,
     userGain: 500,
@@ -104,24 +123,59 @@ const data = [
   },
 ];
 
+const labels = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+// {
+//   label: "Users gain",
+//   data: data.map((ele) => ele?.userGain),
+//   backgroundColor: ["#7C0202"],
+//   borderColor: "#7C0202",
+//   borderWidth: 1,
+// },
+
 const Health = () => {
   const { livestockHealthActiveTab, setLivestockHealthActiveTab } =
     useLivestockContext();
   const [livestockChartData, setLivestockChartData] = useState({
-    labels: data?.map((ele) => ele.year),
+    labels: labels,
+    datasetIdKey:'id',
     datasets: [
       {
-        label: "Users gain",
-        data: data.map((ele) => ele?.userGain),
-        backgroundColor: ["#7C0202"],
-        borderColor: "#7C0202",
-        borderWidth: 1,
+        id: 1,
+        label: 'a',
+        data: [5, 6, 7,0,0,7,8],
       },
     ],
     options: {
       aspectRatio: 1,
     },
   });
+
+  const data = {
+    temperature:[
+      {
+        id:1,
+        hour:1,
+        value:23
+      },
+      {
+        id:1,
+        hour:1,
+        value:23
+      }
+    ],
+    heartRate:[
+      {
+        id:1,
+        hour:1,
+        value:23
+      },
+      {
+        id:1,
+        hour:1,
+        value:23
+      }
+    ],
+  }
 
   return (
     <Stack my={4} direction="column" alignItems="center" gap={4}>

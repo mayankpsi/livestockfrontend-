@@ -36,10 +36,10 @@ const logData = [
 
 const tableColors = ["#06B95F", "#FC5555"];
 
-
 const tableHeadData = [];
-const LocationLog = ({ data }) => {
-  const {setShowLocationTab} = useLivestockContext()
+const LocationLog = ({ data, locationAlertsData, geofenceData }) => {
+  const { setShowLocationTab } = useLivestockContext();
+
   return (
     <Stack
       justifyContent="space-between"
@@ -60,7 +60,10 @@ const LocationLog = ({ data }) => {
             btnColor="#fff"
             btnBg="#B58B5D"
             tableHeadData={tableHeadData}
-            tableRowData={logData}
+            tableRowData={locationAlertsData?.map((ele) => ({
+              title: ele?.title,
+              time: ele?.updated,
+            }))}
             tableColors={tableColors}
             onBtnClick={() => setShowLocationTab("analytics")}
           />
@@ -74,11 +77,15 @@ const LocationLog = ({ data }) => {
         <GetMap
           mapWidth="100%"
           mapHeight="545px"
+          geofenceCoordinates={geofenceData}
           isLivestocks={true}
           livestockData={[
             {
               id: Date.now(),
-              position: { lat: data?.geolocation?.lat, lng: data?.geolocation?.lng },
+              position: {
+                lat: data?.geolocation?.lat,
+                lng: data?.geolocation?.lng,
+              },
             },
           ]}
         />

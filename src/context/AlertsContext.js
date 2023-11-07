@@ -47,10 +47,10 @@ export const AlertsContextProvider = ({ children }) => {
   const { formattedDate, paginationDateFormat } = useDateFormat();
 
   const getRoundOffDigit = (name, value) => {
-    if (name.toLocaleLowerCase().includes("geofence")) {
-      const rounded = Math.round(value * 10) / 10;
-      const deciOne = rounded.toFixed(1);
-      const final = deciOne > 1 ? `${deciOne} Km` : `${deciOne * 1000} m`;
+    if (name?.toLocaleLowerCase().includes("geofence")) {
+      const val = value?.toString()?.slice(0,5);
+      console.log(val)
+      const final = val > 1 ? `${val} Km` : `${val * 1000} m`;
       return final;
     } else {
       return value;
@@ -129,6 +129,7 @@ export const AlertsContextProvider = ({ children }) => {
         setSelectedDate,
         AllAlertData,
         pageCount,
+        paginationPageNo,
         setPaginationPageNo,
       }}
     >

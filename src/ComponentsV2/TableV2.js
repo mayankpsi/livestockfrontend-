@@ -64,13 +64,14 @@ export default function TableV2({
                           : ele.toLowerCase().includes("pm") ||
                             ele.toLowerCase().includes("am")
                           ? null
-                          : index % 2 === 0
+                          : row?.title?.toLowerCase() === "safe"
                           ? tableColors[0]
                           : tableColors[1]
                       }`,
                       fontSize: "1.5rem",
                     }}
                   >
+                    {console.log(row,"dhxbhvcgdvgdvcgvdh")}
                     {!Array.isArray(ele) ? (
                       ele
                     ) : (
