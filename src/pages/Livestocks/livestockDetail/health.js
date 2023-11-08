@@ -136,6 +136,7 @@ const Health = () => {
   const { livestockHealthActiveTab, setLivestockHealthActiveTab } =
     useLivestockContext();
   const [livestockChartData, setLivestockChartData] = useState({
+    label: "Users gain",
     labels: data?.map((ele) => ele?.year),
     datasets: data?.map((ele) => ele?.userGain),
     options: {

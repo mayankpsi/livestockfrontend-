@@ -28,7 +28,7 @@ const GetMap = ({
           getGeolocationAddress(false, e.latLng.lat(), e.latLng.lng())
         }
         defaultCenter={center}
-        center={{lat:geofenceCoordinates?.lat, lng:geofenceCoordinates?.lng}}
+        center={{lat:Number(geofenceCoordinates?.lat), lng:Number(geofenceCoordinates?.lng)}}
         zoom={18}
       >
         {isLivestocks &&
@@ -56,10 +56,10 @@ const GetMap = ({
         <Marker
           key="helloworlds"
           title="marker"
-          position={{lat:geofenceCoordinates?.lat, lng:geofenceCoordinates?.lng}}
+          position={{lat:Number(geofenceCoordinates?.lat), lng:Number(geofenceCoordinates?.lng)}}
         />
         <Circle
-          center={{lat:geofenceCoordinates?.lat, lng:geofenceCoordinates?.lng}}
+          center={{lat:Number(geofenceCoordinates?.lat), lng:Number(geofenceCoordinates?.lng)}}
           options={{
             strokeColor: "#06B95F",
             strokeOpacity: 1,
