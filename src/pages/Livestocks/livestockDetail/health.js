@@ -136,46 +136,39 @@ const Health = () => {
   const { livestockHealthActiveTab, setLivestockHealthActiveTab } =
     useLivestockContext();
   const [livestockChartData, setLivestockChartData] = useState({
-    labels: labels,
-    datasetIdKey:'id',
-    datasets: [
-      {
-        id: 1,
-        label: 'a',
-        data: [5, 6, 7,0,0,7,8],
-      },
-    ],
+    labels: data?.map((ele) => ele?.year),
+    datasets: data?.map((ele) => ele?.userGain),
     options: {
       aspectRatio: 1,
     },
   });
 
-  const data = {
-    temperature:[
-      {
-        id:1,
-        hour:1,
-        value:23
-      },
-      {
-        id:1,
-        hour:1,
-        value:23
-      }
-    ],
-    heartRate:[
-      {
-        id:1,
-        hour:1,
-        value:23
-      },
-      {
-        id:1,
-        hour:1,
-        value:23
-      }
-    ],
-  }
+  // const data = {
+  //   temperature:[
+  //     {
+  //       id:1,
+  //       hour:1,
+  //       value:23
+  //     },
+  //     {
+  //       id:1,
+  //       hour:1,
+  //       value:23
+  //     }
+  //   ],
+  //   heartRate:[
+  //     {
+  //       id:1,
+  //       hour:1,
+  //       value:23
+  //     },
+  //     {
+  //       id:1,
+  //       hour:1,
+  //       value:23
+  //     }
+  //   ],
+  // }
 
   return (
     <Stack my={4} direction="column" alignItems="center" gap={4}>

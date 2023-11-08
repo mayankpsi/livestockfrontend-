@@ -153,6 +153,7 @@ const ShowProfile = () => {
                 </Box>
                 <Box display="flex" gap={5}>
                   <Box width="100%" display="flex" flexWrap="wrap">
+                    {console.log(showProfileData,"xhdvvdcgvgvgvgvgvg")}
                     {getTextFiled(
                       "Full Address",
                       "address",

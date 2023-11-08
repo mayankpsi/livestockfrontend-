@@ -86,6 +86,7 @@ const AlertsPage = () => {
             <TabPaneV2
               paneText="showing 10 out of 20 Alerts"
               paneTextColor="#000"
+              datePicker={true}
               btnText={
                 <ExportAsCSV
                   headers={tableHeadData}

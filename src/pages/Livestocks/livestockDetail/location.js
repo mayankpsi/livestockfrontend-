@@ -57,17 +57,18 @@ const Location = ({ data }) => {
   const { paginationDateFormat, formattedDate, getRoundOffDigit } =
     useDateFormat();
   const [locationAlertsData, setLocationAlertsData] = useState([]);
-  const [geofenceData,setGeofenceData] = useState({
+  const [resentAlerts, setResentAlerts] = useState([]);
+  const [geofenceData, setGeofenceData] = useState({
     lat: null,
-    lng:null,
+    lng: null,
     radius: 0,
-  })
+  });
   const userId = useUserId();
   const tableColors = ["#06B95F", "#FC5555"];
 
   useEffect(() => {
     if (data?.id) {
-      Promise.all([
+      Promise.allSettled([
         request({ url: `/user/getUsersGeofence?userID=${userId}` }),
         request({
           url: `/liveStock/getliveStocklocationAlerts?liveStockID=${
@@ -78,28 +79,46 @@ const Location = ({ data }) => {
             selectedDate[0]?.endDate
           )}&page=${paginationPageNo}&limit=${pageLimit}`,
         }),
+        request({
+          url: `/liveStock/getliveStocklocationAlerts?liveStockID=${
+            data?.id
+          }&startDate=${paginationDateFormat(
+            new Date()
+          )}&endDate=${paginationDateFormat(new Date())}&page=${1}&limit=${8}`,
+        }),
       ])
         .then((res) => {
-          const [res1,res2] = res;
-
-          if (res1.status === 200) {
-            const { data } = res1.data;
+          const [res1, res2, res3] = res;
+          if (res1?.value?.status === 200) {
+            const { data } = res1.value?.data;
             setGeofenceData({
               lat: data?.lat,
-              lng:data?.lng,
+              lng: data?.lng,
               radius: data?.radius,
-            })
+            });
           } else {
             setGeofenceData({
               lat: null,
-              lng:null,
+              lng: null,
               radius: 0,
-            })
+            });
             throw new Error(res?.response?.data?.message);
           }
 
-          if (res2.status === 200) {
-            const { data } = res2.data;
+          if (res3?.value?.status === 200) {
+            const { data } = res3.value?.data;
+            const formattedData = data?.LocationAlert?.map((ele) => ({
+              title: ele?.locationStatus,
+              updated: formattedDate(ele?.createdAt),
+            }));
+            setResentAlerts(formattedData);
+          } else {
+            setResentAlerts([]);
+            throw new Error(res?.response?.data?.message);
+          }
+
+          if (res2?.value?.status === 200) {
+            const { data } = res2.value?.data;
             const formattedData = data?.LocationAlert?.map((ele) => ({
               title: ele?.locationStatus,
               location: `${getRoundOffDigit(
@@ -114,6 +133,7 @@ const Location = ({ data }) => {
             setLocationAlertsData([]);
             throw new Error(res?.response?.data?.message);
           }
+
         })
         .catch((err) => console.log(err.message));
     }
@@ -132,7 +152,11 @@ const Location = ({ data }) => {
       />
       {showLocationTab === "location" ? (
         <Stack sx={{ width: "100%" }}>
-          <LocationLog data={data} locationAlertsData={locationAlertsData} geofenceData={geofenceData} />
+          <LocationLog
+            data={data}
+            resentAlerts={resentAlerts}
+            geofenceData={geofenceData}
+          />
         </Stack>
       ) : (
         <Stack sx={{ width: "100%" }}>
@@ -143,6 +167,7 @@ const Location = ({ data }) => {
                   ? locationAlertsData?.length
                   : "10"
               } out of 20 Alerts`}
+              datePicker={true}
               paneTextColor="#000"
               btnText={
                 <ExportAsCSV headers={[]} data={[]} fileName="alerts">
@@ -167,21 +192,21 @@ const Location = ({ data }) => {
             tableRowData={locationAlertsData}
             tableColors={tableColors}
           />
+          {locationAlertsData?.length ? (
+            pageCount > 1 ? (
+              <Stack direction="row" justifyContent="center">
+                <CustomPagination
+                  size="large"
+                  count={pageCount}
+                  page={paginationPageNo}
+                  onPageChange={(pageNo) => setPaginationPageNo(pageNo)}
+                />
+              </Stack>
+            ) : null
+          ) : (
+            <NoData />
+          )}
         </Stack>
-      )}
-      {locationAlertsData?.length ? (
-        pageCount > 1 ? (
-          <Stack direction="row" justifyContent="center">
-            <CustomPagination
-              size="large"
-              count={pageCount}
-              page={paginationPageNo}
-              onPageChange={(pageNo) => setPaginationPageNo(pageNo)}
-            />
-          </Stack>
-        ) : null
-      ) : (
-        <NoData />
       )}
     </Stack>
   );

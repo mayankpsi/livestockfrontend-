@@ -214,6 +214,7 @@ const Alerts = ({ data }) => {
               singleLivestockAlerts?.length < 10 ? singleLivestockAlerts?.length : "10"
             } out of 20 Alerts`}
             paneTextColor="#000"
+            datePicker={true}
             btnText={
               <ExportAsCSV headers={tableHeadData} data={[]} fileName="alerts">
                 Export

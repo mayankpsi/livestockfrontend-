@@ -45,7 +45,7 @@ const GetMap = ({
               //   }
               // }}
               icon={{
-                url: require("../assets/images/cow1.png"),
+                url: Mark,
                 scaledSize:
                   window &&
                   window.google &&

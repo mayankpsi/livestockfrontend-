@@ -43,6 +43,7 @@ export const ProfileContextProvider = ({ children }) => {
       try {
         const res = await request({ url:`/auth/update-user`, method:"PATCH",data:body});
         if(res.status === 200){
+          console.log(res,"xhdvvdcgvgvgvgvgvg")
           setEditProfile(true)
          alert("success")
         }else{
@@ -76,7 +77,6 @@ export const ProfileContextProvider = ({ children }) => {
   useEffect(() => {
     request({ url: `/auth/getUpdatedUserData` })
       .then((res) => {
-        //  console.log(res);
         if (res.status === 200) {
           const { data } = res?.data;
           setShowProfileData({
@@ -84,12 +84,14 @@ export const ProfileContextProvider = ({ children }) => {
             fullName: data?.name,
             email: data?.email,
             phoneNumber: data?.phone,
+            address:data?.address?.line,
+            pincode: data?.address?.pincode,
+            state: data?.address?.state,
+            country: data?.address?.country,
           });
         } else {
-          // throw new Error()
+          // throw new Error("")
         }
-
-        // setCollars(formattedData);
       })
       .catch((err) => console.log(err.message));
   }, []);

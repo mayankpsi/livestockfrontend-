@@ -53,7 +53,6 @@ const AdminDashBoard = () => {
       request({ url: "/devices/isDeviceWithInGeofence" }),
     ])
       .then((res) => {
-        console.log(res,"sjxbhxbvsxgvxsgv")
         const [res1, res2] = res;
         if (res1?.status === 200) {
           const { data } = res1?.data;
@@ -62,7 +61,7 @@ const AdminDashBoard = () => {
             totalLiveStock: data?.TotalLiveStock,
             totalSafeLiveStock: data?.TotalSafeLiveStock,
             totalUnSafeLiveStock: data?.TotalUnSafeLiveStock,
-            totalAlerts: data?.AllAlertsCount[0]?.totalAlerts,
+            totalAlerts: data?.AllAlertsCount[0]?.totalAlerts?data?.AllAlertsCount[0]?.totalAlerts:0,
             geolocationLat: data?.GeofenceData?.lat,
             geolocationLng: data?.GeofenceData?.lng,
             geolocationRadius: data?.GeofenceData?.radius,
@@ -213,13 +212,13 @@ const AdminDashBoard = () => {
                 <GetMap
                   mapWidth="100%"
                   mapHeight="100%"
-                  isLivestocks={true}
-                  livestockData={getLivestockStatus}
                   geofenceCoordinates={{
                     lat: dashboardData?.geolocationLat,
                     lng: dashboardData?.geolocationLng,
                     radius: dashboardData?.geolocationRadius,
                   }}
+                  isLivestocks={true}
+                  livestockData={getLivestockStatus}
                 />
               )}
             </Paper>

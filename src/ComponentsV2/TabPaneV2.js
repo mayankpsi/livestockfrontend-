@@ -30,7 +30,7 @@ const TabPaneV2 = ({
         {paneText}
       </TypographyPrimary>
       <Box display="flex" justifyContent="center" alignItems="center" gap={2}>
-        {!datePicker ? (
+        {datePicker ? (
           <Stack
             direction="row"
             justifyContent="flex-end"
