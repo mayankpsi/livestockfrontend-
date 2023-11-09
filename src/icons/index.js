@@ -18,3 +18,4 @@ export { default as MenuIcon } from "@mui/icons-material/Menu";
 export { default as InfoOutlinedIcon } from "@mui/icons-material/InfoOutlined";
 export { default as NetworkCellOutlinedIcon } from "@mui/icons-material/NetworkCellOutlined";
 export { default as Battery5BarOutlinedIcon } from "@mui/icons-material/Battery5BarOutlined";
+export { default as CalendarMonthIcon } from "@mui/icons-material/CalendarMonth";

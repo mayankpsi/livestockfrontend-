@@ -8,31 +8,29 @@ const Breadcrumb = ({data}) => {
           container
           direction="row"
           justifyContent="start"
-          sx={{margin:'15px 0',marginTop:6}}
         >
           <Breadcrumbs
             separator="›"
             aria-label="breadcrumb"
             className="fs16px bold"
-           
           >
             <Link
-              to="/admin/dashboard"
+              to="/"
               className="textDecorNone"
               key="1"
             >
-              <Typography className="fs16px bold" sx={{color:'#B58B5D'}}>
+              <Typography className="bold" sx={{color:'#B58B5D', fontSize:"20px"}}>
                 Dashboard
               </Typography>
             </Link>
             {
               data?.map(ele => (
                 <Link
-                to={`/admin/${ele.link}`}
+                to={`/${ele.link}`}
                 className="textDecorNone"
                 key="2"
               >
-                <Typography className="fs16px bold " sx={{color:'#535353', textTransform:'Capitalize'}}>
+                <Typography className="bold " sx={{color:'#535353', fontSize:"20px",textTransform:'Capitalize'}}>
                   {ele.label}
                 </Typography>
               </Link>

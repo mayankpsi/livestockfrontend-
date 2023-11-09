@@ -65,10 +65,10 @@ const Collars = () => {
       alertMessage={snackbarAlert.message}
       alertType={snackbarAlert.type}
       closeAlert={onSnackbarAlertClose}
+      BreadcrumbData={BreadcrumbData}
     >
       <Container maxWidth="xl" sx={{ marginTop: 8 }}>
         <BackdropLoader open={openBackdropLoader} />
-        <Breadcrumb data={BreadcrumbData} />
         <TabPane
           text="Showing 10 Collars out of 20"
           btnText="Add New Collar"

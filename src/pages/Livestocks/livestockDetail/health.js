@@ -2,9 +2,9 @@ import { Stack } from "@mui/material";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
-import SpokeIcon from '@mui/icons-material/Spoke';
+import SpokeIcon from "@mui/icons-material/Spoke";
 import { useState } from "react";
-import {BtnGroup, ChartCard} from "../../../ComponentsV2";
+import { BtnGroup, ChartCard, DatePicker } from "../../../ComponentsV2";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 
 const chartCardData = [
@@ -35,6 +35,13 @@ const chartCardData = [
     iconBg: "#A2F8F2",
     valueColor: "color-success--dark ",
   },
+  {
+    label: "rumination",
+    value: "2h",
+    icon: <SpokeIcon sx={{ fontSize: "3em", color: "#B58B5D" }} />,
+    iconBg: "#A2F8F2",
+    valueColor: "color-success--dark ",
+  },
 ];
 
 const btnData = [
@@ -46,11 +53,11 @@ const btnData = [
   },
   {
     label: "1 Month",
-  }, {
+  },
+  {
     label: "3 Month",
   },
 ];
-
 
 const healthData = [
   {
@@ -63,7 +70,7 @@ const healthData = [
     time: 2.4,
     temp: 28,
   },
-]
+];
 
 const data = [
   {
@@ -123,70 +130,51 @@ const data = [
   },
 ];
 
-const labels = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
-// {
-//   label: "Users gain",
-//   data: data.map((ele) => ele?.userGain),
-//   backgroundColor: ["#7C0202"],
-//   borderColor: "#7C0202",
-//   borderWidth: 1,
-// },
-
 const Health = () => {
   const { livestockHealthActiveTab, setLivestockHealthActiveTab } =
     useLivestockContext();
+  const [selectedDate, setSelectedDate] = useState();
   const [livestockChartData, setLivestockChartData] = useState({
-    label: "Users gain",
-    labels: data?.map((ele) => ele?.year),
-    datasets: data?.map((ele) => ele?.userGain),
+    labels: data.map((ele) => ele?.year),
+    datasets: [
+      {
+        label: "Temperature",
+        data: data?.map((ele) => ele?.userGain),
+        backgroundColor: ["#7C0202"],
+        borderColor: "#7C0202",
+        borderWidth: 1,
+      },
+    ],
     options: {
       aspectRatio: 1,
     },
   });
 
-  // const data = {
-  //   temperature:[
-  //     {
-  //       id:1,
-  //       hour:1,
-  //       value:23
-  //     },
-  //     {
-  //       id:1,
-  //       hour:1,
-  //       value:23
-  //     }
-  //   ],
-  //   heartRate:[
-  //     {
-  //       id:1,
-  //       hour:1,
-  //       value:23
-  //     },
-  //     {
-  //       id:1,
-  //       hour:1,
-  //       value:23
-  //     }
-  //   ],
-  // }
+  const data1 = [
+    {
+      _id: {
+        hour: 16,
+      },
+      HeartRate: 84,
+      Temperature: 34,
+      activity: 92,
+    },
+  ];
 
   return (
     <Stack my={4} direction="column" alignItems="center" gap={4}>
       <Stack direction="row" justifyContent="space-between" width="100%">
-        <TypographyPrimary>
+        <TypographyPrimary sx={{ fontSize: "21px" }}>
           Showing Health data of 25th Sep, 23
         </TypographyPrimary>
-        <BtnGroup
-          btnData={btnData}
-          activeBtn={livestockHealthActiveTab}
-          onChange={(ele) => setLivestockHealthActiveTab(ele)}
+        <DatePicker
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
         />
       </Stack>
       <Stack width="100%" gap={2}>
-        {
-          chartCardData?.map(ele => (
-            <ChartCard
+        {chartCardData?.map((ele) => (
+          <ChartCard
             chartData={livestockChartData}
             label={ele.label}
             value={ele.value}
@@ -194,8 +182,7 @@ const Health = () => {
             iconBg={ele.iconBg}
             valueColor={ele.valueColor}
           />
-          ))
-        }
+        ))}
       </Stack>
     </Stack>
   );

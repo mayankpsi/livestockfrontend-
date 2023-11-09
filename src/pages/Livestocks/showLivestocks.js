@@ -21,7 +21,7 @@ const ShowLivestocks = ({ show }) => {
       filteredLivestock = allLivestocks;
     } else {
       filteredLivestock = allLivestocks?.filter(
-        (livestock) => livestock?.status === show
+        (livestock) => livestock?.status?.toLowerCase() === show
       );
     }
     return filteredLivestock

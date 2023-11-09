@@ -12,6 +12,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import useDateFormat from "../../../hooks/useDateFormat";
 import { request } from "../../../apis/axios-utils";
+import { alertsThresholdData } from "./alertThresholdData";
 
 const labelData = [
   {
@@ -124,7 +125,18 @@ const Alerts = ({ data }) => {
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate, getRoundOffDigit } =
     useDateFormat();
-    const [singleLivestockAlerts, setSingleLivestockAlerts] = useState([])
+  const [singleLivestockAlerts, setSingleLivestockAlerts] = useState([]);
+  const [alertsThreshold, setAlertsThreshold] = useState(alertsThresholdData);
+  const [alertsThresholdChange, setAlertsThresholdChange] = useState({
+    lowTemp: 0,
+    highTemp: 0,
+    lowHeartbeat: 0,
+    highHeartbeat: 0,
+    lowSteps: 0,
+    highSteps: 0,
+    lowRumination: 0,
+    highRumination: 0,
+  });
 
   useEffect(() => {
     if (data?.id) {
@@ -141,12 +153,12 @@ const Alerts = ({ data }) => {
           if (res.status === 200) {
             const { data } = res.data;
             const formattedData = data?.LiveStockAlertData?.map((ele) => ({
-              id:ele?._id,
+              id: ele?._id,
               alertName: ele?.message,
               thresholdValue: ele?.thresholdValue,
-              alarmValue: getRoundOffDigit(ele?.alertValue,2),
-              time: formattedDate(ele?.createdAt,"time"),
-              date: formattedDate(ele?.createdAt,"date"),
+              alarmValue: getRoundOffDigit(ele?.alertValue, 2),
+              time: formattedDate(ele?.createdAt, "time"),
+              date: formattedDate(ele?.createdAt, "date"),
             }));
             setSingleLivestockAlerts(formattedData);
             setPageCount(data?.totalPage);
@@ -163,55 +175,87 @@ const Alerts = ({ data }) => {
     setPaginationPageNo(1);
   }, [selectedDate]);
 
+  //GET ALL ALERTS THRESHOLD
+  useEffect(() => {
+    if (data?.id) {
+      // setOpenBackdropLoader(true);
+      request({
+        url: `/thresholds/getliveStockThresholdinfo?liveStockID=${data?.id}`,
+      })
+        .then((res) => {
+          // if(res?.response.status === 404){
+          // }
+          // console.log(res,"bdcbxhdbhcbdhbch")
+        })
+        .catch((err) => console.log(err.message))
+        .finally(() => {});
+    }
+  }, [data?.id]);
+
+  const handleThresholdEdit = (id) => {
+    const updatedData = alertsThreshold?.map((ele) => {
+      if (ele.id === id) {
+        return {
+          ...ele,
+          isEdit: !ele?.isEdit,
+        };
+      } else return ele;
+    });
+    setAlertsThreshold(updatedData);
+  };
+
+  const handleThresholdChange = (event, id) => {
+    const { name, value } = event?.target;
+    const updatedData = alertsThreshold?.map((ele) => {
+      if (ele.id === id) {
+        return {
+          ...ele,
+          value: ele?.value?.map((el) => {
+            if (el.name === name) {
+              return {
+                ...el,
+                [name]: value,
+              };
+            } else return el;
+          }),
+        };
+      } else return ele;
+    });
+    setAlertsThreshold(updatedData);
+  };
+
+  const handleThresholdAlertSubmit = (id) => {
+    console.log("submit");
+    handleThresholdEdit(id)
+  };
+
   return (
     <Stack my={4}>
       <Stack direction="row" flexWrap="wrap" width="100%" gap={3}>
-        <AlertCard
-          paneText="set temperature threshold"
-          valueSuffix="C"
-          labelData={tempThreshold}
-          onChange={handleLivestockTempAlertsChange}
-          isEdit={isLivestockTempAlertsEdit}
-          onBtnClick={() =>
-            serIsLivestockTempAlertsEdit(!isLivestockTempAlertsEdit)
-          }
-        />
-        <AlertCard
-          paneText="set heartbeat threshold"
-          valueSuffix="/sec"
-          labelData={heartbeatThreshold}
-          onChange={handleLivestockHeartbeatAlertsChange}
-          isEdit={isLivestockHeartbeatAlertsEdit}
-          onBtnClick={() =>
-            setIsLivestockHeartbeatAlertsEdit(!isLivestockHeartbeatAlertsEdit)
-          }
-        />
-        <AlertCard
-          paneText="set humidity threshold"
-          valueSuffix="%"
-          labelData={humidityThreshold}
-          onChange={handleLivestockHumidityAlertsChange}
-          isEdit={isLivestockHumidityAlertsEdit}
-          onBtnClick={() =>
-            setIsLivestockHumidityAlertsEdit(!isLivestockHumidityAlertsEdit)
-          }
-        />
-        <AlertCard
-          paneText="set geofence threshold"
-          valueSuffix="m"
-          labelData={geofenceThreshold}
-          onChange={handleLivestockGeofenceAlertsChange}
-          isEdit={isLivestockGeofenceAlertsEdit}
-          onBtnClick={() =>
-            setIsLivestockGeofenceAlertsEdit(!isLivestockGeofenceAlertsEdit)
-          }
-        />
+        {alertsThreshold?.map((ele) => (
+          <AlertCard
+            key={ele?.id}
+            paneText={`set ${ele?.label} threshold`}
+            label={ele?.label}
+            valueSuffix={ele?.suffix}
+            labelData={ele?.value}
+            isEdit={ele?.isEdit}
+            onChange={(event) => handleThresholdChange(event, ele?.id)}
+            onBtnClick={() =>
+              ele?.isEdit
+                ? handleThresholdAlertSubmit(ele?.id)
+                : handleThresholdEdit(ele?.id)
+            }
+          />
+        ))}
       </Stack>
       <Stack sx={{ width: "100%", py: 3 }}>
         <Stack pb={2}>
           <TabPaneV2
             paneText={`showing ${
-              singleLivestockAlerts?.length < 10 ? singleLivestockAlerts?.length : "10"
+              singleLivestockAlerts?.length < 10
+                ? singleLivestockAlerts?.length
+                : "10"
             } out of 20 Alerts`}
             paneTextColor="#000"
             datePicker={true}
@@ -235,18 +279,20 @@ const Alerts = ({ data }) => {
           btnColor="#fff"
           btnBg="#B58B5D"
           tableHeadData={tableHeadData}
-          tableRowData={singleLivestockAlerts.map(ele => ({
-            ...ele,
-            action: [
-              <DeleteOutlineOutlinedIcon
-                fontSize="large"
-                //   onClick={() => handleLivestockDelete(col?._id)}
-              />,
-            ],
-          })).map(ele => {
-            delete ele.id;
-            return ele
-          })}
+          tableRowData={singleLivestockAlerts
+            .map((ele) => ({
+              ...ele,
+              action: [
+                <DeleteOutlineOutlinedIcon
+                  fontSize="large"
+                  //   onClick={() => handleLivestockDelete(col?._id)}
+                />,
+              ],
+            }))
+            .map((ele) => {
+              delete ele.id;
+              return ele;
+            })}
         />
         {singleLivestockAlerts?.length ? (
           pageCount > 1 ? (

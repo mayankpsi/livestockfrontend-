@@ -32,10 +32,10 @@ const Map = () => {
       alertMessage={snackbarAlert.message}
       alertType={snackbarAlert.type}
       closeAlert={onSnackbarAlertClose}
+      BreadcrumbData={BreadcrumbData}
     >
       <Container maxWidth="xl" sx={{ marginTop: 8 }}>
         <BackdropLoader open={openBackdropLoader} />
-        <Breadcrumb data={BreadcrumbData} />
         <Typography variant="h2" sx={{ fontSize: "3rem", fontWeight: 600 }}>
           GeoFence
         </Typography>

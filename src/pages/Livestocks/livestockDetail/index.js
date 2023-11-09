@@ -34,6 +34,7 @@ const LivestockDetails = () => {
             steps: 5000,
             lastUpdate: data?.updatedAt,
             img: null,
+            liveStocklocationStatus:data?.liveStocklocationStatus,
             collarId: data?.assignedDevice?._id,
             collarUid: data?.assignedDevice?.uID,
             collarWifiStatus: data?.assignedDevice?.wifiStatus,
@@ -83,8 +84,8 @@ const LivestockDetails = () => {
       link: "livestocks",
     },
     {
-      label: data?.collarUID ? data.collarUID : "Collar UID",
-      link: `livestocks/${data?.collarUID}`,
+      label: data?.Uid ? data.Uid : "Collar UID",
+      link: `livestocks/${data?.Uid}`,
     },
   ];
 
@@ -94,10 +95,10 @@ const LivestockDetails = () => {
       alertMessage={snackbarAlert.message}
       alertType={snackbarAlert.type}
       closeAlert={onSnackbarAlertClose}
+      BreadcrumbData={BreadcrumbData}
     >
       <Container maxWidth="xl" sx={{ marginTop: 8 }}>
-        <Breadcrumb data={BreadcrumbData} />
-        <TypographyPrimary>{data?.collarUID}</TypographyPrimary>
+        <TypographyPrimary sx={{fontSize:21}}>{data?.Uid}</TypographyPrimary>
         <CustomTabs tabData={tabData} />
       </Container>
     </AdminUIContainer>

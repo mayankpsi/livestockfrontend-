@@ -76,10 +76,10 @@ const AlertsPage = () => {
       alertMessage={snackbarAlert.message}
       alertType={snackbarAlert.type}
       closeAlert={onSnackbarAlertClose}
+      BreadcrumbData={BreadcrumbData}
     >
       <Container maxWidth="xl" sx={{ marginTop: 8 }}>
         <BackdropLoader open={openBackdropLoader} />
-        <Breadcrumb data={BreadcrumbData} />
         <TypographyPrimary sx={{ fontSize: "24px" }}>Alerts</TypographyPrimary>
         <Stack sx={{ width: "100%", pb: 3 }}>
           <Stack pb={2}>
@@ -108,7 +108,8 @@ const AlertsPage = () => {
           />
         </Stack>
         {AllAlertData?.length ? (
-          <Stack direction="row" justifyContent="center">
+          AllAlertData.length > 10 && (
+            <Stack direction="row" justifyContent="center">
             <CustomPagination
               size="large"
               page={paginationPageNo}
@@ -116,6 +117,7 @@ const AlertsPage = () => {
               onPageChange={(pageNo) => setPaginationPageNo(pageNo)}
             />
           </Stack>
+          )
         ) : (
           <NoData />
         )}

@@ -21,9 +21,8 @@ const ProfilePage = () => {
   const [showProfileTab, setShowProfileTab] = useState("profile");
 
   return (
-    <AdminUIContainer>
+    <AdminUIContainer BreadcrumbData={BreadcrumbData}>
       <Container maxWidth="xl" sx={{ marginTop: 8 }}>
-        <Breadcrumb data={BreadcrumbData} />
         <Stack direction="column" alignItems={"center"}>
           <BtnGroup
             btnData={btnData}

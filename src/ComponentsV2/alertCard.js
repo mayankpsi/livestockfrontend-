@@ -1,9 +1,17 @@
 import React from "react";
 import { Stack, Box, TextField } from "@mui/material";
-import {TabPane, CustomLabel} from "./";
+import { TabPane, CustomLabel } from "./";
 import { TypographyPrimary } from "./themeComponents";
 
-const AlertCard = ({ paneText, labelData, onBtnClick, onChange, isEdit,valueSuffix }) => {
+const AlertCard = ({
+  paneText,
+  labelData,
+  label,
+  onBtnClick,
+  isEdit,
+  onChange,
+  valueSuffix,
+}) => {
   const getTextFiled = (label, name, value) => {
     return (
       <TextField
@@ -12,7 +20,7 @@ const AlertCard = ({ paneText, labelData, onBtnClick, onChange, isEdit,valueSuff
         label={label}
         variant="outlined"
         size="large"
-        sx={{ mr: 1, textTransform:'capitalize' }}
+        sx={{ mr: 1, textTransform: "capitalize" }}
         value={value}
         name={name}
         onChange={onChange}
@@ -20,6 +28,8 @@ const AlertCard = ({ paneText, labelData, onBtnClick, onChange, isEdit,valueSuff
       />
     );
   };
+
+  const formattedLabel = (ind) => `${ind === 0 ? "Low" : "High"} ${label}`
 
   return (
     <Stack
@@ -35,25 +45,30 @@ const AlertCard = ({ paneText, labelData, onBtnClick, onChange, isEdit,valueSuff
         btnBgColor="#B58B5D"
         onBtnClick={onBtnClick}
       />
-      <Stack gap={isEdit?2:0}>
-      {labelData?.map((ele) => {
-        if (isEdit) {
-          return getTextFiled(ele.label, ele.name, ele.value);
-        } else {
-          return (
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <CustomLabel text={ele.label} type={ele.type} width={170} />
-              <TypographyPrimary sx={{ fontSize: "2.2rem", mt: 1 }}>
-                {ele.value}{valueSuffix}
-              </TypographyPrimary>
-            </Box>
-          );
-        }
-      })}
+      <Stack gap={isEdit ? 2 : 0}>
+        {labelData?.map((ele, ind) => {
+          if (isEdit) {
+            return getTextFiled(formattedLabel(ind), ele.name, ele[ele?.name]);
+          } else {
+            return (
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <CustomLabel
+                  text={formattedLabel(ind)}
+                  type={`${ind === 0 ? "warning" : "error"}`}
+                  width={170}
+                />
+                <TypographyPrimary sx={{ fontSize: "2.2rem", mt: 1 }}>
+                  {ele[ele?.name]}
+                  {valueSuffix}
+                </TypographyPrimary>
+              </Box>
+            );
+          }
+        })}
       </Stack>
     </Stack>
   );

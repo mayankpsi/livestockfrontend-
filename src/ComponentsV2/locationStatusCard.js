@@ -5,14 +5,15 @@ import useDateFormat from '../hooks/useDateFormat';
 
 const LocationStatusCard = ({data}) => {
   const {formattedDate} = useDateFormat();
+  const liveStockStatus = data?.liveStocklocationStatus?.toLowerCase();
   return (
-    <Box className="radius-10" sx={{background:'rgba(71, 205, 116, 0.24)',p:'0px 20px'}}>
+    <Box className="radius-10" sx={{background:`${liveStockStatus === "safe"?"rgba(71, 205, 116, 0.24)":"rgba(255, 0, 0, 0.24)"}`, p:'0px 20px'}}>
        <TabPane
             text="Status"
             secondaryText={formattedDate(data?.lastUpdate)}
-            btnText={data?.status?"Safe":"Unsafe"}
+            btnText={liveStockStatus}
             btnIcon={false}
-            btnBgColor="#47CD75"
+            btnBgColor={liveStockStatus ===  "safe"?"#47CD75":"#FF0000"}
             onBtnClick={() => {}}
           />
     </Box>

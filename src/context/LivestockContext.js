@@ -110,8 +110,8 @@ export const LivestockContextProvider = ({ children }) => {
   // PAGINATION AND RANGE DATE
   const [selectedDate, setSelectedDate] = useState([
     {
-      startDate: new Date("2023-11-01"),
-      endDate: new Date("2023-11-01"),
+      startDate: new Date(),
+      endDate: new Date(),
       key: "selection",
     },
   ]);
@@ -130,7 +130,7 @@ export const LivestockContextProvider = ({ children }) => {
           livestockName: col?.name,
           collarID: col?.assignedDevice?.uID ? col?.assignedDevice?.uID : "N/A",
           addedOn: formattedDate(col?.createdAt, false),
-          status: col?.status ? "safe" : "unsafe",
+          status: col?.liveStocklocationStatus,
           currentStatus: (
             <CustomLabel
               text={col?.liveStocklocationStatus || "N/A"}
@@ -160,6 +160,7 @@ export const LivestockContextProvider = ({ children }) => {
       .catch((err) => console.log(err.message))
       .finally(() => setOpenBackdropLoader(false));
   }, [addNewLivestockLoading]);
+
 
   // handle modal open
   const handleLivestockModalOpen = (type) => {

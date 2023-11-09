@@ -2,7 +2,7 @@ import React from "react";
 import {Grid, Stack } from "@mui/material";
 import {HeaderAdmin, Sidebar, ConfirmWindowModal,SnackbarAlert} from "../ComponentsV2";
 
-const AdminUIContainer = ({ children, openModal,onConfirm,showConfirmBtn, handleModalClose,openAlert,closeAlert,alertMessage,alertType}) => {
+const AdminUIContainer = ({ BreadcrumbData, children, openModal,onConfirm,showConfirmBtn, handleModalClose,openAlert,closeAlert,alertMessage,alertType}) => {
 
   return (
     <>
@@ -30,7 +30,7 @@ const AdminUIContainer = ({ children, openModal,onConfirm,showConfirmBtn, handle
               width: { lg: "85%", md: "100%", sm:'100%' },
             }}
           >
-            <HeaderAdmin />
+            <HeaderAdmin BreadcrumbData={BreadcrumbData}/>
             {children}
           </Grid>
         </Stack>

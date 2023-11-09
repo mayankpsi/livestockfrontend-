@@ -68,8 +68,8 @@ const ViewCollarDetails = () => {
       link: "collars",
     },
     {
-      label: data?.collarUID ? data.collarUID : "Collar UID",
-      link: `collars/${data?.collarUID}`,
+      label: data?.collarUid ? data.collarUid : "Collar UID",
+      link: `collars/${data?.collarUid}`,
     },
   ];
 
@@ -79,12 +79,12 @@ const ViewCollarDetails = () => {
     alertMessage={snackbarAlert.message}
     alertType={snackbarAlert.type}
     closeAlert={onSnackbarAlertClose}
+    BreadcrumbData={BreadcrumbData}
     >
       <Container maxWidth="xl" sx={{ marginTop: 8 }}>
         <BackdropLoader open={openBackdropLoader} />
-        <Breadcrumb data={BreadcrumbData} />
-        <TypographyPrimary sx={{ textTransform: "capitalize" }}>
-          {data?.collarUID}
+        <TypographyPrimary sx={{ textTransform: "capitalize", fontSize:21 }}>
+          {data?.collarUid}
         </TypographyPrimary>
         <CustomTabs tabData={tabData} />
       </Container>
