@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Box, Stack } from "@mui/material";
-import { GetMap, CustomTable } from "../../ComponentsV2";
+import { GetMap, CustomTable, NoData } from "../../ComponentsV2";
 import useMapContext from "../../hooks/useMapContext";
 import { request } from "../../apis/axios-utils";
-
 
 const LiveLocation = () => {
   const [getLivestockStatus, setGetLivestockStatus] = useState([]);
@@ -13,7 +12,7 @@ const LiveLocation = () => {
   useEffect(() => {
     request({ url: "/devices/isDeviceWithInGeofence" })
       .then((res) => {
-        console.log(res, "setGetLivestockStatus")
+        console.log(res, "setGetLivestockStatus");
         if (res?.status === 200) {
           setGetLivestockStatus(res?.data?.data);
         } else {
@@ -24,6 +23,14 @@ const LiveLocation = () => {
         // alert(err.message)
       });
   }, []);
+
+  const getFilteredLivestock = (data, filter) => {
+    const filteredData = data?.filter(
+      (ele) => ele?.liveStockIsSafeOrNot?.status?.toLowerCase() === filter
+    );
+    return filteredData;
+  };
+
   return (
     <>
       <Stack
@@ -36,42 +43,47 @@ const LiveLocation = () => {
           mapHeight="500px"
           geofenceCoordinates={geofenceCoordinates}
           isLivestocks={true}
-          livestockData={getLivestockStatus?.map(ele => ({
-            id:ele?.liveStockId,
-            position:{
-              lat:ele?.location?.latitude,
-              lng:ele?.location?.longitude,
-            }
+          livestockData={getLivestockStatus?.map((ele) => ({
+            id: ele?.liveStockId,
+            position: {
+              lat: ele?.location?.latitude,
+              lng: ele?.location?.longitude,
+            },
           }))}
         />
       </Stack>
-      {
-        getLivestockStatus?.length?(
-          <Stack direction="row" justifyContent="space-between" gap={5}>
+      {getLivestockStatus?.length ? (
+        <Stack direction="row" justifyContent="space-between" gap={5}>
           <Box sx={{ margin: "20px 0", width: "100%" }}>
-            <CustomTable
-              headBackgroundColor="#347D00"
-              tableHeadData={["Safe Livestock", "Device"]}
-              tableRowData={getLivestockStatus?.filter(ele => ele?.liveStockIsSafeOrNot?.status?.toLowerCase() === "safe").map(ele => ({
-                liveStockName:ele.liveStockName,
-                deviceName:ele.deviceName
-              }))}
-            />
+          <CustomTable
+                headBackgroundColor="#347D00"
+                tableHeadData={["Safe Livestock", "Device"]}
+                tableRowData={getFilteredLivestock(
+                  getLivestockStatus,
+                  "safe"
+                )?.map((ele) => ({
+                  liveStockName: ele.liveStockName,
+                  deviceName: ele.deviceName,
+                }))}
+              />
+            {!getFilteredLivestock(getLivestockStatus, "safe").length && <NoData />}
           </Box>
           <Box sx={{ margin: "20px 0", width: "100%" }}>
             <CustomTable
               headBackgroundColor="#FF0505"
               tableHeadData={["Unsafe Livestock", "Device"]}
-              tableRowData={getLivestockStatus?.filter(ele => ele?.liveStockIsSafeOrNot?.status?.toLowerCase() === "unsafe").map(ele => ({
-                liveStockName:ele.liveStockName,
-                deviceName:ele.deviceName
+              tableRowData={getFilteredLivestock(
+                getLivestockStatus,
+                "unsafe"
+              )?.map((ele) => ({
+                liveStockName: ele.liveStockName,
+                deviceName: ele.deviceName,
               }))}
             />
+            {!getFilteredLivestock(getLivestockStatus, "unsafe").length && <NoData />}
           </Box>
         </Stack>
-        ):null
-      }
-     
+      ) : null}
     </>
   );
 };

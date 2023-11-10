@@ -30,6 +30,7 @@ export const AlertsContextProvider = ({ children }) => {
   };
   const [AllAlertData, setAllAlertData] = useState([]);
   const [pageCount, setPageCount] = useState(1);
+  const [alertsDataLength, setAlertsDataLength] = useState(0);
   const [selectedDate, setSelectedDate] = useState([
     {
       startDate: new Date(),
@@ -82,6 +83,7 @@ export const AlertsContextProvider = ({ children }) => {
           }));
           setAllAlertData(formattedData);
           setPageCount(res?.data?.data?.pageCount);
+          setAlertsDataLength(res?.data?.data?.dataLength);
         } else {
           setAllAlertData([]);
           throw new Error("something went wrong");
@@ -131,6 +133,7 @@ export const AlertsContextProvider = ({ children }) => {
         pageCount,
         paginationPageNo,
         setPaginationPageNo,
+        alertsDataLength
       }}
     >
       {children}

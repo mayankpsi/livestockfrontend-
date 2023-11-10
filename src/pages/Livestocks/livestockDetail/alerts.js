@@ -97,7 +97,7 @@ const tableRowData = [
     ],
   },
 ];
-const Alerts = ({ data }) => {
+const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   const {
     tempThreshold,
     handleLivestockTempAlertsChange,
@@ -126,7 +126,9 @@ const Alerts = ({ data }) => {
   const { paginationDateFormat, formattedDate, getRoundOffDigit } =
     useDateFormat();
   const [singleLivestockAlerts, setSingleLivestockAlerts] = useState([]);
+  const [alertsDataLength, setAlertsDataLength] = useState(0);
   const [alertsThreshold, setAlertsThreshold] = useState(alertsThresholdData);
+
   const [alertsThresholdChange, setAlertsThresholdChange] = useState({
     lowTemp: 0,
     highTemp: 0,
@@ -162,6 +164,7 @@ const Alerts = ({ data }) => {
             }));
             setSingleLivestockAlerts(formattedData);
             setPageCount(data?.totalPage);
+            setAlertsDataLength(data?.dataLength);
           } else {
             setSingleLivestockAlerts([]);
             throw new Error(res?.response?.data?.message);
@@ -175,25 +178,8 @@ const Alerts = ({ data }) => {
     setPaginationPageNo(1);
   }, [selectedDate]);
 
-  //GET ALL ALERTS THRESHOLD
-  useEffect(() => {
-    if (data?.id) {
-      // setOpenBackdropLoader(true);
-      request({
-        url: `/thresholds/getliveStockThresholdinfo?liveStockID=${data?.id}`,
-      })
-        .then((res) => {
-          // if(res?.response.status === 404){
-          // }
-          // console.log(res,"bdcbxhdbhcbdhbch")
-        })
-        .catch((err) => console.log(err.message))
-        .finally(() => {});
-    }
-  }, [data?.id]);
-
   const handleThresholdEdit = (id) => {
-    const updatedData = alertsThreshold?.map((ele) => {
+    const updatedData = alertsThresholds?.map((ele) => {
       if (ele.id === id) {
         return {
           ...ele,
@@ -201,38 +187,52 @@ const Alerts = ({ data }) => {
         };
       } else return ele;
     });
-    setAlertsThreshold(updatedData);
+
+    setAlertsThresholds(updatedData);
   };
 
   const handleThresholdChange = (event, id) => {
     const { name, value } = event?.target;
-    const updatedData = alertsThreshold?.map((ele) => {
+    const updatedData = alertsThresholds?.map((ele) => {
       if (ele.id === id) {
         return {
           ...ele,
-          value: ele?.value?.map((el) => {
-            if (el.name === name) {
-              return {
-                ...el,
-                [name]: value,
-              };
-            } else return el;
-          }),
+          value: {
+            ...ele.value,
+            [name]: value,
+          },
         };
       } else return ele;
     });
-    setAlertsThreshold(updatedData);
+    setAlertsThresholds(updatedData);
   };
 
-  const handleThresholdAlertSubmit = (id) => {
+  const handleThresholdAlertSubmit = async (id) => {
+    const body = {};
+
+    alertsThresholds?.forEach((el) => {
+      body[el.label] = el.value;
+    });
+
+    try {
+      if (data?.id) {
+        const res = await request({
+          url: `/liveStock/updateLiveStockThreshold?liveStockId=${data?.id}`,
+          method: "PATCH",
+          data: body,
+        });
+        console.log(res, "jdhhhcddtfgyguniihyftyf");
+      }
+    } catch (error) {}
+
     console.log("submit");
-    handleThresholdEdit(id)
+    handleThresholdEdit(id);
   };
 
   return (
     <Stack my={4}>
       <Stack direction="row" flexWrap="wrap" width="100%" gap={3}>
-        {alertsThreshold?.map((ele) => (
+        {alertsThresholds?.map((ele) => (
           <AlertCard
             key={ele?.id}
             paneText={`set ${ele?.label} threshold`}
@@ -253,10 +253,8 @@ const Alerts = ({ data }) => {
         <Stack pb={2}>
           <TabPaneV2
             paneText={`showing ${
-              singleLivestockAlerts?.length < 10
-                ? singleLivestockAlerts?.length
-                : "10"
-            } out of 20 Alerts`}
+              alertsDataLength < 10 ? alertsDataLength : 10
+            } out of ${alertsDataLength} Alerts`}
             paneTextColor="#000"
             datePicker={true}
             btnText={
@@ -295,7 +293,7 @@ const Alerts = ({ data }) => {
             })}
         />
         {singleLivestockAlerts?.length ? (
-          pageCount > 1 ? (
+          alertsDataLength > 10 ? (
             <Stack direction="row" justifyContent="center">
               <CustomPagination
                 size="large"

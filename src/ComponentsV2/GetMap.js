@@ -17,6 +17,7 @@ const GetMap = ({
   geofenceCoordinates,
 }) => {
   const { getGeolocationAddress } = useMapContext();
+
   return (
     <LoadScript googleMapsApiKey={MAP_KEY}>
       <GoogleMap
@@ -25,10 +26,15 @@ const GetMap = ({
           height: mapHeight,
         }}
         onClick={(e) =>
-          getGeolocationAddress(false, e.latLng.lat(), e.latLng.lng())
+          !geofenceCoordinates?.address
+            ? getGeolocationAddress(false, e.latLng.lat(), e.latLng.lng())
+            : null
         }
         defaultCenter={center}
-        center={{lat:Number(geofenceCoordinates?.lat), lng:Number(geofenceCoordinates?.lng)}}
+        center={{
+          lat: Number(geofenceCoordinates?.lat),
+          lng: Number(geofenceCoordinates?.lng),
+        }}
         zoom={18}
       >
         {isLivestocks &&
@@ -56,10 +62,16 @@ const GetMap = ({
         <Marker
           key="helloworlds"
           title="marker"
-          position={{lat:Number(geofenceCoordinates?.lat), lng:Number(geofenceCoordinates?.lng)}}
+          position={{
+            lat: Number(geofenceCoordinates?.lat),
+            lng: Number(geofenceCoordinates?.lng),
+          }}
         />
         <Circle
-          center={{lat:Number(geofenceCoordinates?.lat), lng:Number(geofenceCoordinates?.lng)}}
+          center={{
+            lat: Number(geofenceCoordinates?.lat),
+            lng: Number(geofenceCoordinates?.lng),
+          }}
           options={{
             strokeColor: "#06B95F",
             strokeOpacity: 1,

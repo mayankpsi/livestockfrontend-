@@ -46,6 +46,7 @@ const AlertsPage = () => {
     pageCount,
     paginationPageNo,
     setPaginationPageNo,
+    alertsDataLength
   } = useAlertsContext();
 
   const getTableFormattedData = (data) => {
@@ -84,7 +85,7 @@ const AlertsPage = () => {
         <Stack sx={{ width: "100%", pb: 3 }}>
           <Stack pb={2}>
             <TabPaneV2
-              paneText="showing 10 out of 20 Alerts"
+              paneText={`showing ${alertsDataLength > 10?10:alertsDataLength} out of ${alertsDataLength}`}
               paneTextColor="#000"
               datePicker={true}
               btnText={
@@ -108,7 +109,7 @@ const AlertsPage = () => {
           />
         </Stack>
         {AllAlertData?.length ? (
-          AllAlertData.length > 10 && (
+          alertsDataLength > 10 && (
             <Stack direction="row" justifyContent="center">
             <CustomPagination
               size="large"

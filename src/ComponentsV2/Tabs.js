@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import {Tabs, Tab, Typography, Box} from "@mui/material";
+import { Tabs, Tab, Typography, Box } from "@mui/material";
 import { styled } from "@mui/system";
 import { useEffect } from "react";
 
@@ -38,26 +38,28 @@ function a11yProps(index) {
 }
 
 export default function CustomTabs({ tabData }) {
-  const [value, setValue] = React.useState(localStorage.getItem("currentTab"));
+  const [value, setValue] = React.useState(0);
 
-  useEffect(()=> {
-    const tab = Number(localStorage.getItem("currentTab"))
-    if(!tab){
-      localStorage.setItem("currentTab",0)
-    }else{
+  useEffect(() => {
+    const tab = Number(localStorage.getItem("currentTab"));
+    if (!tab) {
+      localStorage.setItem("currentTab", 0);
+    } else {
       setValue(tab);
     }
-  },[])
+  }, []);
 
-  useEffect(()=> {
+  useEffect(() => {
     const tab = Number(localStorage.getItem("currentTab"));
-    const val = Number(localStorage.getItem("currentTab")) > tabData?.length?0:tab
-    setValue(val);
-    },[value])
-
+    if (tab) {
+      const val =
+        Number(localStorage.getItem("currentTab")) > tabData?.length-1 ? 0 : tab;
+      setValue(val);
+    }
+  }, [value]);
 
   const handleChange = (event, newValue) => {
-    localStorage.setItem("currentTab",newValue);
+    localStorage.setItem("currentTab", newValue);
     setValue(newValue);
   };
 
@@ -71,8 +73,8 @@ export default function CustomTabs({ tabData }) {
       if (comp === "label") {
         return (
           <TabV2
-          className="tab-color"
-          key={ele.label}
+            className="tab-color"
+            key={ele.label}
             label={ele?.label}
             {...a11yProps(0)}
           />
@@ -91,7 +93,6 @@ export default function CustomTabs({ tabData }) {
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
-        
           value={value}
           onChange={handleChange}
           TabIndicatorProps={{

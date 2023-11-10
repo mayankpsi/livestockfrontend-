@@ -11,3 +11,5 @@ export { default as DashboardNoData } from "./images/dashboard_no_data.png";
 export { default as LoginBG } from "./images/auth-bg.png";
 export { default as CompleteProfileImg } from "./images/complete_profile.png";
 export { default as NoDataImg } from "./images/no-data.svg";
+export { default as LiveStockSteps } from "./images/livestock_steps.svg";
+export { default as LiveStockRumination } from "./images/livestock_rumination.svg";

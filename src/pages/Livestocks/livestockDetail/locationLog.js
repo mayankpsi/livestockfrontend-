@@ -55,12 +55,12 @@ const LocationLog = ({ data, resentAlerts, geofenceData }) => {
       }}
       gap={4}
     >
-      <Stack sx={{ width: { xl: "30%", lg: "30%", sm: "100%" } }} gap={2}>
+      <Stack sx={{ width: { xl: "30%", lg: "30%", sm: "100%" } }} gap={3}>
         <LocationStatusCard data={data} />
         <Box className="border-10" sx={{ overflow: "hidden" }}>
           {resentAlerts?.length ? (
             <>
-              <Stack pb={2}>
+              <Stack>
                 <TabPaneV2
                   paneText="Location Status Log"
                   paneTextColor="#000"

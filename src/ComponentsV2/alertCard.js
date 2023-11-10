@@ -46,9 +46,9 @@ const AlertCard = ({
         onBtnClick={onBtnClick}
       />
       <Stack gap={isEdit ? 2 : 0}>
-        {labelData?.map((ele, ind) => {
+        {Object.keys(labelData)?.map((ele, ind) => {  
           if (isEdit) {
-            return getTextFiled(formattedLabel(ind), ele.name, ele[ele?.name]);
+            return getTextFiled(formattedLabel(ind), ele, labelData[ele]);
           } else {
             return (
               <Box
@@ -62,7 +62,7 @@ const AlertCard = ({
                   width={170}
                 />
                 <TypographyPrimary sx={{ fontSize: "2.2rem", mt: 1 }}>
-                  {ele[ele?.name]}
+                  {labelData[ele]}
                   {valueSuffix}
                 </TypographyPrimary>
               </Box>

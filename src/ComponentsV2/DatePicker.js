@@ -9,10 +9,10 @@ import { CalendarMonthIcon } from "../icons";
 const DatePicker = ({selectedDate, setSelectedDate}) => {
   const [open, setOpen] = useState(false);
   const calenderRef = useRef(null);
-  const { formattedDate } = useDateFormat();
+  const { paginationDateFormat } = useDateFormat();
 
   useEffect(() => {
-    setSelectedDate(formattedDate(new Date(), "date"));
+    setSelectedDate(paginationDateFormat(new Date(), "date"));
   }, []);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const DatePicker = ({selectedDate, setSelectedDate}) => {
   };
 
   const handleSelect = (date) => {
-    setSelectedDate(formattedDate(date, "date"));
+    setSelectedDate(paginationDateFormat(date, "date"));
     setOpen(false);
   };
   return (

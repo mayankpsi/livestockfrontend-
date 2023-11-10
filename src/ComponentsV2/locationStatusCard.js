@@ -11,7 +11,7 @@ const LocationStatusCard = ({data}) => {
        <TabPane
             text="Status"
             secondaryText={formattedDate(data?.lastUpdate)}
-            btnText={liveStockStatus}
+            btnText={liveStockStatus || "N/A"}
             btnIcon={false}
             btnBgColor={liveStockStatus ===  "safe"?"#47CD75":"#FF0000"}
             onBtnClick={() => {}}

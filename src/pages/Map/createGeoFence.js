@@ -68,7 +68,6 @@ const CreateGeoFence = () => {
               <ParaV2 variant="h5" sx={{ marginBottom: 0 }}>
                 Address:
               </ParaV2>
-              {console.log(geofenceCoordinates,"djbdhcbhdbhcdhchd")}
               <ParaV3 variant="h5">{geofenceCoordinates?.address}</ParaV3>
               <ParaV2 variant="h5">Lat: {geofenceCoordinates?.lat}</ParaV2>
               <ParaV2 variant="h5">Lng: {geofenceCoordinates?.lng}</ParaV2>

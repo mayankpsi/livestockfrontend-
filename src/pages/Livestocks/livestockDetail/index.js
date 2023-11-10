@@ -12,10 +12,12 @@ import Alerts from "./alerts";
 import CollarInfo from "./collarInfo";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
+import {alertsThresholdData} from "./alertThresholdData";
 
 const LivestockDetails = () => {
   const [data, setData] = useState();
   const { snackbarAlert, onSnackbarAlertClose } = useLivestockContext();
+  const [alertsThreshold, setAlertsThreshold] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
@@ -45,6 +47,14 @@ const LivestockDetails = () => {
             battery: data?.assignedDevice?.battery,
             geolocation: data?.geolocation,
           };
+
+          const thresholdFormattedData = alertsThresholdData?.map(ele => {
+           return {
+            ...ele,
+            value:data?.threshold[ele.label]
+           }
+          });
+          setAlertsThreshold(thresholdFormattedData)
           setData(formattedData);
         } else {
           throw new Error("something went wrong");
@@ -66,11 +76,11 @@ const LivestockDetails = () => {
     },
     {
       label: "health",
-      child: <Health />,
+      child: <Health data={data}/>,
     },
     {
       label: "alerts",
-      child: <Alerts data={data} />,
+      child: <Alerts data={data} alertsThresholds={alertsThreshold} setAlertsThresholds={setAlertsThreshold} />,
     },
     {
       label: "collar",

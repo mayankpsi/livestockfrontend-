@@ -1,11 +1,14 @@
-import { Stack } from "@mui/material";
+import { Stack, Box } from "@mui/material";
 import ThermostatIcon from "@mui/icons-material/Thermostat";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import SpokeIcon from "@mui/icons-material/Spoke";
-import { useState } from "react";
-import { BtnGroup, ChartCard, DatePicker } from "../../../ComponentsV2";
+import { useState, useEffect } from "react";
+import { request } from "../../../apis/axios-utils";
+import { ChartCard, DatePicker } from "../../../ComponentsV2";
 import useLivestockContext from "../../../hooks/useLivestockContext";
+import useDateFormat from "../../../hooks/useDateFormat";
+import { LiveStockSteps, LiveStockRumination } from "../../../assets";
 
 const chartCardData = [
   {
@@ -31,14 +34,14 @@ const chartCardData = [
   {
     label: "steps",
     value: "5000",
-    icon: <SpokeIcon sx={{ fontSize: "3em", color: "#B58B5D" }} />,
+    icon: <Box component="img" src={LiveStockSteps} />,
     iconBg: "#A2F8F2",
     valueColor: "color-success--dark ",
   },
   {
     label: "rumination",
     value: "2h",
-    icon: <SpokeIcon sx={{ fontSize: "3em", color: "#B58B5D" }} />,
+    icon: <Box component="img" src={LiveStockRumination} />,
     iconBg: "#A2F8F2",
     valueColor: "color-success--dark ",
   },
@@ -72,7 +75,7 @@ const healthData = [
   },
 ];
 
-const data = [
+const chartData = [
   {
     id: 1,
     year: 2016,
@@ -130,16 +133,16 @@ const data = [
   },
 ];
 
-const Health = () => {
+const Health = ({ data }) => {
   const { livestockHealthActiveTab, setLivestockHealthActiveTab } =
     useLivestockContext();
   const [selectedDate, setSelectedDate] = useState();
   const [livestockChartData, setLivestockChartData] = useState({
-    labels: data.map((ele) => ele?.year),
+    labels: [],
     datasets: [
       {
-        label: "Temperature",
-        data: data?.map((ele) => ele?.userGain),
+        label: "",
+        data: [],
         backgroundColor: ["#7C0202"],
         borderColor: "#7C0202",
         borderWidth: 1,
@@ -149,17 +152,54 @@ const Health = () => {
       aspectRatio: 1,
     },
   });
+  const [healthData, setHealthData] = useState([]);
+  const { formattedDate } = useDateFormat();
 
-  const data1 = [
-    {
-      _id: {
-        hour: 16,
+  //GET ALL ALERTS THRESHOLD
+  useEffect(() => {
+    if (data?.id) {
+      request({
+        url: `/liveStock/getLiveStockHistory?LiveStockId=${data?.id}&currentDate=${selectedDate}&EndDate=${selectedDate}`,
+      })
+        .then((res) => {
+          const { data } = res?.data;
+          if (res?.status === 200) {
+            const formattedData = data?.map((ele) => ({
+              temperature: ele?.temperature,
+              heartbeat: ele?.heartBeat,
+              steps: ele?.steps,
+              rumination: ele?.rumination,
+              time: formattedDate(ele?.createdAt, "time"),
+            }));
+            setHealthData([...formattedData?.slice(0, 24)]);
+          }
+        })
+        .catch((err) => console.log(err, "cdjbhdbchdhdcvhdcvh"));
+    }
+  }, [data?.id, selectedDate]);
+
+  const getFilteredHealthData = (data, filter) => {
+    const labels = data?.map((ele) => formattedDate(ele?.createdAt, "time"));
+    const dataSet = data?.map((ele) => ele[filter]);
+
+    const options = {
+      labels,
+      datasets: [
+        {
+          label:
+            filter?.charAt(0)?.toUpperCase() + filter?.slice(1)?.toLowerCase(),
+          data: dataSet,
+          backgroundColor: ["#7C0202"],
+          borderColor: "#7C0202",
+          borderWidth: 1,
+        },
+      ],
+      options: {
+        aspectRatio: 1,
       },
-      HeartRate: 84,
-      Temperature: 34,
-      activity: 92,
-    },
-  ];
+    };
+    return options;
+  };
 
   return (
     <Stack my={4} direction="column" alignItems="center" gap={4}>
@@ -175,7 +215,7 @@ const Health = () => {
       <Stack width="100%" gap={2}>
         {chartCardData?.map((ele) => (
           <ChartCard
-            chartData={livestockChartData}
+            chartData={getFilteredHealthData(healthData, ele?.label)}
             label={ele.label}
             value={ele.value}
             icon={ele.icon}

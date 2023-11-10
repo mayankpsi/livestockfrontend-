@@ -84,7 +84,7 @@ const Location = ({ data }) => {
             data?.id
           }&startDate=${paginationDateFormat(
             new Date()
-          )}&endDate=${paginationDateFormat(new Date())}&page=${1}&limit=${8}`,
+          )}&endDate=${paginationDateFormat(new Date())}&page=${1}&limit=${7}`,
         }),
       ])
         .then((res) => {
