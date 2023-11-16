@@ -105,7 +105,10 @@ export const LivestockContextProvider = ({ children }) => {
   });
 
   const [deleteLivestockId, setDeleteLivestockId] = useState(null);
-  const [alertDeletedId, setAlertDeletedId] = useState({id:null,type:null});
+  const [alertDeletedId, setAlertDeletedId] = useState({
+    id: null,
+    type: null,
+  });
   const { formattedDate } = useDateFormat();
 
   // PAGINATION AND RANGE DATE
@@ -336,9 +339,9 @@ export const LivestockContextProvider = ({ children }) => {
   const formate = new Intl.DateTimeFormat("en-US", options).format(d);
 
   // HANDLE ALERT DELETE
-  const handleAlertDelete = (id,type) => {
+  const handleAlertDelete = (id, type) => {
     setShowConfirmModal({ open: true, confirmBtn: true });
-    setAlertDeletedId({id,type});
+    setAlertDeletedId({ id, type });
   };
 
   const handleAlertDeleteConfirm = async () => {
@@ -352,7 +355,7 @@ export const LivestockContextProvider = ({ children }) => {
       if (res?.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Alert successfully deleted!");
-        setTimeout(()=> window.location.reload(), 1000)
+        setTimeout(() => window.location.reload(), 1000);
       } else {
         throw new Error("Something went wrong");
       }
@@ -374,7 +377,7 @@ export const LivestockContextProvider = ({ children }) => {
       if (res?.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "All alert successfully deleted!");
-        setTimeout(()=> window.location.reload(), 1000)
+        setTimeout(() => window.location.reload(), 1000);
       } else {
         throw new Error("Something went wrong");
       }
@@ -446,7 +449,8 @@ export const LivestockContextProvider = ({ children }) => {
         alertDeletedId,
         handleAllAlertDeleteConfirm,
         setOpenBackdropLoader,
-        isError, setIsError
+        isError,
+        setIsError,
       }}
     >
       {children}

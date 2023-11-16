@@ -12,7 +12,6 @@ const LiveLocation = () => {
   useEffect(() => {
     request({ url: "/devices/isDeviceWithInGeofence" })
       .then((res) => {
-        console.log(res, "setGetLivestockStatus");
         if (res?.status === 200) {
           setGetLivestockStatus(res?.data?.data);
         } else {

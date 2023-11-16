@@ -60,6 +60,7 @@ const Location = ({ data }) => {
     useDateFormat();
   const [locationAlertsData, setLocationAlertsData] = useState([]);
   const [resentAlerts, setResentAlerts] = useState([]);
+  const [dataLength, setDataLength] = useState();
   const [geofenceData, setGeofenceData] = useState({
     lat: null,
     lng: null,
@@ -72,7 +73,7 @@ const Location = ({ data }) => {
     if (data?.id) {
       setOpenBackdropLoader(true)
       Promise.allSettled([
-        request({ url: `/user/getUsersGeofence?userID=${userId}` }),
+        request({ url: `/user/getUsersGeofence?userID=${userId}`}),
         request({
           url: `/liveStock/getliveStocklocationAlerts?liveStockID=${
             data?.id
@@ -124,14 +125,12 @@ const Location = ({ data }) => {
             const { data } = res2.value?.data;
             const formattedData = data?.LocationAlert?.map((ele) => ({
               title: ele?.locationStatus,
-              location: `${getRoundOffDigit(
-                ele?.geolocation?.lat,
-                4
-              )}, ${getRoundOffDigit(ele?.geolocation?.lng, 4)}`,
+              location: `${ele?.geolocation?.lat?.toString()?.slice(0,8)}, ${ele?.geolocation?.lng?.toString()?.slice(0,8)}`,
               updated: formattedDate(ele?.createdAt),
             }));
             setLocationAlertsData(formattedData);
-            setPageCount(data?.totalPage);
+            setPageCount(data?.PageCount);
+            setDataLength(data?.dataLength)
           } else {
             setLocationAlertsData([]);
             throw new Error(res?.response?.data?.message);
@@ -179,10 +178,10 @@ const Location = ({ data }) => {
           <Stack pb={2}>
             <TabPaneV2
               paneText={`showing ${
-                locationAlertsData?.length < 10
-                  ? locationAlertsData?.length
+                dataLength < 10
+                  ? dataLength
                   : "10"
-              } out of 20 Alerts`}
+              } out of ${dataLength} Alerts`}
               datePicker={true}
               paneTextColor="#000"
               clearBtn={false}

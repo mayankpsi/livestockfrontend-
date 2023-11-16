@@ -14,27 +14,6 @@ import useDateFormat from "../../../hooks/useDateFormat";
 import { request } from "../../../apis/axios-utils";
 import { alertsThresholdData } from "./alertThresholdData";
 
-const labelData = [
-  {
-    label: "low temperature",
-    type: "warning",
-    value: "26 C",
-  },
-  {
-    label: "high temperature",
-    type: "error",
-    value: "40 C",
-  },
-];
-
-const geofenceData = [
-  {
-    label: "low temperature",
-    type: "warning",
-    value: "26 C",
-  },
-];
-
 const tableHeadData = [
   "alert name",
   "threshold value",
@@ -43,60 +22,7 @@ const tableHeadData = [
   "date",
   "action",
 ];
-const tableRowData = [
-  {
-    alertName: "high temperature alert",
-    thresholdValue: "40 C",
-    alarmValue: "42 C",
-    time: "17:50 PM",
-    date: "23/09/23",
-    action: [
-      <DeleteOutlineOutlinedIcon
-        fontSize="large"
-        //   onClick={() => handleLivestockDelete(col?._id)}
-      />,
-    ],
-  },
-  {
-    alertName: "high temperature alert",
-    thresholdValue: "40 C",
-    alarmValue: "42 C",
-    time: "17:50 PM",
-    date: "23/09/23",
-    action: [
-      <DeleteOutlineOutlinedIcon
-        fontSize="large"
-        //   onClick={() => handleLivestockDelete(col?._id)}
-      />,
-    ],
-  },
-  {
-    alertName: "high temperature alert",
-    thresholdValue: "40 C",
-    alarmValue: "42 C",
-    time: "17:50 PM",
-    date: "23/09/23",
-    action: [
-      <DeleteOutlineOutlinedIcon
-        fontSize="large"
-        //   onClick={() => handleLivestockDelete(col?._id)}
-      />,
-    ],
-  },
-  {
-    alertName: "high temperature alert",
-    thresholdValue: "40 C",
-    alarmValue: "42 C",
-    time: "17:50 PM",
-    date: "23/09/23",
-    action: [
-      <DeleteOutlineOutlinedIcon
-        fontSize="large"
-        //   onClick={() => handleLivestockDelete(col?._id)}
-      />,
-    ],
-  },
-];
+
 const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   const {
     tempThreshold,
@@ -126,22 +52,9 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
     openSnackbarAlert,
     setOpenBackdropLoader,
   } = useLivestockContext();
-  const { paginationDateFormat, formattedDate, getRoundOffDigit } =
-    useDateFormat();
+  const { paginationDateFormat, formattedDate } = useDateFormat();
   const [singleLivestockAlerts, setSingleLivestockAlerts] = useState([]);
   const [alertsDataLength, setAlertsDataLength] = useState(0);
-  const [alertsThreshold, setAlertsThreshold] = useState(alertsThresholdData);
-
-  const [alertsThresholdChange, setAlertsThresholdChange] = useState({
-    lowTemp: 0,
-    highTemp: 0,
-    lowHeartbeat: 0,
-    highHeartbeat: 0,
-    lowSteps: 0,
-    highSteps: 0,
-    lowRumination: 0,
-    highRumination: 0,
-  });
 
   useEffect(() => {
     setOpenBackdropLoader(true);
@@ -269,7 +182,7 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
             paneTextColor="#000"
             datePicker={true}
             clearBtn={true}
-            onClearAll={() => handleAlertDelete(data?.id,"deleteAllAlerts")}
+            onClearAll={() => handleAlertDelete(data?.id, "deleteAllAlerts")}
             btnText={
               <ExportAsCSV
                 headers={tableHeadData}

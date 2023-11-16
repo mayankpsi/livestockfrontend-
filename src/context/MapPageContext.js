@@ -100,7 +100,6 @@ export const MapContentProvider = ({ children }) => {
           getAddress(latitude, longitude);
         });
       } else {
-        // alert("Error:Make sure to allow location access");
         setIsLoading(false);
       }
     } else {

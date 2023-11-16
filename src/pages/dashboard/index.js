@@ -209,9 +209,11 @@ const AdminDashBoard = () => {
                   </Box>
                 </Box>
               ) : (
+                
                 <GetMap
                   mapWidth="100%"
                   mapHeight="100%"
+                
                   geofenceCoordinates={{
                     lat: dashboardData?.geolocationLat,
                     lng: dashboardData?.geolocationLng,
@@ -221,6 +223,7 @@ const AdminDashBoard = () => {
                   livestockData={getLivestockStatus}
                 />
               )}
+               {console.log(dashboardData, "jkbvgvfcdxrtvubnjjhnk")}
             </Paper>
           </Stack>
         </Stack>
