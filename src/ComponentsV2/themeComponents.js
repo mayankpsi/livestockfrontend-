@@ -1,4 +1,12 @@
-import { Button, styled, Typography, Stack, Box} from "@mui/material";
+import {
+  Button,
+  styled,
+  Typography,
+  Stack,
+  Box,
+  TextField,
+  createTheme,
+} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 //COLOR THEME
@@ -125,15 +133,17 @@ export const SidebarComp = styled(Stack)({
   paddingRight: "20px",
 });
 
-export const CustomAvatar = styled(Box)(({theme}) => ({
-  width:32,
-  height:32,
-  backgroundColor:theme.palette.primary.main,
-  color:theme.palette.primary.contrastText,
-  borderRadius:'100%',
-  display:'flex',
-  justifyContent:'center',
-  alignItems:"center",
-  fontWeight:"bold",
-  fontSize:"1.5rem"
-}))
+export const CustomAvatar = styled(Box)(({ theme }) => ({
+  width: 32,
+  height: 32,
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+  borderRadius: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  fontWeight: "bold",
+  fontSize: "1.5rem",
+}));
+
+

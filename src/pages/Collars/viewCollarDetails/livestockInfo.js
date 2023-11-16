@@ -9,7 +9,7 @@ import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 
 const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
-  const { openSnackbarAlert } = useLivestockContext();
+  const { openSnackbarAlert,setIsError,isError } = useLivestockContext();
   const [isEditLivestockInfo, setIsEditLivestockInfo] = useState(true);
   const [LivestockInfoEdit, setLivestockInfoEdit] = useState({
     collarUID: "",
@@ -66,10 +66,20 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
           });
           if (res?.status === 200) {
             openSnackbarAlert("success", "Livestock successfully updated!");
+            setIsError({
+              error: false,
+              message: null
+            });
+            setIsEditLivestockInfo(true);
+          }  else if (res?.response?.data?.statusCode === 409) {
+            setIsError({
+              error: true,
+              message: res?.response?.data?.message,
+            });
           } else {
             throw new Error("something went wrong");
           }
-          setIsEditLivestockInfo(true);
+
         } catch (err) {
           setIsEditLivestockInfo(true);
           openSnackbarAlert("error", err.message);
@@ -98,7 +108,8 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
     value,
     onChange,
     select,
-    selectData
+    selectData,
+    isError
   ) => {
     return (
       <TextField
@@ -114,8 +125,8 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
         name={name}
         {...register(name, { required: true })}
         onChange={onChange}
-        error={errors?.[name] ? true : false}
-        helperText={errors?.[name]?.message}
+        error={errors?.[name]?true:false || isError?.error}
+        helperText={errors?.[name]?.message || isError?.message}
       >
         {select &&
           selectData?.map((option) => (
@@ -168,7 +179,10 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
             "Livestock UID",
             "livestockUID",
             LivestockInfoEdit?.livestockUID,
-            handleLivestockInfoEditChange
+            handleLivestockInfoEditChange,
+            null,
+            null,
+            isError
           )}
         </Stack>
         <Stack direction="row" gap={2}>

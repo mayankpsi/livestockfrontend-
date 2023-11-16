@@ -38,25 +38,6 @@ const theme = createTheme({
   },
 });
 
-// 
-// const theme = createTheme({
-//   components: {
-//     MuiInputLabel: {
-//       styleOverrides: {
-//         root: {
-//           fontSize: labelFontSize,
-//         },
-//       },
-//     },
-//     MuiOutlinedInput: {
-//       styleOverrides: {
-//         root: {
-//           fontSize: labelFontSize,
-//         },
-//       },
-//     },
-//   },
-// });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

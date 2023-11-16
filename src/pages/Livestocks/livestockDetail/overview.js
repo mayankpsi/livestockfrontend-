@@ -97,7 +97,7 @@ const Overview = ({ data }) => {
           <TabPane
             text="Status"
             secondaryText={`Last Update : ${formattedDate(data?.lastUpdate)}`}
-            btnText={data?.liveStocklocationStatus}
+            btnText={data?.liveStocklocationStatus || "N/A"}
             btnIcon={false}
             btnBgColor={data?.liveStocklocationStatus?.toLowerCase() === "safe"?"#47CD75":"#FF5C33"}
             onBtnClick={() => {}}

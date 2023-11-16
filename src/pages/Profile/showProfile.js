@@ -99,6 +99,7 @@ const ShowProfile = () => {
     handleProfileChange,
     handleProfileEdit,
     inputError,
+    handleAccountDelete
   } = useProfileContext();
 
   useEffect(()=> {
@@ -186,7 +187,7 @@ const ShowProfile = () => {
                     <ButtonOutlined
                       variant="outlined"
                       sx={{ minWidth: "100px" }}
-                      onClick={() => {}}
+                      onClick={handleAccountDelete}
                     >
                       Delete Profile
                     </ButtonOutlined>

@@ -1,5 +1,9 @@
-import { Box, Stack } from "@mui/material";
-import { TypographyPrimary,ButtonPrimary } from "./themeComponents";
+import { Box, Button, Stack } from "@mui/material";
+import {
+  TypographyPrimary,
+  ButtonPrimary,
+  ButtonOutlinedRound,
+} from "./themeComponents";
 import CustomDateRangePicker from "./dateRangePicker";
 
 const TabPaneV2 = ({
@@ -13,13 +17,11 @@ const TabPaneV2 = ({
   onBtnClick,
   selectedDate,
   setSelectedDate,
+  onClearAll,
+  clearBtn,
 }) => {
   return (
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-    >
+    <Stack direction="row" justifyContent="space-between" alignItems="center">
       <TypographyPrimary
         sx={{
           textTransform: "capitalize",
@@ -58,6 +60,21 @@ const TabPaneV2 = ({
             {btnText}
           </ButtonPrimary>
         )}
+        {clearBtn ? (
+          <Button
+            variant="outlined"
+            sx={{
+              fontSize: "1.2rem",
+              padding: "5px 15px",
+              fontWeight: "bold",
+              width: 150,
+              textTransform: "capitalize",
+            }}
+            onClick={onClearAll}
+          >
+            Clear All
+          </Button>
+        ) : null}
       </Box>
     </Stack>
   );

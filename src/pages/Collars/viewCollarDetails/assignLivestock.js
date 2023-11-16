@@ -12,9 +12,12 @@ import useCollarContext from "../../../hooks/useCollarContext";
 const AssignLivestock = ({ data }) => {
   const [allUnassignLivestocks, setAllUnassignLivestocks] = useState([]);
   const { userId } = useUserId();
-  const { openAddLiveStockModal, setOpenAddLivestockModal } =
-    useLivestockContext();
-  const {openSnackbarAlert} = useCollarContext()
+  const {
+    openAddLiveStockModal,
+    setOpenAddLivestockModal,
+    setOpenBackdropLoader,
+  } = useLivestockContext();
+  const { openSnackbarAlert } = useCollarContext();
 
   useEffect(() => {
     if (!data?.Uid) {
@@ -23,47 +26,56 @@ const AssignLivestock = ({ data }) => {
   }, [data]);
 
   const handelLivestockRemove = async (collarId, livestockId) => {
-     const body = {
+    setOpenBackdropLoader(true);
+    const body = {
       liveStockID: livestockId,
-      deviceID:collarId,
-     }
+      deviceID: collarId,
+    };
     try {
       const res = await request({
         url: `/devices/unassign-liveStock`,
         method: "POST",
-        data:body
+        data: body,
       });
       if (res.status === 200) {
-        openSnackbarAlert("success","Livestock successfully removed :)");
-        setTimeout(()=> window.location.reload(),1500);
+        setOpenBackdropLoader(false);
+        openSnackbarAlert("success", "Livestock successfully removed :)");
+        setTimeout(() => window.location.reload(), 1500);
       } else {
         throw new Error("something went wrong");
       }
     } catch (err) {
-      openSnackbarAlert("error",err?.message?err.message:"Something went wrong :(")
+      setOpenBackdropLoader(false);
+      openSnackbarAlert(
+        "error",
+        err?.message ? err.message : "Something went wrong :("
+      );
     }
   };
   const getUnassignLivestock = async () => {
+    setOpenBackdropLoader(true);
     try {
       const res = await request({
         url: `/liveStock/getAll?status=false&userID=${userId}`,
       });
       if (res.status === 200) {
+        setOpenBackdropLoader(false);
         setAllUnassignLivestocks(res.data.data);
       } else {
         throw new Error("something went wrong");
       }
     } catch (error) {
-      console.log(error.message);
+      setOpenBackdropLoader(false);
+      openSnackbarAlert("error", error.message);
     }
   };
 
-  
   const handelLivestockAssign = async (selectedValue) => {
     const body = {
-      liveStockID:selectedValue,
-      deviceID:data?.collarId
-    }
+      liveStockID: selectedValue,
+      deviceID: data?.collarId,
+    };
+    setOpenBackdropLoader(true);
     try {
       const res = await request({
         url: `/devices/assign-liveStock`,
@@ -71,17 +83,21 @@ const AssignLivestock = ({ data }) => {
         data: body,
       });
       if (res.status === 200) {
-        openSnackbarAlert("success","Livestock successfully Added :)");
-        setTimeout(()=> window.location.reload(),1500)
+        setOpenBackdropLoader(false);
+        openSnackbarAlert("success", "Livestock successfully Added :)");
+        setTimeout(() => window.location.reload(), 1500);
       } else {
         throw new Error("something went wrong");
       }
     } catch (err) {
-      openSnackbarAlert("error",err?.message?err.message:"Something went wrong :(")
+      setOpenBackdropLoader(false);
+      openSnackbarAlert(
+        "error",
+        err?.message ? err.message : "Something went wrong :("
+      );
     }
-    setOpenAddLivestockModal(false)
+    setOpenAddLivestockModal(false);
   };
-
 
   return (
     <Box py={4}>

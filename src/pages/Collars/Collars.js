@@ -1,7 +1,6 @@
 import React from "react";
 import AdminUIContainer from "../../layout/AdminUIContainer";
 import {
-  Breadcrumb,
   CustomTabs,
   TabPane,
   CustomModal,
@@ -12,7 +11,6 @@ import ShowCollars from "./ShowCollars";
 import AddCollarModalContent from "./AddCollarModalContent";
 import { useContext } from "react";
 import { CollarContext } from "../../context/CollarContext";
-import MaxWidthDialog from "../../ComponentsV2/successDialog";
 
 const tabData = [
   {
@@ -67,7 +65,7 @@ const Collars = () => {
       closeAlert={onSnackbarAlertClose}
       BreadcrumbData={BreadcrumbData}
     >
-      <Container maxWidth="xl" sx={{ marginTop: 8 }}>
+      <Container maxWidth="xl" sx={{ marginTop: 8,pb:5 }}>
         <BackdropLoader open={openBackdropLoader} />
         <TabPane
           text="All Collars"

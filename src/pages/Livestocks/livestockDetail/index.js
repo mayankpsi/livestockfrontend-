@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AdminUIContainer from "../../../layout/AdminUIContainer";
-import { Breadcrumb, CustomTabs } from "../../../ComponentsV2";
+import { Breadcrumb, CustomTabs, BackdropLoader } from "../../../ComponentsV2";
 import { Container } from "@mui/material";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import { useParams } from "react-router-dom";
@@ -17,12 +17,24 @@ import useDateFormat from "../../../hooks/useDateFormat";
 
 const LivestockDetails = () => {
   const [data, setData] = useState();
-  const { snackbarAlert, onSnackbarAlertClose, showConfirmModal, handleConfirmWindowClose,handleAlertDeleteConfirm } = useLivestockContext();
-  const {formattedDate} = useDateFormat();
+  const {
+    snackbarAlert,
+    openBackdropLoader,
+    onSnackbarAlertClose,
+    alertDeletedId,
+    handleAllAlertDeleteConfirm,
+    showConfirmModal,
+    handleConfirmWindowClose,
+    handleAlertDeleteConfirm,
+    setOpenBackdropLoader,
+    openSnackbarAlert,
+  } = useLivestockContext();
+  const { formattedDate } = useDateFormat();
   const [alertsThreshold, setAlertsThreshold] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
+    setOpenBackdropLoader(true);
     request({ url: `/liveStock/getLiveStockByID/?liveStockID=${id}` })
       .then((res) => {
         if (res?.data?.data && res?.data?.statusCode === 200) {
@@ -62,8 +74,9 @@ const LivestockDetails = () => {
         }
       })
       .catch((e) => {
-        // alert(e.message)
-      });
+        openSnackbarAlert("error", e.message);
+      })
+      .finally(() => setOpenBackdropLoader(false));
   }, []);
 
   const tabData = [
@@ -111,14 +124,19 @@ const LivestockDetails = () => {
       openModal={showConfirmModal.open}
       showConfirmBtn={showConfirmModal.confirmBtn}
       handleModalClose={handleConfirmWindowClose}
-      onConfirm={handleAlertDeleteConfirm}
+      onConfirm={
+        alertDeletedId?.type === "deleteAllAlerts"
+          ? handleAllAlertDeleteConfirm
+          : handleAlertDeleteConfirm
+      }
       openAlert={snackbarAlert.open}
       alertMessage={snackbarAlert.message}
       alertType={snackbarAlert.type}
       closeAlert={onSnackbarAlertClose}
       BreadcrumbData={BreadcrumbData}
     >
-      <Container maxWidth="xl" sx={{ marginTop: 8 }}>
+      <Container maxWidth="xl" sx={{ marginTop: 8, pb: 5 }}>
+        <BackdropLoader open={openBackdropLoader} />
         <TypographyPrimary sx={{ fontSize: 21 }}>{data?.Uid}</TypographyPrimary>
         <CustomTabs tabData={tabData} />
       </Container>

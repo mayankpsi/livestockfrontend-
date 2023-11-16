@@ -15,7 +15,7 @@ export const LivestockContextProvider = ({ children }) => {
   const [openAddLiveStockModal, setOpenAddLivestockModal] = useState(false);
   const [showLocationTab, setShowLocationTab] = useState("location");
   const [livestockHealthActiveTab, setLivestockHealthActiveTab] = useState("");
-
+  const [isError, setIsError] = useState({ error: false, message: "" });
   // new livestock
   const [addNewLivestock, setAddNewLivestock] = useState({
     collarUID: "",
@@ -105,7 +105,7 @@ export const LivestockContextProvider = ({ children }) => {
   });
 
   const [deleteLivestockId, setDeleteLivestockId] = useState(null);
-  const [alertDeletedId, setAlertDeletedId] = useState();
+  const [alertDeletedId, setAlertDeletedId] = useState({id:null,type:null});
   const { formattedDate } = useDateFormat();
 
   // PAGINATION AND RANGE DATE
@@ -162,7 +162,6 @@ export const LivestockContextProvider = ({ children }) => {
       .finally(() => setOpenBackdropLoader(false));
   }, [addNewLivestockLoading]);
 
-
   // handle modal open
   const handleLivestockModalOpen = (type) => {
     setModalContentType(type);
@@ -190,7 +189,8 @@ export const LivestockContextProvider = ({ children }) => {
     });
     if (res?.status === 200) {
       setOpenBackdropLoader(false);
-      openSnackbarAlert("success", "Collar successfully deleted!");
+      openSnackbarAlert("success", "Livestock successfully deleted!");
+      setTimeout(() => window.location.reload(), 1000);
     } else {
       setOpenBackdropLoader(false);
       openSnackbarAlert("error", "Something went wrong :(");
@@ -216,18 +216,37 @@ export const LivestockContextProvider = ({ children }) => {
         method: "POST",
         data: body,
       });
-      alert(res?.data?.message);
+      if (res?.status === 200) {
+        handleAddLivestockModalClose();
+        const msg = res?.data?.message || "Livestock successfully Added!";
+        openSnackbarAlert("success", msg);
+        setTimeout(() => window.location.reload(), 1000);
+      } else {
+        if (res?.response?.status === 409) {
+          setIsError({
+            error: true,
+            message: res?.response?.data?.message,
+          });
+        } else {
+          throw new Error("Something went wrong");
+        }
+        setAddNewLivestockLoading(false);
+      }
     } catch (error) {
-      alert(error.message);
+      const msg = error?.message || "Something went wrong :(";
+      openSnackbarAlert("error", msg);
     }
+  };
+
+  const handleAddLivestockModalClose = () => {
+    handleLivestockModalClose();
     setAddNewLivestock({
       collarUID: "",
       livestockUID: "",
       livestockName: "",
       livestockGender: "",
     });
-    handleLivestockModalClose();
-    setAddNewLivestockLoading(false);
+    setIsError({ error: false, message: "" });
   };
 
   const handleLivestockTempAlertsChange = (event) => {
@@ -316,25 +335,53 @@ export const LivestockContextProvider = ({ children }) => {
   const d = new Date();
   const formate = new Intl.DateTimeFormat("en-US", options).format(d);
 
-  // HANDLE ALERT DELETE 
-  const handleAlertDelete = (alertId) => {
+  // HANDLE ALERT DELETE
+  const handleAlertDelete = (id,type) => {
     setShowConfirmModal({ open: true, confirmBtn: true });
-    setAlertDeletedId(alertId);
+    setAlertDeletedId({id,type});
   };
 
   const handleAlertDeleteConfirm = async () => {
     setOpenBackdropLoader(true);
     handleConfirmWindowClose();
-    const res = await request({
-      url: `/liveStock/DeleteLiveStockAlerts?alertID=${alertDeletedId}`,
-      method: "DELETE",
-    });
-    if (res?.status === 200) {
+    try {
+      const res = await request({
+        url: `/liveStock/DeleteLiveStockAlerts?alertID=${alertDeletedId?.id}`,
+        method: "DELETE",
+      });
+      if (res?.status === 200) {
+        setOpenBackdropLoader(false);
+        openSnackbarAlert("success", "Alert successfully deleted!");
+        setTimeout(()=> window.location.reload(), 1000)
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (err) {
+      const msg = err?.message || "Something went wrong :(";
       setOpenBackdropLoader(false);
-      openSnackbarAlert("success", "Collar successfully deleted!");
-    } else {
+      openSnackbarAlert("error", msg);
+    }
+  };
+
+  const handleAllAlertDeleteConfirm = async () => {
+    setOpenBackdropLoader(true);
+    handleConfirmWindowClose();
+    try {
+      const res = await request({
+        url: `/liveStock/deleteLivestockAlertsData?livestock_id=${alertDeletedId?.id}`,
+        method: "DELETE",
+      });
+      if (res?.status === 200) {
+        setOpenBackdropLoader(false);
+        openSnackbarAlert("success", "All alert successfully deleted!");
+        setTimeout(()=> window.location.reload(), 1000)
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (err) {
+      const msg = err?.message || "Something went wrong :(";
       setOpenBackdropLoader(false);
-      openSnackbarAlert("error", "Something went wrong :(");
+      openSnackbarAlert("error", msg);
     }
   };
 
@@ -381,6 +428,7 @@ export const LivestockContextProvider = ({ children }) => {
         onSnackbarAlertClose,
         showConfirmModal,
         handleConfirmWindowClose,
+        handleAddLivestockModalClose,
         snackbarAlert,
         onSnackbarAlertClose,
         handleLivestockDeleteConfirm,
@@ -394,7 +442,11 @@ export const LivestockContextProvider = ({ children }) => {
         setPageCount,
         pageLimit,
         handleAlertDelete,
-        handleAlertDeleteConfirm
+        handleAlertDeleteConfirm,
+        alertDeletedId,
+        handleAllAlertDeleteConfirm,
+        setOpenBackdropLoader,
+        isError, setIsError
       }}
     >
       {children}

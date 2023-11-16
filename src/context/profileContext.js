@@ -25,6 +25,16 @@ export const ProfileContextProvider = ({ children }) => {
     error: false,
     errorMessage: "",
   });
+  const [showConfirmModal, setShowConfirmModal] = useState({
+    open: false,
+    confirmBtn: false,
+  });
+  const [snackbarAlert, setSnackbarAlert] = useState({
+    open: false,
+    type: "",
+    message: "",
+  });
+  const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
 
   // HANDLE PROFILE CHANGE AND UPDATE
   const handleProfileChange = (data) => {
@@ -43,6 +53,7 @@ export const ProfileContextProvider = ({ children }) => {
       },
     };
     if (!inputError.error) {
+      setOpenBackdropLoader(true);
       try {
         const res = await request({
           url: `/auth/update-user`,
@@ -50,14 +61,15 @@ export const ProfileContextProvider = ({ children }) => {
           data: body,
         });
         if (res.status === 200) {
-          console.log(res, "xhdvvdcgvgvgvgvgvg");
           setEditProfile(true);
-          alert("success");
+          setOpenBackdropLoader(false);
+          openSnackbarAlert("success","Profile successfully edited");
         } else {
           throw new Error("something went wrong :/");
         }
       } catch (error) {
-        console.log(error?.message);
+        setOpenBackdropLoader(false);
+        openSnackbarAlert("error",error?.message);
       }
     }
   };
@@ -69,6 +81,7 @@ export const ProfileContextProvider = ({ children }) => {
   };
 
   const handlePasswordEdit = async () => {
+    setOpenBackdropLoader(true);
     try {
       const res = await request({
         url: `/auth/changePassword`,
@@ -76,17 +89,23 @@ export const ProfileContextProvider = ({ children }) => {
         data: changePassword,
       });
       if (res.status === 200) {
-        console.log(res, "djebbbsjjs");
+        setOpenBackdropLoader(false);
+        openSnackbarAlert("success","Password successfully changed");
       } else {
-        // throw new Error("")
+        throw new Error("Something went wrong")
       }
-    } catch (error) {}
+    } catch (error) {
+      setOpenBackdropLoader(false);
+      openSnackbarAlert("error",error?.message);
+    }
   };
 
   useEffect(() => {
+    setOpenBackdropLoader(true)
     request({ url: `/auth/getUpdatedUserData` })
       .then((res) => {
         if (res.status === 200) {
+          setOpenBackdropLoader(false)
           const { data } = res?.data;
           setShowProfileData({
             ...showProfileData,
@@ -99,10 +118,13 @@ export const ProfileContextProvider = ({ children }) => {
             country: data?.address?.country,
           });
         } else {
-          // throw new Error("")
+          throw new Error("Something went wrong")
         }
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) =>  {
+        setOpenBackdropLoader(false)
+        openSnackbarAlert("error", err.message)
+      });
   }, []);
 
   useEffect(() => {
@@ -141,6 +163,48 @@ export const ProfileContextProvider = ({ children }) => {
     return () => clearTimeout(delayDebounceFnc);
   }, [showProfileData?.pincode]);
 
+  const handleConfirmWindowClose = () => {
+    setShowConfirmModal({ open: false, confirmBtn: false });
+  };
+
+  const openSnackbarAlert = (type, message) => {
+    setSnackbarAlert({
+      open: true,
+      type,
+      message,
+    });
+  };
+
+  const onSnackbarAlertClose = () => {
+    setSnackbarAlert({ open: false, type: "", message: "" });
+  };
+
+  const handleAccountDelete = () => {
+    setShowConfirmModal({ open: true, confirmBtn: true });
+  };
+  const handleConfirmAccountDelete = async () => {
+    setOpenBackdropLoader(true);
+    handleConfirmWindowClose();
+    try {
+      const res = await request({
+        url: `/user/deleteAccount`,
+        method: "DELETE",
+      });
+      if (res?.status === 200) {
+        setOpenBackdropLoader(false);
+        openSnackbarAlert("success", "Account successfully deleted!");
+        if(window){
+          window.location.pathname = "/login";
+        }
+      } else {
+        throw new Error("Something went wrong :(");
+      }
+    } catch (err) {
+      setOpenBackdropLoader(false);
+      openSnackbarAlert("error", err.message);
+    }
+  };
+
   const handleProfileSaveChanges = () => {
     const body = {
       name: showProfileData?.fullName,
@@ -177,6 +241,13 @@ export const ProfileContextProvider = ({ children }) => {
         setEditProfile,
         setShowProfileData,
         inputError,
+        showConfirmModal,
+        handleConfirmWindowClose,
+        handleAccountDelete,
+        handleConfirmAccountDelete,
+        snackbarAlert,
+        onSnackbarAlertClose,
+        openBackdropLoader,
       }}
     >
       {children}

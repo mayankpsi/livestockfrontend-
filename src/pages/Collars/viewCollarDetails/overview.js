@@ -52,7 +52,7 @@ const Overview = ({ data }) => {
     collarMacId: "",
   });
 
-  const { isError, setIsError,openSnackbarAlert} = useCollarContext();
+  const { isError, setIsError, openSnackbarAlert } = useCollarContext();
 
   useEffect(() => {
     setCollarInfoEdit({
@@ -70,7 +70,7 @@ const Overview = ({ data }) => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(addCollarValidationSchema)});
+  } = useForm({ resolver: yupResolver(addCollarValidationSchema) });
 
   const handleCollarInfoEditChange = (e) => {
     const { name, value } = e.target;
@@ -90,21 +90,25 @@ const Overview = ({ data }) => {
           url: `/devices/update?deviceID=${data.collarId}`,
           method: "PATCH",
           data: body,
-        });    
-        if(editRes.status === 200){
-          openSnackbarAlert("success","Collar successfully edited :)")
-        } 
-        else if (editRes?.response?.data?.statusCode === 409) {
+        });
+        if (editRes.status === 200) {
+          openSnackbarAlert("success", "Collar successfully edited :)");
+          setIsEditCollarInfo(false);
+          setIsError({
+            error: false,
+            message: null
+          });
+        } else if (editRes?.response?.data?.statusCode === 409) {
           setIsError({
             error: true,
-            message:editRes?.response?.data?.message,
+            message: editRes?.response?.data?.message,
           });
         } else {
-          throw new Error("Something went wrong :(")
+          throw new Error("Something went wrong :(");
         }
-        setIsEditCollarInfo(false);
       } catch (err) {
-        openSnackbarAlert("error",err.message)
+        openSnackbarAlert("error", err.message);
+        setIsEditCollarInfo(false);
       }
     }
   };
@@ -162,7 +166,7 @@ const Overview = ({ data }) => {
                 width: "100%",
                 justifyContent: "space-between",
               }}
-            >   
+            >
               <CustomInput
                 disabled={!isEditCollarInfo}
                 label="collar MAC ID"

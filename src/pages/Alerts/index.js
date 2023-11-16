@@ -1,6 +1,5 @@
 import AdminUIContainer from "../../layout/AdminUIContainer";
 import {
-  Breadcrumb,
   BackdropLoader,
   TableV2,
   ExportAsCSV,
@@ -46,7 +45,9 @@ const AlertsPage = () => {
     pageCount,
     paginationPageNo,
     setPaginationPageNo,
-    alertsDataLength
+    alertsDataLength,
+    alertDeletedId,
+    handleAllAlertDeleteConfirm,
   } = useAlertsContext();
 
   const getTableFormattedData = (data) => {
@@ -72,22 +73,30 @@ const AlertsPage = () => {
       openModal={showConfirmModal.open}
       showConfirmBtn={showConfirmModal.confirmBtn}
       handleModalClose={handleConfirmWindowClose}
-      onConfirm={handleAlertDeleteConfirm}
+      onConfirm={
+        alertDeletedId !== null
+          ? handleAlertDeleteConfirm
+          : handleAllAlertDeleteConfirm
+      }
       openAlert={snackbarAlert.open}
       alertMessage={snackbarAlert.message}
       alertType={snackbarAlert.type}
       closeAlert={onSnackbarAlertClose}
       BreadcrumbData={BreadcrumbData}
     >
-      <Container maxWidth="xl" sx={{ marginTop: 8 }}>
+      <Container maxWidth="xl" sx={{ marginTop: 8, pb:5 }}>
         <BackdropLoader open={openBackdropLoader} />
         <TypographyPrimary sx={{ fontSize: "24px" }}>Alerts</TypographyPrimary>
         <Stack sx={{ width: "100%", pb: 3 }}>
           <Stack pb={2}>
             <TabPaneV2
-              paneText={`showing ${alertsDataLength > 10?10:alertsDataLength} out of ${alertsDataLength}`}
+              paneText={`showing ${
+                alertsDataLength > 10 ? 10 : alertsDataLength
+              } out of ${alertsDataLength}`}
               paneTextColor="#000"
               datePicker={true}
+              clearBtn={true}
+              onClearAll={() => handleAlertDelete(null)}
               btnText={
                 <ExportAsCSV
                   headers={tableHeadData}
@@ -111,13 +120,13 @@ const AlertsPage = () => {
         {AllAlertData?.length ? (
           alertsDataLength > 10 && (
             <Stack direction="row" justifyContent="center">
-            <CustomPagination
-              size="large"
-              page={paginationPageNo}
-              count={pageCount}
-              onPageChange={(pageNo) => setPaginationPageNo(pageNo)}
-            />
-          </Stack>
+              <CustomPagination
+                size="large"
+                page={paginationPageNo}
+                count={pageCount}
+                onPageChange={(pageNo) => setPaginationPageNo(pageNo)}
+              />
+            </Stack>
           )
         ) : (
           <NoData />

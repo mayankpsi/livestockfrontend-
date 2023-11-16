@@ -2,7 +2,7 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
 import { useEffect, useState, useRef } from "react";
-import { Stack, TextField } from "@mui/material";
+import { Stack, TextField, ThemeProvider } from "@mui/material";
 import format from "date-fns/format";
 
 export default function CustomDateRangePicker({
@@ -27,14 +27,15 @@ export default function CustomDateRangePicker({
     <Stack sx={{ position: "relative" }}>
       <Stack direction="row" gap={1}>
         {selectedDate ? (
-          <TextField
-            value={`${format(
-              selectedDate[0]?.startDate,
-              "MM/dd/yyyy"
-            )} - ${format(selectedDate[0]?.endDate, "MM/dd/yyyy")}`}
-            placeholder="MM/DD/YYYY"
-            onClick={() => setShowInput(!showInput)}
-          />
+            <TextField
+              size="small"
+              value={`${format(
+                selectedDate[0]?.startDate,
+                "MM/dd/yyyy"
+              )} - ${format(selectedDate[0]?.endDate, "MM/dd/yyyy")}`}
+              placeholder="MM/DD/YYYY"
+              onClick={() => setShowInput(!showInput)}
+            />
         ) : null}
       </Stack>
       <Stack

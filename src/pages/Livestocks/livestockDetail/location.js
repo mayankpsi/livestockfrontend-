@@ -53,6 +53,8 @@ const Location = ({ data }) => {
     pageCount,
     setPageCount,
     pageLimit,
+    setOpenBackdropLoader,
+    openSnackbarAlert
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate, getRoundOffDigit } =
     useDateFormat();
@@ -68,6 +70,7 @@ const Location = ({ data }) => {
 
   useEffect(() => {
     if (data?.id) {
+      setOpenBackdropLoader(true)
       Promise.allSettled([
         request({ url: `/user/getUsersGeofence?userID=${userId}` }),
         request({
@@ -133,15 +136,28 @@ const Location = ({ data }) => {
             setLocationAlertsData([]);
             throw new Error(res?.response?.data?.message);
           }
-
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => console.log("error",err.message))
+        .finally(()=> setOpenBackdropLoader(false))
     }
   }, [data?.id, paginationPageNo, selectedDate]);
 
   useEffect(() => {
     setPaginationPageNo(1);
   }, [selectedDate]);
+
+  const getExportedData = (data) => {
+        const DeepCopiedData = JSON.parse(JSON.stringify(data));
+        const formattedData = DeepCopiedData?.map(ele => {
+          const obj = {
+            ...ele,
+            status:ele?.title
+          }
+          delete ele.title;
+          return obj;
+        });
+        return formattedData;
+  }
 
   return (
     <Stack my={2} direction="column" alignItems="center" gap={2}>
@@ -169,8 +185,13 @@ const Location = ({ data }) => {
               } out of 20 Alerts`}
               datePicker={true}
               paneTextColor="#000"
+              clearBtn={false}
               btnText={
-                <ExportAsCSV headers={[]} data={[]} fileName="alerts">
+                <ExportAsCSV
+                  headers={tableHeadData}
+                  data={getExportedData(locationAlertsData)}
+                  fileName="alerts"
+                >
                   Export
                 </ExportAsCSV>
               }

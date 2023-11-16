@@ -123,7 +123,7 @@ export const MapContentProvider = ({ children }) => {
   const userId = useUserId();
   //HANDEL GEOFENCE SUBMIT AND CREATE A GEOFENCE
   const handleCreateGeofence = async () => {
-    setOpenBackdropLoader(true)
+    setOpenBackdropLoader(true);
     setSaveLocationData(true);
     localStorage.setItem("geofenceCreation", "showEdit");
     const body = {
@@ -138,16 +138,15 @@ export const MapContentProvider = ({ children }) => {
         method: "POST",
         data: body,
       });
-      console.log(res,"dnchvgvdgcdctdctvctvdc")
       if (res?.status === 200) {
-        openSnackbarAlert("success",res?.data?.message );
-        setOpenBackdropLoader(false)
+        openSnackbarAlert("success", res?.data?.message);
+        setOpenBackdropLoader(false);
       } else {
         throw new Error("Something went wrong");
       }
     } catch (error) {
-      openSnackbarAlert("success",error?.message )
-      setOpenBackdropLoader(false)
+      openSnackbarAlert("success", error?.message);
+      setOpenBackdropLoader(false);
     }
   };
 

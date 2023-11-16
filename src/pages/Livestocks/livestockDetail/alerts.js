@@ -122,7 +122,9 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
     pageCount,
     setPageCount,
     pageLimit,
-    handleAlertDelete
+    handleAlertDelete,
+    openSnackbarAlert,
+    setOpenBackdropLoader,
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate, getRoundOffDigit } =
     useDateFormat();
@@ -142,6 +144,7 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   });
 
   useEffect(() => {
+    setOpenBackdropLoader(true);
     if (data?.id) {
       request({
         url: `/liveStock/getSingleLiveStockAllAlerts?liveStockID=${
@@ -159,7 +162,7 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
               id: ele?._id,
               alertName: ele?.message,
               thresholdValue: ele?.thresholdValue,
-              alarmValue: getRoundOffDigit(ele?.alertValue, 2),
+              alarmValue: ele?.alertValue,
               time: formattedDate(ele?.createdAt, "time"),
               date: formattedDate(ele?.createdAt, "date"),
             }));
@@ -171,7 +174,8 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
             throw new Error(res?.response?.data?.message);
           }
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => openSnackbarAlert("error", err.message))
+        .finally(() => setOpenBackdropLoader(false));
     }
   }, [data?.id, paginationPageNo, selectedDate]);
 
@@ -214,7 +218,7 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
     alertsThresholds?.forEach((el) => {
       body[el.label] = el.value;
     });
-
+    setOpenBackdropLoader(true);
     try {
       if (data?.id) {
         const res = await request({
@@ -222,15 +226,22 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
           method: "PATCH",
           data: body,
         });
+        if (res?.status === 200) {
+          openSnackbarAlert("success", "Threshold successfully updated");
+        } else {
+          throw new Error("Something went wrong");
+        }
+        setOpenBackdropLoader(false);
       }
-    } catch (error) {}
-
-    console.log("submit");
+    } catch (error) {
+      setOpenBackdropLoader(false);
+      openSnackbarAlert("error", error?.message);
+    }
     handleThresholdEdit(id);
   };
 
   return (
-    <Stack my={4}>
+    <Stack mt={4}>
       <Stack direction="row" flexWrap="wrap" width="100%" gap={3}>
         {alertsThresholds?.map((ele) => (
           <AlertCard
@@ -257,8 +268,14 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
             } out of ${alertsDataLength} Alerts`}
             paneTextColor="#000"
             datePicker={true}
+            clearBtn={true}
+            onClearAll={() => handleAlertDelete(data?.id,"deleteAllAlerts")}
             btnText={
-              <ExportAsCSV headers={tableHeadData} data={[]} fileName="alerts">
+              <ExportAsCSV
+                headers={tableHeadData}
+                data={singleLivestockAlerts}
+                fileName="alerts"
+              >
                 Export
               </ExportAsCSV>
             }
@@ -294,7 +311,7 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
         />
         {singleLivestockAlerts?.length ? (
           alertsDataLength > 10 ? (
-            <Stack direction="row" justifyContent="center">
+            <Stack direction="row" justifyContent="center" pt={5}>
               <CustomPagination
                 size="large"
                 count={pageCount}

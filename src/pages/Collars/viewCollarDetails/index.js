@@ -81,7 +81,7 @@ const ViewCollarDetails = () => {
     closeAlert={onSnackbarAlertClose}
     BreadcrumbData={BreadcrumbData}
     >
-      <Container maxWidth="xl" sx={{ marginTop: 8 }}>
+      <Container maxWidth="xl" sx={{ marginTop: 8,pb:5 }}>
         <BackdropLoader open={openBackdropLoader} />
         <TypographyPrimary sx={{ textTransform: "capitalize", fontSize:21 }}>
           {data?.collarUid}

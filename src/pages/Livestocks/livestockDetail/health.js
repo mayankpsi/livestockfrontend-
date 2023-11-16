@@ -134,7 +134,7 @@ const chartData = [
 ];
 
 const Health = ({ data }) => {
-  const { livestockHealthActiveTab, setLivestockHealthActiveTab } =
+  const { livestockHealthActiveTab, setLivestockHealthActiveTab, setOpenBackdropLoader, openSnackbarAlert} =
     useLivestockContext();
   const { formattedDate } = useDateFormat();
 
@@ -159,6 +159,7 @@ const Health = ({ data }) => {
   //GET ALL ALERTS THRESHOLD
   useEffect(() => {
     if (data?.id) {
+      setOpenBackdropLoader(true)
       request({
         url: `/liveStock/getLiveStockHistory?LiveStockId=${data?.id}&currentDate=${selectedDate}&EndDate=${selectedDate}`,
       })
@@ -175,7 +176,8 @@ const Health = ({ data }) => {
             setHealthData([...formattedData?.slice(0, 24)]);
           }
         })
-        .catch((err) => console.log(err, "cdjbhdbchdhdcvhdcvh"));
+        .catch((err) => console.log("error",err?.message))
+        .finally(()=>  setOpenBackdropLoader(false))
     }
   }, [data?.id, selectedDate]);
 

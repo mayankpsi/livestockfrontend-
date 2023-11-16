@@ -60,7 +60,7 @@ const Livestocks = () => {
     closeAlert={onSnackbarAlertClose}
     BreadcrumbData={BreadcrumbData}
     >
-      <Container maxWidth="xl" sx={{ marginTop: 8 }}>
+      <Container maxWidth="xl" sx={{ marginTop: 8 ,pb:5}}>
         <BackdropLoader open={openBackdropLoader} />
         <TabPane
           text="All Livestocks"

@@ -11,7 +11,7 @@ export const CollarContext = createContext();
 
 export const CollarContextProvider = ({ children }) => {
   const navigate = useNavigate();
-  const {formattedDate} = useDateFormat()
+  const { formattedDate } = useDateFormat();
 
   const [collars, setCollars] = useState([]);
   const [isError, setIsError] = useState({ error: false, message: "" });
@@ -52,7 +52,6 @@ export const CollarContextProvider = ({ children }) => {
     message: "",
   });
 
-
   //GET ALL COLLARS
   useEffect(() => {
     setOpenBackdropLoader(true);
@@ -63,8 +62,12 @@ export const CollarContextProvider = ({ children }) => {
           collarID: col.uID,
           collarName: col.deviceName,
           power: (
-            <CustomLabel text={col?.wifiStatus ? "ON" : "OFF"} 
-            type={col?.wifiStatus ? "success" : "error"} width={80} marginAuto={true} />
+            <CustomLabel
+              text={col?.wifiStatus ? "ON" : "OFF"}
+              type={col?.wifiStatus ? "success" : "error"}
+              width={80}
+              marginAuto={true}
+            />
           ),
           currentStatus: (
             <CustomLabel
@@ -75,7 +78,7 @@ export const CollarContextProvider = ({ children }) => {
             />
           ),
           status: col?.status ? "assigned" : "not assigned",
-          addedOn: formattedDate(col?.createdAt,false),
+          addedOn: formattedDate(col?.createdAt, false),
           action: [
             <VisibilityOutlinedIcon
               fontSize="large"
@@ -116,15 +119,16 @@ export const CollarContextProvider = ({ children }) => {
     });
     if (res?.status === 200) {
       handleAddCollarModalClose();
-      openSnackbarAlert("success","Collar successfully created!")
+      openSnackbarAlert("success", "Collar successfully created!");
     } else {
       if (res?.response?.status === 409) {
         setIsError({
           error: true,
-          message:res?.response?.data?.message,
+          message: res?.response?.data?.message,
         });
       } else {
-        openSnackbarAlert("error",res?.message?res?.message:"Something went wrong :(")
+        const msg = res?.message || "Something went wrong :(";
+        openSnackbarAlert("error", msg);
       }
     }
     setIsLoading(false);
@@ -164,10 +168,11 @@ export const CollarContextProvider = ({ children }) => {
     });
     if (res?.status === 200) {
       setOpenBackdropLoader(false);
-      openSnackbarAlert("success","Collar successfully deleted!")
+      openSnackbarAlert("success", "Collar successfully deleted!");
+      setTimeout(() => window.location.reload(), 1000);
     } else {
       setOpenBackdropLoader(false);
-      openSnackbarAlert("error","Something went wrong :(")
+      openSnackbarAlert("error", "Something went wrong :(");
     }
   };
 
@@ -208,7 +213,7 @@ export const CollarContextProvider = ({ children }) => {
         handleCollarDeleteConfirm,
         snackbarAlert,
         onSnackbarAlertClose,
-        openSnackbarAlert
+        openSnackbarAlert,
       }}
     >
       {children}

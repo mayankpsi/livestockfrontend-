@@ -71,7 +71,6 @@ export default function TableV2({
                       fontSize: "1.5rem",
                     }}
                   >
-                    {console.log(row,"dhxbhvcgdvgdvcgvdh")}
                     {!Array.isArray(ele) ? (
                       ele
                     ) : (

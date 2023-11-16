@@ -18,10 +18,12 @@ import {addLivestockValidationSchema} from "../../utils/validationSchema";
 const AddLivestockModalContent = () => {
   const {
     handleLivestockModalClose,
+    handleAddLivestockModalClose,
     addNewLivestock,
     handleAddLivestockChange,
     addNewLivestockLoading,
     handleAddLivestock,
+    isError
   } = useLivestockContext();
 
   const [unassignCollars, setUnassignCollars] = useState([]);
@@ -113,7 +115,7 @@ const AddLivestockModalContent = () => {
               errors={errors}
               value={addNewLivestock?.livestockUID}
               name="livestockUID"
-              isError={{ error: false, message: "" }}
+              isError={isError}
               onChange={handleAddLivestockChange}
             />
           </Box>
@@ -156,7 +158,7 @@ const AddLivestockModalContent = () => {
             <ButtonOutlinedRound
               variant="outlined"
               size="large"
-              onClick={handleLivestockModalClose}
+              onClick={handleAddLivestockModalClose}
             >
               Cancel
             </ButtonOutlinedRound>

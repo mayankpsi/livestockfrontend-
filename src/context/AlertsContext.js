@@ -104,18 +104,47 @@ export const AlertsContextProvider = ({ children }) => {
   const handleAlertDeleteConfirm = async () => {
     setOpenBackdropLoader(true);
     handleConfirmWindowClose();
-    const res = await request({
-      url: `/liveStock/DeleteLiveStockAlerts?alertID=${alertDeletedId}`,
-      method: "DELETE",
-    });
-    if (res?.status === 200) {
+    try {
+      const res = await request({
+        url: `/liveStock/DeleteLiveStockAlerts?alertID=${alertDeletedId}`,
+        method: "DELETE",
+      });
+      if (res?.status === 200) {
+        setOpenBackdropLoader(false);
+        openSnackbarAlert("success", "Alert successfully deleted!");
+        setTimeout(() => window.location.reload(), 1000);
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (error) {
+      const msg = error?.message || "Something went wrong :(";
       setOpenBackdropLoader(false);
-      openSnackbarAlert("success", "Collar successfully deleted!");
-    } else {
-      setOpenBackdropLoader(false);
-      openSnackbarAlert("error", "Something went wrong :(");
+      openSnackbarAlert("error", msg);
     }
   };
+
+  const handleAllAlertDeleteConfirm = async () => {
+    setOpenBackdropLoader(true);
+    handleConfirmWindowClose();
+    try {
+      const res = await request({
+        url: "/liveStock/deleteAllAlerts",
+        method: "DELETE",
+      });
+      if (res?.status === 200) {
+        setOpenBackdropLoader(false);
+        openSnackbarAlert("success", "All Alerts successfully deleted!");
+        setTimeout(() => window.location.reload(), 1000);
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (err) {
+      const msg = err?.message || "Something went wrong :(";
+      setOpenBackdropLoader(false);
+      openSnackbarAlert("error", msg);
+    }
+  };
+
   return (
     <AlertsContext.Provider
       value={{
@@ -133,7 +162,9 @@ export const AlertsContextProvider = ({ children }) => {
         pageCount,
         paginationPageNo,
         setPaginationPageNo,
-        alertsDataLength
+        alertsDataLength,
+        alertDeletedId,
+        handleAllAlertDeleteConfirm,
       }}
     >
       {children}
