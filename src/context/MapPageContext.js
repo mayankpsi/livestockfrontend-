@@ -7,9 +7,9 @@ export const MapContext = createContext();
 
 export const MapContentProvider = ({ children }) => {
   const [userLiveLocation, setUserLiveLocation] = useState({
-    lat:null,
-    lng:null,
-    radius:null,
+    lat: null,
+    lng: null,
+    radius: null,
   });
   const [detectLocation, setDetectLocation] = useState(true);
   const [saveLocationData, setSaveLocationData] = useState(false);
@@ -78,8 +78,10 @@ export const MapContentProvider = ({ children }) => {
         const message = res?.response?.statusText || "Something went wrong :(";
         throw new Error(message);
       }
+      setOpenBackdropLoader(false);
     } catch (error) {
-      openSnackbarAlert("error",error.message)
+      openSnackbarAlert("error", error.message);
+      setOpenBackdropLoader(false);
     }
 
     setIsLoading(false);
@@ -89,6 +91,7 @@ export const MapContentProvider = ({ children }) => {
 
   // GET GEOFENCE ADDRESS BY LAT AND LNG
   const getGeolocationAddress = async (autoDetect, latitude, longitude) => {
+    setOpenBackdropLoader(true);
     setIsLoading(true);
     if (autoDetect) {
       if ("geolocation" in navigator) {
@@ -120,23 +123,31 @@ export const MapContentProvider = ({ children }) => {
   const userId = useUserId();
   //HANDEL GEOFENCE SUBMIT AND CREATE A GEOFENCE
   const handleCreateGeofence = async () => {
-    localStorage.setItem("geofenceCreation", "showEdit");
+    setOpenBackdropLoader(true)
     setSaveLocationData(true);
+    localStorage.setItem("geofenceCreation", "showEdit");
     const body = {
       Address: geofenceCoordinates?.address,
       lat: geofenceCoordinates?.lat,
       lng: geofenceCoordinates?.lng,
       radius: geofenceCoordinates?.radius,
     };
-    const res = await request({
-      url: `/user/addGeofence/?userId=${userId}`,
-      method: "POST",
-      data: body,
-    });
-    if (res?.status === 200) {
-      // alert(res.data.message);
-    } else {
-      // alert(res.data.data.message);
+    try {
+      const res = await request({
+        url: `/user/addGeofence/?userId=${userId}`,
+        method: "POST",
+        data: body,
+      });
+      console.log(res,"dnchvgvdgcdctdctvctvdc")
+      if (res?.status === 200) {
+        openSnackbarAlert("success",res?.data?.message );
+        setOpenBackdropLoader(false)
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (error) {
+      openSnackbarAlert("success",error?.message )
+      setOpenBackdropLoader(false)
     }
   };
 
@@ -166,7 +177,7 @@ export const MapContentProvider = ({ children }) => {
 
   //GET GEOFENCE DETAILS
   useEffect(() => {
-    setOpenBackdropLoader(true)
+    setOpenBackdropLoader(true);
     request({ url: `/user/getUsersGeofence?userID=${userId}` })
       .then((res) => {
         const { data } = res?.data;
@@ -210,7 +221,7 @@ export const MapContentProvider = ({ children }) => {
         snackbarAlert,
         onSnackbarAlertClose,
         openSnackbarAlert,
-        openBackdropLoader
+        openBackdropLoader,
       }}
     >
       {children}

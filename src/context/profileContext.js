@@ -21,7 +21,10 @@ export const ProfileContextProvider = ({ children }) => {
     confirmPassword: "",
   });
   const [editProfile, setEditProfile] = useState(true);
-  const [inputError,setInputError ] = useState({error:false,errorMessage:""});
+  const [inputError, setInputError] = useState({
+    error: false,
+    errorMessage: "",
+  });
 
   // HANDLE PROFILE CHANGE AND UPDATE
   const handleProfileChange = (data) => {
@@ -33,24 +36,28 @@ export const ProfileContextProvider = ({ children }) => {
     const body = {
       name: showProfileData?.fullName,
       address: {
-        line:showProfileData?.address,
-        pincode:showProfileData?.pincode,
-        state:showProfileData?.state,
-        country:showProfileData?.country
-      }
-    }
-    if(!inputError.error){
+        line: showProfileData?.address,
+        pincode: showProfileData?.pincode,
+        state: showProfileData?.state,
+        country: showProfileData?.country,
+      },
+    };
+    if (!inputError.error) {
       try {
-        const res = await request({ url:`/auth/update-user`, method:"PATCH",data:body});
-        if(res.status === 200){
-          console.log(res,"xhdvvdcgvgvgvgvgvg")
-          setEditProfile(true)
-         alert("success")
-        }else{
-          throw new Error("something went wrong :/")
+        const res = await request({
+          url: `/auth/update-user`,
+          method: "PATCH",
+          data: body,
+        });
+        if (res.status === 200) {
+          console.log(res, "xhdvvdcgvgvgvgvgvg");
+          setEditProfile(true);
+          alert("success");
+        } else {
+          throw new Error("something went wrong :/");
         }
       } catch (error) {
-          console.log(error?.message)
+        console.log(error?.message);
       }
     }
   };
@@ -63,15 +70,17 @@ export const ProfileContextProvider = ({ children }) => {
 
   const handlePasswordEdit = async () => {
     try {
-      const res = await request({ url:`/auth/changePassword`, method:"POST",data:changePassword});
-      if(res.status === 200){
-        console.log(res,"djebbbsjjs")
-      }else{
+      const res = await request({
+        url: `/auth/changePassword`,
+        method: "POST",
+        data: changePassword,
+      });
+      if (res.status === 200) {
+        console.log(res, "djebbbsjjs");
+      } else {
         // throw new Error("")
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -84,7 +93,7 @@ export const ProfileContextProvider = ({ children }) => {
             fullName: data?.name,
             email: data?.email,
             phoneNumber: data?.phone,
-            address:data?.address?.line,
+            address: data?.address?.line,
             pincode: data?.address?.pincode,
             state: data?.address?.state,
             country: data?.address?.country,
@@ -97,32 +106,39 @@ export const ProfileContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const delayDebounceFnc = showProfileData?.pincode? setTimeout(() => {
-      axios.get(`https://api.postalpincode.in/pincode/${showProfileData?.pincode}`)
-      .then((res) => {   
-        if (res?.data[0]?.PostOffice) {
-            //set the state and country
-            setShowProfileData({
-              ...showProfileData,
-              state: res?.data[0]?.PostOffice[0]?.State,
-              country: res?.data[0]?.PostOffice[0]?.Country,
-            });
-            // res.data[0].PostOffice[0].State
-            // res.data[0].PostOffice[0].Country
-            setInputError({error:false, errorMessage:""})
-          } else {
-            setShowProfileData({
-              ...showProfileData,
-              state: "",
-              country: "",
-            });
-            setInputError({error:true, errorMessage:"Pin code not found"})
-          }
-        })
-        .catch((err)=> console.log(err))
-    },2000):null
+    const delayDebounceFnc = showProfileData?.pincode
+      ? setTimeout(() => {
+          axios
+            .get(
+              `https://api.postalpincode.in/pincode/${showProfileData?.pincode}`
+            )
+            .then((res) => {
+              if (res?.data[0]?.PostOffice) {
+                //set the state and country
+                setShowProfileData({
+                  ...showProfileData,
+                  state: res?.data[0]?.PostOffice[0]?.State,
+                  country: res?.data[0]?.PostOffice[0]?.Country,
+                });
+                // res.data[0].PostOffice[0].State
+                // res.data[0].PostOffice[0].Country
+                setInputError({ error: false, errorMessage: "" });
+              } else {
+                setShowProfileData({
+                  ...showProfileData,
+                  state: "",
+                  country: "",
+                });
+                setInputError({
+                  error: true,
+                  errorMessage: "Pin code not found",
+                });
+              }
+            })
+            .catch((err) => console.log(err));
+        }, 1000)
+      : null;
     return () => clearTimeout(delayDebounceFnc);
-
   }, [showProfileData?.pincode]);
 
   const handleProfileSaveChanges = () => {
@@ -160,7 +176,7 @@ export const ProfileContextProvider = ({ children }) => {
         editProfile,
         setEditProfile,
         setShowProfileData,
-        inputError
+        inputError,
       }}
     >
       {children}

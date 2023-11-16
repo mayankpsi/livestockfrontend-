@@ -12,11 +12,13 @@ import Alerts from "./alerts";
 import CollarInfo from "./collarInfo";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
-import {alertsThresholdData} from "./alertThresholdData";
+import { alertsThresholdData } from "./alertThresholdData";
+import useDateFormat from "../../../hooks/useDateFormat";
 
 const LivestockDetails = () => {
   const [data, setData] = useState();
-  const { snackbarAlert, onSnackbarAlertClose } = useLivestockContext();
+  const { snackbarAlert, onSnackbarAlertClose, showConfirmModal, handleConfirmWindowClose,handleAlertDeleteConfirm } = useLivestockContext();
+  const {formattedDate} = useDateFormat();
   const [alertsThreshold, setAlertsThreshold] = useState([]);
   const { id } = useParams();
 
@@ -34,9 +36,9 @@ const LivestockDetails = () => {
             temperature: data?.temperature,
             heartbeat: data?.heartBeat,
             steps: 5000,
-            lastUpdate: data?.updatedAt,
+            lastUpdate: formattedDate(data?.updated_At),
             img: null,
-            liveStocklocationStatus:data?.liveStocklocationStatus,
+            liveStocklocationStatus: data?.liveStocklocationStatus,
             collarId: data?.assignedDevice?._id,
             collarUid: data?.assignedDevice?.uID,
             collarWifiStatus: data?.assignedDevice?.wifiStatus,
@@ -47,15 +49,14 @@ const LivestockDetails = () => {
             battery: data?.assignedDevice?.battery,
             geolocation: data?.geolocation,
           };
-
-          const thresholdFormattedData = alertsThresholdData?.map(ele => {
-           return {
-            ...ele,
-            value:data?.threshold[ele.label]
-           }
-          });
-          setAlertsThreshold(thresholdFormattedData)
           setData(formattedData);
+          const thresholdFormattedData = alertsThresholdData?.map((ele) => {
+            return {
+              ...ele,
+              value: data?.threshold[ele.label],
+            };
+          });
+          setAlertsThreshold(thresholdFormattedData);
         } else {
           throw new Error("something went wrong");
         }
@@ -76,11 +77,17 @@ const LivestockDetails = () => {
     },
     {
       label: "health",
-      child: <Health data={data}/>,
+      child: <Health data={data} />,
     },
     {
       label: "alerts",
-      child: <Alerts data={data} alertsThresholds={alertsThreshold} setAlertsThresholds={setAlertsThreshold} />,
+      child: (
+        <Alerts
+          data={data}
+          alertsThresholds={alertsThreshold}
+          setAlertsThresholds={setAlertsThreshold}
+        />
+      ),
     },
     {
       label: "collar",
@@ -101,6 +108,10 @@ const LivestockDetails = () => {
 
   return (
     <AdminUIContainer
+      openModal={showConfirmModal.open}
+      showConfirmBtn={showConfirmModal.confirmBtn}
+      handleModalClose={handleConfirmWindowClose}
+      onConfirm={handleAlertDeleteConfirm}
       openAlert={snackbarAlert.open}
       alertMessage={snackbarAlert.message}
       alertType={snackbarAlert.type}
@@ -108,7 +119,7 @@ const LivestockDetails = () => {
       BreadcrumbData={BreadcrumbData}
     >
       <Container maxWidth="xl" sx={{ marginTop: 8 }}>
-        <TypographyPrimary sx={{fontSize:21}}>{data?.Uid}</TypographyPrimary>
+        <TypographyPrimary sx={{ fontSize: 21 }}>{data?.Uid}</TypographyPrimary>
         <CustomTabs tabData={tabData} />
       </Container>
     </AdminUIContainer>

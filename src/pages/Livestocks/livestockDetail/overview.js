@@ -9,6 +9,7 @@ import ThermostatIcon from "@mui/icons-material/Thermostat";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import PetsIcon from "@mui/icons-material/Pets";
 import useGetCamelCase from "../../../hooks/useGetCamelCase";
+import useDateFormat from "../../../hooks/useDateFormat";
 
 const statusCardData = [
   {
@@ -64,6 +65,7 @@ const parameterCardData = [
 
 const Overview = ({ data }) => {
   const { getCamelCase } = useGetCamelCase();
+  const {formattedDate} = useDateFormat()
   return (
     <Stack
       my={4}
@@ -94,10 +96,10 @@ const Overview = ({ data }) => {
         >
           <TabPane
             text="Status"
-            secondaryText={`Last Update : ${data?.lastUpdate}`}
-            btnText="Safe"
+            secondaryText={`Last Update : ${formattedDate(data?.lastUpdate)}`}
+            btnText={data?.liveStocklocationStatus}
             btnIcon={false}
-            btnBgColor="#47CD75"
+            btnBgColor={data?.liveStocklocationStatus?.toLowerCase() === "safe"?"#47CD75":"#FF5C33"}
             onBtnClick={() => {}}
           />
           <Box display="flex" flexDirection="column" gap={2}>

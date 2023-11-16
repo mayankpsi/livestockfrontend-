@@ -102,6 +102,7 @@ const AssignLivestock = ({ data }) => {
           <ShowLivestocks
             data={allUnassignLivestocks}
             onSubmit={(selectedValue) => handelLivestockAssign(selectedValue)}
+            setOpenAddLivestockModal={setOpenAddLivestockModal}
             isLivestock={true}
           />
         }

@@ -70,7 +70,7 @@ const Collars = () => {
       <Container maxWidth="xl" sx={{ marginTop: 8 }}>
         <BackdropLoader open={openBackdropLoader} />
         <TabPane
-          text="Showing 10 Collars out of 20"
+          text="All Collars"
           btnText="Add New Collar"
           btnIcon={true}
           onBtnClick={() => handleCollarModalOpen("add")}

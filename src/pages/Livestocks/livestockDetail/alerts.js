@@ -122,6 +122,7 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
     pageCount,
     setPageCount,
     pageLimit,
+    handleAlertDelete
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate, getRoundOffDigit } =
     useDateFormat();
@@ -221,7 +222,6 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
           method: "PATCH",
           data: body,
         });
-        console.log(res, "jdhhhcddtfgyguniihyftyf");
       }
     } catch (error) {}
 
@@ -283,7 +283,7 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
               action: [
                 <DeleteOutlineOutlinedIcon
                   fontSize="large"
-                  //   onClick={() => handleLivestockDelete(col?._id)}
+                  onClick={() => handleAlertDelete(ele.id)}
                 />,
               ],
             }))

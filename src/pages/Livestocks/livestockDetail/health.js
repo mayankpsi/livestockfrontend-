@@ -136,7 +136,9 @@ const chartData = [
 const Health = ({ data }) => {
   const { livestockHealthActiveTab, setLivestockHealthActiveTab } =
     useLivestockContext();
-  const [selectedDate, setSelectedDate] = useState();
+  const { formattedDate } = useDateFormat();
+
+  const [selectedDate, setSelectedDate] = useState(formattedDate(new Date()));
   const [livestockChartData, setLivestockChartData] = useState({
     labels: [],
     datasets: [
@@ -153,7 +155,6 @@ const Health = ({ data }) => {
     },
   });
   const [healthData, setHealthData] = useState([]);
-  const { formattedDate } = useDateFormat();
 
   //GET ALL ALERTS THRESHOLD
   useEffect(() => {
@@ -179,7 +180,7 @@ const Health = ({ data }) => {
   }, [data?.id, selectedDate]);
 
   const getFilteredHealthData = (data, filter) => {
-    const labels = data?.map((ele) => formattedDate(ele?.createdAt, "time"));
+    const labels = data?.map((ele) => ele?.time);
     const dataSet = data?.map((ele) => ele[filter]);
 
     const options = {

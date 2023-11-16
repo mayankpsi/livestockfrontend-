@@ -105,6 +105,7 @@ export const LivestockContextProvider = ({ children }) => {
   });
 
   const [deleteLivestockId, setDeleteLivestockId] = useState(null);
+  const [alertDeletedId, setAlertDeletedId] = useState();
   const { formattedDate } = useDateFormat();
 
   // PAGINATION AND RANGE DATE
@@ -315,6 +316,28 @@ export const LivestockContextProvider = ({ children }) => {
   const d = new Date();
   const formate = new Intl.DateTimeFormat("en-US", options).format(d);
 
+  // HANDLE ALERT DELETE 
+  const handleAlertDelete = (alertId) => {
+    setShowConfirmModal({ open: true, confirmBtn: true });
+    setAlertDeletedId(alertId);
+  };
+
+  const handleAlertDeleteConfirm = async () => {
+    setOpenBackdropLoader(true);
+    handleConfirmWindowClose();
+    const res = await request({
+      url: `/liveStock/DeleteLiveStockAlerts?alertID=${alertDeletedId}`,
+      method: "DELETE",
+    });
+    if (res?.status === 200) {
+      setOpenBackdropLoader(false);
+      openSnackbarAlert("success", "Collar successfully deleted!");
+    } else {
+      setOpenBackdropLoader(false);
+      openSnackbarAlert("error", "Something went wrong :(");
+    }
+  };
+
   return (
     <LivestockContext.Provider
       value={{
@@ -370,6 +393,8 @@ export const LivestockContextProvider = ({ children }) => {
         pageCount,
         setPageCount,
         pageLimit,
+        handleAlertDelete,
+        handleAlertDeleteConfirm
       }}
     >
       {children}

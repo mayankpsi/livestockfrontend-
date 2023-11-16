@@ -47,16 +47,16 @@ export const AlertsContextProvider = ({ children }) => {
 
   const { formattedDate, paginationDateFormat } = useDateFormat();
 
-  const getRoundOffDigit = (name, value) => {
-    if (name?.toLocaleLowerCase().includes("geofence")) {
-      const val = value?.toString()?.slice(0,5);
-      console.log(val)
-      const final = val > 1 ? `${val} Km` : `${val * 1000} m`;
-      return final;
-    } else {
-      return value;
-    }
-  };
+  // const getRoundOffDigit = (name, value) => {
+  //   if (name?.toLocaleLowerCase().includes("geofence")) {
+  //     const val = value?.toString()?.slice(0,5);
+  //     console.log(val)
+  //     const final = val > 1 ? `${val} Km` : `${val * 1000} m`;
+  //     return final;
+  //   } else {
+  //     return value;
+  //   }
+  // };
 
   // GET ALL ALERTS
   useEffect(() => {
@@ -77,7 +77,7 @@ export const AlertsContextProvider = ({ children }) => {
             collarUid: alert?.assignedDevice?.uID,
             livestockName: alert?.liveStockName,
             thresholdValue: alert?.thresholdValue,
-            alarmValue: getRoundOffDigit(alert?.message, alert?.alertValue),
+            alarmValue: alert?.alertValue,
             time: formattedDate(alert?.createdAt, "time"),
             date: formattedDate(alert?.createdAt, "date"),
           }));
