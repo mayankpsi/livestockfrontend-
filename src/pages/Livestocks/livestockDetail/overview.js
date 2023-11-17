@@ -44,6 +44,7 @@ const parameterCardData = [
     icon: <ThermostatIcon sx={{ fontSize: "3em", color: "#fff" }} />,
     iconBg: "#B58B5D",
     valueColor: "err-color",
+    suffix:'F',
   },
   {
     label: "heartbeat",
@@ -52,6 +53,7 @@ const parameterCardData = [
     icon: <MonitorHeartIcon sx={{ fontSize: "3em", color: "#fff" }} />,
     iconBg: "#47CD75",
     valueColor: "color-success--dark ",
+    suffix:'/min'
   },
   {
     label: "steps",
@@ -60,12 +62,35 @@ const parameterCardData = [
     icon: <PetsIcon sx={{ fontSize: "3em", color: "#B58B5D" }} />,
     iconBg: "#ECDEC6",
     valueColor: "color-success--dark ",
+    suffix:'/day'
   },
 ];
 
 const Overview = ({ data }) => {
   const { getCamelCase } = useGetCamelCase();
-  const {formattedDate} = useDateFormat()
+  const { formattedDate } = useDateFormat();
+
+  const getAlertColor = (ele) => {
+    if (data) {
+      const currentValue = data[getCamelCase(ele?.label)];
+      const maxValue =
+        data?.thresholds[
+          ele?.label === "heartbeat" ? "heartBeat" : getCamelCase(ele?.label)
+        ]?.high;
+      const minValue =
+        data?.thresholds[
+          ele?.label === "heartbeat" ? "heartBeat" : getCamelCase(ele?.label)
+        ]?.low;
+      const color =
+        currentValue > maxValue || currentValue < minValue
+          ? "err-color"
+          : "color-success--dark ";
+
+      return color;
+    } else {
+      return "yellow";
+    }
+  };
   return (
     <Stack
       my={4}
@@ -85,6 +110,7 @@ const Overview = ({ data }) => {
           width: { lg: "40%", md: "40%", sm: "100%" },
           flexDirection: { lg: "column", md: "column", sm: "row" },
           alignItems: { sm: "flex-start" },
+          justifyContent:"space-between"
         }}
         gap={2}
       >
@@ -99,7 +125,11 @@ const Overview = ({ data }) => {
             secondaryText={`Last Update : ${formattedDate(data?.lastUpdate)}`}
             btnText={data?.liveStocklocationStatus || "N/A"}
             btnIcon={false}
-            btnBgColor={data?.liveStocklocationStatus?.toLowerCase() === "safe"?"#47CD75":"#FF5C33"}
+            btnBgColor={
+              data?.liveStocklocationStatus?.toLowerCase() === "safe"
+                ? "#47CD75"
+                : "#FF5C33"
+            }
             onBtnClick={() => {}}
           />
           <Box display="flex" flexDirection="column" gap={2}>
@@ -108,6 +138,7 @@ const Overview = ({ data }) => {
                 ...ele,
                 time: data?.lastUpdate,
                 value: data ? data[getCamelCase(ele?.label)] : "",
+                valueColor: getAlertColor(ele),
               }))
               ?.map((ele) => (
                 <ParameterCard
@@ -117,6 +148,7 @@ const Overview = ({ data }) => {
                   icon={ele.icon}
                   iconBg={ele.iconBg}
                   valueColor={ele.valueColor}
+                  suffix={ele.suffix}
                 />
               ))}
           </Box>
@@ -128,7 +160,7 @@ const Overview = ({ data }) => {
           pb={2}
         >
           <TypographyPrimary>Collar status</TypographyPrimary>
-          <Stack direction="column" gap={1}>
+          <Stack direction="column" gap={2}>
             {statusCardData
               ?.map((ele) => ({
                 ...ele,

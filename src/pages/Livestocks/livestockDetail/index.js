@@ -47,7 +47,7 @@ const LivestockDetails = () => {
             status: data?.status,
             temperature: data?.temperature,
             heartbeat: data?.heartBeat,
-            steps: 5000,
+            steps: data?.steps,
             lastUpdate: formattedDate(data?.updated_At),
             img: null,
             liveStocklocationStatus: data?.liveStocklocationStatus,
@@ -60,6 +60,7 @@ const LivestockDetails = () => {
             networkStrength: data?.assignedDevice?.networkStrength,
             battery: data?.assignedDevice?.battery,
             geolocation: data?.geolocation,
+            thresholds:data?.threshold
           };
           setData(formattedData);
           const thresholdFormattedData = alertsThresholdData?.map((ele) => {
@@ -82,7 +83,7 @@ const LivestockDetails = () => {
   const tabData = [
     {
       label: "overview",
-      child: <Overview data={data} />,
+      child: <Overview data={data}/>,
     },
     {
       label: "location",

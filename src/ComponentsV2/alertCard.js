@@ -61,7 +61,7 @@ const AlertCard = ({
                   type={`${ind === 0 ? "warning" : "error"}`}
                   width={170}
                 />
-                <TypographyPrimary sx={{ fontSize: "2.2rem", mt: 1 }}>
+                <TypographyPrimary sx={{ fontSize: "2.0rem", mt: 1 }}>
                   {labelData[ele]}
                   {valueSuffix}
                 </TypographyPrimary>
