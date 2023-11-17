@@ -199,7 +199,7 @@ const Location = ({ data }) => {
           />
           {locationAlertsData?.length ? (
             pageCount > 1 ? (
-              <Stack direction="row" justifyContent="center">
+              <Stack direction="row" justifyContent="center" mt={5}>
                 <CustomPagination
                   size="large"
                   count={pageCount}

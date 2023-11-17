@@ -44,7 +44,7 @@ const Overview = ({ data }) => {
         >
           <TabPane
             text="Status"
-            secondaryText={`Last Update : ${formattedDate(data?.lastUpdate)}`}
+            secondaryText={`Last Update : ${data?.lastUpdate}`}
             btnText={data?.liveStocklocationStatus || "N/A"}
             hover={false}
             btnIcon={false}

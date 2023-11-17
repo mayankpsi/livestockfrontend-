@@ -105,13 +105,13 @@ export const statusCardData = [
 export const chartCardData = [
   {
     label: "temperature",
-    value: "56° C",
+    value: "56° F",
     icon: (
       <ThermostatIcon sx={{ fontSize: "3em", color: "rgba(253, 55, 48,1)" }} />
     ),
     iconBg: "#60AEDA",
     valueColor: "err-color",
-    suffix: "F",
+    suffix: " °F",
   },
   {
     label: "heartbeat",
