@@ -1,16 +1,7 @@
 import { Box } from "@mui/material";
 import { CustomTable, NoData } from "../../ComponentsV2";
 import useLivestockContext from "../../hooks/useLivestockContext";
-
-const tableHeadData = [
-  "UID",
-  "livestock name",
-  "collar ID",
-  "Added on",
-  "current status",
-  "last update",
-  "action",
-];
+import { showLivestockTableHeadData } from "./Data";
 
 const ShowLivestocks = ({ show }) => {
   const { allLivestocks } = useLivestockContext();
@@ -32,10 +23,10 @@ const ShowLivestocks = ({ show }) => {
     <Box my={4}>
       <CustomTable
         headBackgroundColor="#B58B5D"
-        tableHeadData={tableHeadData}
+        tableHeadData={showLivestockTableHeadData}
         tableRowData={livestockFiltering()}
       />
-      { !livestockFiltering()?.length ? <NoData /> : null}
+      {!livestockFiltering()?.length ? <NoData /> : null}
     </Box>
   );
 };

@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Container,
   Grid,
-  InputBase,
   Menu,
   MenuItem,
   Divider,
@@ -18,50 +16,8 @@ import {
 import { Dash } from "../../assets";
 import { BiMenu } from "react-icons/bi";
 import { FaRegUserCircle } from "react-icons/fa";
-import { styled } from "@mui/material/styles";
 
 const Header = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: "0px",
-    backgroundColor: "#ffffff",
-    "&:hover": {
-      backgroundColor: "#ffffff",
-    },
-    marginLeft: 0,
-    width: "100%",
-    fontWeight: "400",
-    [theme.breakpoints.up("sm")]: {
-      width: "auto",
-    },
-  }));
-
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 1),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
-      // padding: theme.spacing(0.7, 0.7, 0.7, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(2)})`,
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        width: "90%",
-        "&:focus": {
-          width: "90%",
-        },
-      },
-    },
-  }));
 
   const navigate = useNavigate();
 
@@ -79,12 +35,10 @@ const Header = () => {
       <Grid
         container
         justifyContent="space-between"
-        // sx={{ border: "1px solid red" }}
       >
         <Grid
           container
           item
-          // classname=" flex flexEnd"
           justifyContent="flex-end"
           sx={{ width: "200px" }}
         >
@@ -96,10 +50,6 @@ const Header = () => {
           <Grid
             item
             sx={{
-              // border: "1px solid silver",
-              // display: "flex",
-              // justifyContent: "center",
-              // alignItems: "center",
               columnGap: "10px",
               padding: "5px",
               borderRadius: "5px",
@@ -111,7 +61,6 @@ const Header = () => {
             <FaRegUserCircle
               className="icon"
               fontSize={22}
-              // onClick={handleClick}
             />
           </Grid>
         </Grid>

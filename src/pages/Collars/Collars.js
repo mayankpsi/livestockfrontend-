@@ -7,25 +7,11 @@ import {
   BackdropLoader,
 } from "../../ComponentsV2";
 import { Container } from "@mui/material";
-import ShowCollars from "./ShowCollars";
 import AddCollarModalContent from "./AddCollarModalContent";
 import { useContext } from "react";
 import { CollarContext } from "../../context/CollarContext";
+import {collarTabData} from "./Data";
 
-const tabData = [
-  {
-    label: "all",
-    child: <ShowCollars show="all" />,
-  },
-  {
-    label: "assigned",
-    child: <ShowCollars show="assigned" />,
-  },
-  {
-    label: "not assigned",
-    child: <ShowCollars show="not assigned" />,
-  },
-];
 
 const Collars = () => {
   const {
@@ -70,6 +56,7 @@ const Collars = () => {
         <TabPane
           text="All Collars"
           btnText="Add New Collar"
+          hover={true}
           btnIcon={true}
           onBtnClick={() => handleCollarModalOpen("add")}
         />
@@ -78,7 +65,7 @@ const Collars = () => {
           openModal={openAddCollarModal}
           handleClose={handleCollarModalClose}
         />
-        <CustomTabs tabData={tabData} />
+        <CustomTabs tabData={collarTabData} />
       </Container>
     </AdminUIContainer>
   );

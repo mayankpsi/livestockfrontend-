@@ -1,96 +1,18 @@
 import React from "react";
 import { Stack, Box } from "@mui/material";
 import LivestockInfo from "../../Collars/viewCollarDetails/livestockInfo";
-import NetworkCellOutlinedIcon from "@mui/icons-material/NetworkCellOutlined";
-import Battery5BarOutlinedIcon from "@mui/icons-material/Battery5BarOutlined";
 import { TabPane, ParameterCard, StatusCard } from "../../../ComponentsV2";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
-import ThermostatIcon from "@mui/icons-material/Thermostat";
-import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
-import PetsIcon from "@mui/icons-material/Pets";
 import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import useDateFormat from "../../../hooks/useDateFormat";
-
-const statusCardData = [
-  {
-    text: "network strength",
-    status: "good",
-    icon: (
-      <NetworkCellOutlinedIcon
-        fontSize="large"
-        sx={{ mr: 1, color: "#347D00" }}
-      />
-    ),
-    statusColor: "#347D00",
-  },
-  {
-    text: "battery",
-    status: "56%",
-    icon: (
-      <Battery5BarOutlinedIcon
-        fontSize="large"
-        sx={{ mr: 1, color: "#347D00" }}
-      />
-    ),
-    statusColor: "#F19B4F",
-  },
-];
-
-const parameterCardData = [
-  {
-    label: "temperature",
-    time: "10:59 PM, 23/08/23",
-    value: "78° C",
-    icon: <ThermostatIcon sx={{ fontSize: "3em", color: "#fff" }} />,
-    iconBg: "#B58B5D",
-    valueColor: "err-color",
-    suffix:'F',
-  },
-  {
-    label: "heartbeat",
-    time: "10:59 PM, 23/08/23",
-    value: "78",
-    icon: <MonitorHeartIcon sx={{ fontSize: "3em", color: "#fff" }} />,
-    iconBg: "#47CD75",
-    valueColor: "color-success--dark ",
-    suffix:'/min'
-  },
-  {
-    label: "steps",
-    time: "10:59 PM, 23/08/23",
-    value: "5000",
-    icon: <PetsIcon sx={{ fontSize: "3em", color: "#B58B5D" }} />,
-    iconBg: "#ECDEC6",
-    valueColor: "color-success--dark ",
-    suffix:'/day'
-  },
-];
+import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
+import { statusCardData, parameterCardData } from "../Data";
 
 const Overview = ({ data }) => {
   const { getCamelCase } = useGetCamelCase();
   const { formattedDate } = useDateFormat();
-
-  const getAlertColor = (ele) => {
-    if (data) {
-      const currentValue = data[getCamelCase(ele?.label)];
-      const maxValue =
-        data?.thresholds[
-          ele?.label === "heartbeat" ? "heartBeat" : getCamelCase(ele?.label)
-        ]?.high;
-      const minValue =
-        data?.thresholds[
-          ele?.label === "heartbeat" ? "heartBeat" : getCamelCase(ele?.label)
-        ]?.low;
-      const color =
-        currentValue > maxValue || currentValue < minValue
-          ? "err-color"
-          : "color-success--dark ";
-
-      return color;
-    } else {
-      return "yellow";
-    }
-  };
+  const { getDynamicColor } = useGetColorDynamically();
+  
   return (
     <Stack
       my={4}
@@ -110,7 +32,7 @@ const Overview = ({ data }) => {
           width: { lg: "40%", md: "40%", sm: "100%" },
           flexDirection: { lg: "column", md: "column", sm: "row" },
           alignItems: { sm: "flex-start" },
-          justifyContent:"space-between"
+          justifyContent: "space-between",
         }}
         gap={2}
       >
@@ -124,6 +46,7 @@ const Overview = ({ data }) => {
             text="Status"
             secondaryText={`Last Update : ${formattedDate(data?.lastUpdate)}`}
             btnText={data?.liveStocklocationStatus || "N/A"}
+            hover={false}
             btnIcon={false}
             btnBgColor={
               data?.liveStocklocationStatus?.toLowerCase() === "safe"
@@ -138,7 +61,7 @@ const Overview = ({ data }) => {
                 ...ele,
                 time: data?.lastUpdate,
                 value: data ? data[getCamelCase(ele?.label)] : "",
-                valueColor: getAlertColor(ele),
+                valueColor: getDynamicColor(data, ele),
               }))
               ?.map((ele) => (
                 <ParameterCard
@@ -164,11 +87,7 @@ const Overview = ({ data }) => {
             {statusCardData
               ?.map((ele) => ({
                 ...ele,
-                status: data
-                  ? `${data[getCamelCase(ele?.text)]}${
-                      ele?.text?.toLowerCase()?.includes("battery") ? "%" : ""
-                    }`
-                  : "",
+                status: data ? `${data[getCamelCase(ele?.text)]}` : "",
               }))
               ?.map((card) => (
                 <StatusCard
@@ -177,6 +96,7 @@ const Overview = ({ data }) => {
                   status={card.status}
                   icon={card.icon}
                   statusColor={card.statusColor}
+                  suffix={card.suffix}
                 />
               ))}
           </Stack>

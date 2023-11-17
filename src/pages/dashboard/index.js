@@ -4,7 +4,6 @@ import AdminUIContainer from "../../layout/AdminUIContainer";
 import { GetMap, DashboardCard, CustomModal, BackdropLoader} from "../../ComponentsV2";
 import { AddCircleOutlineOutlinedIcon } from "../../icons";
 import {
-  ButtonPrimary,
   TypographyPrimary,
 } from "../../ComponentsV2/themeComponents";
 import ModalContent from "./ModalContent";
@@ -213,7 +212,6 @@ const AdminDashBoard = () => {
                 <GetMap
                   mapWidth="100%"
                   mapHeight="100%"
-                
                   geofenceCoordinates={{
                     lat: dashboardData?.geolocationLat,
                     lng: dashboardData?.geolocationLng,
@@ -223,7 +221,6 @@ const AdminDashBoard = () => {
                   livestockData={getLivestockStatus}
                 />
               )}
-               {console.log(dashboardData, "jkbvgvfcdxrtvubnjjhnk")}
             </Paper>
           </Stack>
         </Stack>

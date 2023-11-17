@@ -1,36 +1,44 @@
 import moment from "moment/moment";
 
 const useDateFormat = () => {
-
- const formattedDate = (dataString,need) => {
-    const date = moment(dataString).format("L");
+  const formattedDate = (dataString, need) => {
+    const date = moment(dataString).format("DD/MM/YYYY");
     const time = moment(dataString).format("LT");
 
     const result = (key) => {
       switch (key) {
-         case "date":
+        case "date":
           return date;
-          case "time":
-            return time
-         default:
-            return `${date} ${time}`;
-       }
-    }
-   
+        case "time":
+          return time;
+        default:
+          return `${date} ${time}`;
+      }
+    };
+
     return result(need);
- }
+  };
 
- const paginationDateFormat = (date) => {
-   return moment(date).format("YYYY-MM-DD")
- }
+  const paginationDateFormat = (date) => {
+    return moment(date).format("YYYY-MM-DD");
+  };
 
- const getRoundOffDigit = (value,afterDecimal) => {
-     const rounded = Math.round(value * 10) / 10;
-     const deciOne = rounded.toFixed(afterDecimal);
-     return deciOne;
- };
+  const getLongDateFormat = (date) => {
+    return moment(date).format("ll");
+  };
 
-  return {formattedDate, paginationDateFormat,getRoundOffDigit};
-}
+  const getRoundOffDigit = (value, afterDecimal) => {
+    const rounded = Math.round(value * 10) / 10;
+    const deciOne = rounded.toFixed(afterDecimal);
+    return deciOne;
+  };
+
+  return {
+    formattedDate,
+    paginationDateFormat,
+    getRoundOffDigit,
+    getLongDateFormat,
+  };
+};
 
 export default useDateFormat;

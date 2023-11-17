@@ -13,34 +13,10 @@ import useLivestockContext from "../../../hooks/useLivestockContext";
 import { request } from "../../../apis/axios-utils";
 import useDateFormat from "../../../hooks/useDateFormat";
 import useUserId from "../../../hooks/useUserId";
+import {locationTableHeadData, locationBtnData} from "../Data";
 
-const tableHeadData = ["status", "location", "updated"];
-const tableRowData = [
-  {
-    status: "safe",
-    location: "45.454, 66.52",
-    updated: "10:59 PM, 23/09/23",
-  },
-  {
-    status: "unsafe",
-    location: "45.454, 66.52",
-    updated: "10:59 PM, 23/09/23",
-  },
-  {
-    status: "safe",
-    location: "45.454, 66.52",
-    updated: "10:59 PM, 23/09/23",
-  },
-];
 
-const btnData = [
-  {
-    label: "location",
-  },
-  {
-    label: "analytics",
-  },
-];
+
 
 const Location = ({ data }) => {
   const {
@@ -60,7 +36,7 @@ const Location = ({ data }) => {
     useDateFormat();
   const [locationAlertsData, setLocationAlertsData] = useState([]);
   const [resentAlerts, setResentAlerts] = useState([]);
-  const [dataLength, setDataLength] = useState();
+  const [dataLength, setDataLength] = useState(0);
   const [geofenceData, setGeofenceData] = useState({
     lat: null,
     lng: null,
@@ -120,7 +96,6 @@ const Location = ({ data }) => {
             setResentAlerts([]);
             throw new Error(res?.response?.data?.message);
           }
-
           if (res2?.value?.status === 200) {
             const { data } = res2.value?.data;
             const formattedData = data?.LocationAlert?.map((ele) => ({
@@ -130,13 +105,16 @@ const Location = ({ data }) => {
             }));
             setLocationAlertsData(formattedData);
             setPageCount(data?.PageCount);
-            setDataLength(data?.dataLength)
+            setDataLength(data?.dataLength);
           } else {
+            const msg = res2?.value?.response?.data?.message || "Something went wrong";
             setLocationAlertsData([]);
-            throw new Error(res?.response?.data?.message);
+            setPageCount(1);
+            setDataLength(0);
+            throw new Error(msg);
           }
         })
-        .catch((err) => console.log("error",err.message))
+        .catch((err) => openSnackbarAlert("error",err.message))
         .finally(()=> setOpenBackdropLoader(false))
     }
   }, [data?.id, paginationPageNo, selectedDate]);
@@ -158,10 +136,16 @@ const Location = ({ data }) => {
         return formattedData;
   }
 
+  const handleSnackBarAlert = () => {
+    if(!dataLength){
+      openSnackbarAlert("error","Nothing to Export")
+    }
+  }
+
   return (
     <Stack my={2} direction="column" alignItems="center" gap={2}>
       <BtnGroup
-        btnData={btnData}
+        btnData={locationBtnData}
         activeBtn={showLocationTab}
         onChange={(ele) => setShowLocationTab(ele)}
       />
@@ -185,15 +169,16 @@ const Location = ({ data }) => {
               datePicker={true}
               paneTextColor="#000"
               clearBtn={false}
-              btnText={
+              btnText={dataLength?
                 <ExportAsCSV
-                  headers={tableHeadData}
+                  headers={locationTableHeadData}
                   data={getExportedData(locationAlertsData)}
                   fileName="alerts"
                 >
                   Export
-                </ExportAsCSV>
+                </ExportAsCSV>:"Export"
               }
+              onBtnClick={handleSnackBarAlert}
               btnColor="#fff"
               btnBg="#B58B5D"
               selectedDate={selectedDate}
@@ -208,7 +193,7 @@ const Location = ({ data }) => {
             btnText="Export"
             btnColor="#fff"
             btnBg="#B58B5D"
-            tableHeadData={tableHeadData}
+            tableHeadData={locationTableHeadData}
             tableRowData={locationAlertsData}
             tableColors={tableColors}
           />

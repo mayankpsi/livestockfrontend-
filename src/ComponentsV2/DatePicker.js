@@ -12,7 +12,7 @@ const DatePicker = ({selectedDate, setSelectedDate}) => {
   const { paginationDateFormat } = useDateFormat();
 
   useEffect(() => {
-    setSelectedDate(paginationDateFormat(new Date(), "date"));
+    setSelectedDate(new Date(), "date");
   }, []);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const DatePicker = ({selectedDate, setSelectedDate}) => {
   };
 
   const handleSelect = (date) => {
-    setSelectedDate(paginationDateFormat(date, "date"));
+    setSelectedDate(date);
     setOpen(false);
   };
   return (
@@ -35,7 +35,7 @@ const DatePicker = ({selectedDate, setSelectedDate}) => {
         <Stack direction="row" gap={1}>
           {selectedDate ? (
             <TextField
-              value={selectedDate}
+              value={paginationDateFormat(selectedDate,"date")}
               placeholder="MM/DD/YYYY"
               sx={{width:140}}
               onClick={() => setOpen(!open)}

@@ -3,46 +3,11 @@ import React, { useState, useEffect } from "react";
 import { TabPane, CustomInput, StatusCard } from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  InfoOutlinedIcon,
-  NetworkCellOutlinedIcon,
-  Battery5BarOutlinedIcon,
-} from "../../../icons";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import { request } from "../../../apis/axios-utils";
 import { addCollarValidationSchema } from "../../../utils/validationSchema";
 import useCollarContext from "../../../hooks/useCollarContext";
-
-const statusCardData = [
-  {
-    text: "status",
-    status: "online",
-    icon: <InfoOutlinedIcon fontSize="large" sx={{ mr: 1 }} />,
-    statusColor: "#347D00",
-  },
-  {
-    text: "network strength",
-    status: "good",
-    icon: (
-      <NetworkCellOutlinedIcon
-        fontSize="large"
-        sx={{ mr: 1, color: "#347D00" }}
-      />
-    ),
-    statusColor: "#347D00",
-  },
-  {
-    text: "battery",
-    status: "56%",
-    icon: (
-      <Battery5BarOutlinedIcon
-        fontSize="large"
-        sx={{ mr: 1, color: "#347D00" }}
-      />
-    ),
-    statusColor: "#F19B4F",
-  },
-];
+import { statusCardData } from "../Data";
 
 const Overview = ({ data }) => {
   const [isEditCollarInfo, setIsEditCollarInfo] = useState(false);
@@ -96,7 +61,7 @@ const Overview = ({ data }) => {
           setIsEditCollarInfo(false);
           setIsError({
             error: false,
-            message: null
+            message: null,
           });
         } else if (editRes?.response?.data?.statusCode === 409) {
           setIsError({
@@ -128,6 +93,7 @@ const Overview = ({ data }) => {
               text="Collar Information"
               btnText={isEditCollarInfo ? "Save" : "Edit"}
               btnIcon={false}
+              hover={true}
               type="submit"
             />
           </Box>
@@ -197,6 +163,7 @@ const Overview = ({ data }) => {
                 status={card.status}
                 icon={card.icon}
                 statusColor={card.statusColor}
+                suffix={card.suffix}
               />
             ))}
           </Stack>

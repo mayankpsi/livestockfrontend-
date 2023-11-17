@@ -1,33 +1,32 @@
 import { Box, Stack } from "@mui/material";
-import {CustomInput} from "../../ComponentsV2";
+import { CustomInput } from "../../ComponentsV2";
 import useLivestockContext from "../../hooks/useLivestockContext";
-import {AddCircleOutlineOutlinedIcon} from "../../icons";
+import { AddCircleOutlineOutlinedIcon } from "../../icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   ButtonPrimaryRound,
   ButtonOutlinedRound,
   LoadingBtn,
-  TypographyWithBg
+  TypographyWithBg,
 } from "../../ComponentsV2/themeComponents";
 import { useForm } from "react-hook-form";
 import { request } from "../../apis/axios-utils";
 import { useState } from "react";
 import { useEffect } from "react";
-import {addLivestockValidationSchema} from "../../utils/validationSchema";
+import { addLivestockValidationSchema } from "../../utils/validationSchema";
+import { genderData } from "../Data";
 
 const AddLivestockModalContent = () => {
   const {
-    handleLivestockModalClose,
     handleAddLivestockModalClose,
     addNewLivestock,
     handleAddLivestockChange,
     addNewLivestockLoading,
     handleAddLivestock,
-    isError
+    isError,
   } = useLivestockContext();
 
   const [unassignCollars, setUnassignCollars] = useState([]);
-
 
   const {
     register,
@@ -38,35 +37,24 @@ const AddLivestockModalContent = () => {
   const getUnassignCollars = async () => {
     try {
       const res = await request({
-        url: `/devices/getAll?status=false`
-      }); 
-      if(res?.data?.statusCode === 200 && res?.data?.data){
-        const formattedData = res.data.data.map(ele => ({
-          id:ele._id,
-          label:ele.uID,
-          value:ele._id
-        }))
+        url: `/devices/getAll?status=false`,
+      });
+      if (res?.data?.statusCode === 200 && res?.data?.data) {
+        const formattedData = res.data.data.map((ele) => ({
+          id: ele._id,
+          label: ele.uID,
+          value: ele._id,
+        }));
         setUnassignCollars(formattedData);
       }
     } catch (error) {
       // alert(error.message)
     }
+  };
 
-  }
-
-  useEffect(()=> {
-    getUnassignCollars()
-  },[]);
-
-  const genderData = [{
-    id:1,
-    label:'Male',
-    value:'male'
-  },{
-    id:1,
-    label:'Female',
-    value:'female'
-  }]
+  useEffect(() => {
+    getUnassignCollars();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(handleAddLivestock)}>
@@ -105,6 +93,7 @@ const AddLivestockModalContent = () => {
               register={register}
               errors={errors}
               value={addNewLivestock?.collarUID}
+              selectNoDataMsg="Please create/unassign a collar first"
               name="collarUID"
               isError={{ error: false, message: "" }}
               onChange={handleAddLivestockChange}

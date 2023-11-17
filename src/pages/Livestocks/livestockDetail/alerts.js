@@ -12,16 +12,8 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import useDateFormat from "../../../hooks/useDateFormat";
 import { request } from "../../../apis/axios-utils";
-import { alertsThresholdData } from "./alertThresholdData";
+import {livestockDetailAlertTableHeadData} from "../Data";
 
-const tableHeadData = [
-  "alert name",
-  "threshold value",
-  "alarm value",
-  "time",
-  "date",
-  "action",
-];
 
 const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   const {
@@ -51,10 +43,11 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
     handleAlertDelete,
     openSnackbarAlert,
     setOpenBackdropLoader,
+    alertsDataLength, setAlertsDataLength
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate } = useDateFormat();
   const [singleLivestockAlerts, setSingleLivestockAlerts] = useState([]);
-  const [alertsDataLength, setAlertsDataLength] = useState(0);
+
 
   useEffect(() => {
     setOpenBackdropLoader(true);
@@ -69,7 +62,10 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
         )}&page=${paginationPageNo}&limit=${pageLimit}`,
       })
         .then((res) => {
-          if (res.status === 200) {
+          if (
+            res.status === 200 &&
+            res?.data?.data?.LiveStockAlertData?.length
+          ) {
             const { data } = res.data;
             const formattedData = data?.LiveStockAlertData?.map((ele) => ({
               id: ele?._id,
@@ -83,8 +79,13 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
             setPageCount(data?.totalPage);
             setAlertsDataLength(data?.dataLength);
           } else {
+            const msg = res?.data?.data?.LiveStockAlertData?.length
+              ? "something went wrong"
+              : "No data found";
             setSingleLivestockAlerts([]);
-            throw new Error(res?.response?.data?.message);
+            setPageCount(1);
+            setAlertsDataLength(0);
+            throw new Error(msg);
           }
         })
         .catch((err) => openSnackbarAlert("error", err.message))
@@ -153,6 +154,14 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
     handleThresholdEdit(id);
   };
 
+  const handleSnackBarAlert = () => {
+    console.log(alertsDataLength,"dchbdcvgvgvdg")
+    if(!alertsDataLength){
+      openSnackbarAlert("error","Nothing to Export")
+    }
+  }
+
+
   return (
     <Stack mt={4}>
       <Stack direction="row" flexWrap="wrap" width="100%" gap={3}>
@@ -183,15 +192,16 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
             datePicker={true}
             clearBtn={true}
             onClearAll={() => handleAlertDelete(data?.id, "deleteAllAlerts")}
-            btnText={
+            btnText={alertsDataLength?
               <ExportAsCSV
-                headers={tableHeadData}
+                headers={livestockDetailAlertTableHeadData}
                 data={singleLivestockAlerts}
                 fileName="alerts"
               >
                 Export
-              </ExportAsCSV>
+              </ExportAsCSV>:"Export"
             }
+            onBtnClick={handleSnackBarAlert}
             btnColor="#fff"
             btnBg="#B58B5D"
             selectedDate={selectedDate}
@@ -206,7 +216,7 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
           datePicker={true}
           btnColor="#fff"
           btnBg="#B58B5D"
-          tableHeadData={tableHeadData}
+          tableHeadData={livestockDetailAlertTableHeadData}
           tableRowData={singleLivestockAlerts
             .map((ele) => ({
               ...ele,

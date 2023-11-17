@@ -9,37 +9,6 @@ import {
 } from "../../../ComponentsV2";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 
-const logData = [
-  {
-    title: "safe",
-    time: "10:59 PM, 23/08/23",
-  },
-  {
-    title: "unsafe",
-    time: "10:59 PM, 23/08/23",
-  },
-  {
-    title: "safe",
-    time: "10:59 PM, 23/08/23",
-  },
-  {
-    title: "unsafe",
-    time: "10:59 PM, 23/08/23",
-  },
-  {
-    title: "safe",
-    time: "10:59 PM, 23/08/23",
-  },
-  {
-    title: "unsafe",
-    time: "10:59 PM, 23/08/23",
-  },
-  {
-    title: "safe",
-    time: "10:59 PM, 23/08/23",
-  },
-];
-
 const tableColors = ["#06B95F", "#FC5555"];
 
 const tableHeadData = [];

@@ -3,7 +3,7 @@ import {LineChart} from "./";
 import { Stack, Box, Typography } from "@mui/material";
 import { TypographySecondary } from "./themeComponents";
 
-const ChartCard = ({ label, value, icon, iconBg, valueColor, chartData }) => {
+const ChartCard = ({ label, value, icon, iconBg, valueColor, chartData,suffix }) => {
   return (
     <Stack
       direction="row"
@@ -27,15 +27,15 @@ const ChartCard = ({ label, value, icon, iconBg, valueColor, chartData }) => {
         <Box sx={{ flexGrow: 1 }}>
           <TypographySecondary
             className="flex-row-center"
-            sx={{ fontSize: "1.6rem", color: "#696969" }}
+            sx={{ fontSize: "1.6rem", color: "#696969",display:"flex",justifyContent:'flex-start' }}
           >
             {label}
           </TypographySecondary>
           <Typography
             className={`${valueColor}`}
-            sx={{ fontSize: "2.5rem", fontWeight: "bolder" }}
+            sx={{ fontSize: "2.2rem", fontWeight: "bolder" }}
           >
-            {value}
+            {value?value+suffix:"N/A"}
           </Typography>
         </Box>
       </Stack>

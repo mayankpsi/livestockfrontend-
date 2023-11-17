@@ -14,7 +14,7 @@ const ParameterCard = ({label, time, value, icon, iconBg, valueColor,suffix}) =>
             <TypographySecondary className='flex-row-center' sx={{fontSize:'1.8rem', color:'#696969'}}>{label}</TypographySecondary>
             <TypographySecondary className='flex-row-center'  sx={{fontSize:'1.2rem', color:'#696969', textAlign:'right'}}>{time}</TypographySecondary>
         </Stack>
-        <Typography className={`${valueColor}`} sx={{fontSize:'2.2rem', fontWeight:'bolder'}}>{value}{suffix}</Typography>
+        <Typography className={`${valueColor}`} sx={{fontSize:'2.2rem', fontWeight:'bolder'}}>{`${value?`${value}${suffix}`:"N/A"}`}</Typography>
         </Box>
     </Paper>
   );

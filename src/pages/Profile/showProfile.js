@@ -1,4 +1,4 @@
-import { Stack, TextField, Box, Button, MenuItem } from "@mui/material";
+import { Stack, TextField, Box, Button } from "@mui/material";
 import { TypographyPrimary } from "../../ComponentsV2/themeComponents";
 import { styled } from "@mui/system";
 import { useForm } from "react-hook-form";
@@ -36,20 +36,6 @@ const ButtonOutlined = styled(Button)({
     borderColor: "#C6A580",
   },
 });
-
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
-
 const ShowProfile = () => {
   const {
     register,
@@ -64,7 +50,6 @@ const ShowProfile = () => {
     return (
       <TextField
         fullWidth
-        //   disabled
         select={type === "select" ? true : false}
         id={name}
         label={label}
@@ -83,14 +68,7 @@ const ShowProfile = () => {
         multiline={type === "textArea" ? true : false}
         rows={type === "textArea" ? 6 : 2}
         maxRows={type === "textArea" ? 11 : 2}
-      >
-        {type === "select" &&
-          names.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-      </TextField>
+      />
     );
   };
 
@@ -154,7 +132,6 @@ const ShowProfile = () => {
                 </Box>
                 <Box display="flex" gap={5}>
                   <Box width="100%" display="flex" flexWrap="wrap">
-                    {console.log(showProfileData,"xhdvvdcgvgvgvgvgvg")}
                     {getTextFiled(
                       "Full Address",
                       "address",

@@ -47,17 +47,6 @@ export const AlertsContextProvider = ({ children }) => {
 
   const { formattedDate, paginationDateFormat } = useDateFormat();
 
-  // const getRoundOffDigit = (name, value) => {
-  //   if (name?.toLocaleLowerCase().includes("geofence")) {
-  //     const val = value?.toString()?.slice(0,5);
-  //     console.log(val)
-  //     const final = val > 1 ? `${val} Km` : `${val * 1000} m`;
-  //     return final;
-  //   } else {
-  //     return value;
-  //   }
-  // };
-
   // GET ALL ALERTS
   useEffect(() => {
     setOpenBackdropLoader(true);
@@ -85,20 +74,28 @@ export const AlertsContextProvider = ({ children }) => {
           setPageCount(res?.data?.data?.pageCount);
           setAlertsDataLength(res?.data?.data?.dataLength);
         } else {
+           const msg = res?.response?.data?.message || "something went wrong"
           setAllAlertData([]);
-          throw new Error("something went wrong");
+          setPageCount(0);
+          setAlertsDataLength(0);
+          throw new Error(msg);
         }
-        // const formattedData =
-        // setCollars(formattedData);
       })
-      .catch((err) => console.log(err.message))
+      .catch((err) => {
+        const firstLoad = formattedDate(new Date(),"date") === formattedDate(selectedDate[0].startDate,"date") && formattedDate(new Date(),"date") ===formattedDate(selectedDate[0].endDate,"date")
+        if(!firstLoad) openSnackbarAlert("error",err.message)
+      })
       .finally(() => setOpenBackdropLoader(false));
   }, [selectedDate, paginationPageNo]);
 
   //HANDLE ALERT DELETE
   const handleAlertDelete = (alertId) => {
-    setShowConfirmModal({ open: true, confirmBtn: true });
-    setAlertDeletedId(alertId);
+    if(alertsDataLength){
+      setShowConfirmModal({ open: true, confirmBtn: true });
+      setAlertDeletedId(alertId);
+    }else{
+      openSnackbarAlert("error","Nothing to Clear")
+    }
   };
 
   const handleAlertDeleteConfirm = async () => {
@@ -165,6 +162,7 @@ export const AlertsContextProvider = ({ children }) => {
         alertsDataLength,
         alertDeletedId,
         handleAllAlertDeleteConfirm,
+        openSnackbarAlert
       }}
     >
       {children}

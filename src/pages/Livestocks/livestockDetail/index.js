@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AdminUIContainer from "../../../layout/AdminUIContainer";
-import { Breadcrumb, CustomTabs, BackdropLoader } from "../../../ComponentsV2";
+import { CustomTabs, BackdropLoader } from "../../../ComponentsV2";
 import { Container } from "@mui/material";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import { useParams } from "react-router-dom";
@@ -48,7 +48,8 @@ const LivestockDetails = () => {
             temperature: data?.temperature,
             heartbeat: data?.heartBeat,
             steps: data?.steps,
-            lastUpdate: formattedDate(data?.updated_At),
+            rumination:data?.rumination,
+            lastUpdate: formattedDate(data?.updatedAt),
             img: null,
             liveStocklocationStatus: data?.liveStocklocationStatus,
             collarId: data?.assignedDevice?._id,
@@ -60,7 +61,7 @@ const LivestockDetails = () => {
             networkStrength: data?.assignedDevice?.networkStrength,
             battery: data?.assignedDevice?.battery,
             geolocation: data?.geolocation,
-            thresholds:data?.threshold
+            thresholds:data?.threshold,
           };
           setData(formattedData);
           const thresholdFormattedData = alertsThresholdData?.map((ele) => {

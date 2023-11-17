@@ -2,8 +2,9 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
 import { useEffect, useState, useRef } from "react";
-import { Stack, TextField, ThemeProvider } from "@mui/material";
+import { Stack, TextField, InputAdornment} from "@mui/material";
 import format from "date-fns/format";
+import {CalendarMonthIcon} from "../icons"
 
 export default function CustomDateRangePicker({
   selectedDate,
@@ -27,28 +28,36 @@ export default function CustomDateRangePicker({
     <Stack sx={{ position: "relative" }}>
       <Stack direction="row" gap={1}>
         {selectedDate ? (
-            <TextField
-              size="small"
-              value={`${format(
-                selectedDate[0]?.startDate,
-                "MM/dd/yyyy"
-              )} - ${format(selectedDate[0]?.endDate, "MM/dd/yyyy")}`}
-              placeholder="MM/DD/YYYY"
-              onClick={() => setShowInput(!showInput)}
-            />
+          <TextField
+            size="small"
+            value={`${format(
+              selectedDate[0]?.startDate,
+              "MM/dd/yyyy"
+            )} - ${format(selectedDate[0]?.endDate, "MM/dd/yyyy")}`}
+            placeholder="MM/DD/YYYY"
+            onClick={() => setShowInput(!showInput)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CalendarMonthIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
         ) : null}
       </Stack>
       <Stack
         ref={calenderRef}
         sx={{
           position: "absolute",
-          top: "60px",
-          left: "-150px",
+          top: "45px",
+          left: "235px",
           zIndex: "1000000",
         }}
       >
         {showInput ? (
           <DateRange
+            className="calendarElement"
             onChange={(item) => setSelectedDate([item.selection])}
             showSelectionPreview={true}
             moveRangeOnFirstSelection={true}

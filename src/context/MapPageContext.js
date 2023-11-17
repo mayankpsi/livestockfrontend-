@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from "react";
-import { fetchGeofenceAddress, createGeofence } from "../apis/geofenceServices";
 import { request } from "../apis/axios-utils";
 import useUserId from "../hooks/useUserId";
 

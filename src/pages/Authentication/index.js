@@ -34,15 +34,16 @@ const AuthPage = () => {
       width="100%"
       height="100vh"
       direction="row"
-      alignItems="center"
       justifyContent="center"
+      alignItems="center"
       style={{
         backgroundImage: `url(${LoginBG})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
+        
       }}
     >
-      <Box className="card" sx={{ minWidth: 352, minHeight: 460 }}>
+      <Box className="card" sx={{ minWidth: 352, minHeight: 640 }}>
         <Box
           className={`${
             showAnim ? "animation1" : "animation2"

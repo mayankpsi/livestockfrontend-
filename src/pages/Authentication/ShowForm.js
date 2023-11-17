@@ -6,17 +6,10 @@ import { useTheme } from "@emotion/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema, signUpSchema } from "../../utils/validationSchema";
-
+import { DashboardNoData } from "../../assets";
+import {btnData} from "./Data";
 import "./index.css";
 
-const btnData = [
-  {
-    label: "log in",
-  },
-  {
-    label: "sign up",
-  },
-];
 
 const ShowForm = ({
   setShowAnim,
@@ -59,6 +52,7 @@ const ShowForm = ({
       value={value}
       name={name}
       placeholder={placeholder}
+      InputProps={{ sx: { borderRadius: "0 !important" } }}
       {...register(name, { required: true })}
       onChange={onInputChange}
       error={errors?.[name] ? true : false}
@@ -74,7 +68,7 @@ const ShowForm = ({
       <Paper
         elevation={4}
         sx={{
-          minWidth: 352,
+          minWidth: isLoginActive?352:600,
           minHeight: 460,
           p: theme.spacing(4, 5),
           display: "flex",
@@ -82,7 +76,7 @@ const ShowForm = ({
           justifyContent: "center",
           alignItems: "center",
           gap: theme.spacing(3),
-          backgroundColor:`rgba(255,255,255,0.3)`
+          backgroundColor: `rgba(255,255,255,0.3)`,
         }}
       >
         <BtnGroup
@@ -90,8 +84,19 @@ const ShowForm = ({
           activeBtn={isLogin}
           onChange={setShowAnim}
         />
-        <Typography variant="h3" component="h1">
-          {isLoginActive ? "Welcome Back!" : "Sign up"}
+        <Box
+          component="img"
+          sx={{
+            width: 150,
+            height: 150,
+            objectFit: "cover",
+            borderRadius: "10px",
+          }}
+          src={DashboardNoData}
+          alt="livestock-monitoring-logo"
+        />
+        <Typography variant="h4" sx={{ color: "#fff", fontWeight: "bold" }}>
+          Livestock Monitoring
         </Typography>
         <Stack width={"100%"} gap={theme.spacing(2)}>
           {isLoginActive ? (
@@ -117,6 +122,7 @@ const ShowForm = ({
             </>
           ) : (
             <>
+            <Stack direction="row" gap={2}>
               {getInput(
                 "Full Name",
                 false,
@@ -135,6 +141,8 @@ const ShowForm = ({
                 onUserSignUp?.email,
                 change
               )}
+              </Stack>
+              <Stack  direction="row" gap={2}>
               {getInput(
                 "Phone",
                 false,
@@ -153,6 +161,7 @@ const ShowForm = ({
                 onUserSignUp?.password,
                 change
               )}
+              </Stack>
             </>
           )}
           {isLoginActive ? (
@@ -193,7 +202,7 @@ const ShowForm = ({
             justifyContent={"center"}
             gap={theme.spacing(0.5)}
           >
-            <Typography variant="h6" component="h2">
+            <Typography variant="h6" component="h2" sx={{ color: "#fff" }}>
               {isLoginActive
                 ? "Don't have an account?"
                 : "Already have an account?"}
@@ -202,7 +211,7 @@ const ShowForm = ({
               variant="h6"
               sx={{
                 fontWeight: "bold",
-                color: theme.palette.primary.main,
+                color: "#fff",
                 cursor: "pointer",
               }}
               component="span"

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Box, Avatar, Menu, MenuItem, ListItemIcon, Divider, IconButton, Tooltip} from '@mui/material';
+import {Box, Menu, MenuItem, ListItemIcon, Divider, IconButton, Tooltip} from '@mui/material';
 import Logout from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 import { CustomAvatar } from "../../ComponentsV2/themeComponents";

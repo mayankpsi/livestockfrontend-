@@ -1,7 +1,5 @@
 import { Pagination,Stack } from "@mui/material";
 
-
-
 export default function CustomPagination({
   showFirstButton,
   showLastButton,

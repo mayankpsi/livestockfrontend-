@@ -1,14 +1,14 @@
 import { Box, Stack } from "@mui/material";
-import {CustomInput, InfoPane} from "../../ComponentsV2";
+import { CustomInput, InfoPane } from "../../ComponentsV2";
 import {
   ButtonPrimaryRound,
   ButtonOutlinedRound,
   LoadingBtn,
-  TypographyWithBg
+  TypographyWithBg,
 } from "../../ComponentsV2/themeComponents";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {addCollarValidationSchema} from "../../utils/validationSchema";
+import { addCollarValidationSchema } from "../../utils/validationSchema";
 import useCollarContext from "../../hooks/useCollarContext";
 
 const AddCollarModalContent = () => {
@@ -19,7 +19,7 @@ const AddCollarModalContent = () => {
     isError,
     handleAddCollarModalClose,
     isLoading,
-  } = useCollarContext()
+  } = useCollarContext();
   const {
     register,
     handleSubmit,
@@ -47,7 +47,11 @@ const AddCollarModalContent = () => {
               errors={errors}
               value={newCollar?.collarUID}
               name="collarUID"
-              isError={isError.message.toLowerCase().includes("uid")?isError:{ error: false, message: "" }}
+              isError={
+                isError.message.toLowerCase().includes("uid")
+                  ? isError
+                  : { error: false, message: "" }
+              }
               onChange={handleAddCollarChange}
             />
             <CustomInput
@@ -73,7 +77,11 @@ const AddCollarModalContent = () => {
               errors={errors}
               value={newCollar?.collarMacId}
               name="collarMacId"
-              isError={isError.message.toLowerCase().includes("macid")?isError:{ error: false, message: "" }}
+              isError={
+                isError.message.toLowerCase().includes("macid")
+                  ? isError
+                  : { error: false, message: "" }
+              }
               onChange={handleAddCollarChange}
             />
           </Box>
@@ -104,13 +112,13 @@ const AddCollarModalContent = () => {
               </LoadingBtn>
             ) : (
               <ButtonPrimaryRound
-              type="submit"
-              loading={true}
-              variant="contained"
-              size="large"
-            >
-              Save
-            </ButtonPrimaryRound>
+                type="submit"
+                loading={true}
+                variant="contained"
+                size="large"
+              >
+                Save
+              </ButtonPrimaryRound>
             )}
           </Box>
         </Stack>

@@ -42,6 +42,7 @@ const AlertCard = ({
         secondaryText={paneText}
         btnText={`${isEdit ? "Save" : "Edit"}`}
         btnIcon={false}
+        hover={true}
         btnBgColor="#B58B5D"
         onBtnClick={onBtnClick}
       />

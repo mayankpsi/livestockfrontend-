@@ -7,9 +7,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { addLivestockValidationSchema } from "../../../utils/validationSchema";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
+import { genderData } from "../../Data";
 
 const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
-  const { openSnackbarAlert,setIsError,isError } = useLivestockContext();
+  const { openSnackbarAlert, setIsError, isError } = useLivestockContext();
   const [isEditLivestockInfo, setIsEditLivestockInfo] = useState(true);
   const [LivestockInfoEdit, setLivestockInfoEdit] = useState({
     collarUID: "",
@@ -68,10 +69,10 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
             openSnackbarAlert("success", "Livestock successfully updated!");
             setIsError({
               error: false,
-              message: null
+              message: null,
             });
             setIsEditLivestockInfo(true);
-          }  else if (res?.response?.data?.statusCode === 409) {
+          } else if (res?.response?.data?.statusCode === 409) {
             setIsError({
               error: true,
               message: res?.response?.data?.message,
@@ -79,7 +80,6 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
           } else {
             throw new Error("something went wrong");
           }
-
         } catch (err) {
           setIsEditLivestockInfo(true);
           openSnackbarAlert("error", err.message);
@@ -87,19 +87,6 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
       }
     }
   };
-
-  const genderData = [
-    {
-      id: 1,
-      label: "Male",
-      value: "male",
-    },
-    {
-      id: 1,
-      label: "Female",
-      value: "female",
-    },
-  ];
 
   const getTextFiled = (
     disable,
@@ -125,7 +112,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
         name={name}
         {...register(name, { required: true })}
         onChange={onChange}
-        error={errors?.[name]?true:false || isError?.error}
+        error={errors?.[name] ? true : false || isError?.error}
         helperText={errors?.[name]?.message || isError?.message}
       >
         {select &&
@@ -152,6 +139,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
           text="Livestock Information"
           btnText={btnText ? btnText : isEditLivestockInfo ? "Edit" : "Save"}
           btnIcon={false}
+          hover={true}
           btnBgColor={btnBgColor}
           type="submit"
         />

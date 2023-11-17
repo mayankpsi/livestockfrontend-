@@ -7,66 +7,19 @@ import {
   CustomModal,
 } from "../../../ComponentsV2";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
-import NetworkCellOutlinedIcon from "@mui/icons-material/NetworkCellOutlined";
-import Battery5BarOutlinedIcon from "@mui/icons-material/Battery5BarOutlined";
 import ShowLivestocks from "../../Collars/viewCollarDetails/showLivestocks";
 import { useTheme } from "@emotion/react";
 import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
-
-const deviceInfoData = [
-  {
-    label: "Collar UID",
-    value: "collar_1",
-  },
-  {
-    label: "Collar Name",
-    value: "device name",
-  },
-  {
-    label: "Collar MAC ID",
-    value: "#3537HDB83728",
-  },
-  {
-    label: "Collar Added on",
-    value: "24/02/23, 04:23 PM",
-  },
-];
-
-const statusCardData = [
-  {
-    text: "network strength",
-    status: "good",
-    icon: (
-      <NetworkCellOutlinedIcon
-        fontSize="large"
-        sx={{ mr: 1, color: "#347D00" }}
-      />
-    ),
-    statusColor: "#347D00",
-  },
-  {
-    text: "battery",
-    status: "56%",
-    icon: (
-      <Battery5BarOutlinedIcon
-        fontSize="large"
-        sx={{ mr: 1, color: "#347D00" }}
-      />
-    ),
-    statusColor: "#F19B4F",
-  },
-];
-
-const data = [];
+import { deviceInfoData, statusCardData } from "../Data";
 
 const CollarInfo = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
   const [allUnassignCollars, setAllUnassignCollars] = useState([]);
   const theme = useTheme();
   const { getCamelCase } = useGetCamelCase();
-  const {openSnackbarAlert} = useLivestockContext();
+  const { openSnackbarAlert } = useLivestockContext();
 
   useEffect(() => {
     if (!data?.collarUid) {
@@ -83,19 +36,21 @@ const CollarInfo = ({ data }) => {
       const res = await request({
         url: `/devices/unassign-liveStock`,
         method: "POST",
-        data:body
+        data: body,
       });
       if (res.status === 200) {
-        openSnackbarAlert("success","Livestock successfully removed :)");
-        setTimeout(()=> window.location.reload(),1500);
+        openSnackbarAlert("success", "Livestock successfully removed :)");
+        setTimeout(() => window.location.reload(), 1500);
       } else {
         throw new Error("something went wrong");
       }
     } catch (err) {
-      openSnackbarAlert("error",err?.message?err.message:"Something went wrong :(")
+      openSnackbarAlert(
+        "error",
+        err?.message ? err.message : "Something went wrong :("
+      );
     }
   };
-
 
   const getUnassignCollars = async () => {
     try {
@@ -157,6 +112,7 @@ const CollarInfo = ({ data }) => {
                 text="Device Info"
                 btnText="remove"
                 btnIcon={false}
+                hover={true}
                 btnBgColor="#FF0505"
                 onBtnClick={handelCollarRemove}
               />
@@ -223,11 +179,7 @@ const CollarInfo = ({ data }) => {
               {statusCardData
                 ?.map((ele) => ({
                   ...ele,
-                  status: data
-                    ? `${data[getCamelCase(ele?.text)]}${
-                        ele?.text?.toLowerCase()?.includes("battery") ? "%" : ""
-                      }`
-                    : "",
+                  status: data ? `${data[getCamelCase(ele?.text)]}` : "",
                 }))
                 ?.map((card) => (
                   <StatusCard
@@ -236,6 +188,7 @@ const CollarInfo = ({ data }) => {
                     status={card.status}
                     icon={card.icon}
                     statusColor={card.statusColor}
+                    suffix={card.suffix}
                   />
                 ))}
             </Stack>

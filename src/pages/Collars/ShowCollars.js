@@ -1,15 +1,7 @@
 import { CustomTable, NoData } from "../../ComponentsV2";
 import { Box } from "@mui/material";
 import useCollarContext from "../../hooks/useCollarContext";
-
-const tableHeadData = [
-  "collar UID",
-  "collar name",
-  "power",
-  "current status",
-  "added on",
-  "action",
-];
+import { showCollarTableHeadData } from "./Data";
 
 const ShowCollars = ({ show }) => {
   const { collars } = useCollarContext();
@@ -28,7 +20,7 @@ const ShowCollars = ({ show }) => {
     <Box my={4}>
       <CustomTable
         headBackgroundColor="#B58B5D"
-        tableHeadData={tableHeadData}
+        tableHeadData={showCollarTableHeadData}
         tableRowData={collarFiltering()}
       />
       {

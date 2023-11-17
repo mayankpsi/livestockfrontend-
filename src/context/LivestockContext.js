@@ -14,7 +14,6 @@ export const LivestockContextProvider = ({ children }) => {
   const [modalContentType, setModalContentType] = useState("add");
   const [openAddLiveStockModal, setOpenAddLivestockModal] = useState(false);
   const [showLocationTab, setShowLocationTab] = useState("location");
-  const [livestockHealthActiveTab, setLivestockHealthActiveTab] = useState("");
   const [isError, setIsError] = useState({ error: false, message: "" });
   // new livestock
   const [addNewLivestock, setAddNewLivestock] = useState({
@@ -119,6 +118,7 @@ export const LivestockContextProvider = ({ children }) => {
       key: "selection",
     },
   ]);
+  const [alertsDataLength, setAlertsDataLength] = useState(0);
   const [paginationPageNo, setPaginationPageNo] = useState(1);
   const [pageCount, setPageCount] = useState(1);
   const pageLimit = 10;
@@ -340,8 +340,12 @@ export const LivestockContextProvider = ({ children }) => {
 
   // HANDLE ALERT DELETE
   const handleAlertDelete = (id, type) => {
-    setShowConfirmModal({ open: true, confirmBtn: true });
-    setAlertDeletedId({ id, type });
+    if(alertsDataLength){
+      setShowConfirmModal({ open: true, confirmBtn: true });
+      setAlertDeletedId({ id, type });
+    }else{
+      openSnackbarAlert("error","Nothing to Clear")
+    }
   };
 
   const handleAlertDeleteConfirm = async () => {
@@ -399,8 +403,6 @@ export const LivestockContextProvider = ({ children }) => {
         allLivestocks,
         showLocationTab,
         setShowLocationTab,
-        livestockHealthActiveTab,
-        setLivestockHealthActiveTab,
         handleLivestockModalClose,
         addNewLivestock,
         setAddNewLivestock,
@@ -451,6 +453,7 @@ export const LivestockContextProvider = ({ children }) => {
         setOpenBackdropLoader,
         isError,
         setIsError,
+        alertsDataLength, setAlertsDataLength
       }}
     >
       {children}

@@ -1,7 +1,7 @@
 import React from "react";
 import { Logo } from "../../assets";
 import { useNavigate } from "react-router-dom";
-import { Box, Stack, Typography, Button, createTheme} from "@mui/material";
+import { Box, Stack, Typography, Button, createTheme } from "@mui/material";
 import { SidebarComp } from "../themeComponents";
 import { routes } from "./routeData";
 
@@ -9,7 +9,8 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const theme = createTheme();
 
-  const isActivePath = (link) => window?.location?.pathname?.split("/")[1] === link.slice(1);
+  const isActivePath = (link) =>
+    window?.location?.pathname?.split("/")[1] === link.slice(1);
   const buttonStyles = (route) => ({
     background: `${isActivePath(route.link) ? "#C6A580" : "none"}`,
     fontSize: "1.5rem",
@@ -26,6 +27,11 @@ const Sidebar = () => {
       background: `${isActivePath(route.link) ? "#C6A580" : "none"}`,
     },
   });
+
+  const handleClick = (link) => {
+    localStorage.setItem("currentTab", 0);
+    navigate(link);
+  };
 
   return (
     <SidebarComp>
@@ -54,7 +60,7 @@ const Sidebar = () => {
         {routes?.map((link, ind) => (
           <Button
             key={ind}
-            onClick={() => navigate(link.link)}
+            onClick={() => handleClick(link.link)}
             sx={buttonStyles(link)}
             startIcon={<link.icon fontSize="large" />}
           >

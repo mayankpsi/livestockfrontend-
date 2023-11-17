@@ -11,24 +11,7 @@ import { Container, Stack } from "@mui/material";
 import { TypographyPrimary } from "../../ComponentsV2/themeComponents";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import useAlertsContext from "../../hooks/useAlertContext";
-
-const tableHeadData = [
-  "alert name",
-  "collar Uid",
-  "Livestock name",
-  "threshold value",
-  "alarm value",
-  "time",
-  "date",
-  "action",
-];
-
-const BreadcrumbData = [
-  {
-    label: "Alerts",
-    link: "alerts",
-  },
-];
+import { tableHeadData, BreadcrumbData } from "./Data";
 
 const AlertsPage = () => {
   const {
@@ -48,6 +31,7 @@ const AlertsPage = () => {
     alertsDataLength,
     alertDeletedId,
     handleAllAlertDeleteConfirm,
+    openSnackbarAlert,
   } = useAlertsContext();
 
   const getTableFormattedData = (data) => {
@@ -68,6 +52,12 @@ const AlertsPage = () => {
     return res;
   };
 
+  const handleSnackBarAlert = () => {
+    if (!alertsDataLength) {
+      openSnackbarAlert("error", "Nothing to Export");
+    }
+  };
+
   return (
     <AdminUIContainer
       openModal={showConfirmModal.open}
@@ -84,9 +74,9 @@ const AlertsPage = () => {
       closeAlert={onSnackbarAlertClose}
       BreadcrumbData={BreadcrumbData}
     >
-      <Container maxWidth="xl" sx={{ marginTop: 8, pb:5 }}>
+      <Container maxWidth="xl" sx={{ marginTop: 8, pb: 5 }}>
         <BackdropLoader open={openBackdropLoader} />
-        <TypographyPrimary sx={{ fontSize: "24px" }}>Alerts</TypographyPrimary>
+        <TypographyPrimary sx={{ fontSize: "2rem" }}>Alerts</TypographyPrimary>
         <Stack sx={{ width: "100%", pb: 3 }}>
           <Stack pb={2}>
             <TabPaneV2
@@ -98,14 +88,19 @@ const AlertsPage = () => {
               clearBtn={true}
               onClearAll={() => handleAlertDelete(null)}
               btnText={
-                <ExportAsCSV
-                  headers={tableHeadData}
-                  data={AllAlertData}
-                  fileName="alerts"
-                >
-                  Export
-                </ExportAsCSV>
+                alertsDataLength ? (
+                  <ExportAsCSV
+                    headers={tableHeadData}
+                    data={AllAlertData}
+                    fileName="alerts"
+                  >
+                    Export
+                  </ExportAsCSV>
+                ) : (
+                  "Export"
+                )
               }
+              onBtnClick={handleSnackBarAlert}
               btnColor="#fff"
               btnBg="#B58B5D"
               selectedDate={selectedDate}

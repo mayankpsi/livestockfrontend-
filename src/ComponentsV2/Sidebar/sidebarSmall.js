@@ -42,6 +42,12 @@ export default function SidebarSmall() {
     },
   });
 
+  const handleClick = (link) => {
+    localStorage.setItem("currentTab", 0);
+    navigate(link);
+  };
+
+
   const list = (anchor) => (
     <Box
       sx={{ width: 250 }}
@@ -53,7 +59,7 @@ export default function SidebarSmall() {
         {routes?.map((ele, ind) => (
           <Button
             key={ind}
-            onClick={() => navigate(ele.link)}
+            onClick={() => handleClick(ele.link)}
             sx={buttonStyles(ele)}
             startIcon={<ele.icon fontSize="large" />}
           >
