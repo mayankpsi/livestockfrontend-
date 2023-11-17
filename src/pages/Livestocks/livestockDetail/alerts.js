@@ -17,22 +17,6 @@ import {livestockDetailAlertTableHeadData} from "../Data";
 
 const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   const {
-    tempThreshold,
-    handleLivestockTempAlertsChange,
-    isLivestockTempAlertsEdit,
-    serIsLivestockTempAlertsEdit,
-    heartbeatThreshold,
-    isLivestockHeartbeatAlertsEdit,
-    setIsLivestockHeartbeatAlertsEdit,
-    geofenceThreshold,
-    isLivestockGeofenceAlertsEdit,
-    setIsLivestockGeofenceAlertsEdit,
-    handleLivestockHeartbeatAlertsChange,
-    handleLivestockGeofenceAlertsChange,
-    humidityThreshold,
-    handleLivestockHumidityAlertsChange,
-    isLivestockHumidityAlertsEdit,
-    setIsLivestockHumidityAlertsEdit,
     selectedDate,
     setSelectedDate,
     paginationPageNo,

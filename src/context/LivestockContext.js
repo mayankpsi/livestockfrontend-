@@ -24,71 +24,8 @@ export const LivestockContextProvider = ({ children }) => {
   });
   const [addNewLivestockLoading, setAddNewLivestockLoading] = useState(false);
 
-  const [tempThreshold, setTempThreshold] = useState([
-    {
-      label: "low temperature",
-      name: "lowTemp",
-      type: "warning",
-      value: "26",
-    },
-    {
-      label: "high temperature",
-      name: "highTemp",
-      type: "error",
-      value: "40",
-    },
-  ]);
-  const [isLivestockTempAlertsEdit, serIsLivestockTempAlertsEdit] =
-    useState(false);
-
-  const [heartbeatThreshold, setHeartbeatThreshold] = useState([
-    {
-      label: "low heartbeat",
-      name: "lowHeartbeat",
-      type: "warning",
-      value: "26",
-    },
-    {
-      label: "high heartbeat",
-      name: "highHeartbeat",
-      type: "error",
-      value: "40",
-    },
-  ]);
-  const [isLivestockHeartbeatAlertsEdit, setIsLivestockHeartbeatAlertsEdit] =
-    useState(false);
-
-  const [humidityThreshold, setHumidityThreshold] = useState([
-    {
-      label: "low humidity",
-      name: "lowHumidity",
-      type: "warning",
-      value: "26",
-    },
-    {
-      label: "high humidity",
-      name: "highHumidity",
-      type: "error",
-      value: "52",
-    },
-  ]);
-
-  const [isLivestockHumidityAlertsEdit, setIsLivestockHumidityAlertsEdit] =
-    useState(false);
-
   //BACKDROP
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
-
-  const [geofenceThreshold, setGeofenceThreshold] = useState([
-    {
-      label: "Radius",
-      name: "radius",
-      type: "warning",
-      value: "50",
-    },
-  ]);
-  const [isLivestockGeofenceAlertsEdit, setIsLivestockGeofenceAlertsEdit] =
-    useState(false);
 
   //SNACKBAR ALERT
   const [snackbarAlert, setSnackbarAlert] = useState({
@@ -252,62 +189,6 @@ export const LivestockContextProvider = ({ children }) => {
     setIsError({ error: false, message: "" });
   };
 
-  const handleLivestockTempAlertsChange = (event) => {
-    const { name, value } = event.target;
-    const updatedValues = tempThreshold?.map((ele) => {
-      if (ele.name === name) {
-        return {
-          ...ele,
-          value: value,
-        };
-      }
-      return ele;
-    });
-    setTempThreshold(updatedValues);
-  };
-
-  const handleLivestockHeartbeatAlertsChange = (event) => {
-    const { name, value } = event.target;
-    const updatedValues = heartbeatThreshold?.map((ele) => {
-      if (ele.name === name) {
-        return {
-          ...ele,
-          value: value,
-        };
-      }
-      return ele;
-    });
-    setHeartbeatThreshold(updatedValues);
-  };
-
-  const handleLivestockHumidityAlertsChange = (event) => {
-    const { name, value } = event.target;
-    const updatedValues = humidityThreshold?.map((ele) => {
-      if (ele.name === name) {
-        return {
-          ...ele,
-          value: value,
-        };
-      }
-      return ele;
-    });
-    setHumidityThreshold(updatedValues);
-  };
-
-  const handleLivestockGeofenceAlertsChange = (event) => {
-    const { name, value } = event.target;
-    const updatedValues = geofenceThreshold?.map((ele) => {
-      if (ele.name === name) {
-        return {
-          ...ele,
-          value: value,
-        };
-      }
-      return ele;
-    });
-    setGeofenceThreshold(updatedValues);
-  };
-
   //SNACKBAR
   const onSnackbarAlertClose = () => {
     setSnackbarAlert({ open: false, type: "", message: "" });
@@ -325,18 +206,6 @@ export const LivestockContextProvider = ({ children }) => {
   const handleConfirmWindowClose = () => {
     setShowConfirmModal({ open: false, confirmBtn: false });
   };
-
-  const date = "2023-10-31";
-  const options = {
-    hour: "numeric",
-    minute: "numeric",
-    day: "numeric",
-    month: "long",
-    year: "2-digit",
-    weekday: "long",
-  };
-  const d = new Date();
-  const formate = new Intl.DateTimeFormat("en-US", options).format(d);
 
   // HANDLE ALERT DELETE
   const handleAlertDelete = (id, type) => {
@@ -410,25 +279,6 @@ export const LivestockContextProvider = ({ children }) => {
         addNewLivestockLoading,
         setAddNewLivestockLoading,
         handleAddLivestock,
-        tempThreshold,
-        setTempThreshold,
-        handleLivestockTempAlertsChange,
-        isLivestockTempAlertsEdit,
-        serIsLivestockTempAlertsEdit,
-        heartbeatThreshold,
-        setHeartbeatThreshold,
-        isLivestockHeartbeatAlertsEdit,
-        setIsLivestockHeartbeatAlertsEdit,
-        geofenceThreshold,
-        setGeofenceThreshold,
-        isLivestockGeofenceAlertsEdit,
-        setIsLivestockGeofenceAlertsEdit,
-        handleLivestockHeartbeatAlertsChange,
-        handleLivestockGeofenceAlertsChange,
-        humidityThreshold,
-        handleLivestockHumidityAlertsChange,
-        isLivestockHumidityAlertsEdit,
-        setIsLivestockHumidityAlertsEdit,
         openSnackbarAlert,
         onSnackbarAlertClose,
         showConfirmModal,
