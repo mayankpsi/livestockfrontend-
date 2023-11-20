@@ -12,8 +12,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import useDateFormat from "../../../hooks/useDateFormat";
 import { request } from "../../../apis/axios-utils";
-import {livestockDetailAlertTableHeadData} from "../Data";
-
+import { livestockDetailAlertTableHeadData } from "../Data";
 
 const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   const {
@@ -27,11 +26,11 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
     handleAlertDelete,
     openSnackbarAlert,
     setOpenBackdropLoader,
-    alertsDataLength, setAlertsDataLength
+    alertsDataLength,
+    setAlertsDataLength,
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate } = useDateFormat();
   const [singleLivestockAlerts, setSingleLivestockAlerts] = useState([]);
-
 
   useEffect(() => {
     setOpenBackdropLoader(true);
@@ -72,7 +71,14 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
             throw new Error(msg);
           }
         })
-        .catch((err) => openSnackbarAlert("error", err.message))
+        .catch((err) => {
+          const firstLoad =
+            paginationDateFormat(new Date(), "date") ===
+              paginationDateFormat(selectedDate[0].startDate, "date") &&
+            paginationDateFormat(new Date(), "date") ===
+              paginationDateFormat(selectedDate[0].endDate, "date");
+          if (!firstLoad) openSnackbarAlert("error", err.message);
+        })
         .finally(() => setOpenBackdropLoader(false));
     }
   }, [data?.id, paginationPageNo, selectedDate]);
@@ -139,12 +145,11 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   };
 
   const handleSnackBarAlert = () => {
-    console.log(alertsDataLength,"dchbdcvgvgvdg")
-    if(!alertsDataLength){
-      openSnackbarAlert("error","Nothing to Export")
+    console.log(alertsDataLength, "dchbdcvgvgvdg");
+    if (!alertsDataLength) {
+      openSnackbarAlert("error", "Nothing to Export");
     }
-  }
-
+  };
 
   return (
     <Stack mt={4}>
@@ -176,14 +181,18 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
             datePicker={true}
             clearBtn={true}
             onClearAll={() => handleAlertDelete(data?.id, "deleteAllAlerts")}
-            btnText={alertsDataLength?
-              <ExportAsCSV
-                headers={livestockDetailAlertTableHeadData}
-                data={singleLivestockAlerts}
-                fileName="alerts"
-              >
-                Export
-              </ExportAsCSV>:"Export"
+            btnText={
+              alertsDataLength ? (
+                <ExportAsCSV
+                  headers={livestockDetailAlertTableHeadData}
+                  data={singleLivestockAlerts}
+                  fileName="alerts"
+                >
+                  Export
+                </ExportAsCSV>
+              ) : (
+                "Export"
+              )
             }
             onBtnClick={handleSnackBarAlert}
             btnColor="#fff"

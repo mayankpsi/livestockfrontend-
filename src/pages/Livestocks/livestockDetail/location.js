@@ -13,10 +13,7 @@ import useLivestockContext from "../../../hooks/useLivestockContext";
 import { request } from "../../../apis/axios-utils";
 import useDateFormat from "../../../hooks/useDateFormat";
 import useUserId from "../../../hooks/useUserId";
-import {locationTableHeadData, locationBtnData} from "../Data";
-
-
-
+import { locationTableHeadData, locationBtnData } from "../Data";
 
 const Location = ({ data }) => {
   const {
@@ -30,7 +27,7 @@ const Location = ({ data }) => {
     setPageCount,
     pageLimit,
     setOpenBackdropLoader,
-    openSnackbarAlert
+    openSnackbarAlert,
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate, getRoundOffDigit } =
     useDateFormat();
@@ -47,9 +44,9 @@ const Location = ({ data }) => {
 
   useEffect(() => {
     if (data?.id) {
-      setOpenBackdropLoader(true)
+      setOpenBackdropLoader(true);
       Promise.allSettled([
-        request({ url: `/user/getUsersGeofence?userID=${userId}`}),
+        request({ url: `/user/getUsersGeofence?userID=${userId}` }),
         request({
           url: `/liveStock/getliveStocklocationAlerts?liveStockID=${
             data?.id
@@ -69,6 +66,7 @@ const Location = ({ data }) => {
       ])
         .then((res) => {
           const [res1, res2, res3] = res;
+          let errorMessage = "";
           if (res1?.value?.status === 200) {
             const { data } = res1.value?.data;
             setGeofenceData({
@@ -82,7 +80,7 @@ const Location = ({ data }) => {
               lng: null,
               radius: 0,
             });
-            throw new Error(res?.response?.data?.message);
+            errorMessage = res?.response?.data?.message;
           }
 
           if (res3?.value?.status === 200) {
@@ -94,28 +92,39 @@ const Location = ({ data }) => {
             setResentAlerts(formattedData);
           } else {
             setResentAlerts([]);
-            throw new Error(res?.response?.data?.message);
+            errorMessage = res?.response?.data?.message;
           }
           if (res2?.value?.status === 200) {
             const { data } = res2.value?.data;
             const formattedData = data?.LocationAlert?.map((ele) => ({
               title: ele?.locationStatus,
-              location: `${ele?.geolocation?.lat?.toString()?.slice(0,8)}, ${ele?.geolocation?.lng?.toString()?.slice(0,8)}`,
+              location: `${ele?.geolocation?.lat
+                ?.toString()
+                ?.slice(0, 8)}, ${ele?.geolocation?.lng
+                ?.toString()
+                ?.slice(0, 8)}`,
               updated: formattedDate(ele?.createdAt),
             }));
             setLocationAlertsData(formattedData);
             setPageCount(data?.PageCount);
             setDataLength(data?.dataLength);
           } else {
-            const msg = res2?.value?.response?.data?.message || "Something went wrong";
+            const msg =
+              res2?.value?.response?.data?.message || "Something went wrong";
             setLocationAlertsData([]);
             setPageCount(1);
             setDataLength(0);
-            throw new Error(msg);
+            errorMessage = msg;
+          }
+          const firstLoad = paginationDateFormat(new Date(),"date") === paginationDateFormat(selectedDate[0].startDate,"date") && paginationDateFormat(new Date(),"date") ===paginationDateFormat(selectedDate[0].endDate,"date")
+          if (!firstLoad && errorMessage) {
+            openSnackbarAlert("error", errorMessage);
           }
         })
-        .catch((err) => openSnackbarAlert("error",err.message))
-        .finally(()=> setOpenBackdropLoader(false))
+        .catch((err) => {
+          openSnackbarAlert("error", err?.message);
+        })
+        .finally(() => setOpenBackdropLoader(false));
     }
   }, [data?.id, paginationPageNo, selectedDate]);
 
@@ -124,23 +133,23 @@ const Location = ({ data }) => {
   }, [selectedDate]);
 
   const getExportedData = (data) => {
-        const DeepCopiedData = JSON.parse(JSON.stringify(data));
-        const formattedData = DeepCopiedData?.map(ele => {
-          const obj = {
-            ...ele,
-            status:ele?.title
-          }
-          delete ele.title;
-          return obj;
-        });
-        return formattedData;
-  }
+    const DeepCopiedData = JSON.parse(JSON.stringify(data));
+    const formattedData = DeepCopiedData?.map((ele) => {
+      const obj = {
+        ...ele,
+        status: ele?.title,
+      };
+      delete ele.title;
+      return obj;
+    });
+    return formattedData;
+  };
 
   const handleSnackBarAlert = () => {
-    if(!dataLength){
-      openSnackbarAlert("error","Nothing to Export")
+    if (!dataLength) {
+      openSnackbarAlert("error", "Nothing to Export");
     }
-  }
+  };
 
   return (
     <Stack my={2} direction="column" alignItems="center" gap={2}>
@@ -162,21 +171,23 @@ const Location = ({ data }) => {
           <Stack pb={2}>
             <TabPaneV2
               paneText={`showing ${
-                dataLength < 10
-                  ? dataLength
-                  : "10"
+                dataLength < 10 ? dataLength : "10"
               } out of ${dataLength} Alerts`}
               datePicker={true}
               paneTextColor="#000"
               clearBtn={false}
-              btnText={dataLength?
-                <ExportAsCSV
-                  headers={locationTableHeadData}
-                  data={getExportedData(locationAlertsData)}
-                  fileName="alerts"
-                >
-                  Export
-                </ExportAsCSV>:"Export"
+              btnText={
+                dataLength ? (
+                  <ExportAsCSV
+                    headers={locationTableHeadData}
+                    data={getExportedData(locationAlertsData)}
+                    fileName="alerts"
+                  >
+                    Export
+                  </ExportAsCSV>
+                ) : (
+                  "Export"
+                )
               }
               onBtnClick={handleSnackBarAlert}
               btnColor="#fff"
