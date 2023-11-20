@@ -162,11 +162,11 @@ export const locationBtnData = [
     {
       label: "temperature",
       time: "10:59 PM, 23/08/23",
-      value: "78° C",
+      value: "78° F",
       icon: <ThermostatIcon sx={{ fontSize: "3em", color: "#fff" }} />,
       iconBg: "#B58B5D",
       valueColor: "err-color",
-      suffix: "F",
+      suffix: " °F",
     },
     {
       label: "heartbeat",

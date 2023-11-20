@@ -1,5 +1,5 @@
 import { Box, Stack } from "@mui/material";
-import { CustomInput } from "../../ComponentsV2";
+import { CustomInput, ImageUpload } from "../../ComponentsV2";
 import useLivestockContext from "../../hooks/useLivestockContext";
 import { AddCircleOutlineOutlinedIcon } from "../../icons";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -23,6 +23,7 @@ const AddLivestockModalContent = () => {
     handleAddLivestockChange,
     addNewLivestockLoading,
     handleAddLivestock,
+    setLiveStockImage,
     isError,
   } = useLivestockContext();
 
@@ -63,21 +64,7 @@ const AddLivestockModalContent = () => {
           Add Livestock
         </TypographyWithBg>
         <Stack>
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              border: "1px solid #8F8F8F",
-              minHeight: "30vh",
-              m: 2,
-              borderRadius: "10px",
-            }}
-          >
-            <AddCircleOutlineOutlinedIcon
-              sx={{ color: "#8F8F8F", fontSize: 150 }}
-            />
-          </Box>
+          <ImageUpload onUpload={setLiveStockImage}/>
           <Box
             sx={{
               display: "flex",

@@ -46,6 +46,7 @@ export const LivestockContextProvider = ({ children }) => {
     type: null,
   });
   const { formattedDate } = useDateFormat();
+  const [liveStockImage, setLiveStockImage] = useState(null);
 
   // PAGINATION AND RANGE DATE
   const [selectedDate, setSelectedDate] = useState([
@@ -149,6 +150,7 @@ export const LivestockContextProvider = ({ children }) => {
       name: addNewLivestock?.livestockName,
       gender: addNewLivestock?.livestockGender,
       deviceID: addNewLivestock?.collarUID,
+      liveStockImage: liveStockImage,
     };
     try {
       const res = await request({
@@ -209,11 +211,11 @@ export const LivestockContextProvider = ({ children }) => {
 
   // HANDLE ALERT DELETE
   const handleAlertDelete = (id, type) => {
-    if(alertsDataLength){
+    if (alertsDataLength) {
       setShowConfirmModal({ open: true, confirmBtn: true });
       setAlertDeletedId({ id, type });
-    }else{
-      openSnackbarAlert("error","Nothing to Clear")
+    } else {
+      openSnackbarAlert("error", "Nothing to Clear");
     }
   };
 
@@ -303,7 +305,9 @@ export const LivestockContextProvider = ({ children }) => {
         setOpenBackdropLoader,
         isError,
         setIsError,
-        alertsDataLength, setAlertsDataLength
+        alertsDataLength,
+        setAlertsDataLength,
+        setLiveStockImage,
       }}
     >
       {children}

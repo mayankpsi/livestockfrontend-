@@ -33,3 +33,5 @@ export { default as SnackbarAlert } from "./SnackbarAlert";
 export { default as NoData } from "./NoData";
 export { default as TabPaneV2 } from "./TabPaneV2";
 export { default as DatePicker } from "./DatePicker";
+export { default as ImageUpload } from "./ImageUpload";
+
