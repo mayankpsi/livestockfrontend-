@@ -145,7 +145,6 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   };
 
   const handleSnackBarAlert = () => {
-    console.log(alertsDataLength, "dchbdcvgvgvdg");
     if (!alertsDataLength) {
       openSnackbarAlert("error", "Nothing to Export");
     }

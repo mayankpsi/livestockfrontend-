@@ -4,6 +4,7 @@ import { CustomLabel } from "../ComponentsV2";
 import { useNavigate } from "react-router-dom";
 import { request } from "../apis/axios-utils";
 import useDateFormat from "../hooks/useDateFormat";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 export const LivestockContext = createContext();
 
@@ -145,18 +146,26 @@ export const LivestockContextProvider = ({ children }) => {
 
   const handleAddLivestock = async () => {
     setAddNewLivestockLoading(true);
-    const body = {
-      uID: addNewLivestock?.livestockUID,
-      name: addNewLivestock?.livestockName,
-      gender: addNewLivestock?.livestockGender,
-      deviceID: addNewLivestock?.collarUID,
-      liveStockImage: liveStockImage,
-    };
+    const config = {     
+      headers: { 'content-type': 'multipart/form-data' }
+  }
+
+    const formData = new FormData();
+    formData.append("uID", addNewLivestock?.livestockUID);
+    formData.append("name", addNewLivestock?.livestockName);
+    formData.append("gender", addNewLivestock?.livestockGender);
+    formData.append("deviceID", addNewLivestock?.collarUID);
+    formData.append("liveStockImage", liveStockImage);
+
+
+    console.log(formData,addNewLivestock?.livestockUID,"cdjvdcvdvgvcdgvdgvcgvdcgvg")
+
     try {
       const res = await request({
         url: "/liveStock/create",
         method: "POST",
-        data: body,
+        data: formData,
+        config
       });
       if (res?.status === 200) {
         handleAddLivestockModalClose();

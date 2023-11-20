@@ -10,10 +10,7 @@ import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
 import { chartCardData } from "../Data";
 
 const Health = ({ data }) => {
-  const {
-    setOpenBackdropLoader,
-    openSnackbarAlert,
-  } = useLivestockContext();
+  const { setOpenBackdropLoader, openSnackbarAlert } = useLivestockContext();
   const { formattedDate, getLongDateFormat, paginationDateFormat } =
     useDateFormat();
   const { getCamelCase } = useGetCamelCase();
@@ -51,7 +48,14 @@ const Health = ({ data }) => {
             throw new Error(msg);
           }
         })
-        .catch((err) => openSnackbarAlert("error", err?.message))
+        .catch((err) => {
+          const firstLoad =
+            paginationDateFormat(new Date(), "date") ===
+              paginationDateFormat(selectedDate, "date") &&
+            paginationDateFormat(new Date(), "date") ===
+              paginationDateFormat(selectedDate, "date");
+          if (!firstLoad) openSnackbarAlert("error", err?.message);
+        })
         .finally(() => setOpenBackdropLoader(false));
     }
   }, [data?.id, selectedDate]);

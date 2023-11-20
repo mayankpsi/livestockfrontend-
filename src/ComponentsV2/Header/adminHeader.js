@@ -5,6 +5,7 @@ import "../../assets/css/header.css";
 import "../../assets/css/style.css";
 import { SidebarSmall, Breadcrumb, ProfileMenu } from "../";
 import { useNavigate } from "react-router-dom";
+import AlertsDropdown from "../AlertsDropdown";
 
 const HeaderAdmin = ({ BreadcrumbData }) => {
   const [anchorE2, setAnchorE2] = useState(null);
@@ -34,7 +35,7 @@ const HeaderAdmin = ({ BreadcrumbData }) => {
           {window?.location?.pathname !== "/" ? 
             <Breadcrumb data={BreadcrumbData} />:<div></div>
           }
-
+          <AlertsDropdown/>
           <Grid item sx={{ columnGap: "1rem" }} className="flex">
             <Grid item className="flex center" onClick={()=> navigate("/alerts")}>
               <NotificationsNoneIcon

@@ -7,7 +7,7 @@ const ImageUpload = ({onUpload}) => {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    onUpload(file?.name)
+    onUpload(file);
     const reader = new FileReader();
 
     reader.onloadend = () => {
