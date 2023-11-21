@@ -11,7 +11,7 @@ import useFormattedImage from "../../../hooks/useFormatedImage";
 
 const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
   const { getLivestockImg } = useFormattedImage();
-  const {setLiveStockImage} = useLivestockContext();
+  const { setLiveStockImage, liveStockImage } = useLivestockContext();
 
   const { openSnackbarAlert, setIsError, isError } = useLivestockContext();
   const [isEditLivestockInfo, setIsEditLivestockInfo] = useState(true);
@@ -31,13 +31,13 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
 
   useEffect(() => {
     setLivestockInfoEdit({
-      collarUID: data?.collarUid,
+      collarUID: data?.collarUid || "N/A",
       livestockUID: data?.Uid,
       livestockName: data?.name,
       livestockGender: data?.gender,
     });
     if (data) {
-      setValue("collarUID", data?.collarUid);
+      setValue("collarUID", data?.collarUid || "N/A");
       setValue("livestockUID", data?.Uid || "");
       setValue("livestockName", data?.name || "");
       setValue("livestockGender", data?.gender || "");
@@ -60,13 +60,27 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
           uID: LivestockInfoEdit?.livestockUID,
           name: LivestockInfoEdit?.livestockName,
           gender: LivestockInfoEdit?.livestockGender,
-          imageChanges: false,
+          imageChanges: liveStockImage,
         };
+        const config = {
+          headers: { "content-type": "multipart/form-data" },
+        };
+        const formData = new FormData();
+        formData.append("id", data?.id);
+        formData.append("uID", LivestockInfoEdit?.livestockUID);
+        formData.append("name", LivestockInfoEdit?.livestockName);
+        formData.append("gender", LivestockInfoEdit?.livestockGender);
+        if (liveStockImage) {
+          formData.append("imageChanges", true);
+          formData.append("liveStockImageName", liveStockImage);
+        }
+
         try {
           const res = await request({
             url: `/liveStock/update`,
             method: "POST",
-            data: body,
+            data: formData,
+            config,
           });
           if (res?.status === 200) {
             openSnackbarAlert("success", "Livestock successfully updated!");
@@ -147,9 +161,8 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
           btnBgColor={btnBgColor}
           type="submit"
         />
-        {
-          true?(
-            <Box
+        {isEditLivestockInfo ? (
+          <Box
             component="img"
             sx={{
               height: "33vh",
@@ -161,8 +174,9 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
             alt="The house from the offer."
             src={getLivestockImg(data?.img)}
           />
-          ):<ImageUpload onUpload={setLiveStockImage}/>
-        }
+        ) : (
+          <ImageUpload onUpload={setLiveStockImage} />
+        )}
         <Stack direction="row" gap={2}>
           {getTextFiled(
             true,

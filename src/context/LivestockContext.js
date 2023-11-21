@@ -314,6 +314,7 @@ export const LivestockContextProvider = ({ children }) => {
         alertsDataLength,
         setAlertsDataLength,
         setLiveStockImage,
+        liveStockImage
       }}
     >
       {children}

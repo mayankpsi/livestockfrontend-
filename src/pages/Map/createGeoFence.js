@@ -1,11 +1,9 @@
 import React from "react";
-import { Typography, Button, Paper, Stack, Box } from "@mui/material";
+import { Typography, Paper, Stack, Box } from "@mui/material";
 import {GetMap, SkeletonLoader, CustomSelect} from "../../ComponentsV2";
 import { styled } from "@mui/system";
 import { ButtonPrimary, ButtonOutlinedRound } from "../../ComponentsV2/themeComponents";
-import useLivestockContext from "../../hooks/useLivestockContext";
 import useMapContext from "../../hooks/useMapContext";
-import useDateFormat from "../../hooks/useDateFormat";
 
 const CreateGeoFence = () => {
   const {
@@ -39,7 +37,6 @@ const CreateGeoFence = () => {
   });
 
   const submitState = localStorage.getItem("geofenceCreation") === "showEdit";
-  const {getRoundOffDigit} = useDateFormat()
 
   return (
     <Stack direction="row" justifyContent="space-between" mt={3} sx={{gap:{xl:5, lg:5, md:3, sm:2}}} >

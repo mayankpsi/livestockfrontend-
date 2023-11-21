@@ -15,7 +15,7 @@ const ChartCard = ({ label, value, icon, iconBg, valueColor, chartData,suffix })
       p={2}
       border={"1px solid #dddddd"}
       borderRadius="10px"
-      justifyContent='space-evenly'
+      justifyContent="space-evenly"
     >
       <Stack direction="row" alignItems="center" gap={2}>
         <Box

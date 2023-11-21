@@ -40,7 +40,9 @@ const DashboardCard = ({ title, total, img }) => {
           >
             {title}
           </Typography>
-          <Typography className="CardText b1c_color fs24px fontWeight700">
+          <Typography className="CardText b1c_color fs24px fontWeight700"
+          sx={{color:title?.toLowerCase() === "alerts" && Number(total) !== 0 ?"red !important":""}}
+          >
             {total}
           </Typography>
         </Grid>

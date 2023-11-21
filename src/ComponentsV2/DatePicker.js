@@ -1,6 +1,7 @@
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { Calendar } from "react-date-range";
+import { addDays } from 'date-fns';
 import { useEffect, useState, useRef } from "react";
 import { Stack, TextField, InputAdornment } from "@mui/material";
 import useDateFormat from "../hooks/useDateFormat";
@@ -63,6 +64,7 @@ const DatePicker = ({selectedDate, setSelectedDate}) => {
               date={new Date()}
               onChange={handleSelect}
               className="calendarElement"
+              maxDate={addDays(new Date(),0)}
             />
           )}
         </Stack>

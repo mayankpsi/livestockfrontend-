@@ -87,7 +87,7 @@ const Health = ({ data }) => {
     <Stack my={4} direction="column" alignItems="center" gap={4}>
       <Stack direction="row" justifyContent="space-between" width="100%">
         <TypographyPrimary sx={{ fontSize: "21px" }}>
-          Showing Health data of {getLongDateFormat(selectedDate)}
+          Showing Health Data of <span style={{color:"#B58B5D"}}>{getLongDateFormat(selectedDate)}</span>
         </TypographyPrimary>
         <DatePicker
           selectedDate={selectedDate}

@@ -1,7 +1,16 @@
 import React, { useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { Box, Button, Typography, Badge, Divider, IconButton,styled, createTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Badge,
+  Divider,
+  IconButton,
+  styled,
+  createTheme,
+} from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MuiAvatar from "@mui/material/Avatar";
 import MuiMenuItem from "@mui/material/MenuItem";
@@ -35,7 +44,6 @@ const styles = {
     border: 0,
   },
 };
-// const PerfectScrollbar = styled(PerfectScrollbarComponent)(styles);
 const Avatar = styled(MuiAvatar)`
   width: 2.375rem;
   height: 2.375rem;
@@ -67,13 +75,7 @@ const AlertsDropdown = () => {
   const handleDropdownClose = () => {
     setAnchorEl(null);
   };
-  const handleDropdownCloseWithUrl = () => {
-    // if (url) {
-    //   navigate(url);
-    //   GetAlertDetails();
-    // }
-    setAnchorEl(null);
-  };
+
   const ScrollWrapper = ({ children }) => {
     if (hidden) {
       return (
@@ -141,7 +143,7 @@ const AlertsDropdown = () => {
         aria-controls="customized-menu"
       >
         <Badge className="badge" max={999} badgeContent={10} color="primary">
-          <NotificationsNoneIcon fontSize="large" />
+          <NotificationsNoneIcon sx={{fontSize:"24px"}} />
         </Badge>
       </IconButton>
       <Menu
@@ -217,7 +219,7 @@ const AlertsDropdown = () => {
               })}
             </>
           ) : (
-           <NoNotifications/>
+            <NoNotifications />
           )}
         </ScrollWrapper>
         <MenuItem
@@ -232,10 +234,6 @@ const AlertsDropdown = () => {
             variant="contained"
             style={{
               fontSize: "1.2rem",
-              //   border: `1px solid ${"#fff"}`,
-              //   "&:hover": {
-              //     backgroundColor: "#5932EA" || "transparent",
-              //   },
             }}
             onClick={handleViewAll}
           >

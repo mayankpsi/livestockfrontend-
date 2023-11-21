@@ -20,7 +20,7 @@ const LivestockLogs = ({ data }) => {
     openSnackbarAlert,
     setOpenBackdropLoader,
   } = useLivestockContext();
-  const { paginationDateFormat } = useDateFormat();
+  const { paginationDateFormat,formattedDate } = useDateFormat();
   const [livestockLogs, setLivestockLogs] = useState();
   const [dataLength, setDataLength] = useState(0);
   const [paginationPageNo, setPaginationPageNo] = useState(1);
@@ -49,7 +49,7 @@ const LivestockLogs = ({ data }) => {
                   formattedData.push({
                     name: key,
                     value: ele[key],
-                    time: paginationDateFormat(ele.createdAt),
+                    time: formattedDate(ele.createdAt),
                   })
                 }
               })

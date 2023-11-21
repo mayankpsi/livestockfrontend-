@@ -12,7 +12,7 @@ const useDateFormat = () => {
         case "time":
           return time;
         default:
-          return `${date} ${time}`;
+          return `${time} ${date}`;
       }
     };
 

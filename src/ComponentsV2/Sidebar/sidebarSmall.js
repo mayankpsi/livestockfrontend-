@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Box, SwipeableDrawer, Button, List, Typography } from "@mui/material";
 import {MenuIcon} from "../../icons";
-import { Logo } from "../../assets";
+import { DashboardNoData as Logo } from "../../assets";
 import { routes } from "./routeData";
 import { useNavigate } from "react-router-dom";
 
@@ -92,14 +92,7 @@ export default function SidebarSmall() {
                 alignItems: "center",
               }}
             >
-              <Box
-                component="img"
-                sx={{
-                  width: 200,
-                }}
-                alt="logo"
-                src={Logo}
-              />
+              <Box component="img" sx={{ width: 130,my:2}} alt="logo" src={Logo} />
               <Typography
                 variant="h2"
                 sx={{

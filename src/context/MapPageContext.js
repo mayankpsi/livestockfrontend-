@@ -14,6 +14,7 @@ export const MapContentProvider = ({ children }) => {
   const [saveLocationData, setSaveLocationData] = useState(false);
   const [onGeofenceEdit, setOnGeofenceEdit] = useState(false);
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   //SNACKBAR ALERT
   const [snackbarAlert, setSnackbarAlert] = useState({
@@ -86,20 +87,22 @@ export const MapContentProvider = ({ children }) => {
     setIsLoading(false);
   };
 
-  const [isLoading, setIsLoading] = useState(false);
-
   // GET GEOFENCE ADDRESS BY LAT AND LNG
   const getGeolocationAddress = async (autoDetect, latitude, longitude) => {
     setOpenBackdropLoader(true);
     setIsLoading(true);
     if (autoDetect) {
       if ("geolocation" in navigator) {
-        navigator?.geolocation?.getCurrentPosition(async (position) => {
+        // console.log(navigator?.geolocation?.getCurrentPosition,"jsbhbhbhbhbhbhhbhhbhbhbhbhbh")
+         navigator?.geolocation?.getCurrentPosition(async (position) => {
           let { latitude, longitude } = position?.coords;
+          // console.log(navigator,"jsbhbhbhbhbhbhhbhhbhbhbhbhbhinside")
           getAddress(latitude, longitude);
         });
       } else {
         setIsLoading(false);
+        setOpenBackdropLoader(false);
+        openSnackbarAlert("error", "Error: Make sure you enable location");
       }
     } else {
       getAddress(latitude, longitude);

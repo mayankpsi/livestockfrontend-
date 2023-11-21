@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Stack, Typography, TextField, Box } from "@mui/material";
+import { Paper, Stack, Typography, TextField, Box, InputAdornment} from "@mui/material";
 import { BtnGroup } from "../../ComponentsV2";
 import { ButtonPrimary } from "../../ComponentsV2/themeComponents";
 import { useTheme } from "@emotion/react";
@@ -7,9 +7,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema, signUpSchema } from "../../utils/validationSchema";
 import { DashboardNoData } from "../../assets";
-import {btnData} from "./Data";
+import { btnData } from "./Data";
+import {VisibilityOutlinedIcon} from "../../icons";
 import "./index.css";
-
+import { useState } from "react";
 
 const ShowForm = ({
   setShowAnim,
@@ -24,6 +25,7 @@ const ShowForm = ({
   const theme = useTheme();
   const isLoginActive = isLogin === "log in";
   const schema = isLoginActive ? loginSchema : signUpSchema;
+  const [showPassword,setShowPassword] = useState(false);
 
   const {
     register,
@@ -51,8 +53,16 @@ const ShowForm = ({
       size="large"
       value={value}
       name={name}
+      type={name === "password" && !showPassword?"password":"text"}
       placeholder={placeholder}
-      InputProps={{ sx: { borderRadius: "0 !important" } }}
+      InputProps={{
+        sx: { borderRadius: "0 !important" },
+        endAdornment:name === "password"?(
+          <InputAdornment position="end" onClick={()=> setShowPassword(!showPassword)}>
+            <VisibilityOutlinedIcon />
+          </InputAdornment>
+        ):null,
+      }}
       {...register(name, { required: true })}
       onChange={onInputChange}
       error={errors?.[name] ? true : false}
@@ -68,7 +78,7 @@ const ShowForm = ({
       <Paper
         elevation={4}
         sx={{
-          minWidth: isLoginActive?352:600,
+          minWidth: isLoginActive ? 352 : 600,
           minHeight: 460,
           p: theme.spacing(4, 5),
           display: "flex",
@@ -122,45 +132,45 @@ const ShowForm = ({
             </>
           ) : (
             <>
-            <Stack direction="row" gap={2}>
-              {getInput(
-                "Full Name",
-                false,
-                "fullName",
-                false,
-                "Full Name",
-                onUserSignUp?.fullName,
-                change
-              )}
-              {getInput(
-                "Enter Email",
-                false,
-                "email",
-                false,
-                "Email",
-                onUserSignUp?.email,
-                change
-              )}
+              <Stack direction="row" gap={2}>
+                {getInput(
+                  "Full Name",
+                  false,
+                  "fullName",
+                  false,
+                  "Full Name",
+                  onUserSignUp?.fullName,
+                  change
+                )}
+                {getInput(
+                  "Enter Email",
+                  false,
+                  "email",
+                  false,
+                  "Email",
+                  onUserSignUp?.email,
+                  change
+                )}
               </Stack>
-              <Stack  direction="row" gap={2}>
-              {getInput(
-                "Phone",
-                false,
-                "phone",
-                false,
-                "phone",
-                onUserSignUp?.phone,
-                change
-              )}
-              {getInput(
-                "Enter Password",
-                false,
-                "password",
-                false,
-                "password",
-                onUserSignUp?.password,
-                change
-              )}
+              <Stack direction="row" gap={2}>
+                {getInput(
+                  "Phone",
+                  false,
+                  "phone",
+                  false,
+                  "phone",
+                  onUserSignUp?.phone,
+                  change
+                )}
+                {getInput(
+                  "Enter Password",
+                  false,
+                  "password",
+                  false,
+                  "password",
+                  onUserSignUp?.password,
+                  change
+                )}
               </Stack>
             </>
           )}

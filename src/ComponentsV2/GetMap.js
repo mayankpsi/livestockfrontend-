@@ -26,12 +26,6 @@ const GetMap = ({
   const [map, setMap] = React.useState(null);
 
   const onLoad = React.useCallback(function callback(map) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    // const bounds = new window.google.maps.LatLngBounds({
-    //   lat: Number(geofenceCoordinates?.lat),
-    //   lng: Number(geofenceCoordinates?.lng),
-    // });
-    // map.fitBounds(bounds);
     map.setZoom(18);
     setMap(map);
   }, []);
@@ -51,6 +45,7 @@ const GetMap = ({
         width: mapWidth,
         height: mapHeight,
       }}
+      
       onClick={(e) =>
         !geofenceCoordinates?.address
           ? getGeolocationAddress(false, e.latLng.lat(), e.latLng.lng())

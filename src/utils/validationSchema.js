@@ -16,7 +16,7 @@ const phoneValidation = Yup.string().required().matches(phoneRegExp, 'Phone numb
 const createPassword =  Yup.string()
     .required('No password provided.') 
     .min(
-      6,
+      8,
       'password must contain at least 8 characters'
     ).matches(isValid, 'Contain at least one uppercase, lowercase, number and special character');
 
