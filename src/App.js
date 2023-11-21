@@ -11,10 +11,10 @@ import {
   AlertsPage,
   ProfilePage,
   ViewCollarDetails,
-  NotFound
+  NotFound,
+  Notifications
 } from "./pages";
 import "./App.css";
-import { CellWifiOutlined } from "@mui/icons-material";
 
 function App() {
   // all-routes
@@ -42,6 +42,7 @@ function App() {
           <Route path="livestocks/:id" element={<LivestockDetails />} />
           <Route path="alerts" element={<AlertsPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFound/>} />

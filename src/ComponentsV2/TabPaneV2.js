@@ -2,7 +2,6 @@ import { Box, Button, Stack } from "@mui/material";
 import {
   TypographyPrimary,
   ButtonPrimary,
-  ButtonOutlinedRound,
 } from "./themeComponents";
 import CustomDateRangePicker from "./dateRangePicker";
 
@@ -26,7 +25,7 @@ const TabPaneV2 = ({
         sx={{
           textTransform: "capitalize",
           color: paneTextColor,
-          fontSize: "2rem",
+          fontSize: "1.8rem",
         }}
       >
         {paneText}

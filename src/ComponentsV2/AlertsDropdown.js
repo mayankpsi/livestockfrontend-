@@ -1,18 +1,13 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
-import Box from "@mui/material/Box";
 import dayjs from "dayjs";
-import { Button, Typography, Badge, Grid } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import { styled, createTheme } from "@mui/material/styles";
+import { Box, Button, Typography, Badge, Divider, IconButton,styled, createTheme } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MuiAvatar from "@mui/material/Avatar";
 import MuiMenuItem from "@mui/material/MenuItem";
 import MuiMenu from "@mui/material/Menu";
-import { FaRegBell } from "react-icons/fa";
-import {NotificationImg} from "../assets";
-// import PerfectScrollbarComponent from "react-perfect-scrollbar";
-// import notificationImg from "../../assets/img/notification.gif";
+import { NotificationsNoneIcon } from "../icons";
+import { NoNotifications } from "../ComponentsV2";
 
 const theme = createTheme();
 const Menu = styled(MuiMenu)(({ theme }) => ({
@@ -106,6 +101,37 @@ const AlertsDropdown = () => {
       );
     }
   };
+
+  const handleViewAll = () => {
+    navigate("/notifications");
+    setAnchorEl(null);
+  };
+  const data = [
+    {
+      name: "notification",
+      sensor: "sensor",
+      createdAt: "createdAt",
+      order_ref: {
+        name: "order_ref-name",
+      },
+    },
+    {
+      name: "notification1",
+      sensor: "sensor",
+      createdAt: "createdAt",
+      order_ref: {
+        name: "order_ref-name",
+      },
+    },
+    {
+      name: "notification 2",
+      sensor: "sensor",
+      createdAt: "createdAt",
+      order_ref: {
+        name: "order_ref-name",
+      },
+    },
+  ];
   return (
     <Fragment>
       <IconButton
@@ -114,12 +140,8 @@ const AlertsDropdown = () => {
         onClick={handleDropdownOpen}
         aria-controls="customized-menu"
       >
-        <Badge
-          className="badge"
-          max={999}
-          badgeContent={10}
-        >
-          <FaRegBell color="grey" />
+        <Badge className="badge" max={999} badgeContent={10} color="primary">
+          <NotificationsNoneIcon fontSize="large" />
         </Badge>
       </IconButton>
       <Menu
@@ -129,27 +151,30 @@ const AlertsDropdown = () => {
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <MenuItem disableRipple>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              width: "100%",
-            }}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            my: 2,
+          }}
+        >
+          <Typography
+            align="center"
+            sx={{ fontSize: "1.5rem", fontWeight: 600, width: "100%" }}
           >
-            <Typography align="center" sx={{ fontWeight: 600, width: "100%" }}>
-              Notifications
-            </Typography>
-          </Box>
-        </MenuItem>
+            Notifications
+          </Typography>
+        </Box>
+        <Divider />
         <ScrollWrapper>
-          {10 > 0 ? (
+          {data?.length > 0 ? (
             <>
-              {/* {data?.map((item, index) => {
+              {data?.map((item, index) => {
                 return (
                   <>
                     <MenuItem
-                      onClick={() => changeReadStatus(item)}
+                      //   onClick={() => changeReadStatus(item)}
                       key={index}
                     >
                       <Box
@@ -189,35 +214,10 @@ const AlertsDropdown = () => {
                     </MenuItem>
                   </>
                 );
-              })} */}
+              })}
             </>
           ) : (
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              sx={{ width: "100%", height: "40vh" }}
-              direction="column"
-            >
-              <Grid container justifyContent="center">
-                <img
-                  src={NotificationImg}
-                  alt="notification"
-                  width={150}
-                  height={150}
-                />
-              </Grid>
-              <Typography className="fs20px">
-                No notifications to show yet
-              </Typography>
-              <Typography
-                align="center"
-                className=" fs16px"
-                sx={{ color: "#6D787D", width: "90%" }}
-              >
-                You’ll see useful information here soon. Stay tuned!
-              </Typography>
-            </Grid>
+           <NoNotifications/>
           )}
         </ScrollWrapper>
         <MenuItem
@@ -231,14 +231,13 @@ const AlertsDropdown = () => {
             fullWidth
             variant="contained"
             style={{
-              color: "#fff",
-              backgroundColor: "#5932EA",
-              border: `1px solid ${"#fff"}`,
-              "&:hover": {
-                backgroundColor: "#5932EA" || "transparent",
-              },
+              fontSize: "1.2rem",
+              //   border: `1px solid ${"#fff"}`,
+              //   "&:hover": {
+              //     backgroundColor: "#5932EA" || "transparent",
+              //   },
             }}
-            onClick={() => handleDropdownCloseWithUrl("/notification-details")}
+            onClick={handleViewAll}
           >
             View All Notifications
           </Button>

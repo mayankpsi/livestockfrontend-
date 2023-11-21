@@ -2,6 +2,7 @@ import ShowCollars from "./ShowCollars";
 // SHOW COLLAR DETAIL DATA
 import Overview from "./viewCollarDetails/overview";
 import AssignLivestock from "./viewCollarDetails/assignLivestock";
+import CollarLogs from "./viewCollarDetails/CollarLogs";
 import {
     InfoOutlinedIcon,
     NetworkCellOutlinedIcon,
@@ -45,7 +46,7 @@ export const viewCollarDetailTabData = (data) => [
   },
   {
     label: "logs",
-    child: <h1>Logs</h1>,
+    child: <CollarLogs/>,
   },
 ];
 

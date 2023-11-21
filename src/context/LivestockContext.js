@@ -157,9 +157,6 @@ export const LivestockContextProvider = ({ children }) => {
     formData.append("deviceID", addNewLivestock?.collarUID);
     formData.append("liveStockImage", liveStockImage);
 
-
-    console.log(formData,addNewLivestock?.livestockUID,"cdjvdcvdvgvcdgvdgvcgvdcgvg")
-
     try {
       const res = await request({
         url: "/liveStock/create",

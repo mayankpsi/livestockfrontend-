@@ -47,16 +47,12 @@ const DashboardCard = ({ title, total, img }) => {
       </Grid>
       <Grid
         sx={{
-          borderRadius: "100%",
-          width: "70px",
-          height: "70px",
-          background: "#B58B5D",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <img src={img} style={{ width: "24px", height: "24px" }} alt="error" />
+        <img src={img} style={{ width: "70px", height: "70px" }} alt="error" />
       </Grid>
     </Stack>
   );

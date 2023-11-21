@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -9,7 +8,6 @@ import {
   Paper,
   IconButton,
   Box,
-  Stack,
 } from "@mui/material";
 
 export default function TableV2({
@@ -49,7 +47,7 @@ export default function TableV2({
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               {Object.values(row)
-                ?.filter((el) => el !== null && !el?.toString()?.includes("id"))
+                ?.filter((el) => el !== null)
                 ?.map((ele, ind) => (
                   <TableCell
                     component={ind === 0 ? "th" : ""}
@@ -69,6 +67,7 @@ export default function TableV2({
                           : tableColors[1]
                       }`,
                       fontSize: "1.5rem",
+                      textTransform:'capitalize'
                     }}
                   >
                     {!Array.isArray(ele) ? (

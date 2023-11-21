@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import { Stack, Box, TextField, MenuItem } from "@mui/material";
-import { TabPane } from "../../../ComponentsV2";
-import { Cow } from "../../../assets";
+import { TabPane, ImageUpload } from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addLivestockValidationSchema } from "../../../utils/validationSchema";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import { genderData } from "../../Data";
+import useFormattedImage from "../../../hooks/useFormatedImage";
 
 const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
+  const { getLivestockImg } = useFormattedImage();
+  const {setLiveStockImage} = useLivestockContext();
+
   const { openSnackbarAlert, setIsError, isError } = useLivestockContext();
   const [isEditLivestockInfo, setIsEditLivestockInfo] = useState(true);
   const [LivestockInfoEdit, setLivestockInfoEdit] = useState({
@@ -124,6 +127,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
       </TextField>
     );
   };
+
   return (
     <form onSubmit={handleSubmit(handelLivestockNewInfoSubmit)}>
       <Stack
@@ -143,17 +147,22 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
           btnBgColor={btnBgColor}
           type="submit"
         />
-        <Box
-          component="img"
-          sx={{
-            height: "33vh",
-            width: "100%",
-            objectFit: "cover",
-            borderRadius: "10px",
-          }}
-          alt="The house from the offer."
-          src={Cow}
-        />
+        {
+          isEditLivestockInfo?(
+            <Box
+            component="img"
+            sx={{
+              height: "33vh",
+              width: "100%",
+              objectFit: "cover",
+              borderRadius: "10px",
+            }}
+            crossOrigin="anonymous"
+            alt="The house from the offer."
+            src={getLivestockImg(data?.img)}
+          />
+          ):<ImageUpload onUpload={setLiveStockImage}/>
+        }
         <Stack direction="row" gap={2}>
           {getTextFiled(
             true,

@@ -4,13 +4,11 @@ import LivestockInfo from "../../Collars/viewCollarDetails/livestockInfo";
 import { TabPane, ParameterCard, StatusCard } from "../../../ComponentsV2";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import useGetCamelCase from "../../../hooks/useGetCamelCase";
-import useDateFormat from "../../../hooks/useDateFormat";
 import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
 import { statusCardData, parameterCardData } from "../Data";
 
 const Overview = ({ data }) => {
   const { getCamelCase } = useGetCamelCase();
-  const { formattedDate } = useDateFormat();
   const { getDynamicColor } = useGetColorDynamically();
   
   return (

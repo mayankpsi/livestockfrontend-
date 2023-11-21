@@ -8,3 +8,4 @@ export { default as ViewCollarDetails } from "./Collars/viewCollarDetails";
 export { default as LivestockDetails } from "./Livestocks/livestockDetail";
 export { default as Collars } from "./Collars/Collars";
 export { default as NotFound } from "./notFound";
+export { default as Notifications } from "./Notifications";

@@ -35,13 +35,9 @@ const HeaderAdmin = ({ BreadcrumbData }) => {
           {window?.location?.pathname !== "/" ? 
             <Breadcrumb data={BreadcrumbData} />:<div></div>
           }
-          <AlertsDropdown/>
           <Grid item sx={{ columnGap: "1rem" }} className="flex">
-            <Grid item className="flex center" onClick={()=> navigate("/alerts")}>
-              <NotificationsNoneIcon
-                className=" g_color fs24px "
-                onClick={handleNotify}
-              />
+            <Grid item className="flex center">
+            <AlertsDropdown/>
             </Grid>
             <Grid
               item

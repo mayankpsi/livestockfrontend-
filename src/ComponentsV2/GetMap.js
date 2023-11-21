@@ -2,11 +2,10 @@ import React from "react";
 import {
   GoogleMap,
   Marker,
-  LoadScript,
   useJsApiLoader,
   Circle,
 } from "@react-google-maps/api";
-import { Mark } from "../assets";
+import { SafeLivestockPointer, UnsafeLivestockPointer } from "../assets";
 import useMapContext from "../hooks/useMapContext";
 
 const MAP_KEY = "AIzaSyBoq0tt73i_mEUB4gsGN8_ClQpD9d9RqFE";
@@ -33,14 +32,18 @@ const GetMap = ({
     //   lng: Number(geofenceCoordinates?.lng),
     // });
     // map.fitBounds(bounds);
-    map.setZoom(18)
-
+    map.setZoom(18);
     setMap(map);
   }, []);
 
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
   }, []);
+
+  const getLivestockImg = (status) =>
+    status?.toLowerCase() === "safe"
+      ? SafeLivestockPointer
+      : UnsafeLivestockPointer;
 
   return isLoaded ? (
     <GoogleMap
@@ -64,12 +67,12 @@ const GetMap = ({
     >
       {isLivestocks &&
         livestockData &&
-        livestockData?.map(({ id, position }) => (
+        livestockData?.map(({ id, position, safeUnsafeStatus }) => (
           <Marker
             key={id}
             position={position}
             icon={{
-              url: Mark,
+              url: getLivestockImg(safeUnsafeStatus),
               scaledSize:
                 window && window.google && new window.google.maps.Size(30, 30),
             }}

@@ -1,8 +1,9 @@
 import {
-    ClientImg,
-    GatewayImg,
-    DeviceImg,
-    BMImg,
+    TotalCollars,
+    TotalLivestock,
+    UnsafeLivestock,
+    SafeLivestock,
+    AlertsDash
   } from "../../assets";
 
 export const deviceData = [
@@ -10,30 +11,30 @@ export const deviceData = [
       id: 1,
       title: "total collars",
       total: 'totalCollars',
-      img: ClientImg,
+      img: TotalCollars,
     },
     {
       id: 2,
       title: "total livestocks",
       total: 'totalLiveStock',
-      img: GatewayImg,
+      img: TotalLivestock,
     },
     {
       id: 3,
       title: "safe livestocks",
       total: 'totalSafeLiveStock',
-      img: BMImg,
+      img: SafeLivestock,
     },
     {
       id: 4,
       title: "unsafe livestocks",
       total: 'totalUnSafeLiveStock',
-      img: DeviceImg,
+      img: UnsafeLivestock,
     },
     {
       id: 5,
       title: "alerts",
       total: 'totalAlerts',
-    img: DeviceImg,
+    img: AlertsDash,
     },
   ];

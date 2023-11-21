@@ -73,6 +73,7 @@ const AdminDashBoard = () => {
           const { data } = res2?.data;
           const formattedData = data?.map((ele) => ({
             id: ele?.liveStockId,
+            safeUnsafeStatus:ele?.liveStockIsSafeOrNot?.status,
             position: {
               lat: ele?.location?.latitude,
               lng: ele?.location?.longitude,

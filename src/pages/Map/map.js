@@ -1,6 +1,6 @@
 import React from "react";
 import AdminUIContainer from "../../layout/AdminUIContainer";
-import { Breadcrumb, CustomTabs, BackdropLoader } from "../../ComponentsV2";
+import { CustomTabs, BackdropLoader } from "../../ComponentsV2";
 import { Typography, Container } from "@mui/material";
 import LiveLocation from "./liveLocation";
 import CreateGeoFence from "./createGeoFence";

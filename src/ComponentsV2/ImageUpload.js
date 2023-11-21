@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { AddCircleOutlineOutlinedIcon } from "../icons";
-import { Box } from "@mui/material";
+import {
+  AddCircleOutlineOutlinedIcon,
+  DeleteOutlineOutlinedIcon,
+} from "../icons";
+import { Box, Stack, Button } from "@mui/material";
 
-const ImageUpload = ({onUpload}) => {
+const ImageUpload = ({ onUpload }) => {
   const [imageUrl, setImageUrl] = useState(null);
 
   const handleFileUpload = (event) => {
@@ -30,21 +33,33 @@ const ImageUpload = ({onUpload}) => {
         position: "relative",
       }}
     >
-      <AddCircleOutlineOutlinedIcon sx={{ color: "#8F8F8F", fontSize: 150 }} />
-      <input
-        id="upload-image"
-        accept="image/*"
-        type="file"
-        style={{
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          cursor: "pointer",
-          opacity: 0,
-        }}
-        onChange={handleFileUpload}
-      />
-      {imageUrl && <img src={imageUrl} alt="Uploaded Image" height="300" />}
+      {!imageUrl ? (
+        <>
+          <AddCircleOutlineOutlinedIcon
+            sx={{ color: "#8F8F8F", fontSize: 150 }}
+          />
+          <input
+            id="upload-image"
+            accept="image/*"
+            type="file"
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              cursor: "pointer",
+              opacity: 0,
+            }}
+            onChange={handleFileUpload}
+          />
+        </>
+      ) : (
+        <Stack direction="column" alignItems="flex-end">
+          <Button variant="contained" color="error" sx={{ width: 60 }} onClick={() => setImageUrl(null)}>
+            <DeleteOutlineOutlinedIcon sx={{ fontSize: 32 }} />
+          </Button>
+          <img style={{width:200, height:200}} src={imageUrl} alt="Uploaded Image" height="300" />
+        </Stack>
+      )}
     </Box>
   );
 };

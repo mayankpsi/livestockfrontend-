@@ -204,6 +204,7 @@ const CollarInfo = ({ data }) => {
           <ShowLivestocks
             data={allUnassignCollars}
             onSubmit={(selectedValue) => handleCollarAssign(selectedValue)}
+            setOpenAddLivestockModal={() => setShowModal(false)}
           />
         }
         openModal={showModal}

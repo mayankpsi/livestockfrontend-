@@ -7,6 +7,7 @@ import LivestockDetails from "./pages/Livestocks/livestockDetail";
 import AlertsPage from "./pages/Alerts";
 import ProfilePage from "./pages/Profile";
 import AuthPage from "./pages/Authentication";
+import Notifications from "./pages/Notifications";
 
 export default function () {
   const routes = [
@@ -63,6 +64,12 @@ export default function () {
       key: "/admin/profile/",
       route: "/admin/profile/",
       component: <ProfilePage />,
+    },
+    {
+      name: "admin",
+      key: "/admin/notifications/",
+      route: "/admin/notifications/",
+      component: <Notifications />,
     }
   ];
 

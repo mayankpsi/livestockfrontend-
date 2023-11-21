@@ -14,6 +14,7 @@ import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import { alertsThresholdData } from "./alertThresholdData";
 import useDateFormat from "../../../hooks/useDateFormat";
+import LivestockLogs from "./LivestockLogs";
 
 const LivestockDetails = () => {
   const [data, setData] = useState();
@@ -48,9 +49,9 @@ const LivestockDetails = () => {
             temperature: data?.temperature,
             heartbeat: data?.heartBeat,
             steps: data?.steps,
-            rumination:data?.rumination,
+            rumination: data?.rumination,
             lastUpdate: formattedDate(data?.updatedAt),
-            img: null,
+            img: data?.imgPath,
             liveStocklocationStatus: data?.liveStocklocationStatus,
             collarId: data?.assignedDevice?._id,
             collarUid: data?.assignedDevice?.uID,
@@ -61,7 +62,7 @@ const LivestockDetails = () => {
             networkStrength: data?.assignedDevice?.networkStrength,
             battery: data?.assignedDevice?.battery,
             geolocation: data?.geolocation,
-            thresholds:data?.threshold,
+            thresholds: data?.threshold,
           };
           setData(formattedData);
           const thresholdFormattedData = alertsThresholdData?.map((ele) => {
@@ -84,7 +85,7 @@ const LivestockDetails = () => {
   const tabData = [
     {
       label: "overview",
-      child: <Overview data={data}/>,
+      child: <Overview data={data} />,
     },
     {
       label: "location",
@@ -107,6 +108,10 @@ const LivestockDetails = () => {
     {
       label: "collar",
       child: <CollarInfo data={data} />,
+    },
+    {
+      label: "Logs",
+      child: <LivestockLogs data={data} />,
     },
   ];
 
