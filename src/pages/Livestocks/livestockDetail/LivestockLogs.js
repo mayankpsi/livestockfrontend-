@@ -58,7 +58,6 @@ const LivestockLogs = ({ data }) => {
 
   const {
     paginationPageNo,
-    pageLimit,
     selectedDate,
     setSelectedDate,
     openSnackbarAlert,

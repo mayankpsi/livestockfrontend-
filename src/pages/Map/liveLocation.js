@@ -44,6 +44,7 @@ const LiveLocation = () => {
           isLivestocks={true}
           livestockData={getLivestockStatus?.map((ele) => ({
             id: ele?.liveStockId,
+            safeUnsafeStatus:ele?.liveStockIsSafeOrNot?.status,
             position: {
               lat: ele?.location?.latitude,
               lng: ele?.location?.longitude,
