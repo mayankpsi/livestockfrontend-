@@ -73,8 +73,9 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
         if (liveStockImage) {
           formData.append("imageChanges", true);
           formData.append("liveStockImageName", liveStockImage);
+        }else{
+          formData.append("imageChanges", false);
         }
-
         try {
           const res = await request({
             url: `/liveStock/update`,
