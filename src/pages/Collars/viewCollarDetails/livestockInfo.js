@@ -72,7 +72,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
         formData.append("gender", LivestockInfoEdit?.livestockGender);
         if (liveStockImage) {
           formData.append("imageChanges", true);
-          formData.append("liveStockImageName", liveStockImage);
+          formData.append("liveStockImage", liveStockImage);
         }else{
           formData.append("imageChanges", false);
         }
