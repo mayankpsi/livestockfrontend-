@@ -71,6 +71,7 @@ const LocationLog = ({ data, resentAlerts, geofenceData }) => {
           livestockData={[
             {
               id: Date.now(),
+              safeUnsafeStatus:data?.liveStocklocationStatus,
               position: {
                 lat: data?.geolocation?.lat,
                 lng: data?.geolocation?.lng,

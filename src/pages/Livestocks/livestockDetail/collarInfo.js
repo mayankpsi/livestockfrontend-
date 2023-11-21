@@ -196,7 +196,7 @@ const CollarInfo = ({ data }) => {
         </Stack>
       ) : (
         <Stack my={4}>
-          <AddBtn onClick={() => setShowModal(true)} />
+          <AddBtn text1="collar" text2="livestock" onClick={() => setShowModal(true)} />
         </Stack>
       )}
       <CustomModal

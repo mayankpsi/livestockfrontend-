@@ -110,7 +110,7 @@ const AssignLivestock = ({ data }) => {
             onBtnClick={handelLivestockRemove}
           />
         ) : (
-          <AddBtn onClick={() => setOpenAddLivestockModal(true)} />
+          <AddBtn text1="livestock" text2="collar"  onClick={() => setOpenAddLivestockModal(true)} />
         )}
       </Stack>
       <CustomModal

@@ -3,7 +3,7 @@ import React from "react";
 import {AddCircleOutlineOutlinedIcon} from "../icons";
 import { ButtonPrimary, TypographyPrimary } from "./themeComponents";
 
-const AddBtn = ({onClick}) => {
+const AddBtn = ({text1,text2,onClick}) => {
   return (
     <Box sx={{display:'flex', flexDirection:'column',alignItems:'flex-start'}}>
       <Stack
@@ -23,14 +23,14 @@ const AddBtn = ({onClick}) => {
           }}
           onClick={onClick}
         >
-          Assign Livestock
+          Assign {text1}
         </ButtonPrimary>
       </Stack>
       <TypographyPrimary>
-        Assign this collar to available livestock.
+        Assign this {text2} to available {text1}.
       </TypographyPrimary>
       <TypographyPrimary sx={{textAlign:'center', width:300}}>
-      Note : If no livestock is available then go to Livestock management - Add new Livestock
+      Note : If no {text1} is available then go to {text1} management - Add new {text1}
       </TypographyPrimary>
     </Box>
   );

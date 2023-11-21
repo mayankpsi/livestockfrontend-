@@ -148,7 +148,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
           type="submit"
         />
         {
-          isEditLivestockInfo?(
+          true?(
             <Box
             component="img"
             sx={{

@@ -74,7 +74,7 @@ const GetMap = ({
             icon={{
               url: getLivestockImg(safeUnsafeStatus),
               scaledSize:
-                window && window.google && new window.google.maps.Size(30, 30),
+                window && window.google && new window.google.maps.Size(50, 50),
             }}
           />
         ))}

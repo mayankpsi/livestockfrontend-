@@ -12,52 +12,9 @@ import useDateFormat from "../../../hooks/useDateFormat";
 import { request } from "../../../apis/axios-utils";
 
 const LivestockLogs = ({ data }) => {
-  const tableHeaders = ["name", "value", "date & time"];
-  const tableRows = [
-    {
-      name: "temperature sensor",
-      value: "101 F",
-      dateAndTime: "10:59 PM, 23/08/23",
-    },
-    {
-      name: "heartbeat sensor",
-      value: "80",
-      dateAndTime: "10:59 PM, 23/08/23",
-    },
-    {
-      name: "temperature sensor",
-      value: "101 F",
-      dateAndTime: "10:59 PM, 23/08/23",
-    },
-    {
-      name: "heartbeat sensor",
-      value: "80",
-      dateAndTime: "10:59 PM, 23/08/23",
-    },
-    {
-      name: "temperature sensor",
-      value: "101 F",
-      dateAndTime: "10:59 PM, 23/08/23",
-    },
-    {
-      name: "heartbeat sensor",
-      value: "80",
-      dateAndTime: "10:59 PM, 23/08/23",
-    },
-    {
-      name: "temperature sensor",
-      value: "101 F",
-      dateAndTime: "10:59 PM, 23/08/23",
-    },
-    {
-      name: "heartbeat sensor",
-      value: "Dixon Technologies India Ltd Plot No 06 Sect 90, Sector 90",
-      dateAndTime: "10:59 PM, 23/08/23",
-    },
-  ];
+  const tableHeaders = ["name", "value", "time"];
 
   const {
-    paginationPageNo,
     selectedDate,
     setSelectedDate,
     openSnackbarAlert,
@@ -65,6 +22,9 @@ const LivestockLogs = ({ data }) => {
   } = useLivestockContext();
   const { paginationDateFormat } = useDateFormat();
   const [livestockLogs, setLivestockLogs] = useState();
+  const [dataLength, setDataLength] = useState(0);
+  const [paginationPageNo, setPaginationPageNo] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
 
   //GET ALL ALERTS THRESHOLD
   useEffect(() => {
@@ -73,7 +33,7 @@ const LivestockLogs = ({ data }) => {
       request({
         url: `/liveStock/getLivestockLog?livestock_id=${
           data?.id
-        }&page=${paginationPageNo}&limit=10&startDate=${paginationDateFormat(
+        }&page=${paginationPageNo}&limit=2&startDate=${paginationDateFormat(
           selectedDate[0]?.startDate
         )}&endDate=${paginationDateFormat(selectedDate[0]?.startDate)}`,
       })
@@ -89,29 +49,40 @@ const LivestockLogs = ({ data }) => {
                   formattedData.push({
                     name: key,
                     value: ele[key],
-                    dateAndTime: paginationDateFormat(ele.createdAt),
+                    time: paginationDateFormat(ele.createdAt),
                   })
                 }
               })
             })
             setLivestockLogs(formattedData);
+            setDataLength(data?.dataLength);
+            setPageCount(data?.pageCount);
           } else {
             const msg = res?.response?.data?.message || "Something went wrong!";
             setLivestockLogs([]);
+            setDataLength(0);
+            setPageCount(1)
             throw new Error(msg);
           }
         })
         .catch((err) => {
           const firstLoad =
-            paginationDateFormat(new Date(), "date") ===
-              paginationDateFormat(selectedDate, "date") &&
-            paginationDateFormat(new Date(), "date") ===
-              paginationDateFormat(selectedDate, "date");
+            paginationDateFormat(new Date()) ===
+              paginationDateFormat(selectedDate[0]?.startDate) &&
+            paginationDateFormat(new Date()) ===
+              paginationDateFormat(selectedDate[0]?.endDate);
           if (!firstLoad) openSnackbarAlert("error", err?.message);
         })
         .finally(() => setOpenBackdropLoader(false));
     }
-  }, [data?.id, selectedDate]);
+  }, [data?.id, selectedDate, paginationPageNo]);
+
+  const handleSnackBarAlert = () => {
+    if (!dataLength) {
+      openSnackbarAlert("error", "Nothing to Export");
+    }
+  };
+
   return (
     <Box>
       <Stack sx={{ width: "100%", pb: 3 }}>
@@ -123,15 +94,15 @@ const LivestockLogs = ({ data }) => {
             clearBtn={false}
             onClearAll={() => {}}
             btnText={
-              0 ? (
-                <ExportAsCSV headers={tableHeaders} data={[]} fileName="alerts">
+              dataLength > 0 ? (
+                <ExportAsCSV headers={tableHeaders} data={livestockLogs} fileName="livestock-logs">
                   Export
                 </ExportAsCSV>
               ) : (
                 "Export"
               )
             }
-            onBtnClick={() => {}}
+            onBtnClick={handleSnackBarAlert}
             btnColor="#fff"
             btnBg="#B58B5D"
             selectedDate={selectedDate}
@@ -141,13 +112,13 @@ const LivestockLogs = ({ data }) => {
         <TableV2 tableHeadData={tableHeaders} tableRowData={livestockLogs} />
       </Stack>
       {livestockLogs?.length ? (
-        0 > 10 && (
+        dataLength > 10 && (
           <Stack direction="row" justifyContent="center">
             <CustomPagination
               size="large"
-              page={1}
-              count={1}
-              onPageChange={(pageNo) => {}}
+              page={paginationPageNo}
+              count={pageCount}
+              onPageChange={(pageNo) => setPaginationPageNo(pageNo)}
             />
           </Stack>
         )
