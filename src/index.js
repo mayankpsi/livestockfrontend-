@@ -6,6 +6,7 @@ import { CollarContextProvider } from "./context/CollarContext";
 import { LivestockContextProvider } from "./context/LivestockContext";
 import { ProfileContextProvider } from "./context/profileContext";
 import { AuthContextProvider } from "./context/AuthContext";
+import { NotificationContextProvider } from "./context/NotificationContext";
 import { AlertsContextProvider } from "./context/AlertsContext";
 import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
 import "./assets/css/style.css";
@@ -43,6 +44,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <AuthContextProvider>
+      <NotificationContextProvider>
       <MapContentProvider>
         <CollarContextProvider>
           <LivestockContextProvider>
@@ -59,6 +61,7 @@ root.render(
           </LivestockContextProvider>
         </CollarContextProvider>
       </MapContentProvider>
+      </NotificationContextProvider>
     </AuthContextProvider>
   </BrowserRouter>
 );

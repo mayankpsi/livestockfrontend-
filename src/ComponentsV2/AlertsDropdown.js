@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import {
@@ -17,6 +17,8 @@ import MuiMenuItem from "@mui/material/MenuItem";
 import MuiMenu from "@mui/material/Menu";
 import { NotificationsNoneIcon } from "../icons";
 import { NoNotifications } from "../ComponentsV2";
+import { NotificationContext } from "../context/NotificationContext";
+import useDateFormat from "../hooks/useDateFormat";
 
 const theme = createTheme();
 const Menu = styled(MuiMenu)(({ theme }) => ({
@@ -68,9 +70,19 @@ const AlertsDropdown = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const {
+    setUnreadToReadNotification,
+    getAllUnreadNotification,
+    getAllReadNotification,
+    allUnreadNotifications,
+  } = useContext(NotificationContext);
+  const { formattedDate } = useDateFormat();
+
   const hidden = useMediaQuery(theme.breakpoints.down("lg"));
   const handleDropdownOpen = (event) => {
     setAnchorEl(event.currentTarget);
+    getAllUnreadNotification();
+    getAllReadNotification();
   };
   const handleDropdownClose = () => {
     setAnchorEl(null);
@@ -108,32 +120,13 @@ const AlertsDropdown = () => {
     navigate("/notifications");
     setAnchorEl(null);
   };
-  const data = [
-    {
-      name: "notification",
-      sensor: "sensor",
-      createdAt: "createdAt",
-      order_ref: {
-        name: "order_ref-name",
-      },
-    },
-    {
-      name: "notification1",
-      sensor: "sensor",
-      createdAt: "createdAt",
-      order_ref: {
-        name: "order_ref-name",
-      },
-    },
-    {
-      name: "notification 2",
-      sensor: "sensor",
-      createdAt: "createdAt",
-      order_ref: {
-        name: "order_ref-name",
-      },
-    },
-  ];
+
+  const handleNotificationClick = (liveStockId, alertId) => {
+    navigate(`/livestocks/${liveStockId}`);
+    handleDropdownClose();
+    localStorage.setItem("currentTab", 3);
+    setUnreadToReadNotification(alertId);
+  };
   return (
     <Fragment>
       <IconButton
@@ -142,8 +135,13 @@ const AlertsDropdown = () => {
         onClick={handleDropdownOpen}
         aria-controls="customized-menu"
       >
-        <Badge className="badge" max={999} badgeContent={10} color="primary">
-          <NotificationsNoneIcon sx={{fontSize:"24px"}} />
+        <Badge
+          className="badge"
+          max={999}
+          badgeContent={allUnreadNotifications?.length}
+          color="primary"
+        >
+          <NotificationsNoneIcon sx={{ fontSize: "24px" }} />
         </Badge>
       </IconButton>
       <Menu
@@ -170,14 +168,16 @@ const AlertsDropdown = () => {
         </Box>
         <Divider />
         <ScrollWrapper>
-          {data?.length > 0 ? (
+          {allUnreadNotifications?.length > 0 ? (
             <>
-              {data?.map((item, index) => {
+              {allUnreadNotifications?.map((item) => {
                 return (
                   <>
                     <MenuItem
-                      //   onClick={() => changeReadStatus(item)}
-                      key={index}
+                      onClick={() =>
+                        handleNotificationClick(item?.liveStock, item?._id)
+                      }
+                      key={item?._id}
                     >
                       <Box
                         sx={{
@@ -186,31 +186,36 @@ const AlertsDropdown = () => {
                           alignItems: "center",
                         }}
                       >
-                        <Avatar alt={item?.name} src="/images/avatars/4.png" />
+                        {/* <Avatar alt={item?.name} src="/images/avatars/4.png" size="large" /> */}
                         <Box
                           sx={{
-                            mx: 4,
                             flex: "1 1",
                             display: "flex",
                             overflow: "hidden",
                             flexDirection: "column",
                           }}
                         >
-                          <MenuItemTitle className="tablecrow-cell-bg  ">
-                            {item?.order_ref?.name}
+                          <MenuItemTitle sx={{ fontSize: "12px" }}>
+                            {item?.liveStockName}
                           </MenuItemTitle>
-                          <MenuItemTitle>{item?.name}!</MenuItemTitle>
-                          <MenuItemSubtitle variant="body2">
-                            {item?.sensor}
+                          <MenuItemTitle sx={{ fontSize: "12px" }}>
+                            {item?.assignedDevice?.uID}
+                          </MenuItemTitle>
+                          <MenuItemSubtitle sx={{ fontSize: "14px" }}>
+                            {item?.message}
                           </MenuItemSubtitle>
                         </Box>
                         <Typography
                           variant="caption"
-                          sx={{ color: "text.disabled" }}
+                          sx={{
+                            color: "text.disabled",
+                            fontSize: "12px",
+                            fontWeight: "bold",
+                          }}
                         >
-                          {dayjs(item?.createdAt).format("h:mm A")}
+                          {formattedDate(item?.createdAt, "time")}
                           <br />
-                          {dayjs(item?.createdAt).format("DD-MM-YYYY")}
+                          {formattedDate(item?.createdAt, "date")}
                         </Typography>
                       </Box>
                     </MenuItem>
