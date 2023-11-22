@@ -87,16 +87,25 @@ export const MapContentProvider = ({ children }) => {
     setIsLoading(false);
   };
 
+  const getCoordinates = () => {
+    return new Promise(function(resolve, reject) {
+      navigator?.geolocation?.getCurrentPosition(resolve, reject);
+    });
+  }
+
   // GET GEOFENCE ADDRESS BY LAT AND LNG
   const getGeolocationAddress = async (autoDetect, latitude, longitude) => {
     setOpenBackdropLoader(true);
     setIsLoading(true);
     if (autoDetect) {
+      // const position = await getCoordinates();
+      // let { latitude, longitude } = position?.coords;
+      // getAddress(latitude, longitude);
+      // console.log(position,"jsbhbhbhbhbhbhhbhhbhbhbhbhbh");
       if ("geolocation" in navigator) {
         // console.log(navigator?.geolocation?.getCurrentPosition,"jsbhbhbhbhbhbhhbhhbhbhbhbhbh")
          navigator?.geolocation?.getCurrentPosition(async (position) => {
           let { latitude, longitude } = position?.coords;
-          // console.log(navigator,"jsbhbhbhbhbhbhhbhhbhbhbhbhbhinside")
           getAddress(latitude, longitude);
         });
       } else {

@@ -109,7 +109,7 @@ export const AlertsContextProvider = ({ children }) => {
       if (res?.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Alert successfully deleted!");
-        setTimeout(() => window.location.reload(), 1000);
+        setTimeout(() => window.location.reload(), 500);
       } else {
         throw new Error("Something went wrong");
       }
@@ -131,7 +131,7 @@ export const AlertsContextProvider = ({ children }) => {
       if (res?.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "All Alerts successfully deleted!");
-        setTimeout(() => window.location.reload(), 1000);
+        setTimeout(() => window.location.reload(), 500);
       } else {
         throw new Error("Something went wrong");
       }

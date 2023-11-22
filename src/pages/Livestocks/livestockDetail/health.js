@@ -99,7 +99,7 @@ const Health = ({ data }) => {
           ?.map((ele) => ({
             ...ele,
             value: data ? data[getCamelCase(ele?.label)] : "",
-            valueColor: getDynamicColor(data, ele),
+            valueColor: getDynamicColor(data, ele?.label),
           }))
           ?.map((ele) => (
             <ChartCard

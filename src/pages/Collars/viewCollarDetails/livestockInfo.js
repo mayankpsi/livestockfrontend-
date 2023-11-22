@@ -55,13 +55,6 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
     } else {
       setIsEditLivestockInfo(false);
       if (!isEditLivestockInfo) {
-        const body = {
-          id: data?.id,
-          uID: LivestockInfoEdit?.livestockUID,
-          name: LivestockInfoEdit?.livestockName,
-          gender: LivestockInfoEdit?.livestockGender,
-          imageChanges: liveStockImage,
-        };
         const config = {
           headers: { "content-type": "multipart/form-data" },
         };
@@ -90,6 +83,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
               message: null,
             });
             setIsEditLivestockInfo(true);
+            setTimeout(()=> window.location.reload(),500);
           } else if (res?.response?.data?.statusCode === 409) {
             setIsError({
               error: true,
@@ -162,19 +156,26 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
           btnBgColor={btnBgColor}
           type="submit"
         />
+        {console.log(data?.img,"dchdhbcdhbdcbhdcbhbdhbdhbc")}
         {isEditLivestockInfo ? (
-          <Box
-            component="img"
-            sx={{
-              height: "33vh",
-              width: "100%",
-              objectFit: "cover",
-              borderRadius: "10px",
-            }}
-            crossOrigin="anonymous"
-            alt="The house from the offer."
-            src={getLivestockImg(data?.img)}
-          />
+          // <Box
+          //   component="img"
+          //   sx={{
+          //     height: "33vh",
+          //     width: "100%",
+          //     objectFit: "cover",
+          //     borderRadius: "10px",
+          //   }}
+          //   crossOrigin="anonymous"
+          //   alt="The house from the offer."
+          //   src={data?.img}
+          // />
+          <img style={{
+                height: "33vh",
+                width: "100%",
+                objectFit: "cover",
+                borderRadius: "10px",
+              }} src={data?.img} alt="livestock image" />
         ) : (
           <ImageUpload onUpload={setLiveStockImage} />
         )}

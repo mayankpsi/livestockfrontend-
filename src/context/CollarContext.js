@@ -169,7 +169,7 @@ export const CollarContextProvider = ({ children }) => {
     if (res?.status === 200) {
       setOpenBackdropLoader(false);
       openSnackbarAlert("success", "Collar successfully deleted!");
-      setTimeout(() => window.location.reload(), 1000);
+      setTimeout(() => window.location.reload(), 500);
     } else {
       setOpenBackdropLoader(false);
       openSnackbarAlert("error", "Something went wrong :(");

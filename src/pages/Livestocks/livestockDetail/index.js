@@ -36,6 +36,8 @@ const LivestockDetails = () => {
 
   useEffect(() => {
     setOpenBackdropLoader(true);
+    // lastUpdateGeoFenceDependent: formattedDate(data?.updatedAt),
+    // lastUpdateDeviceDependent:formattedDate(data?.updated_At),
     request({ url: `/liveStock/getLiveStockByID/?liveStockID=${id}` })
       .then((res) => {
         if (res?.data?.data && res?.data?.statusCode === 200) {
@@ -111,7 +113,7 @@ const LivestockDetails = () => {
     },
     {
       label: "Logs",
-      child: <LivestockLogs data={data} />,
+      child: <LivestockLogs livestockData={data} />,
     },
   ];
 

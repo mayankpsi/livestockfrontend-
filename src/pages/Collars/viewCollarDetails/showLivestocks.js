@@ -12,6 +12,7 @@ const ShowLivestocks = ({
   isLivestock,
   onSubmit,
   setOpenAddLivestockModal,
+  openSnackbarAlert
 }) => {
   const [showLivestocks, setShowLivestocks] = useState(data);
   const [selectedValue, setSelectedValue] = useState();
@@ -29,6 +30,14 @@ const ShowLivestocks = ({
     const { value } = e.target;
     setQuery(value);
   };
+
+  const handleLivestockAssignSave = () => {
+    if(selectedValue){
+      onSubmit(selectedValue)
+    }else{
+      openSnackbarAlert()
+    }
+  }
 
   return (
     <Box>
@@ -77,7 +86,7 @@ const ShowLivestocks = ({
             setPaginatedData={(data) => {}}
           />
           <ButtonPrimary
-            onClick={() => onSubmit(selectedValue)}
+            onClick={handleLivestockAssignSave}
             sx={{
               position: "absolute",
               right: "35px",

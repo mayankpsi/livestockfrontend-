@@ -3,16 +3,17 @@ import useGetCamelCase from "./useGetCamelCase";
 const useGetColorDynamically = () => {
     const { getCamelCase } = useGetCamelCase();
  
-    const getDynamicColor = (data,ele) => {
+    const getDynamicColor = (data,label) => {
+      console.log(data,label, "djcbhbdhbchbhcbhdbhbdch")
         if (data) {
-          const currentValue = data[getCamelCase(ele?.label)];
+          const currentValue = data[getCamelCase(label)];
           const maxValue =
             data?.thresholds[
-              ele?.label === "heartbeat" ? "heartBeat" : getCamelCase(ele?.label)
+              label === "heartbeat" ? "heartBeat" : getCamelCase(label)
             ]?.high;
           const minValue =
             data?.thresholds[
-              ele?.label === "heartbeat" ? "heartBeat" : getCamelCase(ele?.label)
+              label === "heartbeat" ? "heartBeat" : getCamelCase(label)
             ]?.low;
           const color = currentValue?(
             currentValue > maxValue || currentValue < minValue

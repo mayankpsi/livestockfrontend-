@@ -14,7 +14,28 @@ export default function TableV2({
   tableHeadData,
   tableRowData,
   tableColors,
+  logs,
 }) {
+  const getColor = (ele, row) => {
+    let color;
+    if (logs?.length) {
+      let res = logs?.find(
+        (element) => row?.name?.toLowerCase() === element?.name?.toLowerCase()
+      );
+      color =
+        typeof ele === "number" && res?.color === "err-color" ? "#FC5555" : "";
+    } else {
+      color =
+        tableColors === undefined
+          ? null
+          : ele.toLowerCase().includes("pm") || ele.toLowerCase().includes("am")
+          ? null
+          : row?.title?.toLowerCase() === "safe"
+          ? tableColors[0]
+          : tableColors[1];
+    }
+    return color;
+  };
 
   return (
     <TableContainer component={Paper} sx={{ border: "1px solid #dddddd" }}>
@@ -56,18 +77,9 @@ export default function TableV2({
                     sx={{
                       fontWeight: "bold",
                       textTransform: "uppercase",
-                      color: `${
-                        tableColors === undefined
-                          ? null
-                          : ele.toLowerCase().includes("pm") ||
-                            ele.toLowerCase().includes("am")
-                          ? null
-                          : row?.title?.toLowerCase() === "safe"
-                          ? tableColors[0]
-                          : tableColors[1]
-                      }`,
+                      color: getColor(ele, row),
                       fontSize: "1.5rem",
-                      textTransform:'capitalize'
+                      textTransform: "capitalize",
                     }}
                   >
                     {!Array.isArray(ele) ? (

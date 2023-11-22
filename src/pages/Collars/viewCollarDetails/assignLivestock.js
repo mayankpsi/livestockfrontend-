@@ -40,7 +40,7 @@ const AssignLivestock = ({ data }) => {
       if (res.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Livestock successfully removed :)");
-        setTimeout(() => window.location.reload(), 1500);
+        setTimeout(() => window.location.reload(), 500);
       } else {
         throw new Error("something went wrong");
       }
@@ -85,7 +85,7 @@ const AssignLivestock = ({ data }) => {
       if (res.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Livestock successfully Added :)");
-        setTimeout(() => window.location.reload(), 1500);
+        setTimeout(() => window.location.reload(), 500);
       } else {
         throw new Error("something went wrong");
       }
@@ -119,6 +119,7 @@ const AssignLivestock = ({ data }) => {
             data={allUnassignLivestocks}
             onSubmit={(selectedValue) => handelLivestockAssign(selectedValue)}
             setOpenAddLivestockModal={setOpenAddLivestockModal}
+            openSnackbarAlert={() => openSnackbarAlert("error","Please choose a livestock to assign")}
             isLivestock={true}
           />
         }

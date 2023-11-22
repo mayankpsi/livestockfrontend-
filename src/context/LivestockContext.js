@@ -132,7 +132,7 @@ export const LivestockContextProvider = ({ children }) => {
     if (res?.status === 200) {
       setOpenBackdropLoader(false);
       openSnackbarAlert("success", "Livestock successfully deleted!");
-      setTimeout(() => window.location.reload(), 1000);
+      setTimeout(() => window.location.reload(), 500);
     } else {
       setOpenBackdropLoader(false);
       openSnackbarAlert("error", "Something went wrong :(");
@@ -168,7 +168,7 @@ export const LivestockContextProvider = ({ children }) => {
         handleAddLivestockModalClose();
         const msg = res?.data?.message || "Livestock successfully Added!";
         openSnackbarAlert("success", msg);
-        setTimeout(() => window.location.reload(), 1000);
+        setTimeout(() => window.location.reload(), 500);
       } else {
         if (res?.response?.status === 409) {
           setIsError({
@@ -236,7 +236,7 @@ export const LivestockContextProvider = ({ children }) => {
       if (res?.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Alert successfully deleted!");
-        setTimeout(() => window.location.reload(), 1000);
+        setTimeout(() => window.location.reload(), 500);
       } else {
         throw new Error("Something went wrong");
       }
@@ -258,7 +258,7 @@ export const LivestockContextProvider = ({ children }) => {
       if (res?.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "All alert successfully deleted!");
-        setTimeout(() => window.location.reload(), 1000);
+        setTimeout(() => window.location.reload(), 500);
       } else {
         throw new Error("Something went wrong");
       }

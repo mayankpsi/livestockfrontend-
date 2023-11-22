@@ -40,7 +40,7 @@ const CollarInfo = ({ data }) => {
       });
       if (res.status === 200) {
         openSnackbarAlert("success", "Livestock successfully removed :)");
-        setTimeout(() => window.location.reload(), 1500);
+        setTimeout(() => window.location.reload(), 500);
       } else {
         throw new Error("something went wrong");
       }
@@ -80,7 +80,7 @@ const CollarInfo = ({ data }) => {
       });
       if (res.status === 200) {
         openSnackbarAlert("success", "Collar successfully Added :)");
-        setTimeout(() => window.location.reload(), 1500);
+        setTimeout(() => window.location.reload(), 500);
       } else {
         throw new Error("something went wrong");
       }
@@ -205,6 +205,7 @@ const CollarInfo = ({ data }) => {
             data={allUnassignCollars}
             onSubmit={(selectedValue) => handleCollarAssign(selectedValue)}
             setOpenAddLivestockModal={() => setShowModal(false)}
+            openSnackbarAlert={() => openSnackbarAlert("error","Please choose a collar to assign")}
           />
         }
         openModal={showModal}

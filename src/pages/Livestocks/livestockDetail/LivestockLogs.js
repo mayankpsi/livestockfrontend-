@@ -10,9 +10,11 @@ import {
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import useDateFormat from "../../../hooks/useDateFormat";
 import { request } from "../../../apis/axios-utils";
+import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
 
-const LivestockLogs = ({ data }) => {
+const LivestockLogs = ({ livestockData }) => {
   const tableHeaders = ["name", "value", "time"];
+  const { getDynamicColor } = useGetColorDynamically();
 
   const {
     selectedDate,
@@ -20,7 +22,7 @@ const LivestockLogs = ({ data }) => {
     openSnackbarAlert,
     setOpenBackdropLoader,
   } = useLivestockContext();
-  const { paginationDateFormat,formattedDate } = useDateFormat();
+  const { paginationDateFormat, formattedDate } = useDateFormat();
   const [livestockLogs, setLivestockLogs] = useState();
   const [dataLength, setDataLength] = useState(0);
   const [paginationPageNo, setPaginationPageNo] = useState(1);
@@ -28,32 +30,44 @@ const LivestockLogs = ({ data }) => {
 
   //GET ALL ALERTS THRESHOLD
   useEffect(() => {
-    if (data?.id) {
+    if (livestockData?.id) {
       setOpenBackdropLoader(true);
       request({
         url: `/liveStock/getLivestockLog?livestock_id=${
-          data?.id
+          livestockData?.id
         }&page=${paginationPageNo}&limit=2&startDate=${paginationDateFormat(
           selectedDate[0]?.startDate
-        )}&endDate=${paginationDateFormat(selectedDate[0]?.startDate)}`,
+        )}&endDate=${paginationDateFormat(selectedDate[0]?.endDate)}`,
       })
         .then((res) => {
           if (res?.status === 200) {
             const { data } = res?.data;
             const formattedData = [];
-            data?.data?.forEach(ele => {
+            data?.data?.forEach((ele) => {
               const keys = Object.keys(ele);
-              keys?.forEach(key => {
-                const checkFor = key === "address" || key === "heartBeat" || key === "rumination" || key === "steps" || key === "temperature";
-                if(checkFor){
+              keys?.forEach((key) => {
+                const checkFor =
+                  key === "address" ||
+                  key === "heartBeat" ||
+                  key === "rumination" ||
+                  key === "steps" ||
+                  key === "temperature";
+                if (checkFor) {
                   formattedData.push({
                     name: key,
                     value: ele[key],
                     time: formattedDate(ele.createdAt),
-                  })
+                    color:
+                      key.toLowerCase() !== "address"
+                        ? getDynamicColor(
+                            { ...livestockData, [key]: ele[key] },
+                            key
+                          )
+                        : null,
+                  });
                 }
-              })
-            })
+              });
+            });
             setLivestockLogs(formattedData);
             setDataLength(data?.dataLength);
             setPageCount(data?.pageCount);
@@ -61,7 +75,7 @@ const LivestockLogs = ({ data }) => {
             const msg = res?.response?.data?.message || "Something went wrong!";
             setLivestockLogs([]);
             setDataLength(0);
-            setPageCount(1)
+            setPageCount(1);
             throw new Error(msg);
           }
         })
@@ -75,7 +89,7 @@ const LivestockLogs = ({ data }) => {
         })
         .finally(() => setOpenBackdropLoader(false));
     }
-  }, [data?.id, selectedDate, paginationPageNo]);
+  }, [livestockData?.id, selectedDate, paginationPageNo]);
 
   const handleSnackBarAlert = () => {
     if (!dataLength) {
@@ -95,7 +109,11 @@ const LivestockLogs = ({ data }) => {
             onClearAll={() => {}}
             btnText={
               dataLength > 0 ? (
-                <ExportAsCSV headers={tableHeaders} data={livestockLogs} fileName="livestock-logs">
+                <ExportAsCSV
+                  headers={tableHeaders}
+                  data={livestockLogs}
+                  fileName="livestock-logs"
+                >
                   Export
                 </ExportAsCSV>
               ) : (
@@ -109,7 +127,15 @@ const LivestockLogs = ({ data }) => {
             setSelectedDate={setSelectedDate}
           />
         </Stack>
-        <TableV2 tableHeadData={tableHeaders} tableRowData={livestockLogs} />
+        <TableV2
+          tableHeadData={tableHeaders}
+          tableRowData={livestockLogs?.map((ele) => ({
+            name: ele?.name,
+            value: ele?.value,
+            time: ele?.time,
+          }))}
+          logs={livestockLogs}
+        />
       </Stack>
       {livestockLogs?.length ? (
         dataLength > 10 && (

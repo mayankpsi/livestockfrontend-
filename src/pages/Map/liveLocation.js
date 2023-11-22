@@ -63,7 +63,7 @@ const LiveLocation = () => {
                   "safe"
                 )?.map((ele) => ({
                   liveStockName: ele.liveStockName,
-                  deviceName: ele.deviceName,
+                  deviceName: ele.deviceName || "N/A",
                 }))}
               />
             {!getFilteredLivestock(getLivestockStatus, "safe").length && <NoData />}
@@ -77,7 +77,7 @@ const LiveLocation = () => {
                 "unsafe"
               )?.map((ele) => ({
                 liveStockName: ele.liveStockName,
-                deviceName: ele.deviceName,
+                deviceName: ele.deviceName || "N/A",
               }))}
             />
             {!getFilteredLivestock(getLivestockStatus, "unsafe").length && <NoData />}

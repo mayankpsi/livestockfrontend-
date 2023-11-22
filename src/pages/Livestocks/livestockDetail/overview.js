@@ -59,7 +59,7 @@ const Overview = ({ data }) => {
                 ...ele,
                 time: data?.lastUpdate,
                 value: data ? data[getCamelCase(ele?.label)] : "",
-                valueColor: getDynamicColor(data, ele),
+                valueColor: getDynamicColor(data, ele?.label),
               }))
               ?.map((ele) => (
                 <ParameterCard
