@@ -1,14 +1,16 @@
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { request } from "../apis/axios-utils";
-import { CollectionsOutlined } from "@mui/icons-material";
+import useSocket from "../hooks/useSocket";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const socket = useSocket();
+  
   const from = location.state?.from?.pathname || "/";
   const [userData, setUserData] = useState({ data: {}, error: "" });
   const [onUserLogin, setOnUserLogin] = useState({ email: "", password: "" });
@@ -44,6 +46,11 @@ export const AuthContextProvider = ({ children }) => {
     setOnUserLogin({ ...onUserLogin, [name]: value });
   };
 
+  useEffect(() => {
+    socket.on("connection", () => {
+      console.log("connected to server");
+    });
+  }, []);
   const handleUserLoginSubmit = async () => {
     const body = {
       email: onUserLogin?.email,
@@ -62,10 +69,11 @@ export const AuthContextProvider = ({ children }) => {
         const loginCredentials = {
           accessToken: res.data.data.accessToken,
           userId: res.data.data.user._id,
-          userName: res.data.data.user.name
+          userName: res.data.data.user.name,
         };
+        socket.emit("login", { userId: res.data.data.user._id });
         localStorage.setItem("userData", JSON.stringify(loginCredentials));
-        setOnUserLogin({ email: "", password: "" })
+        setOnUserLogin({ email: "", password: "" });
         navigate(from, { replace: true });
         window.location.reload();
       } else if (res?.response?.data?.statusCode === 401) {
@@ -110,9 +118,9 @@ export const AuthContextProvider = ({ children }) => {
           email: "",
           password: "",
           phone: "",
-        })
-        // handle complete profile show modal only one time 
-        localStorage.setItem("showProfileCompleteModal","true")
+        });
+        // handle complete profile show modal only one time
+        localStorage.setItem("showProfileCompleteModal", "true");
       } else if (res?.response?.data?.statusCode === 403) {
         // EMAIL OR PHONE ALREADY REGISTERED
         showSnackbarAlert("error", res?.response?.data?.message);

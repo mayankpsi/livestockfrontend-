@@ -84,6 +84,7 @@ const AlertsDropdown = () => {
     getAllUnreadNotification();
     getAllReadNotification();
   };
+
   const handleDropdownClose = () => {
     setAnchorEl(null);
   };

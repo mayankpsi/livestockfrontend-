@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { request } from "../apis/axios-utils";
 import useUserId from "../hooks/useUserId";
+import useSocket from "../hooks/useSocket";
 
 export const NotificationContext = createContext();
 
@@ -10,6 +11,7 @@ export const NotificationContextProvider = ({ children }) => {
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
   const [allUnreadNotifications, setAllUnreadNotifications] = useState([]);
   const [allReadNotifications, setAllReadNotifications] = useState([]);
+  const socket = useSocket();
 
   //SNACKBAR ALERT
   const [snackbarAlert, setSnackbarAlert] = useState({
@@ -34,6 +36,12 @@ export const NotificationContextProvider = ({ children }) => {
     getAllUnreadNotification();
     getAllReadNotification();
   }, []);
+
+  useEffect(() => {
+    socket.on("notification",(payload) => {
+    console.log(payload,"payload--payload--payload--payload")
+    })
+  },[])
 
   const getAllUnreadNotification = async () => {
     setOpenBackdropLoader(true);
