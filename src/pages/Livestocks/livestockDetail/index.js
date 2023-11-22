@@ -36,8 +36,6 @@ const LivestockDetails = () => {
 
   useEffect(() => {
     setOpenBackdropLoader(true);
-    // lastUpdateGeoFenceDependent: formattedDate(data?.updatedAt),
-    // lastUpdateDeviceDependent:formattedDate(data?.updated_At),
     request({ url: `/liveStock/getLiveStockByID/?liveStockID=${id}` })
       .then((res) => {
         if (res?.data?.data && res?.data?.statusCode === 200) {
@@ -53,6 +51,8 @@ const LivestockDetails = () => {
             steps: data?.steps,
             rumination: data?.rumination,
             lastUpdate: formattedDate(data?.updatedAt),
+            lastUpdateGeoFenceDependent: formattedDate(data?.updatedAt),
+            lastUpdateDeviceDependent: formattedDate(data?.updated_At),
             img: data?.imgPath,
             liveStocklocationStatus: data?.liveStocklocationStatus,
             collarId: data?.assignedDevice?._id,

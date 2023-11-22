@@ -88,31 +88,45 @@ export const MapContentProvider = ({ children }) => {
   };
 
   const getCoordinates = () => {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       navigator?.geolocation?.getCurrentPosition(resolve, reject);
     });
-  }
+  };
 
   // GET GEOFENCE ADDRESS BY LAT AND LNG
   const getGeolocationAddress = async (autoDetect, latitude, longitude) => {
     setOpenBackdropLoader(true);
     setIsLoading(true);
     if (autoDetect) {
-      // const position = await getCoordinates();
-      // let { latitude, longitude } = position?.coords;
-      // getAddress(latitude, longitude);
-      // console.log(position,"jsbhbhbhbhbhbhhbhhbhbhbhbhbh");
-      if ("geolocation" in navigator) {
-        // console.log(navigator?.geolocation?.getCurrentPosition,"jsbhbhbhbhbhbhhbhhbhbhbhbhbh")
-         navigator?.geolocation?.getCurrentPosition(async (position) => {
-          let { latitude, longitude } = position?.coords;
-          getAddress(latitude, longitude);
+      getCoordinates()
+        .then((position) => {
+          if (position?.coords) {
+            let { latitude, longitude } = position?.coords;
+            getAddress(latitude, longitude);
+          }
+        })
+        .catch((err) => {
+          setOpenBackdropLoader(false);
+          openSnackbarAlert("error", err.message);
+          setIsLoading(false);
         });
-      } else {
-        setIsLoading(false);
-        setOpenBackdropLoader(false);
-        openSnackbarAlert("error", "Error: Make sure you enable location");
-      }
+      // console.log(position,"djbhdbhbhbhbbhbhbhbhbhbhb")
+      // if (position?.coords) {
+      //   let { latitude, longitude } = position?.coords;
+      //   getAddress(latitude, longitude);
+      // }
+      // console.log(position,"jsbhbhbhbhbhbhhbhhbhbhbhbhbh");
+      // if ("geolocation" in navigator) {
+      //   // console.log(navigator?.geolocation?.getCurrentPosition,"jsbhbhbhbhbhbhhbhhbhbhbhbhbh")
+      //    navigator?.geolocation?.getCurrentPosition(async (position) => {
+      //     let { latitude, longitude } = position?.coords;
+      //     getAddress(latitude, longitude);
+      //   });
+      // } else {
+      //   setIsLoading(false);
+      //   setOpenBackdropLoader(false);
+      //   openSnackbarAlert("error", "Error: Make sure you enable location");
+      // }
     } else {
       getAddress(latitude, longitude);
     }

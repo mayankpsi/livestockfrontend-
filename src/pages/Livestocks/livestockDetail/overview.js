@@ -42,7 +42,7 @@ const Overview = ({ data }) => {
         >
           <TabPane
             text="Status"
-            secondaryText={`Last Update : ${data?.lastUpdate}`}
+            secondaryText={`Last Update : ${data?.lastUpdateGeoFenceDependent}`}
             btnText={data?.liveStocklocationStatus || "N/A"}
             hover={false}
             btnIcon={false}
@@ -57,7 +57,7 @@ const Overview = ({ data }) => {
             {parameterCardData
               ?.map((ele) => ({
                 ...ele,
-                time: data?.lastUpdate,
+                time: data?.lastUpdateDeviceDependent,
                 value: data ? data[getCamelCase(ele?.label)] : "",
                 valueColor: getDynamicColor(data, ele?.label),
               }))
