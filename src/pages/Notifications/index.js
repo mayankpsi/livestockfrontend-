@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import AdminUIContainer from "../../layout/AdminUIContainer";
 import {
   BtnGroup,
@@ -6,6 +6,7 @@ import {
   NoNotifications,
   NotificationCard,
   BackdropLoader,
+  CustomPagination
 } from "../../ComponentsV2";
 import { Typography, Container, Stack } from "@mui/material";
 import { notificationBtnData } from "./Data";
@@ -28,13 +29,17 @@ const Notifications = () => {
     allReadNotifications,
     setAllUnreadToReadNotification,
     clearAllReadNotification,
+    unReadUtils,
+    setUnreadUtils,
+    readUtils,
+    setReadUtils,
   } = useContext(NotificationContext);
   const { formattedDate } = useDateFormat();
 
   const BreadcrumbData = [
     {
       label: "Notifications",
-      link: "/",
+      link: "notifications",
     },
   ];
   const isUnRead = selectedNotificationTab === "unread";
@@ -60,6 +65,12 @@ const Notifications = () => {
     localStorage.setItem("currentTab", 3);
     setUnreadToReadNotification(alertId);
   };
+
+  const getTitle = () => {
+    const dataLength = isUnRead? unReadUtils?.dataLength:readUtils?.dataLength;
+    const title = `showing ${dataLength>10?10:dataLength} out of ${dataLength} Notifications`;
+    return title;
+  }
   return (
     <AdminUIContainer
       openAlert={snackbarAlert.open}
@@ -84,7 +95,7 @@ const Notifications = () => {
           />
           <Stack width={"100%"}>
             <TabPaneV2
-              paneText="showing 10 out of 1000 Notifications"
+              paneText={getTitle()}
               paneTextColor="#000"
               datePicker={false}
               clearBtn={false}
@@ -143,6 +154,16 @@ const Notifications = () => {
             </Stack>
           )}
         </Stack>
+        {(isUnRead? unReadUtils?.dataLength:readUtils?.dataLength) > 10 ? (
+          <Stack direction="row" justifyContent="center" py={4}>
+            <CustomPagination
+              size="large"
+              page={isUnRead?unReadUtils?.paginationPageNo:readUtils?.paginationPageNo}
+              count={isUnRead?unReadUtils?.pageCount:readUtils?.pageCount}
+              onPageChange={(pageNo) => isUnRead?setUnreadUtils({...unReadUtils, paginationPageNo:pageNo}):setReadUtils({...readUtils, paginationPageNo:pageNo})}
+            />
+          </Stack>
+        ):null}
       </Container>
     </AdminUIContainer>
   );

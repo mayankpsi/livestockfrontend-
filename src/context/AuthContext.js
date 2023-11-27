@@ -71,7 +71,6 @@ export const AuthContextProvider = ({ children }) => {
           userId: res.data.data.user._id,
           userName: res.data.data.user.name,
         };
-        socket.emit("login", { userId: res.data.data.user._id });
         localStorage.setItem("userData", JSON.stringify(loginCredentials));
         setOnUserLogin({ email: "", password: "" });
         navigate(from, { replace: true });

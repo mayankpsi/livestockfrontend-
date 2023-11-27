@@ -13,6 +13,8 @@ import useCollarContext from "../../hooks/useCollarContext";
 import { useNavigate } from "react-router-dom";
 import { request } from "../../apis/axios-utils";
 import { deviceData } from "./Data";
+import useSocket from "../../hooks/useSocket";
+import useUserId from "../../hooks/useUserId";
 
 const AdminDashBoard = () => {
   const theme = useTheme();
@@ -42,6 +44,13 @@ const AdminDashBoard = () => {
     geolocationLng: 0,
     geolocationRadius: 0,
   });
+
+  const socket = useSocket();
+  const userId = useUserId();
+
+  useEffect(()=> {
+    if(userId) socket.emit("login", { userId: userId });
+  },[])
 
   useEffect(() => {
     setOpenBackdropLoader(true);

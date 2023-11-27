@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from "react";
 import { request } from "../apis/axios-utils";
-import useUserId from "../hooks/useUserId";
 import useSocket from "../hooks/useSocket";
 
 export const NotificationContext = createContext();
@@ -11,6 +10,17 @@ export const NotificationContextProvider = ({ children }) => {
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
   const [allUnreadNotifications, setAllUnreadNotifications] = useState([]);
   const [allReadNotifications, setAllReadNotifications] = useState([]);
+  const [unReadUtils, setUnreadUtils] = useState({
+    dataLength: 0,
+    paginationPageNo: 1,
+    pageCount: 1,
+  });
+  const [readUtils, setReadUtils] = useState({
+    dataLength: 0,
+    paginationPageNo: 1,
+    pageCount: 1,
+  });
+
   const socket = useSocket();
 
   //SNACKBAR ALERT
@@ -38,23 +48,33 @@ export const NotificationContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    socket.on("notification",(payload) => {
-    console.log(payload,"payload--payload--payload--payload")
-    })
-  },[])
+    socket.on("notification", (payload) => {
+      console.log(payload, "payload--payload--payload--payload");
+    });
+  }, []);
 
   const getAllUnreadNotification = async () => {
     setOpenBackdropLoader(true);
     try {
       const res = await request({
-        url: `/liveStock/getUnreadNotfication?page=1&limit=5`,
+        url: `/liveStock/getUnreadNotfication?page=${unReadUtils?.paginationPageNo}&limit=10`,
       });
       if (res?.status === 200) {
         const { data } = res?.data;
         setAllUnreadNotifications(data?.unreadAlertData);
         setOpenBackdropLoader(false);
+        setUnreadUtils({
+          ...unReadUtils,
+          dataLength: data?.dataLength,
+          pageCount: data?.pageCount,
+        });
       } else {
         setAllUnreadNotifications([]);
+        setUnreadUtils({
+          ...unReadUtils,
+          dataLength: 0,
+          pageCount: 1,
+        });
         throw new Error("Something went wrong");
       }
     } catch (error) {
@@ -67,14 +87,24 @@ export const NotificationContextProvider = ({ children }) => {
     setOpenBackdropLoader(true);
     try {
       const res = await request({
-        url: `/liveStock/getReadNotification?page=1&limit=5`,
+        url: `/liveStock/getReadNotification?page=${readUtils?.paginationPageNo}&limit=10`,
       });
       if (res?.status === 200) {
         const { data } = res?.data;
         setAllReadNotifications(data?.readalertData);
         setOpenBackdropLoader(false);
+        setReadUtils({
+          ...readUtils,
+          dataLength: data?.dataLength,
+          pageCount: data?.pageCount,
+        });
       } else {
         setAllReadNotifications([]);
+        setReadUtils({
+          ...readUtils,
+          dataLength: 0,
+          pageCount: 1,
+        });
         throw new Error("Something went wrong");
       }
     } catch (error) {
@@ -160,6 +190,10 @@ export const NotificationContextProvider = ({ children }) => {
         setSelectedNotificationTab,
         getAllReadNotification,
         clearAllReadNotification,
+        unReadUtils,
+        setUnreadUtils,
+        readUtils,
+        setReadUtils,
       }}
     >
       {children}

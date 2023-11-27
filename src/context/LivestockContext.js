@@ -178,9 +178,9 @@ export const LivestockContextProvider = ({ children }) => {
         } else {
           throw new Error("Something went wrong");
         }
-        setAddNewLivestockLoading(false);
       }
     } catch (error) {
+      setAddNewLivestockLoading(false);
       const msg = error?.message || "Something went wrong :(";
       openSnackbarAlert("error", msg);
     }
