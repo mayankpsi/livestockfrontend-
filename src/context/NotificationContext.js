@@ -1,8 +1,10 @@
 import { createContext, useState, useEffect } from "react";
 import { request } from "../apis/axios-utils";
-import useSocket from "../hooks/useSocket";
+import io from "socket.io-client";
+import useUserId from "../hooks/useUserId";
 
 export const NotificationContext = createContext();
+const socket = io("http://localhost:8085/",{transports:["websocket"]});
 
 export const NotificationContextProvider = ({ children }) => {
   const [selectedNotificationTab, setSelectedNotificationTab] =
@@ -21,7 +23,8 @@ export const NotificationContextProvider = ({ children }) => {
     pageCount: 1,
   });
 
-  const socket = useSocket();
+
+ const userId = useUserId();
 
   //SNACKBAR ALERT
   const [snackbarAlert, setSnackbarAlert] = useState({
@@ -47,9 +50,16 @@ export const NotificationContextProvider = ({ children }) => {
     getAllReadNotification();
   }, []);
 
+
+
   useEffect(() => {
+    
+    if (userId){
+      socket.emit("login", { userId: userId });
+    }
+
     socket.on("notification", (payload) => {
-      console.log(payload, "payload--payload--payload--payload");
+      setUnreadUtils(prev => ({...prev, dataLength:prev.dataLength+1}))
     });
   }, []);
 

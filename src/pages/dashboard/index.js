@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { Box, Typography, Stack, Paper } from "@mui/material";
 import AdminUIContainer from "../../layout/AdminUIContainer";
-import { GetMap, DashboardCard, CustomModal, BackdropLoader} from "../../ComponentsV2";
-import { AddCircleOutlineOutlinedIcon } from "../../icons";
 import {
-  TypographyPrimary,
-} from "../../ComponentsV2/themeComponents";
+  GetMap,
+  DashboardCard,
+  CustomModal,
+  BackdropLoader,
+} from "../../ComponentsV2";
+import { AddCircleOutlineOutlinedIcon } from "../../icons";
+import { TypographyPrimary } from "../../ComponentsV2/themeComponents";
 import ModalContent from "./ModalContent";
 import { DashboardNoData } from "../../assets";
 import { useTheme } from "@emotion/react";
@@ -13,8 +16,6 @@ import useCollarContext from "../../hooks/useCollarContext";
 import { useNavigate } from "react-router-dom";
 import { request } from "../../apis/axios-utils";
 import { deviceData } from "./Data";
-import useSocket from "../../hooks/useSocket";
-import useUserId from "../../hooks/useUserId";
 
 const AdminDashBoard = () => {
   const theme = useTheme();
@@ -33,7 +34,7 @@ const AdminDashBoard = () => {
   )?.userName?.split(" ")[0];
   const firstName = userName?.charAt(0)?.toUpperCase() + userName?.slice(1);
   const [getLivestockStatus, setGetLivestockStatus] = useState([]);
-  const [openBackdropLoader, setOpenBackdropLoader] = useState(false)
+  const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
   const [dashboardData, setDashboardData] = useState({
     totalCollars: 0,
     totalLiveStock: 0,
@@ -45,12 +46,6 @@ const AdminDashBoard = () => {
     geolocationRadius: 0,
   });
 
-  const socket = useSocket();
-  const userId = useUserId();
-
-  useEffect(()=> {
-    if(userId) socket.emit("login", { userId: userId });
-  },[])
 
   useEffect(() => {
     setOpenBackdropLoader(true);
@@ -69,7 +64,9 @@ const AdminDashBoard = () => {
             totalLiveStock: data?.TotalLiveStock,
             totalSafeLiveStock: data?.TotalSafeLiveStock,
             totalUnSafeLiveStock: data?.TotalUnSafeLiveStock,
-            totalAlerts: data?.AllAlertsCount[0]?.totalAlerts?data?.AllAlertsCount[0]?.totalAlerts:0,
+            totalAlerts: data?.AllAlertsCount[0]?.totalAlerts
+              ? data?.AllAlertsCount[0]?.totalAlerts
+              : 0,
             geolocationLat: data?.GeofenceData?.lat,
             geolocationLng: data?.GeofenceData?.lng,
             geolocationRadius: data?.GeofenceData?.radius,
@@ -82,7 +79,7 @@ const AdminDashBoard = () => {
           const { data } = res2?.data;
           const formattedData = data?.map((ele) => ({
             id: ele?.liveStockId,
-            safeUnsafeStatus:ele?.liveStockIsSafeOrNot?.status,
+            safeUnsafeStatus: ele?.liveStockIsSafeOrNot?.status,
             position: {
               lat: ele?.location?.latitude,
               lng: ele?.location?.longitude,
@@ -94,7 +91,7 @@ const AdminDashBoard = () => {
         }
       })
       .catch((err) => console.log(err.message))
-      .finally(() => setOpenBackdropLoader(false))
+      .finally(() => setOpenBackdropLoader(false));
   }, []);
 
   return (
@@ -218,7 +215,6 @@ const AdminDashBoard = () => {
                   </Box>
                 </Box>
               ) : (
-                
                 <GetMap
                   mapWidth="100%"
                   mapHeight="100%"

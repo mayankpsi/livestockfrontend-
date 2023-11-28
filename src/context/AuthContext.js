@@ -2,15 +2,12 @@ import { createContext, useEffect } from "react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { request } from "../apis/axios-utils";
-import useSocket from "../hooks/useSocket";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const socket = useSocket();
-  
   const from = location.state?.from?.pathname || "/";
   const [userData, setUserData] = useState({ data: {}, error: "" });
   const [onUserLogin, setOnUserLogin] = useState({ email: "", password: "" });
@@ -46,11 +43,6 @@ export const AuthContextProvider = ({ children }) => {
     setOnUserLogin({ ...onUserLogin, [name]: value });
   };
 
-  useEffect(() => {
-    socket.on("connection", () => {
-      console.log("connected to server");
-    });
-  }, []);
   const handleUserLoginSubmit = async () => {
     const body = {
       email: onUserLogin?.email,

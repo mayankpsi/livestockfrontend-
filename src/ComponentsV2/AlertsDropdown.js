@@ -1,6 +1,5 @@
 import React, { useState, Fragment, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
 import {
   Box,
   Button,
@@ -51,6 +50,7 @@ const Avatar = styled(MuiAvatar)`
   height: 2.375rem;
   font-size: 1.125rem;
 `;
+
 const MenuItemTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   flex: "1 1 100%",
@@ -60,6 +60,7 @@ const MenuItemTitle = styled(Typography)(({ theme }) => ({
   textOverflow: "ellipsis",
   marginBottom: theme.spacing(0.75),
 }));
+
 const MenuItemSubtitle = styled(Typography)`
   flex: "1 1 100%",
   overflow: "hidden",
@@ -75,6 +76,7 @@ const AlertsDropdown = () => {
     getAllUnreadNotification,
     getAllReadNotification,
     allUnreadNotifications,
+    unReadUtils
   } = useContext(NotificationContext);
   const { formattedDate } = useDateFormat();
 
@@ -139,7 +141,7 @@ const AlertsDropdown = () => {
         <Badge
           className="badge"
           max={999}
-          badgeContent={allUnreadNotifications?.length}
+          badgeContent={unReadUtils?.dataLength}
           color="primary"
         >
           <NotificationsNoneIcon sx={{ fontSize: "24px" }} />
