@@ -71,19 +71,19 @@ export const viewCollarDetailsBreadcrumbData = (data) => [
       suffix:""
     },
     {
-      text: "network strength",
-      status: "good",
+      text: "pedometer battery",
+      status: "56",
       icon: (
-        <NetworkCellOutlinedIcon
+        <Battery5BarOutlinedIcon
           fontSize="large"
           sx={{ mr: 1, color: "#347D00" }}
         />
       ),
-      statusColor: "#347D00",
-      suffix:""
+      statusColor: "#F19B4F",
+      suffix:"%"
     },
     {
-      text: "battery",
+      text: "collar battery",
       status: "56",
       icon: (
         <Battery5BarOutlinedIcon

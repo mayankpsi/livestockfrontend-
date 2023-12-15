@@ -13,6 +13,7 @@ import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import { deviceInfoData, statusCardData } from "../Data";
+import useDateFormat from "../../../hooks/useDateFormat";
 
 const CollarInfo = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
@@ -20,6 +21,7 @@ const CollarInfo = ({ data }) => {
   const theme = useTheme();
   const { getCamelCase } = useGetCamelCase();
   const { openSnackbarAlert } = useLivestockContext();
+  const {formattedDate} = useDateFormat()
 
   useEffect(() => {
     if (!data?.collarUid) {
@@ -162,7 +164,7 @@ const CollarInfo = ({ data }) => {
                       <Box component="span">:</Box>
                     </TypographyPrimary>
                     <TypographyPrimary sx={{ color: "#222222" }}>
-                      {ele.value}
+                      {ele?.label?.toLowerCase()?.includes("added")? formattedDate(ele.value):ele?.value}
                     </TypographyPrimary>
                   </Box>
                 ))}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Stack } from "@mui/material";
+import { IconButton, Stack } from "@mui/material";
 import {
   AlertCard,
   TableV2,
@@ -213,10 +213,13 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
             .map((ele) => ({
               ...ele,
               action: [
-                <DeleteOutlineOutlinedIcon
+                <IconButton aria-label="delete">
+                  <DeleteOutlineOutlinedIcon
                   fontSize="large"
                   onClick={() => handleAlertDelete(ele.id)}
-                />,
+                />
+                </IconButton>
+                ,
               ],
             }))
             .map((ele) => {

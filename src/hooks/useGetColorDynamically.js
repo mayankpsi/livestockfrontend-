@@ -4,7 +4,6 @@ const useGetColorDynamically = () => {
     const { getCamelCase } = useGetCamelCase();
  
     const getDynamicColor = (data,label) => {
-      console.log(data,label, "djcbhbdhbchbhcbhdbhbdch")
         if (data) {
           const currentValue = data[getCamelCase(label)];
           const maxValue =

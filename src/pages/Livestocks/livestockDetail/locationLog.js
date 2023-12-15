@@ -14,7 +14,7 @@ const tableColors = ["#06B95F", "#FC5555"];
 const tableHeadData = [];
 const LocationLog = ({ data, resentAlerts, geofenceData }) => {
   const { setShowLocationTab } = useLivestockContext();
-
+  
   return (
     <Stack
       justifyContent="space-between"

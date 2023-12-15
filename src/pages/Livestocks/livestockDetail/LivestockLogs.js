@@ -11,10 +11,10 @@ import useLivestockContext from "../../../hooks/useLivestockContext";
 import useDateFormat from "../../../hooks/useDateFormat";
 import { request } from "../../../apis/axios-utils";
 import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
+import { TableTypography } from "../../../ComponentsV2/themeComponents";
 
 const LivestockLogs = ({ livestockData }) => {
   const tableHeaders = ["name", "value", "time"];
-  const { getDynamicColor } = useGetColorDynamically();
 
   const {
     selectedDate,
@@ -35,7 +35,7 @@ const LivestockLogs = ({ livestockData }) => {
       request({
         url: `/liveStock/getLivestockLog?livestock_id=${
           livestockData?.id
-        }&page=${paginationPageNo}&limit=2&startDate=${paginationDateFormat(
+        }&page=${paginationPageNo}&limit=10&startDate=${paginationDateFormat(
           selectedDate[0]?.startDate
         )}&endDate=${paginationDateFormat(selectedDate[0]?.endDate)}`,
       })
@@ -57,13 +57,7 @@ const LivestockLogs = ({ livestockData }) => {
                     name: key,
                     value: ele[key],
                     time: formattedDate(ele.createdAt),
-                    color:
-                      key.toLowerCase() !== "address"
-                        ? getDynamicColor(
-                            { ...livestockData, [key]: ele[key] },
-                            key
-                          )
-                        : null,
+                    alertValue: ele.alertStatus
                   });
                 }
               });
@@ -131,7 +125,7 @@ const LivestockLogs = ({ livestockData }) => {
           tableHeadData={tableHeaders}
           tableRowData={livestockLogs?.map((ele) => ({
             name: ele?.name,
-            value: ele?.value,
+            value: [<TableTypography sx={{color:ele?.alertValue?"#FC5555":null}}>{ele?.value}</TableTypography>],
             time: ele?.time,
           }))}
           logs={livestockLogs}

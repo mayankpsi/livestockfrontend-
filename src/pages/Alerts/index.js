@@ -7,7 +7,7 @@ import {
   NoData,
   TabPaneV2,
 } from "../../ComponentsV2";
-import { Container, Stack } from "@mui/material";
+import { Container, IconButton, Stack } from "@mui/material";
 import { TypographyPrimary } from "../../ComponentsV2/themeComponents";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import useAlertsContext from "../../hooks/useAlertContext";
@@ -39,10 +39,12 @@ const AlertsPage = () => {
       ?.map((ele) => ({
         ...ele,
         action: [
-          <DeleteOutlineOutlinedIcon
-            fontSize="large"
-            onClick={() => handleAlertDelete(ele.id)}
-          />,
+          <IconButton aria-label="delete">
+            <DeleteOutlineOutlinedIcon
+              fontSize="large"
+              onClick={() => handleAlertDelete(ele.id)}
+            />
+          </IconButton>,
         ],
       }))
       .map((ele) => {

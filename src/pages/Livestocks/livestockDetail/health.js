@@ -17,7 +17,7 @@ const Health = ({ data }) => {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const { getDynamicColor } = useGetColorDynamically();
-  const [healthData, setHealthData] = useState([]);
+  const [healthData, setHealthData] = useState({});
 
   //GET ALL ALERTS THRESHOLD
   useEffect(() => {
@@ -34,17 +34,17 @@ const Health = ({ data }) => {
         .then((res) => {
           if (res?.status === 200) {
             const { data } = res?.data;
-            const formattedData = data?.map((ele) => ({
-              temperature: ele?.temperature,
-              heartbeat: ele?.heartBeat,
-              steps: ele?.steps,
-              rumination: ele?.rumination,
-              time: formattedDate(ele?.createdAt, "time"),
-            }));
-            setHealthData([...formattedData?.slice(0, 24)]);
+            // const formattedData = data?.map((ele) => ({
+            //   temperature: ele?.temperature,
+            //   heartbeat: ele?.heartBeat,
+            //   steps: ele?.steps,
+            //   rumination: ele?.rumination,
+            //   time: formattedDate(ele?.createdAt, "time"),
+            // }));
+            setHealthData(data);
           } else {
             const msg = res?.response?.data?.message || "Something went wrong!";
-            setHealthData([]);
+            setHealthData({});
             throw new Error(msg);
           }
         })
@@ -61,8 +61,8 @@ const Health = ({ data }) => {
   }, [data?.id, selectedDate]);
 
   const getFilteredHealthData = (data, filter) => {
-    const labels = data?.map((ele) => ele?.time);
-    const dataSet = data?.map((ele) => ele[filter]);
+    const labels = data?.map((ele) => formattedDate(ele?.createdAt,"time"));
+    const dataSet = data?.map((ele) => ele[filter]|| "0");
 
     const options = {
       labels,
@@ -101,9 +101,11 @@ const Health = ({ data }) => {
             value: data ? data[getCamelCase(ele?.label)] : "",
             valueColor: getDynamicColor(data, ele?.label),
           }))
-          ?.map((ele) => (
-            <ChartCard
-              chartData={getFilteredHealthData(healthData, ele?.label)}
+          ?.map((ele) => {
+            const dataLabel = ele?.label === "heartbeat"?"heartBeat":ele?.label
+            return (
+              <ChartCard
+              chartData={getFilteredHealthData(healthData[dataLabel]?.slice(0,24), dataLabel)}
               label={ele.label}
               value={ele.value}
               icon={ele.icon}
@@ -111,7 +113,8 @@ const Health = ({ data }) => {
               valueColor={ele.valueColor}
               suffix={ele.suffix}
             />
-          ))}
+            )
+          })}
       </Stack>
     </Stack>
   );

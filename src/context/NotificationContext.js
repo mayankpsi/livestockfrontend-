@@ -53,7 +53,6 @@ export const NotificationContextProvider = ({ children }) => {
 
 
   useEffect(() => {
-    
     if (userId){
       socket.emit("login", { userId: userId });
     }

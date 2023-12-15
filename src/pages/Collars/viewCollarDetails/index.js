@@ -29,7 +29,7 @@ const ViewCollarDetails = () => {
   } = useCollarContext();
 
   useEffect(() => {
-    request({ url: `/devices/getDeviceByID?deviceID=${id}` })
+    request({ url: `/devices/getDeviceByID?deviceID=${id}`})
       .then((res) => {
         const { data } = res?.data;
         let formattedData = {

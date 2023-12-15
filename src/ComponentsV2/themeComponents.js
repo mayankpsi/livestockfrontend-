@@ -104,6 +104,10 @@ export const TypographyPrimary = styled(Typography)({
   fontWeight: 600,
   margin: "15px 0",
 });
+export const TableTypography = styled(Typography)({
+  fontSize: "1.5rem",
+  fontWeight: 600,
+});
 
 export const TypographySecondary = styled(Typography)({
   fontWeight: "bold",

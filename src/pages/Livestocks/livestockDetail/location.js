@@ -89,6 +89,7 @@ const Location = ({ data }) => {
               title: ele?.locationStatus,
               updated: formattedDate(ele?.createdAt),
             }));
+            console.log(res3?.value,"dcjdbjndcnjdnjdnjcndjnj")
             setResentAlerts(formattedData);
           } else {
             setResentAlerts([]);
@@ -96,6 +97,7 @@ const Location = ({ data }) => {
           }
           if (res2?.value?.status === 200) {
             const { data } = res2.value?.data;
+            console.log(res,"dcjdbjndcnjdnjdnjcndjnjres2")
             const formattedData = data?.LocationAlert?.map((ele) => ({
               title: ele?.locationStatus,
               location: `${ele?.geolocation?.lat

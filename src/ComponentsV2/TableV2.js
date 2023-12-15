@@ -28,7 +28,7 @@ export default function TableV2({
       color =
         tableColors === undefined
           ? null
-          : ele.toLowerCase().includes("pm") || ele.toLowerCase().includes("am")
+          : ele?.toLowerCase()?.includes("pm") || ele?.toLowerCase()?.includes("am")
           ? null
           : row?.title?.toLowerCase() === "safe"
           ? tableColors[0]
@@ -87,7 +87,7 @@ export default function TableV2({
                     ) : (
                       <Box>
                         {ele?.map((btn) => (
-                          <IconButton aria-label="delete">{btn}</IconButton>
+                          btn
                         ))}
                       </Box>
                     )}

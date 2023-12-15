@@ -35,7 +35,7 @@ const ChartCard = ({ label, value, icon, iconBg, valueColor, chartData,suffix })
             className={`${valueColor}`}
             sx={{ fontSize: "2.2rem", fontWeight: "bolder" }}
           >
-            {value?value+suffix:"N/A"}
+            {value?value+suffix:"0"}
           </Typography>
         </Box>
       </Stack>
