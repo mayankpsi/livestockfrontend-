@@ -4,7 +4,10 @@ import io from "socket.io-client";
 import useUserId from "../hooks/useUserId";
 
 export const NotificationContext = createContext();
-const socket = io("http://localhost:8085/",{transports:["websocket"]});
+const BASE_URL_LOCAL = "http://localhost:8085/";
+const BASE_URL_DEV = "http://shipment.psiborg.io:8085/";
+
+const socket = io(BASE_URL_DEV, { transports: ["websocket"] });
 
 export const NotificationContextProvider = ({ children }) => {
   const [selectedNotificationTab, setSelectedNotificationTab] =
@@ -23,8 +26,7 @@ export const NotificationContextProvider = ({ children }) => {
     pageCount: 1,
   });
 
-
- const userId = useUserId();
+  const userId = useUserId();
 
   //SNACKBAR ALERT
   const [snackbarAlert, setSnackbarAlert] = useState({
@@ -50,15 +52,13 @@ export const NotificationContextProvider = ({ children }) => {
     getAllReadNotification();
   }, []);
 
-
-
   useEffect(() => {
-    if (userId){
+    if (userId) {
       socket.emit("login", { userId: userId });
     }
 
     socket.on("notification", (payload) => {
-      setUnreadUtils(prev => ({...prev, dataLength:prev.dataLength+1}))
+      setUnreadUtils((prev) => ({ ...prev, dataLength: prev.dataLength + 1 }));
     });
   }, []);
 

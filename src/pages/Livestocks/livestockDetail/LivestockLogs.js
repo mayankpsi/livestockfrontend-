@@ -57,7 +57,7 @@ const LivestockLogs = ({ livestockData }) => {
                     name: key,
                     value: ele[key],
                     time: formattedDate(ele.createdAt),
-                    alertValue: ele.alertStatus
+                    alertValue: ele.alertStatus,
                   });
                 }
               });
@@ -125,7 +125,18 @@ const LivestockLogs = ({ livestockData }) => {
           tableHeadData={tableHeaders}
           tableRowData={livestockLogs?.map((ele) => ({
             name: ele?.name,
-            value: [<TableTypography sx={{color:ele?.alertValue?"#FC5555":null}}>{ele?.value}</TableTypography>],
+            value: [
+              <TableTypography
+                sx={{
+                  color:
+                    ele?.alertValue || ele?.locationStatus === "unsafe"
+                      ? "#FC5555"
+                      : null,
+                }}
+              >
+                {ele?.value}
+              </TableTypography>,
+            ],
             time: ele?.time,
           }))}
           logs={livestockLogs}

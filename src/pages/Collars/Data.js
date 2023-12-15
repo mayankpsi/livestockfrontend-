@@ -5,7 +5,6 @@ import AssignLivestock from "./viewCollarDetails/assignLivestock";
 import CollarLogs from "./viewCollarDetails/CollarLogs";
 import {
     InfoOutlinedIcon,
-    NetworkCellOutlinedIcon,
     Battery5BarOutlinedIcon,
   } from "../../icons";
 
@@ -34,7 +33,6 @@ export const showCollarTableHeadData = [
 ];
 
 // SHOW COLLAR DETAIL DATA
-
 export const viewCollarDetailTabData = (data) => [
   {
     label: "overview",
