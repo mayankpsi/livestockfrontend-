@@ -38,6 +38,7 @@ const DatePicker = ({selectedDate, setSelectedDate}) => {
             <TextField
               value={paginationDateFormat(selectedDate,"date")}
               placeholder="MM/DD/YYYY"
+              size="small"
               sx={{width:140}}
               onClick={() => setOpen(!open)}
               InputProps={{

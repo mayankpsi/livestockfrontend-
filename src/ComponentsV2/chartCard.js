@@ -1,46 +1,97 @@
 import React from "react";
-import {LineChart} from "./";
+import { LineChart } from "./";
 import { Stack, Box, Typography } from "@mui/material";
 import { TypographySecondary } from "./themeComponents";
+import { useTheme } from "@emotion/react";
+import { CropFreeIcon } from "../icons";
 
-const ChartCard = ({ label, value, icon, iconBg, valueColor, chartData,suffix }) => {
+const ChartCard = ({
+  label,
+  value,
+  icon,
+  colors,
+  valueColor,
+  chartData,
+  suffix,
+  onViewData,
+  children,
+}) => {
+  const theme = useTheme();
   return (
     <Stack
       direction="row"
       flexGrow={1}
-      gap={{xl:5, lg:5, md:2}}
-      height="150px"
+      gap={{ xl: 0, lg: 0, md: 0 }}
       width="100%"
       alignItems="center"
       p={2}
+      pb={0}
+      pt={3}
       border={"1px solid #dddddd"}
       borderRadius="10px"
       justifyContent="space-evenly"
+      position="relative"
     >
-      <Stack direction="row" alignItems="center" gap={2}>
+      <CropFreeIcon
+        sx={{ position: "absolute", top: 15, right: 15 }}
+        fontSize="large"
+        onClick={() => onViewData(label)}
+      />
+      <Stack direction="column" alignItems="center" gap={3}>
         <Box
           className="flex-row-center border-circle"
-          sx={{ width: 65, height: 65, background: `${iconBg}` }}
+          sx={{
+            width: 85,
+            height: 85,
+            background: `${colors?.bg}`,
+            border: `1px solid ${colors?.main}`,
+          }}
         >
           {icon}
         </Box>
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+          <Box sx={{ display: "flex", flexGrow: 1, gap: 1 }}>
+            <TypographySecondary
+              className="flex-row-center"
+              sx={{
+                fontSize: "2rem",
+                color: "#696969",
+                display: "flex",
+                justifyContent: "flex-start",
+              }}
+            >
+              {label}
+            </TypographySecondary>
+            <Typography
+              className={`${valueColor}`}
+              sx={{
+                fontSize: "2.5rem",
+                fontWeight: "bolder",
+                color: "#FC5555",
+              }}
+            >
+              {value ? value?.toString()?.slice(0,2) + suffix : "400" + suffix}
+            </Typography>
+          </Box>
           <TypographySecondary
             className="flex-row-center"
-            sx={{ fontSize: "1.6rem", color: "#696969",display:"flex",justifyContent:'flex-start' }}
+            sx={{
+              fontSize: "1.4rem",
+              color: theme.palette.primary.main,
+              cursor: "pointer",
+            }}
+            onClick={() => onViewData(label)}
           >
-            {label}
+            View Historical Data
           </TypographySecondary>
-          <Typography
-            className={`${valueColor}`}
-            sx={{ fontSize: "2.2rem", fontWeight: "bolder" }}
-          >
-            {value?value+suffix:"0"}
-          </Typography>
         </Box>
       </Stack>
-      <Stack sx={{width:{xl:"80%", lg:'75%', md:'65%', sm:'65%'}, height:'100px'}}>
-      <LineChart chartData={chartData}/>
+      <Stack
+        sx={{
+          width: { xl: "80%", lg: "75%", md: "65%", sm: "65%" },
+        }}
+      >
+        {children}
       </Stack>
     </Stack>
   );

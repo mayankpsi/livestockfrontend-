@@ -1,16 +1,20 @@
-import { Stack } from "@mui/material";
+import { Stack, Box} from "@mui/material";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
-import { useState, useEffect } from "react";
+import { useState, useEffect, cloneElement } from "react";
 import { request } from "../../../apis/axios-utils";
-import { ChartCard, DatePicker } from "../../../ComponentsV2";
+import { ChartCard, DatePicker, CustomModal } from "../../../ComponentsV2";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import useDateFormat from "../../../hooks/useDateFormat";
 import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
 import { chartCardData } from "../Data";
+import TemperatureChart from "./HealthCharts/TemperatureChart";
+import HealthChartsModalContent from "./HealthCharts/HealthChartsModalContent";
 
 const Health = ({ data }) => {
-  const { setOpenBackdropLoader, openSnackbarAlert } = useLivestockContext();
+  const [openModal, setOpenModal] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const { setOpenBackdropLoader, openSnackbarAlert, openBackdropLoader} = useLivestockContext();
   const { formattedDate, getLongDateFormat, paginationDateFormat } =
     useDateFormat();
   const { getCamelCase } = useGetCamelCase();
@@ -34,13 +38,6 @@ const Health = ({ data }) => {
         .then((res) => {
           if (res?.status === 200) {
             const { data } = res?.data;
-            // const formattedData = data?.map((ele) => ({
-            //   temperature: ele?.temperature,
-            //   heartbeat: ele?.heartBeat,
-            //   steps: ele?.steps,
-            //   rumination: ele?.rumination,
-            //   time: formattedDate(ele?.createdAt, "time"),
-            // }));
             setHealthData(data);
           } else {
             const msg = res?.response?.data?.message || "Something went wrong!";
@@ -60,40 +57,43 @@ const Health = ({ data }) => {
     }
   }, [data?.id, selectedDate]);
 
-  const getFilteredHealthData = (data, filter) => {
-    const labels = data?.map((ele) => formattedDate(ele?.createdAt,"time"));
-    const dataSet = data?.map((ele) => ele[filter]|| "0");
+  const handleModal = (label) => {
+    setModalContent(label);
+    setOpenModal(true);
+  };
 
-    const options = {
-      labels,
-      datasets: [
-        {
-          label:
-            filter?.charAt(0)?.toUpperCase() + filter?.slice(1)?.toLowerCase(),
-          data: dataSet,
-          backgroundColor: ["#7C0202"],
-          borderColor: "#7C0202",
-          borderWidth: 1,
-        },
-      ],
-      options: {
-        aspectRatio: 1,
-      },
-    };
-    return options;
+  const getModalContent = (type) => {
+    const selectedChart = chartCardData?.find((ele) => ele?.label === type);
+    const dataLabel =
+      selectedChart?.label === "heartbeat" ? "heartBeat" : selectedChart?.label;
+    const newChart =
+      selectedChart?.chart &&
+      cloneElement(selectedChart?.chart, {
+        height:550,
+        width:25000,
+        data: healthData[dataLabel]?.map((ele) => ({
+          ...ele,
+          createdAt: formattedDate(ele?.createdAt, "time"),
+        })),
+      });
+    return newChart;
   };
 
   return (
     <Stack my={4} direction="column" alignItems="center" gap={4}>
       <Stack direction="row" justifyContent="space-between" width="100%">
         <TypographyPrimary sx={{ fontSize: "21px" }}>
-          Showing Health Data of <span style={{color:"#B58B5D"}}>{getLongDateFormat(selectedDate)}</span>
+          Showing Health Data of{" "}
+          <span style={{ color: "#B58B5D" }}>
+            {getLongDateFormat(selectedDate)}
+          </span>
         </TypographyPrimary>
         <DatePicker
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
         />
       </Stack>
+
       <Stack width="100%" gap={2}>
         {chartCardData
           ?.map((ele) => ({
@@ -102,20 +102,46 @@ const Health = ({ data }) => {
             valueColor: getDynamicColor(data, ele?.label),
           }))
           ?.map((ele) => {
-            const dataLabel = ele?.label === "heartbeat"?"heartBeat":ele?.label
+            const dataLabel =
+              ele?.label === "heartbeat" ? "heartBeat" : ele?.label;
+            const newChart = cloneElement(ele?.chart, {
+              data: healthData[dataLabel]
+                ?.map((ele) => ({
+                  ...ele,
+                  createdAt: formattedDate(ele?.createdAt, "time"),
+                }))
+                ?.slice(0, 64)
+            });
             return (
               <ChartCard
-              chartData={getFilteredHealthData(healthData[dataLabel]?.slice(0,24), dataLabel)}
-              label={ele.label}
-              value={ele.value}
-              icon={ele.icon}
-              iconBg={ele.iconBg}
-              valueColor={ele.valueColor}
-              suffix={ele.suffix}
-            />
-            )
+                label={ele.label}
+                value={ele.value}
+                icon={ele.icon}
+                colors={ele.colors}
+                valueColor={ele.valueColor}
+                suffix={ele.suffix}
+                onViewData={(label) => handleModal(label)}
+              >
+                {newChart}
+              </ChartCard>
+            );
           })}
       </Stack>
+      <CustomModal
+        content={
+          <HealthChartsModalContent
+            onModalClose={() => setOpenModal(false)}
+            selectedDate={selectedDate}
+            label={modalContent}
+            setSelectedDate={setSelectedDate}
+          >
+            {getModalContent(modalContent)}
+          </HealthChartsModalContent>
+        }
+        openModal={openModal}
+        customWidth={"90%"}
+        handleClose={() => setOpenModal(false)}
+      />
     </Stack>
   );
 };

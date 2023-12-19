@@ -1,8 +1,11 @@
 import { Modal, Box } from "@mui/material";
 
-
-export default function CustomModal({ openModal, handleClose, content,customWidth }) {
-
+export default function CustomModal({
+  openModal,
+  handleClose,
+  content,
+  customWidth,
+}) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -10,12 +13,11 @@ export default function CustomModal({ openModal, handleClose, content,customWidt
     transform: "translate(-50%, -50%)",
     bgcolor: "background.paper",
     boxShadow: 24,
-    width: { lg: customWidth?customWidth:"40%", md: "70%", sm: "90%" },
+    width: { lg: customWidth ? customWidth : "40%", md: "70%", sm: "90%" },
     p: 0,
     borderRadius: "5px",
   };
 
-  
   return (
     <div>
       <Modal

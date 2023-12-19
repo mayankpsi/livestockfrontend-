@@ -5,9 +5,13 @@ import {
   Battery5BarOutlinedIcon,
   ThermostatIcon,
   MonitorHeartIcon,
-  PetsIcon
+  PetsIcon,
 } from "../../icons";
-import { LiveStockSteps, LiveStockRumination } from "../../assets";
+import { LiveStockSteps, LiveStockRumination, Steps, Rumination } from "../../assets";
+import TemperatureChart from "./livestockDetail/HealthCharts/TemperatureChart";
+import HeartBeatChart from "./livestockDetail/HealthCharts/HeartbeatChart";
+import StepsChart from "./livestockDetail/HealthCharts/StepsChart";
+import RuminationChart from "./livestockDetail/HealthCharts/RuminationChart";
 
 export const livestockTabData = [
   {
@@ -107,39 +111,57 @@ export const chartCardData = [
     label: "temperature",
     value: "56° F",
     icon: (
-      <ThermostatIcon sx={{ fontSize: "3em", color: "rgba(253, 55, 48,1)" }} />
+      <ThermostatIcon
+        sx={{ fontSize: "4.5rem", color: "rgba(253, 55, 48,1)" }}
+      />
     ),
-    iconBg: "#60AEDA",
     valueColor: "err-color",
     suffix: " °F",
+    chart: <TemperatureChart />,
+    colors: {
+      main: "rgba(255, 0, 0, 1)",
+      bg: "rgba(255, 0, 0, 0.04)",
+    },
   },
   {
     label: "heartbeat",
     value: "78/sec",
     icon: (
       <MonitorHeartIcon
-        sx={{ fontSize: "3em", color: "rgba(253, 55, 48,1)" }}
+        sx={{ fontSize: "4.5rem", color: "rgba(253, 55, 48,1)" }}
       />
     ),
-    iconBg: "rgba(253, 55, 48, 0.25)",
     valueColor: "color-success--dark ",
     suffix: "/min",
+    chart: <HeartBeatChart />,
+    colors: {
+      main: "rgba(253, 55, 48, 1)",
+      bg: "rgba(253, 55, 48, 0.25)",
+    },
   },
   {
     label: "steps",
     value: "5000",
-    icon: <Box component="img" src={LiveStockSteps} />,
-    iconBg: "#A2F8F2",
+    icon: <Box component="img" src={Steps} />,
     valueColor: "color-success--dark ",
     suffix: "/day",
+    chart: <StepsChart />,
+    colors: {
+      main: "rgba(215, 127, 74, 1)",
+      bg: "rgba(215, 127, 74, 0.25)",
+    },
   },
   {
     label: "rumination",
     value: "2h",
-    icon: <Box component="img" src={LiveStockRumination} />,
-    iconBg: "#A2F8F2",
+    icon: <Box component="img" src={Rumination} />,
     valueColor: "color-success--dark ",
     suffix: "/day",
+    chart: <RuminationChart />,
+    colors: {
+      main: "rgba(68, 75, 84, 0.25)",
+      bg: "rgba(68, 75, 84, 0.25)",
+    },
   },
 ];
 
@@ -157,33 +179,33 @@ export const locationBtnData = [
 ];
 
 // LIVESTOCK DETAIL :- OVERVIEW
-  
-  export const parameterCardData = [
-    {
-      label: "temperature",
-      time: "10:59 PM, 23/08/23",
-      value: "78° F",
-      icon: <ThermostatIcon sx={{ fontSize: "3em", color: "#fff" }} />,
-      iconBg: "#B58B5D",
-      valueColor: "err-color",
-      suffix: " °F",
-    },
-    {
-      label: "heartbeat",
-      time: "10:59 PM, 23/08/23",
-      value: "78",
-      icon: <MonitorHeartIcon sx={{ fontSize: "3em", color: "#fff" }} />,
-      iconBg: "#47CD75",
-      valueColor: "color-success--dark ",
-      suffix: "/min",
-    },
-    {
-      label: "steps",
-      time: "10:59 PM, 23/08/23",
-      value: "5000",
-      icon: <PetsIcon sx={{ fontSize: "3em", color: "#B58B5D" }} />,
-      iconBg: "#ECDEC6",
-      valueColor: "color-success--dark ",
-      suffix: "/day",
-    },
-  ];
+
+export const parameterCardData = [
+  {
+    label: "temperature",
+    time: "10:59 PM, 23/08/23",
+    value: "78° F",
+    icon: <ThermostatIcon sx={{ fontSize: "3em", color: "#fff" }} />,
+    iconBg: "#B58B5D",
+    valueColor: "err-color",
+    suffix: " °F",
+  },
+  {
+    label: "heartbeat",
+    time: "10:59 PM, 23/08/23",
+    value: "78",
+    icon: <MonitorHeartIcon sx={{ fontSize: "3em", color: "#fff" }} />,
+    iconBg: "#47CD75",
+    valueColor: "color-success--dark ",
+    suffix: "/min",
+  },
+  {
+    label: "steps",
+    time: "10:59 PM, 23/08/23",
+    value: "5000",
+    icon: <PetsIcon sx={{ fontSize: "3em", color: "#B58B5D" }} />,
+    iconBg: "#ECDEC6",
+    valueColor: "color-success--dark ",
+    suffix: "/day",
+  },
+];

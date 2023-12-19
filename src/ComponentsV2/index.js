@@ -36,3 +36,4 @@ export { default as DatePicker } from "./DatePicker";
 export { default as ImageUpload } from "./ImageUpload";
 export { default as NoNotifications } from "./NoNotifications";
 export { default as NotificationCard } from "./NotificationCard";
+export {default as Spinner } from "./Spinner";

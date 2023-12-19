@@ -19,3 +19,5 @@ export { default as UnsafeLivestock } from "./images/unsafe-livestock-dash.svg";
 export { default as AlertsDash } from "./images/alerts-dash.svg";
 export { default as SafeLivestockPointer } from "./images/safe-livestock.svg";
 export { default as UnsafeLivestockPointer } from "./images/unsafe-livestock.svg";
+export { default as Steps } from "./images/steps.svg";
+export {default as Rumination} from "./images/rumination.svg";
