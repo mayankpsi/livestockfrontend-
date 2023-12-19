@@ -170,6 +170,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
           //   alt="The house from the offer."
           //   src={data?.img}
           // />
+          
           <img
             style={{
               height: "33vh",
@@ -177,7 +178,6 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
               objectFit: "cover",
               borderRadius: "10px",
             }}
-            crossOrigin="anonymous"
             src={data?.img}
             alt="livestock image"
           />
