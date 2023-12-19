@@ -4,7 +4,7 @@ import { CSVLink } from "react-csv";
 const ExportAsCSV = ({children, headers, data, fileName}) => {
 
   const exportHeaders = (data) => {
-    const res = data.map((ele) => ({
+    const res = data?.map((ele) => ({
     label: ele,
     key: ele
       .split(" ")
@@ -20,7 +20,7 @@ const ExportAsCSV = ({children, headers, data, fileName}) => {
   }
 
 const exportData =  (data) => {
-  const res =  data.map((ele) => {
+  const res =  data?.map((ele) => {
     delete ele.action;
     return ele;
   });

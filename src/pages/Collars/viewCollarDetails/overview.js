@@ -8,6 +8,7 @@ import { request } from "../../../apis/axios-utils";
 import { addCollarValidationSchema } from "../../../utils/validationSchema";
 import useCollarContext from "../../../hooks/useCollarContext";
 import { statusCardData } from "../Data";
+import useGetCamelCase from "../../../hooks/useGetCamelCase";
 
 const Overview = ({ data }) => {
   const [isEditCollarInfo, setIsEditCollarInfo] = useState(false);
@@ -18,6 +19,7 @@ const Overview = ({ data }) => {
   });
 
   const { isError, setIsError, openSnackbarAlert } = useCollarContext();
+  const {getCamelCase} = useGetCamelCase()
 
   useEffect(() => {
     setCollarInfoEdit({
@@ -156,7 +158,10 @@ const Overview = ({ data }) => {
         >
           <TypographyPrimary>Collar status</TypographyPrimary>
           <Stack direction="column" gap={1}>
-            {statusCardData?.map((card) => (
+            {statusCardData?.map((ele) => ({
+                ...ele,
+                status: data ? `${data[getCamelCase(ele?.text)]}` : "",
+              })).map((card) => (
               <StatusCard
                 key={card.text}
                 text={card.text}

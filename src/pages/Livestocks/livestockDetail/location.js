@@ -89,7 +89,7 @@ const Location = ({ data }) => {
               title: ele?.locationStatus,
               updated: formattedDate(ele?.createdAt),
             }));
-            console.log(res3?.value,"dcjdbjndcnjdnjdnjcndjnj")
+            console.log(res3?.value, "dcjdbjndcnjdnjdnjcndjnj");
             setResentAlerts(formattedData);
           } else {
             setResentAlerts([]);
@@ -97,7 +97,7 @@ const Location = ({ data }) => {
           }
           if (res2?.value?.status === 200) {
             const { data } = res2.value?.data;
-            console.log(res,"dcjdbjndcnjdnjdnjcndjnjres2")
+            console.log(res, "dcjdbjndcnjdnjdnjcndjnjres2");
             const formattedData = data?.LocationAlert?.map((ele) => ({
               title: ele?.locationStatus,
               location: `${ele?.geolocation?.lat
@@ -105,6 +105,7 @@ const Location = ({ data }) => {
                 ?.slice(0, 8)}, ${ele?.geolocation?.lng
                 ?.toString()
                 ?.slice(0, 8)}`,
+              address: ele?.address,
               updated: formattedDate(ele?.createdAt),
             }));
             setLocationAlertsData(formattedData);
@@ -118,7 +119,11 @@ const Location = ({ data }) => {
             setDataLength(0);
             errorMessage = msg;
           }
-          const firstLoad = paginationDateFormat(new Date(),"date") === paginationDateFormat(selectedDate[0].startDate,"date") && paginationDateFormat(new Date(),"date") ===paginationDateFormat(selectedDate[0].endDate,"date")
+          const firstLoad =
+            paginationDateFormat(new Date(), "date") ===
+              paginationDateFormat(selectedDate[0].startDate, "date") &&
+            paginationDateFormat(new Date(), "date") ===
+              paginationDateFormat(selectedDate[0].endDate, "date");
           if (!firstLoad && errorMessage) {
             openSnackbarAlert("error", errorMessage);
           }

@@ -62,7 +62,8 @@ const LivestockDetails = () => {
             collarMacId: data?.assignedDevice?.macID,
             collarAddedOn: data?.assignedDevice?.createdAt,
             networkStrength: data?.assignedDevice?.networkStrength,
-            battery: data?.assignedDevice?.battery,
+            pedometerBattery : data?.assignedDevice?.pedometerBattery,
+            collarBattery:data?.assignedDevice?.collarBattery, 
             geolocation: data?.geolocation,
             thresholds: data?.threshold,
           };

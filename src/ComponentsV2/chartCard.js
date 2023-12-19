@@ -11,7 +11,6 @@ const ChartCard = ({
   icon,
   colors,
   valueColor,
-  chartData,
   suffix,
   onViewData,
   children,
@@ -67,10 +66,9 @@ const ChartCard = ({
               sx={{
                 fontSize: "2.5rem",
                 fontWeight: "bolder",
-                color: "#FC5555",
               }}
             >
-              {value ? value?.toString()?.slice(0,2) + suffix : "400" + suffix}
+              {value ? value+suffix : "0" + suffix}
             </Typography>
           </Box>
           <TypographySecondary

@@ -167,7 +167,7 @@ export const chartCardData = [
 
 // LIVESTOCK DETAIL :- LOCATION
 
-export const locationTableHeadData = ["status", "location", "updated"];
+export const locationTableHeadData = ["status", "location","address","updated"];
 
 export const locationBtnData = [
   {
