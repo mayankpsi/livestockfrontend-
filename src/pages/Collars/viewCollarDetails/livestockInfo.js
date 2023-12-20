@@ -193,7 +193,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
             () => {}
           )}
           {getTextFiled(
-            isEditLivestockInfo,
+            isEditLivestockInfo,       
             "Livestock UID",
             "livestockUID",
             LivestockInfoEdit?.livestockUID,

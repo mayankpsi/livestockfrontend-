@@ -1,5 +1,12 @@
-import React from "react";
-import { Paper, Stack, Typography, TextField, Box, InputAdornment} from "@mui/material";
+import React, { useEffect } from "react";
+import {
+  Paper,
+  Stack,
+  Typography,
+  TextField,
+  Box,
+  InputAdornment,
+} from "@mui/material";
 import { BtnGroup } from "../../ComponentsV2";
 import { ButtonPrimary } from "../../ComponentsV2/themeComponents";
 import { useTheme } from "@emotion/react";
@@ -8,7 +15,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema, signUpSchema } from "../../utils/validationSchema";
 import { DashboardNoData } from "../../assets";
 import { btnData } from "./Data";
-import {VisibilityOutlinedIcon} from "../../icons";
+import { VisibilityOutlinedIcon } from "../../icons";
 import "./index.css";
 import { useState } from "react";
 
@@ -25,11 +32,12 @@ const ShowForm = ({
   const theme = useTheme();
   const isLoginActive = isLogin === "log in";
   const schema = isLoginActive ? loginSchema : signUpSchema;
-  const [showPassword,setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
@@ -53,15 +61,19 @@ const ShowForm = ({
       size="large"
       value={value}
       name={name}
-      type={name === "password" && !showPassword?"password":"text"}
+      type={name === "password" && !showPassword ? "password" : "text"}
       placeholder={placeholder}
       InputProps={{
         sx: { borderRadius: "0 !important" },
-        endAdornment:name === "password"?(
-          <InputAdornment position="end" onClick={()=> setShowPassword(!showPassword)}>
-            <VisibilityOutlinedIcon />
-          </InputAdornment>
-        ):null,
+        endAdornment:
+          name === "password" ? (
+            <InputAdornment
+              position="end"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              <VisibilityOutlinedIcon />
+            </InputAdornment>
+          ) : null,
       }}
       {...register(name, { required: true })}
       onChange={onInputChange}
@@ -73,6 +85,19 @@ const ShowForm = ({
   const change = isLoginActive
     ? handleUserCredentialChange
     : handleUserSignUpCredentialChange;
+
+  useEffect(() => {
+    setValue("email", onUserLogin?.email);
+    setValue("password", onUserLogin?.password);
+  }, [onUserLogin]);
+
+  useEffect(() => {
+    setValue("fullName", onUserSignUp?.fullName);
+    setValue("email", onUserSignUp?.email);
+    setValue("password", onUserSignUp?.password);
+    setValue("phone", onUserSignUp?.phone);
+  }, [onUserSignUp]);
+
   return (
     <form onSubmit={handleSubmit(submit)}>
       <Paper
