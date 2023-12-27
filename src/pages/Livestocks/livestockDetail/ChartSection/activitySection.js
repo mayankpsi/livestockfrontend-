@@ -103,12 +103,18 @@ const ActivitySection = () => {
             <TableV2
               btnColor="#fff"
               btnBg="#B58B5D"
-              tableHeadData={logsTableHeadData}
+              tableHeadData={logsTableHeadData?.filter(
+                (ele) => ele !== "high threshold" && ele !== "low threshold"
+              )}
               tableRowData={getFormattedHealthLogsData(
                 logsData,
                 "activity",
-                "/min"
-              )}
+                " min"
+              )?.map((ele) => {
+                delete ele?.highThreshold;
+                delete ele?.lowThreshold;
+                return ele;
+              })}
             />
             {logsDataLength > 10 ? (
               <Stack direction="row" justifyContent="center" pt={3}>

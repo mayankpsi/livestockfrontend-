@@ -23,22 +23,23 @@ function StepsChart({ height = 200, width, data,thresholds }) {
     background: "#fff",
   };
   const getData = data?.length ? data : chartData;
-
+  const xLabel = data?.length && "hour" in data?.[0]?'hour':'day'
+  const xUnit = data?.length && "hour" in data?.[0]?' hr':""
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
         <ComposedChart data={getData}>
           <XAxis
-            dataKey="hour"
-            angle="30"
+            dataKey={xLabel}
+            angle="0"
             tickSize={10}
             tickMargin={10}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
-            unit=" hr"
+            unit={xUnit}
+            padding={{ bottom: 100 }}
           />
           <YAxis
-            unit="/hr"
             domain={[0, Number(thresholds?.high) + 10]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}

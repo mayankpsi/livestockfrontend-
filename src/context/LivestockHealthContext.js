@@ -1,14 +1,19 @@
-import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 import useDateFormat from "../hooks/useDateFormat";
-import useGetColorDynamically from "../hooks/useGetColorDynamically";
-import useLivestockContext from "../hooks/useLivestockContext";
 import { request } from "../apis/axios-utils";
 import { useReducer } from "react";
 
 const LivestockHealthContext = createContext();
+
+const chartDateRangeInitialStep = [
+  {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  },
+];
 
 const actions = {
   GET_LOGS_DATA: "GET_LOGS_DATA",
@@ -45,14 +50,12 @@ const reducer = (state, action) => {
 };
 
 export const LivestockHealthContextProvider = ({ children }) => {
-  const [showHealthTab, setShowHealthTab] = useState("temperature");
   const [activeTab, setActiveTab] = useState(1);
-  const { formattedDate, getLongDateFormat, paginationDateFormat } =
-    useDateFormat();
-  const { getDynamicColor } = useGetColorDynamically();
+  const { formattedDate, paginationDateFormat } = useDateFormat();
   const [healthChartData, setHealthChartData] = useState([]);
   const [chartDataLoader, setChartDataLoader] = useState(false);
   const [healthLogData, dispatch] = useReducer(reducer, initialState);
+  const [healthCardData, setHealthCardData] = useState({});
   const [singleSelectedDate, setSingleSelectedDate] = useState(new Date());
   const [logsDateRange, setLogsDateRange] = useState([
     {
@@ -61,13 +64,22 @@ export const LivestockHealthContextProvider = ({ children }) => {
       key: "selection",
     },
   ]);
-  const [chartDateRange, setChartDateRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
+  const [chartDateRange, setChartDateRange] = useState(
+    chartDateRangeInitialStep
+  );
+
+  useEffect(() => {
+    setChartDateRange(chartDateRangeInitialStep);
+    setSingleSelectedDate(new Date());
+  }, [activeTab]);
+
+  const getErrorMessage = (res) => {
+    return (
+      res?.response?.data?.message ||
+      res?.message ||
+      "Server error, try again later"
+    );
+  };
 
   const logsUrl = (id, activeTab) => {
     const urls = [
@@ -94,8 +106,8 @@ export const LivestockHealthContextProvider = ({ children }) => {
         "date"
       )}&endDate=${paginationDateFormat(logsDateRange?.endDate, "date")}&page=${
         healthLogData?.pagination
-      }&limit=10`
-     ];
+      }&limit=10`,
+    ];
     return urls[activeTab - 1];
   };
 
@@ -106,11 +118,11 @@ export const LivestockHealthContextProvider = ({ children }) => {
       paginationDateFormat(singleSelectedDate, "date");
 
   const getChartUrl = (id, step) => {
-    const showDateRange = step === 1 || step === 2;
+    const showDateRange = step !== 1 || step !== 2;
     const start = showDateRange
-      ? chartDateRange?.startDate
+      ? chartDateRange[0]?.startDate
       : singleSelectedDate;
-    const end = showDateRange ? chartDateRange?.endDate : singleSelectedDate;
+    const end = showDateRange ? chartDateRange[0]?.endDate : singleSelectedDate;
     return `/liveStock/getLiveStockHistory?LiveStockId=${id}&startDate=${paginationDateFormat(
       start,
       "date"
@@ -130,7 +142,7 @@ export const LivestockHealthContextProvider = ({ children }) => {
             }));
             setHealthChartData(formattedData);
           } else {
-            const msg = res?.response?.data?.message || "Something went wrong!";
+            const msg = getErrorMessage(res);
             setHealthChartData([]);
             throw new Error(msg);
           }
@@ -154,12 +166,62 @@ export const LivestockHealthContextProvider = ({ children }) => {
               payload: { data, dataLength },
             });
           } else {
-            const msg = res?.response?.data?.message || "Something went wrong!";
+            const msg = getErrorMessage(res);
             const payload = { data: [], dataLength: 0 };
             dispatch({
               type: actions.GET_LOGS_DATA,
               payload,
             });
+            throw new Error(msg);
+          }
+        })
+        .catch((err) => {
+          //   if (!firstLoad) openSnackbarAlert("error", err?.message);
+        })
+        .finally(() => dispatch({ type: actions.LOADING }));
+    }
+  };
+
+  const getHealthCardData = (id) => {
+    if (id) {
+      request({
+        url: `/liveStock/getTotalStepsActivityRumintion?livestockId=${id}`,
+      })
+        .then((res) => {
+          if (res?.status === 200) {
+            const {
+              temperature,
+              heartBeat,
+              totalSteps,
+              stepsTime,
+              temperatureTime,
+              heartBeatTime,
+              rumination,
+              activity: {
+                activeTimeInHours,
+                activeTimeInMinutes,
+                currentActivityTime,
+              },
+            } = res?.data?.data;
+            const formattedData = {
+              temperature,
+              heartbeat: heartBeat,
+              steps: totalSteps,
+              activityHour: activeTimeInHours,
+              activityMin: activeTimeInMinutes,
+              rumination,
+              temperatureTime,
+              heartbeatTime: heartBeatTime,
+              stepsTime,
+              activityHour: activeTimeInHours,
+              activityMin: activeTimeInMinutes,
+              activityTime: currentActivityTime,
+              rumination,
+              ruminationTime: temperatureTime,
+            };
+            setHealthCardData(formattedData);
+          } else {
+            const msg = getErrorMessage(res);
             throw new Error(msg);
           }
         })
@@ -195,6 +257,8 @@ export const LivestockHealthContextProvider = ({ children }) => {
         setActiveTab,
         chartDateRange,
         setChartDateRange,
+        getHealthCardData,
+        healthCardData,
       }}
     >
       {children}

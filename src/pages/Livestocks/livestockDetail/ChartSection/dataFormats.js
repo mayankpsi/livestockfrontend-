@@ -28,7 +28,8 @@ export const logsTableHeadData = [
 ];
 
 export const getFormattedHealthLogsData = (data, label, unit) => {
-  const value = (ele) => label?.toLowerCase() === "activity"?ele?.inactiveTimeInMinutes:ele?.[label]
+  const value = (ele) => label?.toLowerCase() === "activity"?ele?.activeTimeInMinutes:ele?.[label];
+  const date = (ele)=>label?.toLowerCase() === "activity"?`${ele?.hour} - ${Number(ele.hour)+1} hr`:formattedDate(ele?.createdAt)
   return data?.map((ele) => ({
     sensorName: label,
     currentValue: [
@@ -44,7 +45,7 @@ export const getFormattedHealthLogsData = (data, label, unit) => {
     ],
     highThreshold: `${(ele?.highThreshold)+unit}`,
     lowThreshold: `${(ele?.lowThreshold)+unit}`,
-    date: formattedDate(ele?.createdAt),
+    date: date(ele),
   }));
 };
 

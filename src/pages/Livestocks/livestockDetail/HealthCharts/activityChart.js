@@ -22,19 +22,20 @@ function ActivityChart({ height = 200, width, data }) {
     background: "#fff",
   };
   const getData = data?.length ? data : chartData;
-
+  const xLabel = data?.length && "hour" in data?.[0] ? "hour" : "_id";
+  const xUnit = data?.length && "hour" in data?.[0] ? " hr" : " day";
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
         <ComposedChart data={getData}>
           <XAxis
-            dataKey="hour"
+            dataKey={xLabel}
             angle="30"
             tickSize={10}
             tickMargin={10}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
-            unit="/hr"
+            unit={xUnit}
           />
           <YAxis
             unit="/min"

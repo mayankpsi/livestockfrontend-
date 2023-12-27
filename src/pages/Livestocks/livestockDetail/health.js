@@ -12,6 +12,7 @@ import StepsSection from "./ChartSection/stepsSection";
 import ActivitySection from "./ChartSection/activitySection";
 import RuminationSection from "./ChartSection/ruminationSection";
 import { useLivestockHealthContext } from "../../../context/LivestockHealthContext";
+import { useParams } from "react-router-dom";
 
 const btnData = [
   {
@@ -33,10 +34,16 @@ const btnData = [
 
 const Health = ({ data }) => {
   const [showHealthTab, setShowHealthTab] = useState("temperature");
-  const { getLongDateFormat } = useDateFormat();
+  const { id } = useParams();
+  const { getLongDateFormat, formattedDate } = useDateFormat();
   const { getDynamicColor } = useGetColorDynamically();
-  const { healthChartData, activeTab, setActiveTab } =
-    useLivestockHealthContext();
+  const {
+    healthChartData,
+    activeTab,
+    setActiveTab,
+    getHealthCardData,
+    healthCardData,
+  } = useLivestockHealthContext();
 
   const [singleSelectedDate, setSingleSelectedDate] = useState(new Date());
   const [dateRange, setDateRange] = useState([
@@ -46,6 +53,10 @@ const Health = ({ data }) => {
       key: "selection",
     },
   ]);
+
+  useEffect(() => {
+    getHealthCardData(id);
+  }, [id]);
 
   const showSection = (key) => {
     if (data?.thresholds) {
@@ -83,6 +94,17 @@ const Health = ({ data }) => {
     }
   };
 
+  const isActivity = (ele) => ele?.label?.toLowerCase() === "activity";
+  const isHour = (ele) => Number(healthCardData?.[ele?.label + "Hour"]) > 1;
+
+  const getCardValue = (ele) => {
+    return isActivity(ele)
+      ? isHour(ele)
+        ? healthCardData?.[ele?.label + "Hour"]?.toString()?.slice(0, 2)
+        : healthCardData?.[ele?.label + "Min"]?.toString()?.slice(0, 2)
+      : healthCardData?.[ele?.label];
+  };
+
   return (
     <Stack mt={4} direction="column" alignItems="center" gap={4}>
       <TypographyPrimary
@@ -97,9 +119,16 @@ const Health = ({ data }) => {
         {chartCardData
           ?.map((ele) => ({
             ...ele,
-            value: data?.[ele?.label],
-            createdAt: data?.[ele?.label?.toLowerCase() + "Time"],
+            value: getCardValue(ele),
+            createdAt: formattedDate(
+              healthCardData?.[ele?.label?.toLowerCase() + "Time"]
+            ),
             valueColor: getDynamicColor(data, ele?.label),
+            suffix: isActivity(ele)
+              ? isHour(ele)
+                ? "/hr"
+                : "/min"
+              : ele?.suffix,
           }))
           ?.map((ele) => (
             <ChartCard
