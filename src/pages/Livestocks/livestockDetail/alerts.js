@@ -13,6 +13,7 @@ import useLivestockContext from "../../../hooks/useLivestockContext";
 import useDateFormat from "../../../hooks/useDateFormat";
 import { request } from "../../../apis/axios-utils";
 import { livestockDetailAlertTableHeadData } from "../Data";
+import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 
 const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   const {
@@ -151,12 +152,20 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   };
 
   return (
-    <Stack mt={4}>
+    <Stack mt={2}>
+      <TypographyPrimary
+        sx={{
+          textTransform: "capitalize",
+          fontSize: "1.8rem",
+        }}
+      >
+        Set Thresholds
+      </TypographyPrimary>
       <Stack direction="row" flexWrap="wrap" width="100%" gap={3}>
         {alertsThresholds?.map((ele) => (
           <AlertCard
             key={ele?.id}
-            paneText={`set ${ele?.label} threshold`}
+            paneText={`${ele?.label}`}
             label={ele?.label}
             valueSuffix={ele?.suffix}
             labelData={ele?.value}

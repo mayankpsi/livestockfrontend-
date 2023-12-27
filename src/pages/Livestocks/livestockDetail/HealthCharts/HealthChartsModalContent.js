@@ -1,58 +1,50 @@
-import { Stack, Box } from "@mui/material";
-import { useState } from "react";
+import { Stack } from "@mui/material";
 import { TypographyPrimary } from "../../../../ComponentsV2/themeComponents";
-import { DatePicker, Spinner } from "../../../../ComponentsV2";
-import { CloseIcon } from "../../../../icons";
+import { DatePicker } from "../../../../ComponentsV2";
+import CustomDateRangePicker from "../../../../ComponentsV2/dateRangePicker";
 
 const HealthChartsModalContent = ({
   selectedDate,
   setSelectedDate,
   children,
-  onModalClose,
-  label
+  label,
+  dateRange
 }) => {
-  const [loading, setLoading] = useState(true);
-
-  setTimeout(() => setLoading(false), 1000);
   return (
-    <Stack p={2}>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <TypographyPrimary sx={{ fontSize: "21px", mb: 0, }}>
-          Historical Data
-        </TypographyPrimary>
-        <CloseIcon fontSize="large" onClick={onModalClose} />
-      </Box>
+    <Stack
+      sx={{
+        borderRadius: "4px",
+        p: 2,
+        mt: 2,
+        border: "1px solid rgba(0,0,0,0.3)",
+        gap: 2,
+        minHeight:600
+      }}
+    >
       <Stack
-        sx={{
-          borderRadius: "4px",
-          p: 2,
-          mt: 2,
-          border: "1px solid rgba(0,0,0,0.3)",
-          gap: 2,
-          height: "70vh",
-        }}
+        direction="row"
+        alignItems={"start"}
+        justifyContent="space-between"
+        width="100%"
       >
-        <Stack
-          direction="row"
-          alignItems={"start"}
-          justifyContent="space-between"
-          width="100%"
+        <TypographyPrimary
+          sx={{ fontSize: "18px", mt: 0, textTransform: "capitalize" }}
         >
-          <TypographyPrimary sx={{ fontSize: "18px", mt: 0, textTransform:'capitalize', color:"rgba(0,0,0,0.6)" }}>
-            {label} overview
-          </TypographyPrimary>
+          {label} overview
+        </TypographyPrimary>
+        {dateRange ? (
+          <CustomDateRangePicker
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+          />
+        ) : (
           <DatePicker
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
           />
-        </Stack>
-        {loading ? (
-        
-            <Spinner />
-        ) : (
-          <Stack>{children}</Stack>
         )}
       </Stack>
+      <Stack>{children}</Stack>
     </Stack>
   );
 };

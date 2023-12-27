@@ -58,9 +58,9 @@ const AlertCard = ({
                 alignItems="center"
               >
                 <CustomLabel
-                  text={formattedLabel(ind)}
+                  text={`${ind === 0 ? "Low" : "High"}`}
                   type={`${ind === 0 ? "warning" : "error"}`}
-                  width={170}
+                  width={80}
                 />
                 <TypographyPrimary sx={{ fontSize: "2.0rem", mt: 1 }}>
                   {labelData[ele]}

@@ -109,59 +109,71 @@ export const statusCardData = [
 export const chartCardData = [
   {
     label: "temperature",
-    value: "56° F",
+    value: "56",
     icon: (
       <ThermostatIcon
-        sx={{ fontSize: "4.5rem", color: "rgba(253, 55, 48,1)" }}
+        sx={{ fontSize: "3.5rem", color: "rgba(253, 55, 48,1)" }}
       />
     ),
     valueColor: "err-color",
     suffix: " °F",
-    chart: <TemperatureChart />,
     colors: {
       main: "rgba(255, 0, 0, 1)",
       bg: "rgba(255, 0, 0, 0.04)",
     },
+    createdAt:'10:59 PM, 23/08/23'
   },
   {
     label: "heartbeat",
-    value: "78/sec",
+    value: "78",
     icon: (
       <MonitorHeartIcon
-        sx={{ fontSize: "4.5rem", color: "rgba(253, 55, 48,1)" }}
+        sx={{ fontSize: "3.5rem", color: "rgba(253, 55, 48,1)" }}
       />
     ),
-    valueColor: "color-success--dark ",
+    valueColor: "color-success--dark",
     suffix: "/min",
-    chart: <HeartBeatChart />,
     colors: {
       main: "rgba(253, 55, 48, 1)",
       bg: "rgba(253, 55, 48, 0.25)",
     },
+    createdAt:'10:59 PM, 23/08/23'
   },
   {
     label: "steps",
     value: "5000",
-    icon: <Box component="img" src={Steps} />,
-    valueColor: "color-success--dark ",
+    icon: <Box sx={{width:'4rem'}} component="img" src={Steps} />,
+    valueColor: "color-success--dark",
     suffix: "/day",
-    chart: <StepsChart />,
     colors: {
       main: "rgba(215, 127, 74, 1)",
       bg: "rgba(215, 127, 74, 0.25)",
     },
+    createdAt:'10:59 PM, 23/08/23'
+  },
+  {
+    label: "activity",
+    value: "52",
+    icon: <Box  sx={{width:'4rem'}} component="img" src={Steps} />,
+    valueColor: "color-success--dark",
+    suffix: " min",
+    colors: {
+      main: "rgba(215, 127, 74, 1)",
+      bg: "rgba(215, 127, 74, 0.25)",
+    },
+    createdAt:'10:59 PM, 23/08/23'
   },
   {
     label: "rumination",
-    value: "2h",
-    icon: <Box component="img" src={Rumination} />,
-    valueColor: "color-success--dark ",
+    value: "2",
+    icon: <Box  sx={{width:'4rem'}} component="img" src={Rumination} />,
+    valueColor: "color-success--dark",
     suffix: "/day",
-    chart: <RuminationChart />,
     colors: {
       main: "rgba(68, 75, 84, 0.25)",
       bg: "rgba(68, 75, 84, 0.25)",
     },
+    createdAt:'10:59 PM, 23/08/23'
   },
 ];
 

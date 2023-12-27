@@ -2,6 +2,10 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
+  ComposedChart,
+  Legend,
+  Line,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -9,74 +13,64 @@ import {
 } from "recharts";
 import { Stack } from "@mui/material";
 import { chartData } from "./chartData";
+import { renderLegend } from "../ChartSection/legend";
+import { ruminationLegends } from "../ChartSection/dataFormats";
 
-function RuminationChart({ height = 200, width, data }) {
-  const isDarkMode = false;
-  const colors = isDarkMode
-    ? {
-        steps: { stroke: "#4f46e5", fill: "#4f46e5" },
-        threshold: { stroke: "#22c55e", fill: "#22c55e" },
-        text: "#e5e7eb",
-        background: "#18212f",
-      }
-    : {
-        steps: { stroke: "#4f46e5", fill: "#c7d2fe" },
-        threshold: { stroke: "#16a34a", fill: "#dcfce7" },
-        text: "#374151",
-        background: "#fff",
-      };
+function RuminationChart({ height = 200, width, data, thresholds }) {
+  const colors = {
+    rumination: { stroke: "#61A9FF", fill: "#61A9FF" },
+    threshold: { stroke: "#16a34a", fill: "#dcfce7" },
+    text: "#374151",
+    background: "#fff",
+  };
+  const getData = chartData;
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
-       <ResponsiveContainer height={height} width={width}>
-        <AreaChart data={data?.length?data:chartData}>
-          <defs>
-            <linearGradient id="colorRumination" x1="0" y1="0" x2="0" y2="1">
-              <stop
-                offset="5%"
-                stopColor="rgba(97, 169, 255, 0.7)"
-                stopOpacity={0.8}
-              />
-              <stop
-                offset="95%"
-                stopColor="rgba(97, 169, 255, 0.7)"
-                stopOpacity={0}
-              />
-            </linearGradient>
-          </defs>
+      <ResponsiveContainer height={height} width={width}>
+        <ComposedChart data={getData}>
           <XAxis
-             dataKey="createdAt"
-             angle="-20"
+            dataKey="hour"
+            angle="-20"
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
           <YAxis
             unit="/day"
+            // domain={[0, Number(thresholds?.high) + 10]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
           <CartesianGrid strokeDasharray="4" />
           <Tooltip contentStyle={{ backgroundColor: colors.background }} />
-          <Area
+          <Legend
+            align="left"
+            verticalAlign="top"
+            height={36}
+            content={renderLegend(ruminationLegends)}
+          />
+          <Line
             dataKey="rumination"
-            type="monotone"
-            stroke={"rgba(97, 169, 255, 1)"}
-            fillOpacity={1}
-            fill={"url(#colorRumination)"}
+            stroke={colors.rumination.stroke}
+            fill={colors.rumination.fill}
             strokeWidth={2}
             name="Rumination"
-            unit="/day"
+            unit=" °F"
           />
-          <Area
-            dataKey="threshold"
-            type="monotone"
-            stroke={"rgba(252, 85, 85, 0.5)"}
-            fill={"transparent"}
-            strokeWidth={2}
-            name="Threshold"
+          <ReferenceLine
+            y={Number(thresholds?.high)}
+            label="Max"
+            stroke="red"
+            strokeWidth={1}
             strokeDasharray="10 20"
-            unit=""
           />
-        </AreaChart>
+          <ReferenceLine
+            y={Number(thresholds?.low)}
+            label="Min"
+            stroke="red"
+            strokeWidth={1}
+            strokeDasharray="10 20"
+          />
+        </ComposedChart>
       </ResponsiveContainer>
     </Stack>
   );

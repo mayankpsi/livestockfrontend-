@@ -68,7 +68,7 @@ export const NotificationContextProvider = ({ children }) => {
       const res = await request({
         url: `/liveStock/getUnreadNotfication?page=${unReadUtils?.paginationPageNo}&limit=10`,
       });
-      if (res?.status === 200) {
+      if (res?.status === 200) {   
         const { data } = res?.data;
         setAllUnreadNotifications(data?.unreadAlertData);
         setOpenBackdropLoader(false);

@@ -1,147 +1,124 @@
-import { Stack, Box} from "@mui/material";
+import { Stack } from "@mui/material";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
-import { useState, useEffect, cloneElement } from "react";
-import { request } from "../../../apis/axios-utils";
-import { ChartCard, DatePicker, CustomModal } from "../../../ComponentsV2";
+import { useState, useEffect } from "react";
+import { ChartCard, BtnGroup } from "../../../ComponentsV2";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import useDateFormat from "../../../hooks/useDateFormat";
-import useGetCamelCase from "../../../hooks/useGetCamelCase";
-import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
 import { chartCardData } from "../Data";
-import TemperatureChart from "./HealthCharts/TemperatureChart";
-import HealthChartsModalContent from "./HealthCharts/HealthChartsModalContent";
+import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
+import TemperatureSection from "./ChartSection/temperatureSection";
+import HeartbeatSection from "./ChartSection/heartbeatSection";
+import StepsSection from "./ChartSection/stepsSection";
+import ActivitySection from "./ChartSection/activitySection";
+import RuminationSection from "./ChartSection/ruminationSection";
+import { useLivestockHealthContext } from "../../../context/LivestockHealthContext";
+
+const btnData = [
+  {
+    label: "temperature",
+  },
+  {
+    label: "heartbeat",
+  },
+  {
+    label: "steps counter",
+  },
+  {
+    label: "activity tracker",
+  },
+  {
+    label: "rumination",
+  },
+];
 
 const Health = ({ data }) => {
-  const [openModal, setOpenModal] = useState(false);
-  const [modalContent, setModalContent] = useState(null);
-  const { setOpenBackdropLoader, openSnackbarAlert, openBackdropLoader} = useLivestockContext();
-  const { formattedDate, getLongDateFormat, paginationDateFormat } =
-    useDateFormat();
-  const { getCamelCase } = useGetCamelCase();
-
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showHealthTab, setShowHealthTab] = useState("temperature");
+  const { getLongDateFormat } = useDateFormat();
   const { getDynamicColor } = useGetColorDynamically();
-  const [healthData, setHealthData] = useState({});
+  const { healthChartData, activeTab, setActiveTab } =
+    useLivestockHealthContext();
 
-  //GET ALL ALERTS THRESHOLD
-  useEffect(() => {
-    if (data?.id) {
-      setOpenBackdropLoader(true);
-      request({
-        url: `/liveStock/getLiveStockHistory?LiveStockId=${
-          data?.id
-        }&currentDate=${paginationDateFormat(
-          selectedDate,
-          "date"
-        )}&EndDate=${paginationDateFormat(selectedDate, "date")}`,
-      })
-        .then((res) => {
-          if (res?.status === 200) {
-            const { data } = res?.data;
-            setHealthData(data);
-          } else {
-            const msg = res?.response?.data?.message || "Something went wrong!";
-            setHealthData({});
-            throw new Error(msg);
-          }
-        })
-        .catch((err) => {
-          const firstLoad =
-            paginationDateFormat(new Date(), "date") ===
-              paginationDateFormat(selectedDate, "date") &&
-            paginationDateFormat(new Date(), "date") ===
-              paginationDateFormat(selectedDate, "date");
-          if (!firstLoad) openSnackbarAlert("error", err?.message);
-        })
-        .finally(() => setOpenBackdropLoader(false));
+  const [singleSelectedDate, setSingleSelectedDate] = useState(new Date());
+  const [dateRange, setDateRange] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+
+  const showSection = (key) => {
+    if (data?.thresholds) {
+      const { heartBeat, rumination, temperature, steps } = data?.thresholds;
+      if (key === "temperature") {
+        return <TemperatureSection thresholds={temperature} />;
+      } else if (key === "heartbeat") {
+        return <HeartbeatSection thresholds={heartBeat} />;
+      } else if (key === "steps counter") {
+        return <StepsSection thresholds={steps} />;
+      } else if (key === "activity tracker") {
+        return <ActivitySection />;
+      } else if (key === "rumination") {
+        return <RuminationSection thresholds={rumination} />;
+      } else {
+        return <TemperatureSection thresholds={temperature} />;
+      }
     }
-  }, [data?.id, selectedDate]);
-
-  const handleModal = (label) => {
-    setModalContent(label);
-    setOpenModal(true);
   };
 
-  const getModalContent = (type) => {
-    const selectedChart = chartCardData?.find((ele) => ele?.label === type);
-    const dataLabel =
-      selectedChart?.label === "heartbeat" ? "heartBeat" : selectedChart?.label;
-    const newChart =
-      selectedChart?.chart &&
-      cloneElement(selectedChart?.chart, {
-        height:550,
-        width:25000,
-        data: healthData[dataLabel]?.map((ele) => ({
-          ...ele,
-          createdAt: formattedDate(ele?.createdAt, "time"),
-        })),
-      });
-    return newChart;
+  const handleActiveTab = (key) => {
+    setShowHealthTab(key);
+    if (key === "temperature") {
+      setActiveTab(1);
+    } else if (key === "heartbeat") {
+      setActiveTab(2);
+    } else if (key === "steps counter") {
+      setActiveTab(3);
+    } else if (key === "activity tracker") {
+      setActiveTab(4);
+    } else if (key === "rumination") {
+      setActiveTab(5);
+    } else {
+      setActiveTab(1);
+    }
   };
 
   return (
-    <Stack my={4} direction="column" alignItems="center" gap={4}>
-      <Stack direction="row" justifyContent="space-between" width="100%">
-        <TypographyPrimary sx={{ fontSize: "21px" }}>
-          Showing Health Data of{" "}
-          <span style={{ color: "#B58B5D" }}>
-            {getLongDateFormat(selectedDate)}
-          </span>
-        </TypographyPrimary>
-        <DatePicker
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-        />
-      </Stack>
-
-      <Stack width="100%" gap={2}>
+    <Stack mt={4} direction="column" alignItems="center" gap={4}>
+      <TypographyPrimary
+        sx={{ fontSize: "21px", alignSelf: "flex-start", m: 0 }}
+      >
+        Showing Health Data of{" "}
+        <span style={{ color: "#B58B5D" }}>
+          {getLongDateFormat(singleSelectedDate)}
+        </span>
+      </TypographyPrimary>
+      <Stack width="100%" direction={"row"} flexWrap={"wrap"} gap={2}>
         {chartCardData
           ?.map((ele) => ({
             ...ele,
-            value: data ? data[getCamelCase(ele?.label)] : "",
+            value: data?.[ele?.label],
+            createdAt: data?.[ele?.label?.toLowerCase() + "Time"],
             valueColor: getDynamicColor(data, ele?.label),
           }))
-          ?.map((ele) => {
-            const dataLabel =
-              ele?.label === "heartbeat" ? "heartBeat" : ele?.label;
-            const newChart = cloneElement(ele?.chart, {
-              data: healthData[dataLabel]
-                ?.map((ele) => ({
-                  ...ele,
-                  createdAt: formattedDate(ele?.createdAt, "time"),
-                }))
-                ?.slice(0, 64)
-            });
-            return (
-              <ChartCard
-                label={ele.label}
-                value={ele.value}
-                icon={ele.icon}
-                colors={ele.colors}
-                valueColor={ele.valueColor}
-                suffix={ele.suffix}
-                onViewData={(label) => handleModal(label)}
-              >
-                {newChart}
-              </ChartCard>
-            );
-          })}
+          ?.map((ele) => (
+            <ChartCard
+              label={ele.label}
+              value={ele.value}
+              icon={ele.icon}
+              colors={ele.colors}
+              valueColor={ele.valueColor}
+              suffix={ele.suffix}
+              createdAt={ele?.createdAt}
+            />
+          ))}
       </Stack>
-      <CustomModal
-        content={
-          <HealthChartsModalContent
-            onModalClose={() => setOpenModal(false)}
-            selectedDate={selectedDate}
-            label={modalContent}
-            setSelectedDate={setSelectedDate}
-          >
-            {getModalContent(modalContent)}
-          </HealthChartsModalContent>
-        }
-        openModal={openModal}
-        customWidth={"90%"}
-        handleClose={() => setOpenModal(false)}
+      <BtnGroup
+        btnData={btnData}
+        activeBtn={showHealthTab}
+        onChange={(ele) => handleActiveTab(ele)}
       />
+      {showSection(showHealthTab)}
     </Stack>
   );
 };

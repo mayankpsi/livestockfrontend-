@@ -4,7 +4,6 @@ import {
   ComposedChart,
   Legend,
   Line,
-  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -13,11 +12,11 @@ import {
 import { Stack } from "@mui/material";
 import { chartData } from "./chartData";
 import { renderLegend } from "../ChartSection/legend";
-import { stepsLegends } from "../ChartSection/dataFormats";
+import { activityLegends } from "../ChartSection/dataFormats";
 
-function StepsChart({ height = 200, width, data,thresholds }) {
+function ActivityChart({ height = 200, width, data }) {
   const colors = {
-    steps: { stroke: "#FF9777", fill: "#FF9777" },
+    steps: { stroke: "#4f46e5", fill: "#c7d2fe" },
     threshold: { stroke: "#16a34a", fill: "#dcfce7" },
     text: "#374151",
     background: "#fff",
@@ -35,11 +34,10 @@ function StepsChart({ height = 200, width, data,thresholds }) {
             tickMargin={10}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
-            unit=" hr"
+            unit="/hr"
           />
           <YAxis
-            unit="/hr"
-            domain={[0, Number(thresholds?.high) + 10]}
+            unit="/min"
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
@@ -49,29 +47,25 @@ function StepsChart({ height = 200, width, data,thresholds }) {
             align="left"
             verticalAlign="top"
             height={36}
-            content={renderLegend(stepsLegends)}
+            content={renderLegend(activityLegends)}
           />
           <Line
-            dataKey="totalSteps"
+            dataKey="activeTimeInMinutes"
             stroke={colors.steps.stroke}
             fill={colors.steps.fill}
             strokeWidth={2}
-            name="totalSteps"
-            unit=" °F"
+            name="activity"
+            unit="/min"
           />
-          <ReferenceLine
-            y={Number(thresholds?.high)}
-            label="Max"
-            stroke="red"
-            strokeWidth={1}
+          <Area
+            dataKey="threshold"
+            type="monotone"
+            stroke={"rgba(252, 85, 85, 0.5)"}
+            fill={"transparent"}
+            strokeWidth={2}
+            name="Threshold"
             strokeDasharray="10 20"
-          />
-          <ReferenceLine
-            y={Number(thresholds?.low)}
-            label="Min"
-            stroke="red"
-            strokeWidth={1}
-            strokeDasharray="10 20"
+            unit=""
           />
         </ComposedChart>
       </ResponsiveContainer>
@@ -79,4 +73,4 @@ function StepsChart({ height = 200, width, data,thresholds }) {
   );
 }
 
-export default StepsChart;
+export default ActivityChart;

@@ -74,7 +74,7 @@ export const AlertsContextProvider = ({ children }) => {
           setPageCount(res?.data?.data?.pageCount);
           setAlertsDataLength(res?.data?.data?.dataLength);
         } else {
-           const msg = res?.response?.data?.message || "something went wrong"
+           const msg = res?.resopnse?.data?.message || "something went wrong"
           setAllAlertData([]);
           setPageCount(0);
           setAlertsDataLength(0);
