@@ -19,7 +19,7 @@ import {
 } from "./dataFormats";
 import { useEffect } from "react";
 
-const ActivitySection = () => {
+const ActivitySection = ({thresholds}) => {
   const { id } = useParams();
   const {
     getLogs,
@@ -58,7 +58,7 @@ const ActivitySection = () => {
               <Spinner />
             </Stack>
           ) : (
-            <ActivityChart data={chartData} height={500} />
+            <ActivityChart data={chartData} height={500} thresholds={thresholds}/>
           )}
         </HealthChartsModalContent>
       </Stack>

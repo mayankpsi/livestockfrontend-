@@ -4,6 +4,7 @@ import { createContext } from "react";
 import useDateFormat from "../hooks/useDateFormat";
 import { request } from "../apis/axios-utils";
 import { useReducer } from "react";
+import useLivestockContext from "../hooks/useLivestockContext";
 
 const LivestockHealthContext = createContext();
 
@@ -44,7 +45,7 @@ const reducer = (state, action) => {
     case actions?.LOADING:
       return {
         ...state,
-        loading: !state?.loading,
+        loading: action.payload,
       };
   }
 };
@@ -55,7 +56,10 @@ export const LivestockHealthContextProvider = ({ children }) => {
   const [healthChartData, setHealthChartData] = useState([]);
   const [chartDataLoader, setChartDataLoader] = useState(false);
   const [healthLogData, dispatch] = useReducer(reducer, initialState);
-  const [healthCardData, setHealthCardData] = useState({});
+  const [healthCardData, setHealthCardData] = useState({
+    cardData: {},
+    threshold: {},
+  });
   const [singleSelectedDate, setSingleSelectedDate] = useState(new Date());
   const [logsDateRange, setLogsDateRange] = useState([
     {
@@ -67,6 +71,7 @@ export const LivestockHealthContextProvider = ({ children }) => {
   const [chartDateRange, setChartDateRange] = useState(
     chartDateRangeInitialStep
   );
+  const { openSnackbarAlert } = useLivestockContext();
 
   useEffect(() => {
     setChartDateRange(chartDateRangeInitialStep);
@@ -82,31 +87,14 @@ export const LivestockHealthContextProvider = ({ children }) => {
   };
 
   const logsUrl = (id, activeTab) => {
+    const start = paginationDateFormat(logsDateRange?.[0]?.startDate, "date");
+    const end = paginationDateFormat(logsDateRange?.[0]?.endDate, "date");
+    const page = healthLogData?.pagination;
     const urls = [
-      `/liveStock/getTemperatureLogs?livestockId=${id}&startDate=${paginationDateFormat(
-        logsDateRange?.startDate,
-        "date"
-      )}&endDate=${paginationDateFormat(logsDateRange?.endDate, "date")}&page=${
-        healthLogData?.pagination
-      }&limit=10`,
-      `/liveStock/getHeartbeatLogs?livestockId=${id}&startDate=${paginationDateFormat(
-        logsDateRange?.startDate,
-        "date"
-      )}&endDate=${paginationDateFormat(logsDateRange?.endDate, "date")}&page=${
-        healthLogData?.pagination
-      }&limit=10`,
-      `/liveStock/getStepsLogs?livestockId=${id}&startDate=${paginationDateFormat(
-        logsDateRange?.startDate,
-        "date"
-      )}&endDate=${paginationDateFormat(logsDateRange?.endDate, "date")}&page=${
-        healthLogData?.pagination
-      }&limit=10`,
-      `/liveStock/getActivityLogs?livestockId=${id}&startDate=${paginationDateFormat(
-        logsDateRange?.startDate,
-        "date"
-      )}&endDate=${paginationDateFormat(logsDateRange?.endDate, "date")}&page=${
-        healthLogData?.pagination
-      }&limit=10`,
+      `/liveStock/getTemperatureLogs?livestockId=${id}&startDate=${start}&endDate=${end}&page=${page}&limit=10`,
+      `/liveStock/getHeartbeatLogs?livestockId=${id}&startDate=${start}&endDate=${end}&page=${page}&limit=10`,
+      `/liveStock/getStepsLogs?livestockId=${id}&startDate=${start}&endDate=${end}&page=${page}&limit=10`,
+      `/liveStock/getActivityLogs?livestockId=${id}&startDate=${start}&endDate=${end}&page=${page}&limit=10`,
     ];
     return urls[activeTab - 1];
   };
@@ -148,7 +136,7 @@ export const LivestockHealthContextProvider = ({ children }) => {
           }
         })
         .catch((err) => {
-          //   if (!firstLoad) openSnackbarAlert("error", err?.message);
+          if (!firstLoad) openSnackbarAlert("error", err?.message);
         })
         .finally(() => setChartDataLoader(false));
     }
@@ -156,7 +144,7 @@ export const LivestockHealthContextProvider = ({ children }) => {
 
   const getLogs = (id) => {
     if (id) {
-      dispatch({ type: actions.LOADING });
+      dispatch({ type: actions.LOADING, payload: true });
       request({ url: logsUrl(id, activeTab) })
         .then((res) => {
           if (res?.status === 200) {
@@ -176,57 +164,66 @@ export const LivestockHealthContextProvider = ({ children }) => {
           }
         })
         .catch((err) => {
-          //   if (!firstLoad) openSnackbarAlert("error", err?.message);
+          if (!firstLoad) openSnackbarAlert("error", err?.message);
         })
-        .finally(() => dispatch({ type: actions.LOADING }));
+        .finally(() => {
+          dispatch({ type: actions.LOADING, payload: false });
+        });
     }
   };
 
   const getHealthCardData = (id) => {
     if (id) {
       request({
-        url: `/liveStock/getTotalStepsActivityRumintion?livestockId=${id}`,
+        url: `/liveStock/getLivestockInfoData?livestockId=${id}`,
       })
         .then((res) => {
           if (res?.status === 200) {
             const {
               temperature,
-              heartBeat,
-              totalSteps,
-              stepsTime,
               temperatureTime,
+              temperatureAlertStatus,
+              heartBeat,
               heartBeatTime,
+              heartBeatAlertStatus,
+              stepsDataObject,
+              stepsTime,
+              stepsAlertStatus,
+              activityTime,
+              activityAlertStatus,
               rumination,
-              activity: {
-                activeTimeInHours,
-                activeTimeInMinutes,
-                currentActivityTime,
-              },
+              ruminationTime,
+              activeTimeInHours,
+              activeTimeInMinutes,
+              ruminationAlertStatus,
+              threshold,
             } = res?.data?.data;
             const formattedData = {
-              temperature,
-              heartbeat: heartBeat,
-              steps: totalSteps,
-              activityHour: activeTimeInHours,
-              activityMin: activeTimeInMinutes,
-              rumination,
-              temperatureTime,
-              heartbeatTime: heartBeatTime,
-              stepsTime,
-              activityHour: activeTimeInHours,
-              activityMin: activeTimeInMinutes,
-              activityTime: currentActivityTime,
-              rumination,
-              ruminationTime: temperatureTime,
+              temperature: temperature || "0",
+              temperatureTime: temperatureTime || "00:00 00/00/00",
+              temperatureAlertStatus,
+              heartbeat: heartBeat || "0",
+              heartbeatTime: heartBeatTime || "00:00 00/00/00",
+              heartbeatAlertStatus: heartBeatAlertStatus,
+              steps: stepsDataObject || "0",
+              stepsTime: stepsTime || "00:00 00/00/00",
+              stepsAlertStatus: stepsAlertStatus,
+              activityHour: activeTimeInHours || "0",
+              activityMin: activeTimeInMinutes || "0",
+              activityTime: activityTime || "00:00 00/00/00",
+              activityAlertStatus,
+              rumination: rumination || "0",
+              ruminationTime: ruminationTime || "00:00 00/00/00",
+              ruminationAlertStatus,
             };
-            setHealthCardData(formattedData);
+            setHealthCardData({ cardData: formattedData, threshold });
           } else {
             const msg = getErrorMessage(res);
             throw new Error(msg);
           }
         })
         .catch((err) => {
-          //   if (!firstLoad) openSnackbarAlert("error", err?.message);
+          if (!firstLoad) openSnackbarAlert("error", err?.message);
         })
         .finally(() => dispatch({ type: actions.LOADING }));
     }
@@ -238,6 +235,16 @@ export const LivestockHealthContextProvider = ({ children }) => {
       payload: pageNo,
     };
     dispatch(action);
+  };
+
+  const handleRefreshButton = (id) => {
+    openSnackbarAlert(
+      "info",
+      "Refresh Button will be available after 30 seconds"
+    );
+    getHealthCardData(id);
+    getChartData(id);
+    getLogs(id);
   };
 
   return (
@@ -259,6 +266,7 @@ export const LivestockHealthContextProvider = ({ children }) => {
         setChartDateRange,
         getHealthCardData,
         healthCardData,
+        handleRefreshButton,
       }}
     >
       {children}

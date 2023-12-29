@@ -11,7 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { addCollarValidationSchema } from "../../utils/validationSchema";
 import useCollarContext from "../../hooks/useCollarContext";
 
-const AddCollarModalContent = () => {
+const AddPedometerModalContent = () => {
   const {
     handleAddCollarChange,
     handleAddCollar,
@@ -30,7 +30,7 @@ const AddCollarModalContent = () => {
     <form onSubmit={handleSubmit(handleAddCollar)}>
       <Box>
         <TypographyWithBg id="modal-modal-title" variant="h6" component="h2">
-          Add Collar
+          Add Pedometer
         </TypographyWithBg>
         <Stack>
           <Box
@@ -42,11 +42,11 @@ const AddCollarModalContent = () => {
             }}
           >
             <CustomInput
-              label="collar UID"
+              label="Pedometer UID"
               register={register}
               errors={errors}
               value={newCollar?.collarUID}
-              name="collarUID"
+              name="pedometerUID"
               isError={
                 isError.message.toLowerCase().includes("uid")
                   ? isError
@@ -55,11 +55,11 @@ const AddCollarModalContent = () => {
               onChange={handleAddCollarChange}
             />
             <CustomInput
-              label="collar name"
+              label="Pedometer name"
               register={register}
               errors={errors}
               value={newCollar?.collarName}
-              name="collarName"
+              name="pedometerName"
               isError={{ error: false, message: "" }}
               onChange={handleAddCollarChange}
             />
@@ -72,11 +72,11 @@ const AddCollarModalContent = () => {
             }}
           >
             <CustomInput
-              label="collar MAC ID"
+              label="Pedometer MAC ID"
               register={register}
               errors={errors}
               value={newCollar?.collarMacId}
-              name="collarMacId"
+              name="pedometerMacId"
               type="number"
               isError={
                 isError.message.toLowerCase().includes("macid")
@@ -128,4 +128,4 @@ const AddCollarModalContent = () => {
   );
 };
 
-export default AddCollarModalContent;
+export default AddPedometerModalContent;

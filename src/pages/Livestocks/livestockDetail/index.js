@@ -15,6 +15,7 @@ import useLivestockContext from "../../../hooks/useLivestockContext";
 import { alertsThresholdData } from "./alertThresholdData";
 import useDateFormat from "../../../hooks/useDateFormat";
 import LivestockLogs from "./LivestockLogs";
+import useErrorMessage from "../../../hooks/useErrorMessage";
 
 const LivestockDetails = () => {
   const [data, setData] = useState();
@@ -33,6 +34,7 @@ const LivestockDetails = () => {
   const { formattedDate } = useDateFormat();
   const [alertsThreshold, setAlertsThreshold] = useState([]);
   const { id } = useParams();
+  const {getErrorMessage} = useErrorMessage()
 
   useEffect(() => {
     setOpenBackdropLoader(true);
@@ -51,8 +53,8 @@ const LivestockDetails = () => {
             steps: data?.steps,
             rumination: data?.rumination,
             lastUpdate: formattedDate(data?.updatedAt),
-            lastUpdateGeoFenceDependent: formattedDate(data?.updatedAt),
-            lastUpdateDeviceDependent: formattedDate(data?.updated_At),
+            lastUpdateGeoFenceDependent: formattedDate(data?.livestockLocationStatusTime),
+            lastUpdateDeviceDependent: formattedDate(data?.livestockLocationStatusTime),
             img: data?.imgPath,
             liveStocklocationStatus: data?.liveStocklocationStatus,
             collarId: data?.assignedDevice?._id,
@@ -71,12 +73,12 @@ const LivestockDetails = () => {
           const thresholdFormattedData = alertsThresholdData?.map((ele) => {
             return {
               ...ele,
-              value: data?.threshold[ele.label],
+              value: data?.threshold[ele?.label],
             };
           });
           setAlertsThreshold(thresholdFormattedData);
         } else {
-          throw new Error("something went wrong");
+          throw new Error(getErrorMessage(res));
         }
       })
       .catch((e) => {
@@ -109,7 +111,7 @@ const LivestockDetails = () => {
       ),
     },
     {
-      label: "collar",
+      label: "Device",
       child: <CollarInfo data={data} />,
     },
     {

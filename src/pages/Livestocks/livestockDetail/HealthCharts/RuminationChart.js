@@ -12,7 +12,7 @@ import {
   YAxis,
 } from "recharts";
 import { Stack } from "@mui/material";
-import { chartData } from "./chartData";
+import { chartData, ruminationfake } from "./chartData";
 import { renderLegend } from "../ChartSection/legend";
 import { ruminationLegends } from "../ChartSection/dataFormats";
 
@@ -24,18 +24,19 @@ function RuminationChart({ height = 200, width, data, thresholds }) {
     background: "#fff",
   };
   const getData = chartData;
+  const isDay = false
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
-        <ComposedChart data={getData}>
+        <ComposedChart data={isDay?null:ruminationfake}>
           <XAxis
-            dataKey="hour"
+            dataKey="xAxis"
             angle="-20"
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
           <YAxis
-            unit="/day"
+            unit="/min"
             // domain={[0, Number(thresholds?.high) + 10]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
@@ -49,22 +50,22 @@ function RuminationChart({ height = 200, width, data, thresholds }) {
             content={renderLegend(ruminationLegends)}
           />
           <Line
-            dataKey="rumination"
+            dataKey="dataValue"
             stroke={colors.rumination.stroke}
             fill={colors.rumination.fill}
             strokeWidth={2}
             name="Rumination"
-            unit=" °F"
+            unit=""
           />
           <ReferenceLine
-            y={Number(thresholds?.high)}
+            y={Number(50)}
             label="Max"
             stroke="red"
             strokeWidth={1}
             strokeDasharray="10 20"
           />
           <ReferenceLine
-            y={Number(thresholds?.low)}
+            y={Number(10)}
             label="Min"
             stroke="red"
             strokeWidth={1}

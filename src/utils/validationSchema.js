@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-// REGULAR EXPRESSSIONS 
+// REGULAR EXPRESSIONS 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 const uppercaseRegExp = /(?=.*?[A-Z])/;
 const lowercaseRegExp = /(?=.*?[a-z])/;
@@ -63,7 +63,7 @@ export const signUpSchema = Yup.object().shape({
 export const addCollarValidationSchema = Yup.object().shape({
   collarUID: Yup.string().required().min(3, "Collar UID must be long").matches(whiteSpace, "Cant'\t be white spaces only"),
   collarName: Yup.string().required().min(3, "Collar Name must be long").matches(whiteSpace, "Cant'\t be white spaces only"),
-  collarMacId: Yup.string().required().min(3, "Collar Mac ID must be long").matches(whiteSpace, "Cant'\t be white spaces only"),
+  collarMacId: Yup.string().required().min(8, "Collar UID must 8 digit long").max(8, "Collar UID must 8 digit long").matches(whiteSpace, "Cant'\t be white spaces only"),
 });
 
 export const addLivestockValidationSchema = Yup.object().shape({

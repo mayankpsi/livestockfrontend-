@@ -20,8 +20,8 @@ export const routes = [
     },
     {
       icon: GroupWorkOutlinedIcon,
-      title: "collars",
-      link: "/collars",
+      title: "devices",
+      link: "/devices",
     },
     {
       icon: PetsOutlinedIcon,

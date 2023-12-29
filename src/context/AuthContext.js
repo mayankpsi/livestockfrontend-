@@ -2,12 +2,14 @@ import { createContext, useEffect } from "react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { request } from "../apis/axios-utils";
+import useErrorMessage from "../hooks/useErrorMessage";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const {getErrorMessage} = useErrorMessage()
   const from = location.state?.from?.pathname || "/";
   const [userData, setUserData] = useState({ data: {}, error: "" });
   const [onUserLogin, setOnUserLogin] = useState({ email: "", password: "" });
@@ -72,8 +74,7 @@ export const AuthContextProvider = ({ children }) => {
         // res.response.data.statusCode - 401 - incorrect password
         showSnackbarAlert("error", res?.response?.data?.message);
       } else {
-        const message =
-          res?.response?.data?.message || "Something went wrong :(";
+        const message = getErrorMessage(res);
         throw new Error(message);
       }
     } catch (err) {
@@ -117,8 +118,7 @@ export const AuthContextProvider = ({ children }) => {
         showSnackbarAlert("error", res?.response?.data?.message);
       } else {
         //ALL OTHER ERRORS
-        const message =
-          res?.response?.data?.message || "Something went wrong :(";
+        const message =getErrorMessage(res)
         throw new Error(message);
       }
     } catch (err) {

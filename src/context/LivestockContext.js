@@ -4,12 +4,13 @@ import { CustomLabel } from "../ComponentsV2";
 import { useNavigate } from "react-router-dom";
 import { request } from "../apis/axios-utils";
 import useDateFormat from "../hooks/useDateFormat";
-import { ConstructionOutlined } from "@mui/icons-material";
+import useErrorMessage from "../hooks/useErrorMessage";
 
 export const LivestockContext = createContext();
 
 export const LivestockContextProvider = ({ children }) => {
   const navigate = useNavigate();
+  const {getErrorMessage} = useErrorMessage();
 
   const [allLivestocks, setAllLivestocks] = useState([]);
   const [modalContentType, setModalContentType] = useState("add");
@@ -135,7 +136,8 @@ export const LivestockContextProvider = ({ children }) => {
       setTimeout(() => window.location.reload(), 500);
     } else {
       setOpenBackdropLoader(false);
-      openSnackbarAlert("error", "Something went wrong :(");
+
+      openSnackbarAlert("error", getErrorMessage(res));
     }
   };
   // HANDLE ADD COLLAR
@@ -176,12 +178,12 @@ export const LivestockContextProvider = ({ children }) => {
             message: res?.response?.data?.message,
           });
         } else {
-          throw new Error("Something went wrong");
+          throw new Error(getErrorMessage(res));
         }
       }
     } catch (error) {
       setAddNewLivestockLoading(false);
-      const msg = error?.message || "Something went wrong :(";
+      const msg = error?.message
       openSnackbarAlert("error", msg);
     }
   };
@@ -238,10 +240,10 @@ export const LivestockContextProvider = ({ children }) => {
         openSnackbarAlert("success", "Alert successfully deleted!");
         setTimeout(() => window.location.reload(), 500);
       } else {
-        throw new Error("Something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (err) {
-      const msg = err?.message || "Something went wrong :(";
+      const msg = err?.message;
       setOpenBackdropLoader(false);
       openSnackbarAlert("error", msg);
     }
@@ -260,10 +262,10 @@ export const LivestockContextProvider = ({ children }) => {
         openSnackbarAlert("success", "All alert successfully deleted!");
         setTimeout(() => window.location.reload(), 500);
       } else {
-        throw new Error("Something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (err) {
-      const msg = err?.message || "Something went wrong :(";
+      const msg = err?.message;
       setOpenBackdropLoader(false);
       openSnackbarAlert("error", msg);
     }

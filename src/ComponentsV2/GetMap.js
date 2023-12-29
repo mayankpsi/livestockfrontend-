@@ -96,7 +96,7 @@ const GetMap = ({
           draggable: false,
           editable: false,
           visible: true,
-          radius: geofenceCoordinates?.radius,
+          radius: Math.ceil(geofenceCoordinates?.radius/10),
         }}
       />
     </GoogleMap>

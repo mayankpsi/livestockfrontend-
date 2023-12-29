@@ -29,16 +29,16 @@ export const alertsThresholdData = [
     },
     isEdit: false,
   },
-  // {
-  //   id: 4,
-  //   suffix: "/Day",
-  //   label: "activity",
-  //   value:  {
-  //     low: 100,
-  //     high: 104,
-  //   },
-  //   isEdit: false,
-  // },
+  {
+    id: 4,
+    suffix: "/day",
+    label: "activity",
+    value:  {
+      low: 2,
+      high: 12,
+    },
+    isEdit: false,
+  },
   {
     id: 5,
     suffix: "min/Day",

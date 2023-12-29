@@ -1,0 +1,90 @@
+import React from "react";
+import { Stack, Box, Divider } from "@mui/material";
+import { TabPane } from "../../../ComponentsV2";
+import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
+import { useTheme } from "@emotion/react";
+import useGetCamelCase from "../../../hooks/useGetCamelCase";
+import useDateFormat from "../../../hooks/useDateFormat";
+
+const DeviceCard = ({ label, data, onRemove, deviceDataFormat }) => {
+  const { formattedDate } = useDateFormat();
+  const { getCamelCase } = useGetCamelCase();
+  const theme = useTheme();
+  return (
+    <Stack width="100%" my={4} direction="row" alignItems="flex-start" gap={4}>
+      <Stack
+        width="100%"
+        sx={{ border: "1px solid #dddddd", borderRadius: "10px" }}
+      >
+        <Box p="10px 20px">
+          <TabPane
+            text={`${label} Info`}
+            btnText="remove"
+            btnIcon={false}
+            hover={true}
+            btnBgColor="#FF0505"
+            onBtnClick={onRemove}
+          />
+        </Box>
+        <Divider />
+        <Stack px="20px">
+          <Box display="flex" justifyContent="flex-start">
+            <TypographyPrimary
+              sx={{
+                color: "#B5B5C3",
+                minWidth: "30%",
+                display: "flex",
+                justifyContent: "space-between",
+                pr: 5,
+              }}
+            >
+              Status
+              <Box component="span">:</Box>
+            </TypographyPrimary>
+            <TypographyPrimary
+              sx={{
+                color: data?.collarWifiStatus
+                  ? theme.palette.success.light
+                  : theme.palette.error.light,
+              }}
+            >
+              {data?.collarWifiStatus ? "Online" : "Offline"}
+            </TypographyPrimary>
+          </Box>
+          {deviceDataFormat
+            ?.map((ele) => ({
+              ...ele,
+              value: data
+                ? ele?.label?.toLowerCase()?.includes('battery')
+                  ? `${data[getCamelCase(ele.label)]}%`
+                  : data[getCamelCase(ele.label)]
+                : "N/A",
+            }))
+            ?.map((ele) => (
+              <Box display="flex" justifyContent="flex-start">
+                <TypographyPrimary
+                  sx={{
+                    color: "#B5B5C3",
+                    minWidth: "30%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    pr: 5,
+                  }}
+                >
+                  {ele.label}
+                  <Box component="span">:</Box>
+                </TypographyPrimary>
+                <TypographyPrimary sx={{ color: "#222222" }}>
+                  {ele?.label?.toLowerCase()?.includes("added")
+                    ? formattedDate(ele.value)
+                    : ele?.value}
+                </TypographyPrimary>
+              </Box>
+            ))}
+        </Stack>
+      </Stack>
+    </Stack>
+  );
+};
+
+export default DeviceCard;

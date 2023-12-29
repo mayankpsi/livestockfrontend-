@@ -13,6 +13,8 @@ import { Stack } from "@mui/material";
 import { chartData } from "./chartData";
 import { renderLegend } from "../ChartSection/legend";
 import { heartbeatLegends } from "../ChartSection/dataFormats";
+import { tempFakeDate } from "../ChartSection/tempFakeData";
+import moment from "moment/moment";
 
 function HeartBeatChart({ height = 200, data, width, thresholds }) {
   const colors = {
@@ -23,12 +25,19 @@ function HeartBeatChart({ height = 200, data, width, thresholds }) {
   };
   const getData = data?.length ? data : chartData;
 
+  const formattedTempData = tempFakeDate?.map(ele => (
+    {
+      time:moment(ele.Time).format("LT"),
+      heartbeat:Number(ele.Temperature.toString()?.split('.')[0]) -25
+    }
+  ))
+
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
-        <ComposedChart data={getData}>
+        <ComposedChart data={formattedTempData}>
           <XAxis
-            dataKey="createdAt"
+            dataKey="time"
             angle="30"
             tickSize={10}
             tickMargin={10}
@@ -37,7 +46,7 @@ function HeartBeatChart({ height = 200, data, width, thresholds }) {
           />
           <YAxis
             unit="/min"
-            domain={[0, Number(thresholds?.high) + 10]}
+            domain={[30, Number(80) + 10]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
@@ -50,7 +59,7 @@ function HeartBeatChart({ height = 200, data, width, thresholds }) {
             content={renderLegend(heartbeatLegends)}
           />
           <Line
-            dataKey="heartBeat"
+            dataKey="heartbeat"
             stroke={colors.heartbeat.stroke}
             fill={colors.heartbeat.fill}
             strokeWidth={2}
@@ -58,14 +67,14 @@ function HeartBeatChart({ height = 200, data, width, thresholds }) {
             unit="/min"
           />
           <ReferenceLine
-            y={Number(thresholds?.high)}
+            y={Number(80)}
             label="Max"
             stroke="red"
             strokeWidth={1}
             strokeDasharray="10 20"
           />
           <ReferenceLine
-            y={Number(thresholds?.low)}
+            y={Number(50)}
             label="Min"
             stroke="red"
             strokeWidth={1}

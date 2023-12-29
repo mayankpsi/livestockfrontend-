@@ -6,7 +6,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:1
+    hour: 1,
   },
   {
     createdAt: "0",
@@ -15,7 +15,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:2
+    hour: 2,
   },
   {
     createdAt: "0",
@@ -24,7 +24,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:3
+    hour: 3,
   },
   {
     createdAt: "0",
@@ -33,7 +33,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:4
+    hour: 4,
   },
   {
     createdAt: "0",
@@ -42,7 +42,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:5
+    hour: 5,
   },
   {
     createdAt: "0",
@@ -51,7 +51,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:6
+    hour: 6,
   },
   {
     createdAt: "0",
@@ -60,7 +60,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:7
+    hour: 7,
   },
   {
     createdAt: "0",
@@ -69,7 +69,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:8
+    hour: 8,
   },
   {
     createdAt: "0",
@@ -78,7 +78,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:9
+    hour: 9,
   },
   {
     createdAt: "0",
@@ -87,7 +87,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:10
+    hour: 10,
   },
   {
     createdAt: "0",
@@ -96,7 +96,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:11
+    hour: 11,
   },
   {
     createdAt: "0",
@@ -105,7 +105,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:12
+    hour: 12,
   },
   {
     createdAt: "0",
@@ -114,7 +114,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:13
+    hour: 13,
   },
   {
     createdAt: "0",
@@ -123,7 +123,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:14
+    hour: 14,
   },
   {
     createdAt: "0",
@@ -132,7 +132,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:15
+    hour: 15,
   },
   {
     createdAt: "0",
@@ -141,7 +141,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:16
+    hour: 16,
   },
   {
     createdAt: "0",
@@ -150,7 +150,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:17
+    hour: 17,
   },
   {
     createdAt: "0",
@@ -159,7 +159,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:18
+    hour: 18,
   },
   {
     createdAt: "0",
@@ -168,7 +168,7 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:19
+    hour: 19,
   },
   {
     createdAt: "0",
@@ -177,6 +177,134 @@ export const chartData = [
     totalSteps: 0,
     temperature: 0,
     heartBeat: 0,
-    hour:20
+    hour: 20,
   },
+  {
+    createdAt: "0",
+    rumination: 10,
+    threshold: 25,
+    totalSteps: 0,
+    temperature: 0,
+    heartBeat: 0,
+    hour: 21,
+  },
+  {
+    createdAt: "0",
+    rumination: 30,
+    threshold: 25,
+    totalSteps: 0,
+    temperature: 0,
+    heartBeat: 0,
+    hour: 22,
+  },
+  {
+    createdAt: "0",
+    rumination: 10,
+    threshold: 25,
+    totalSteps: 0,
+    temperature: 0,
+    heartBeat: 0,
+    hour: 23,
+  },
+];
+
+export const stepByDay = [
+  { xAxis: "20/12/23", dataValue: 2200 },
+  { xAxis: "21/12/23", dataValue: 3200 },
+  { xAxis: "22/12/23", dataValue: 1200 },
+  { xAxis: "23/12/23", dataValue: 2500 },
+  { xAxis: "24/12/23", dataValue: 2800 },
+  { xAxis: "25/12/23", dataValue: 3500 },
+  { xAxis: "26/12/23", dataValue: 2000 },
+];
+
+export const stepsFakeData = [
+  { xAxis: "00:00", dataValue: 120 },
+  { xAxis: "01:00", dataValue: 80 },
+  { xAxis: "02:00", dataValue: 0 },
+  { xAxis: "03:00", dataValue: 60 },
+  { xAxis: "04:00", dataValue: 0 },
+  { xAxis: "05:00", dataValue: 100 },
+  { xAxis: "06:00", dataValue: 90 },
+  { xAxis: "07:00", dataValue: 70 },
+  { xAxis: "08:00", dataValue: 0 },
+  { xAxis: "09:00", dataValue: 130 },
+  { xAxis: "10:00", dataValue: 0 },
+  { xAxis: "11:00", dataValue: 110 },
+  { xAxis: "12:00", dataValue: 0 },
+  { xAxis: "13:00", dataValue: 80 },
+  { xAxis: "14:00", dataValue: 0 },
+  { xAxis: "15:00", dataValue: 70 },
+  { xAxis: "16:00", dataValue: 0 },
+  { xAxis: "17:00", dataValue: 100 },
+  { xAxis: "18:00", dataValue: 0 },
+  { xAxis: "19:00", dataValue: 90 },
+  { xAxis: "20:00", dataValue: 0 },
+  { xAxis: "21:00", dataValue: 120 },
+  { xAxis: "22:00", dataValue: 0 },
+  { xAxis: "23:00", dataValue: 60 },
+];
+
+export const activityDayWise = [
+  { xAxis: "20/12/23", dataValue: 2200 },
+  { xAxis: "21/12/23", dataValue: 3200 },
+  { xAxis: "22/12/23", dataValue: 1200 },
+  { xAxis: "23/12/23", dataValue: 2500 },
+  { xAxis: "24/12/23", dataValue: 2800 },
+  { xAxis: "25/12/23", dataValue: 3500 },
+  { xAxis: "26/12/23", dataValue: 2000 },
+];
+
+export const activityFakeData = [
+  { xAxis: "00:00", dataValue: 10 },
+  { xAxis: "01:00", dataValue: 15 },
+  { xAxis: "02:00", dataValue: 5 },
+  { xAxis: "03:00", dataValue: 8 },
+  { xAxis: "04:00", dataValue: 12 },
+  { xAxis: "05:00", dataValue: 18 },
+  { xAxis: "06:00", dataValue: 6 },
+  { xAxis: "07:00", dataValue: 11 },
+  { xAxis: "08:00", dataValue: 14 },
+  { xAxis: "09:00", dataValue: 9 },
+  { xAxis: "10:00", dataValue: 16 },
+  { xAxis: "11:00", dataValue: 7 },
+  { xAxis: "12:00", dataValue: 13 },
+  { xAxis: "13:00", dataValue: 10 },
+  { xAxis: "14:00", dataValue: 19 },
+  { xAxis: "15:00", dataValue: 8 },
+  { xAxis: "16:00", dataValue: 12 },
+  { xAxis: "17:00", dataValue: 17 },
+  { xAxis: "18:00", dataValue: 6 },
+  { xAxis: "19:00", dataValue: 11 },
+  { xAxis: "20:00", dataValue: 15 },
+  { xAxis: "21:00", dataValue: 14 },
+  { xAxis: "22:00", dataValue: 10 },
+  { xAxis: "23:00", dataValue: 8 },
+];
+
+export const ruminationfake = [
+  { xAxis: "00:00", dataValue: 45 },
+  { xAxis: "01:00", dataValue: 30 },
+  { xAxis: "02:00", dataValue: 0 },
+  { xAxis: "03:00", dataValue: 20 },
+  { xAxis: "04:00", dataValue: 0 },
+  { xAxis: "05:00", dataValue: 35 },
+  { xAxis: "06:00", dataValue: 40 },
+  { xAxis: "07:00", dataValue: 25 },
+  { xAxis: "08:00", dataValue: 0 },
+  { xAxis: "09:00", dataValue: 50 },
+  { xAxis: "10:00", dataValue: 0 },
+  { xAxis: "11:00", dataValue: 42 },
+  { xAxis: "12:00", dataValue: 0 },
+  { xAxis: "13:00", dataValue: 30 },
+  { xAxis: "14:00", dataValue: 0 },
+  { xAxis: "15:00", dataValue: 25 },
+  { xAxis: "16:00", dataValue: 0 },
+  { xAxis: "17:00", dataValue: 35 },
+  { xAxis: "18:00", dataValue: 0 },
+  { xAxis: "19:00", dataValue: 40 },
+  { xAxis: "20:00", dataValue: 0 },
+  { xAxis: "21:00", dataValue: 45 },
+  { xAxis: "22:00", dataValue: 0 },
+  { xAxis: "23:00", dataValue: 20 },
 ];

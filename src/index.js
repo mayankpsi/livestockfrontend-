@@ -45,10 +45,10 @@ root.render(
   <BrowserRouter>
     <AuthContextProvider>
       <NotificationContextProvider>
-        <LivestockHealthContextProvider>
-          <MapContentProvider>
-            <CollarContextProvider>
-              <LivestockContextProvider>
+        <MapContentProvider>
+          <CollarContextProvider>
+            <LivestockContextProvider>
+              <LivestockHealthContextProvider>
                 <ProfileContextProvider>
                   <AlertsContextProvider>
                     <ThemeProvider theme={theme}>
@@ -59,10 +59,10 @@ root.render(
                     </ThemeProvider>
                   </AlertsContextProvider>
                 </ProfileContextProvider>
-              </LivestockContextProvider>
-            </CollarContextProvider>
-          </MapContentProvider>
-        </LivestockHealthContextProvider>
+              </LivestockHealthContextProvider>
+            </LivestockContextProvider>
+          </CollarContextProvider>
+        </MapContentProvider>
       </NotificationContextProvider>
     </AuthContextProvider>
   </BrowserRouter>

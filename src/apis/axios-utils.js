@@ -17,6 +17,8 @@ export const request = async ({ ...options }) => {
       localStorage.removeItem("geofenceCreation");
       localStorage.removeItem("currentTab");
       // window.location.reload();
+    } else {
+      return error;
     }
   };
   const allowedUrl = ["/auth/sign-in", "/auth/sign-up"];

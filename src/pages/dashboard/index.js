@@ -16,9 +16,11 @@ import useCollarContext from "../../hooks/useCollarContext";
 import { useNavigate } from "react-router-dom";
 import { request } from "../../apis/axios-utils";
 import { deviceData } from "./Data";
+import useErrorMessage from "../../hooks/useErrorMessage";
 
 const AdminDashBoard = () => {
   const theme = useTheme();
+  const {getErrorMessage} = useErrorMessage();
 
   const handleCompleteProfileModal =
     localStorage.getItem("showProfileCompleteModal") === "true";
@@ -73,7 +75,7 @@ const AdminDashBoard = () => {
           };
           setDashboardData(formattedData);
         } else {
-          throw new Error("something went wrong");
+          throw new Error(getErrorMessage(res1));
         }
         if (res2?.status === 200) {
           const { data } = res2?.data;
@@ -87,7 +89,7 @@ const AdminDashBoard = () => {
           }));
           setGetLivestockStatus(formattedData);
         } else {
-          throw new Error("something went wrong");
+          throw new Error(getErrorMessage(res2));
         }
       })
       .catch((err) => console.log(err.message))

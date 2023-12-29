@@ -12,6 +12,7 @@ export default function CustomInput({
   disabled,
   select,
   selectData,
+  type,
   selectNoDataMsg
 }) {
   return (
@@ -23,6 +24,7 @@ export default function CustomInput({
         id={name}
         select={select}
         label={label}
+        type={type?type:null}
         variant="outlined"
         size="large"
         value={value}

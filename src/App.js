@@ -11,8 +11,10 @@ import {
   AlertsPage,
   ProfilePage,
   ViewCollarDetails,
+  ViewPedometerDetails,
   NotFound,
-  Notifications
+  Devices,
+  Notifications,
 } from "./pages";
 import "./App.css";
 
@@ -28,16 +30,17 @@ function App() {
           <Route path={route.route} element={route.component} key={route.key} />
         );
     });
-// role - ceo, head, 
+  // role - ceo, head,
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route path="login" element={<AuthPage />} />
+        <Route path="login" element={<AuthPage />} />  
         <Route element={<RequireAuth />}>
           <Route path="/" element={<AdminDashBoard />} />
           <Route path="map" element={<Map />} />
-          <Route path="collars" element={<Collars />} />
-          <Route path="collars/:id" element={<ViewCollarDetails />} />
+          <Route path="/devices" element={<Devices />} />
+          <Route path="devices/collars/:id" element={<ViewCollarDetails />} />
+          <Route path="devices/pedometer/:id" element={<ViewPedometerDetails />} />
           <Route path="livestocks" element={<Livestocks />} />
           <Route path="livestocks/:id" element={<LivestockDetails />} />
           <Route path="alerts" element={<AlertsPage />} />
@@ -45,7 +48,7 @@ function App() {
           <Route path="notifications" element={<Notifications />} />
         </Route>
       </Route>
-      <Route path="*" element={<NotFound/>} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

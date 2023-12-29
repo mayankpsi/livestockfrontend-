@@ -6,10 +6,12 @@ import { VisibilityOutlinedIcon, DeleteOutlineOutlinedIcon } from "../icons";
 import { request } from "../apis/axios-utils";
 import useUserId from "../hooks/useUserId";
 import useDateFormat from "../hooks/useDateFormat";
+import useErrorMessage from "../hooks/useErrorMessage";
 
 export const CollarContext = createContext();
 
 export const CollarContextProvider = ({ children }) => {
+  const {getErrorMessage} = useErrorMessage()
   const navigate = useNavigate();
   const { formattedDate } = useDateFormat();
 
@@ -84,7 +86,7 @@ export const CollarContextProvider = ({ children }) => {
               fontSize="large"
               onClick={() => {
                 setOpenBackdropLoader(true);
-                navigate(`/collars/${col?._id}`);
+                navigate(`/devices/collars/${col?._id}`);
               }}
             />,
             <DeleteOutlineOutlinedIcon
@@ -124,10 +126,10 @@ export const CollarContextProvider = ({ children }) => {
       if (res?.response?.status === 409) {
         setIsError({
           error: true,
-          message: res?.response?.data?.message,
+          message: getErrorMessage(res),
         });
       } else {
-        const msg = res?.message || "Something went wrong :(";
+        const msg = res?.message || getErrorMessage(res);
         openSnackbarAlert("error", msg);
       }
     }
@@ -172,7 +174,7 @@ export const CollarContextProvider = ({ children }) => {
       setTimeout(() => window.location.reload(), 500);
     } else {
       setOpenBackdropLoader(false);
-      openSnackbarAlert("error", "Something went wrong :(");
+      openSnackbarAlert("error", getErrorMessage(res));
     }
   };
 

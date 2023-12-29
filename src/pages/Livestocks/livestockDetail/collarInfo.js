@@ -1,27 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Stack, Box, Divider } from "@mui/material";
-import {
-  TabPane,
-  StatusCard,
-  AddBtn,
-  CustomModal,
-} from "../../../ComponentsV2";
-import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
+import { Stack } from "@mui/material";
+import { AddBtn, CustomModal } from "../../../ComponentsV2";
 import ShowLivestocks from "../../Collars/viewCollarDetails/showLivestocks";
-import { useTheme } from "@emotion/react";
-import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
-import { deviceInfoData, statusCardData } from "../Data";
-import useDateFormat from "../../../hooks/useDateFormat";
+import { deviceInfoData, pedometerInfoData} from "../Data";
+import useErrorMessage from "../../../hooks/useErrorMessage";
+import DeviceCard from "../components/DeviceCard";
 
 const CollarInfo = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
   const [allUnassignCollars, setAllUnassignCollars] = useState([]);
-  const theme = useTheme();
-  const { getCamelCase } = useGetCamelCase();
   const { openSnackbarAlert } = useLivestockContext();
-  const {formattedDate} = useDateFormat()
+  const { getErrorMessage } = useErrorMessage();
 
   useEffect(() => {
     if (!data?.collarUid) {
@@ -44,13 +35,10 @@ const CollarInfo = ({ data }) => {
         openSnackbarAlert("success", "Livestock successfully removed :)");
         setTimeout(() => window.location.reload(), 500);
       } else {
-        throw new Error("something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (err) {
-      openSnackbarAlert(
-        "error",
-        err?.message ? err.message : "Something went wrong :("
-      );
+      openSnackbarAlert("error", getErrorMessage(err));
     }
   };
 
@@ -62,7 +50,7 @@ const CollarInfo = ({ data }) => {
       if (res.status === 200) {
         setAllUnassignCollars(res?.data?.data?.UserFreeDeviceInfo);
       } else {
-        throw new Error("something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (error) {
       console.log(error.message);
@@ -84,13 +72,10 @@ const CollarInfo = ({ data }) => {
         openSnackbarAlert("success", "Collar successfully Added :)");
         setTimeout(() => window.location.reload(), 500);
       } else {
-        throw new Error("something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (err) {
-      openSnackbarAlert(
-        "error",
-        err?.message ? err.message : "Something went wrong :("
-      );
+      openSnackbarAlert("error", getErrorMessage(err));
     }
     setShowModal(false);
   };
@@ -98,107 +83,32 @@ const CollarInfo = ({ data }) => {
   return (
     <>
       {data?.collarUid ? (
-        <Stack
-          my={4}
-          direction="row"
-          width="100%"
-          alignItems="flex-start"
-          gap={4}
-        >
-          <Stack
-            width="55%"
-            sx={{ border: "1px solid #dddddd", borderRadius: "10px" }}
-          >
-            <Box p="10px 20px">
-              <TabPane
-                text="Device Info"
-                btnText="remove"
-                btnIcon={false}
-                hover={true}
-                btnBgColor="#FF0505"
-                onBtnClick={handelCollarRemove}
-              />
-            </Box>
-            <Divider />
-            <Stack px="20px">
-              <Box display="flex" justifyContent="flex-start">
-                <TypographyPrimary
-                  sx={{
-                    color: "#B5B5C3",
-                    minWidth: "30%",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    pr: 5,
-                  }}
-                >
-                  Status
-                  <Box component="span">:</Box>
-                </TypographyPrimary>
-                <TypographyPrimary
-                  sx={{
-                    color: data?.collarWifiStatus
-                      ? theme.palette.success.light
-                      : theme.palette.error.light,
-                  }}
-                >
-                  {data?.collarWifiStatus ? "Online" : "Offline"}
-                </TypographyPrimary>
-              </Box>
-              {deviceInfoData
-                ?.map((ele) => ({
-                  ...ele,
-                  value: data ? data[getCamelCase(ele.label)] : "",
-                }))
-                ?.map((ele) => (
-                  <Box display="flex" justifyContent="flex-start">
-                    <TypographyPrimary
-                      sx={{
-                        color: "#B5B5C3",
-                        minWidth: "30%",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        pr: 5,
-                      }}
-                    >
-                      {ele.label}
-                      <Box component="span">:</Box>
-                    </TypographyPrimary>
-                    <TypographyPrimary sx={{ color: "#222222" }}>
-                      {ele?.label?.toLowerCase()?.includes("added")? formattedDate(ele.value):ele?.value}
-                    </TypographyPrimary>
-                  </Box>
-                ))}
-            </Stack>
-          </Stack>
-          <Stack
-            className="radius-10"
-            sx={{ p: 2, border: "1px solid #dddddd" }}
-            flexGrow={0}
-            width="45%"
-          >
-            <TypographyPrimary>Collar status</TypographyPrimary>
-            <Stack direction="column" gap={1}>
-              {statusCardData
-                ?.map((ele) => ({
-                  ...ele,
-                  status: data ? `${data[getCamelCase(ele?.text)]}` : "",
-                }))
-                ?.map((card) => (
-                  <StatusCard
-                    key={card.text}
-                    text={card.text}
-                    status={card.status}
-                    icon={card.icon}
-                    statusColor={card.statusColor}
-                    suffix={card.suffix}
-                  />
-                ))}
-            </Stack>
-          </Stack>
+        <Stack direction={"row"} gap={4}>
+          <DeviceCard
+            label="collar"
+            data={data}
+            deviceDataFormat={deviceInfoData}
+            onRemove={handelCollarRemove}
+          />
+          <DeviceCard
+            label="pedometer"
+            data={data}
+            deviceDataFormat={pedometerInfoData}
+            onRemove={() => {}}
+          />
         </Stack>
       ) : (
-        <Stack my={4}>
-          <AddBtn text1="collar" text2="livestock" onClick={() => setShowModal(true)} />
+        <Stack direction={'row'} my={4} gap={4}>
+          <AddBtn
+            text1="collar"
+            text2="livestock"
+            onClick={() => setShowModal(true)}
+          />
+           <AddBtn
+            text1="Pedometer"
+            text2="livestock"
+            onClick={() => setShowModal(true)}
+          />
         </Stack>
       )}
       <CustomModal
@@ -207,7 +117,9 @@ const CollarInfo = ({ data }) => {
             data={allUnassignCollars}
             onSubmit={(selectedValue) => handleCollarAssign(selectedValue)}
             setOpenAddLivestockModal={() => setShowModal(false)}
-            openSnackbarAlert={() => openSnackbarAlert("error","Please choose a collar to assign")}
+            openSnackbarAlert={() =>
+              openSnackbarAlert("error", "Please choose a collar to assign")
+            }
           />
         }
         openModal={showModal}

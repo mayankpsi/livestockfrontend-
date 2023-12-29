@@ -1,6 +1,7 @@
 import { useState, createContext, useEffect } from "react";
 import { request } from "../apis/axios-utils";
 import axios from "axios";
+import useErrorMessage from "../hooks/useErrorMessage";
 
 export const ProfileContext = createContext();
 
@@ -35,6 +36,7 @@ export const ProfileContextProvider = ({ children }) => {
     message: "",
   });
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
+  const {getErrorMessage} = useErrorMessage();
 
   // HANDLE PROFILE CHANGE AND UPDATE
   const handleProfileChange = (data) => {
@@ -65,7 +67,7 @@ export const ProfileContextProvider = ({ children }) => {
           setOpenBackdropLoader(false);
           openSnackbarAlert("success","Profile successfully edited");
         } else {
-          throw new Error("something went wrong :/");
+          throw new Error(getErrorMessage(res));
         }
       } catch (error) {
         setOpenBackdropLoader(false);
@@ -92,7 +94,7 @@ export const ProfileContextProvider = ({ children }) => {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success","Password successfully changed");
       } else {
-        throw new Error("Something went wrong")
+        throw new Error(getErrorMessage(res))
       }
     } catch (error) {
       setOpenBackdropLoader(false);
@@ -118,7 +120,7 @@ export const ProfileContextProvider = ({ children }) => {
             country: data?.address?.country,
           });
         } else {
-          throw new Error("Something went wrong")
+          throw new Error(getErrorMessage(res))
         }
       })
       .catch((err) =>  {
@@ -197,7 +199,7 @@ export const ProfileContextProvider = ({ children }) => {
           window.location.pathname = "/login";
         }
       } else {
-        throw new Error("Something went wrong :(");
+        throw new Error(getErrorMessage(res));
       }
     } catch (err) {
       setOpenBackdropLoader(false);

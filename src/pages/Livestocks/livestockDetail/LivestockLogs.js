@@ -12,9 +12,11 @@ import useDateFormat from "../../../hooks/useDateFormat";
 import { request } from "../../../apis/axios-utils";
 import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
 import { TableTypography } from "../../../ComponentsV2/themeComponents";
+import useErrorMessage from "../../../hooks/useErrorMessage";
 
 const LivestockLogs = ({ livestockData }) => {
   const tableHeaders = ["name", "value", "time"];
+  const {getErrorMessage} = useErrorMessage()
 
   const {
     selectedDate,
@@ -66,7 +68,7 @@ const LivestockLogs = ({ livestockData }) => {
             setDataLength(data?.dataLength);
             setPageCount(data?.pageCount);
           } else {
-            const msg = res?.response?.data?.message || "Something went wrong!";
+            const msg = getErrorMessage(res)
             setLivestockLogs([]);
             setDataLength(0);
             setPageCount(1);

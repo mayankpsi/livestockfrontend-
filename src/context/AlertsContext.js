@@ -1,10 +1,12 @@
 import { useState, useEffect, createContext } from "react";
 import { request } from "../apis/axios-utils";
 import useDateFormat from "../hooks/useDateFormat";
+import useErrorMessage from "../hooks/useErrorMessage";
 
 export const AlertsContext = createContext();
 
 export const AlertsContextProvider = ({ children }) => {
+  const {getErrorMessage} = useErrorMessage();
   const [showConfirmModal, setShowConfirmModal] = useState({
     open: false,
     confirmBtn: false,
@@ -74,7 +76,7 @@ export const AlertsContextProvider = ({ children }) => {
           setPageCount(res?.data?.data?.pageCount);
           setAlertsDataLength(res?.data?.data?.dataLength);
         } else {
-           const msg = res?.resopnse?.data?.message || "something went wrong"
+           const msg = getErrorMessage(res)
           setAllAlertData([]);
           setPageCount(0);
           setAlertsDataLength(0);
@@ -111,10 +113,10 @@ export const AlertsContextProvider = ({ children }) => {
         openSnackbarAlert("success", "Alert successfully deleted!");
         setTimeout(() => window.location.reload(), 500);
       } else {
-        throw new Error("Something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (error) {
-      const msg = error?.message || "Something went wrong :(";
+      const msg = error?.message;
       setOpenBackdropLoader(false);
       openSnackbarAlert("error", msg);
     }
@@ -133,10 +135,10 @@ export const AlertsContextProvider = ({ children }) => {
         openSnackbarAlert("success", "All Alerts successfully deleted!");
         setTimeout(() => window.location.reload(), 500);
       } else {
-        throw new Error("Something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (err) {
-      const msg = err?.message || "Something went wrong :(";
+      const msg = err?.message || getErrorMessage(err);
       setOpenBackdropLoader(false);
       openSnackbarAlert("error", msg);
     }

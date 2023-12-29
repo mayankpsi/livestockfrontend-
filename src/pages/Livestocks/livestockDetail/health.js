@@ -1,5 +1,8 @@
-import { Stack } from "@mui/material";
-import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
+import { Stack, Button } from "@mui/material";
+import {
+  ButtonPrimary,
+  TypographyPrimary,
+} from "../../../ComponentsV2/themeComponents";
 import { useState, useEffect } from "react";
 import { ChartCard, BtnGroup } from "../../../ComponentsV2";
 import useLivestockContext from "../../../hooks/useLivestockContext";
@@ -34,46 +37,43 @@ const btnData = [
 
 const Health = ({ data }) => {
   const [showHealthTab, setShowHealthTab] = useState("temperature");
+  const [showRefreshButton, setShowRefreshButton] = useState(false);
   const { id } = useParams();
-  const { getLongDateFormat, formattedDate } = useDateFormat();
+  const { formattedDate } = useDateFormat();
   const { getDynamicColor } = useGetColorDynamically();
   const {
-    healthChartData,
-    activeTab,
     setActiveTab,
     getHealthCardData,
     healthCardData,
+    handleRefreshButton,
+    getChartData,
+    getLogs,
   } = useLivestockHealthContext();
-
-  const [singleSelectedDate, setSingleSelectedDate] = useState(new Date());
-  const [dateRange, setDateRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
+  const { cardData, threshold } = healthCardData;
 
   useEffect(() => {
     getHealthCardData(id);
+    // setInterval(() => {
+    //   getHealthCardData(id);
+    //   getChartData(id);
+    //   getLogs(id);
+    // }, 60000);
   }, [id]);
 
   const showSection = (key) => {
-    if (data?.thresholds) {
-      const { heartBeat, rumination, temperature, steps } = data?.thresholds;
-      if (key === "temperature") {
-        return <TemperatureSection thresholds={temperature} />;
-      } else if (key === "heartbeat") {
-        return <HeartbeatSection thresholds={heartBeat} />;
-      } else if (key === "steps counter") {
-        return <StepsSection thresholds={steps} />;
-      } else if (key === "activity tracker") {
-        return <ActivitySection />;
-      } else if (key === "rumination") {
-        return <RuminationSection thresholds={rumination} />;
-      } else {
-        return <TemperatureSection thresholds={temperature} />;
-      }
+    const { heartBeat, rumination, temperature, steps, activity } = threshold;
+    if (key === "temperature") {
+      return <TemperatureSection thresholds={temperature} />;
+    } else if (key === "heartbeat") {
+      return <HeartbeatSection thresholds={heartBeat} />;
+    } else if (key === "steps counter") {
+      return <StepsSection thresholds={steps} />;
+    } else if (key === "activity tracker") {
+      return <ActivitySection thresholds={activity} />;
+    } else if (key === "rumination") {
+      return <RuminationSection thresholds={rumination} />;
+    } else {
+      return <TemperatureSection thresholds={temperature} />;
     }
   };
 
@@ -95,39 +95,61 @@ const Health = ({ data }) => {
   };
 
   const isActivity = (ele) => ele?.label?.toLowerCase() === "activity";
-  const isHour = (ele) => Number(healthCardData?.[ele?.label + "Hour"]) > 1;
+  const isHour = (ele) => Number(cardData?.[ele?.label + "Hour"]) > 1;
 
   const getCardValue = (ele) => {
     return isActivity(ele)
       ? isHour(ele)
-        ? healthCardData?.[ele?.label + "Hour"]?.toString()?.slice(0, 2)
-        : healthCardData?.[ele?.label + "Min"]?.toString()?.slice(0, 2)
-      : healthCardData?.[ele?.label];
+        ? cardData?.[ele?.label + "Hour"]?.toString()?.slice(0, 2)
+        : cardData?.[ele?.label + "Min"]?.toString()?.slice(0, 2)
+      : cardData?.[ele?.label];
+  };
+
+  const handleDisableButton = () => {
+    setShowRefreshButton(true);
+    setTimeout(() => {
+      setShowRefreshButton(false);
+    }, 30000);
+  };
+
+  const handleRefresh = () => {
+    handleDisableButton();
+    handleRefreshButton(id);
   };
 
   return (
     <Stack mt={4} direction="column" alignItems="center" gap={4}>
-      <TypographyPrimary
-        sx={{ fontSize: "21px", alignSelf: "flex-start", m: 0 }}
+      <Stack
+        width="100%"
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
       >
-        Showing Health Data of{" "}
-        <span style={{ color: "#B58B5D" }}>
-          {getLongDateFormat(singleSelectedDate)}
-        </span>
-      </TypographyPrimary>
+        <TypographyPrimary sx={{ fontSize: "21px", m: 0 }}>
+          Showing Health Data
+        </TypographyPrimary>
+        <ButtonPrimary
+          disabled={showRefreshButton}
+          variant="contained"
+          sx={{ p: "5px 15px" }}
+          onClick={handleRefresh}
+        >
+          Refresh
+        </ButtonPrimary>
+      </Stack>
       <Stack width="100%" direction={"row"} flexWrap={"wrap"} gap={2}>
         {chartCardData
           ?.map((ele) => ({
             ...ele,
             value: getCardValue(ele),
             createdAt: formattedDate(
-              healthCardData?.[ele?.label?.toLowerCase() + "Time"]
+              cardData?.[ele?.label?.toLowerCase() + "Time"]
             ),
             valueColor: getDynamicColor(data, ele?.label),
             suffix: isActivity(ele)
               ? isHour(ele)
-                ? "/hr"
-                : "/min"
+                ? " hr"
+                : " min"
               : ele?.suffix,
           }))
           ?.map((ele) => (

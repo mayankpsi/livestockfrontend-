@@ -1,20 +1,22 @@
 import {
   Area,
+  Bar,
   CartesianGrid,
   ComposedChart,
   Legend,
   Line,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import { Stack } from "@mui/material";
-import { chartData } from "./chartData";
+import { chartData, activityFakeData, activityDayWise} from "./chartData";
 import { renderLegend } from "../ChartSection/legend";
 import { activityLegends } from "../ChartSection/dataFormats";
 
-function ActivityChart({ height = 200, width, data }) {
+function ActivityChart({ height = 200, width, data,thresholds }) {
   const colors = {
     steps: { stroke: "#4f46e5", fill: "#c7d2fe" },
     threshold: { stroke: "#16a34a", fill: "#dcfce7" },
@@ -24,49 +26,55 @@ function ActivityChart({ height = 200, width, data }) {
   const getData = data?.length ? data : chartData;
   const xLabel = data?.length && "hour" in data?.[0] ? "hour" : "_id";
   const xUnit = data?.length && "hour" in data?.[0] ? " hr" : " day";
+
+  const isDay = true
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
-        <ComposedChart data={getData}>
+        <ComposedChart data={isDay?activityDayWise:activityFakeData}>
           <XAxis
-            dataKey={xLabel}
+            dataKey={'xAxis'}
             angle="30"
             tickSize={10}
             tickMargin={10}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
-            unit={xUnit}
           />
           <YAxis
             unit="/min"
+            domain={[0, Number(thresholds?.high) + 5]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
           <CartesianGrid strokeDasharray="4" />
-          <Tooltip contentStyle={{ backgroundColor: colors.background }} />
+          <Tooltip contentStyle={{ backgroundColor: colors.background, color:colors.steps.stroke}} />
           <Legend
             align="left"
             verticalAlign="top"
             height={36}
             content={renderLegend(activityLegends)}
           />
-          <Line
-            dataKey="activeTimeInMinutes"
+          <Bar
+            dataKey="dataValue"
             stroke={colors.steps.stroke}
             fill={colors.steps.fill}
             strokeWidth={2}
             name="activity"
-            unit="/min"
+            barSize={30}
           />
-          <Area
-            dataKey="threshold"
-            type="monotone"
-            stroke={"rgba(252, 85, 85, 0.5)"}
-            fill={"transparent"}
-            strokeWidth={2}
-            name="Threshold"
+          <ReferenceLine
+            y={Number(thresholds?.high)}
+            label="Max"
+            stroke="red"
+            strokeWidth={1}
             strokeDasharray="10 20"
-            unit=""
+          />
+          <ReferenceLine
+            y={Number(3)}
+            label="Min"
+            stroke="red"
+            strokeWidth={1}
+            strokeDasharray="10 20"
           />
         </ComposedChart>
       </ResponsiveContainer>

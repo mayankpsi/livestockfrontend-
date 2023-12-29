@@ -8,20 +8,26 @@ const ParameterCard = ({
   value,
   icon,
   iconBg,
+  colors,
   valueColor,
   suffix,
 }) => {
   return (
     <Paper
       className="flex-row-center border-1-gray"
-      sx={{ px: 2, py: 1, gap: "20px", flexGrow: 1 }}
+      sx={{ px: 2, py: 2.6, gap: "20px", flexGrow: 1 }}
     >
       <Box
-        className="flex-row-center border-circle"
-        sx={{ width: 50, height: 50, background: `${iconBg}` }}
-      >
-        {icon}
-      </Box>
+          className="flex-row-center border-circle"
+          sx={{
+            width: "60px",
+            height: "60px",
+            background: `${colors?.bg}`,
+            border: `1px solid ${colors?.main}`,
+          }}
+        >
+          {icon}
+        </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Stack direction="row" justifyContent="space-between">
           <TypographySecondary

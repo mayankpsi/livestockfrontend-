@@ -20,6 +20,8 @@ const AlertCard = ({
         label={label}
         variant="outlined"
         size="large"
+        type="number"
+        inputProps={{min: 0, max: 10 }}
         sx={{ mr: 1, textTransform: "capitalize" }}
         value={value}
         name={name}
@@ -47,7 +49,7 @@ const AlertCard = ({
         onBtnClick={onBtnClick}
       />
       <Stack gap={isEdit ? 2 : 0}>
-        {Object.keys(labelData)?.map((ele, ind) => {  
+        {labelData && Object.keys(labelData)?.map((ele, ind) => {  
           if (isEdit) {
             return getTextFiled(formattedLabel(ind), ele, labelData[ele]);
           } else {

@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { request } from "../apis/axios-utils";
 import io from "socket.io-client";
 import useUserId from "../hooks/useUserId";
+import useErrorMessage from "../hooks/useErrorMessage";
 
 export const NotificationContext = createContext();
 const BASE_URL_LOCAL = "http://localhost:8085/";
@@ -25,7 +26,7 @@ export const NotificationContextProvider = ({ children }) => {
     paginationPageNo: 1,
     pageCount: 1,
   });
-
+  const {getErrorMessage} = useErrorMessage();
   const userId = useUserId();
 
   //SNACKBAR ALERT
@@ -84,7 +85,7 @@ export const NotificationContextProvider = ({ children }) => {
           dataLength: 0,
           pageCount: 1,
         });
-        throw new Error("Something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (error) {
       setAllUnreadNotifications([]);
@@ -114,7 +115,7 @@ export const NotificationContextProvider = ({ children }) => {
           dataLength: 0,
           pageCount: 1,
         });
-        throw new Error("Something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (error) {
       setAllReadNotifications([]);
@@ -135,7 +136,7 @@ export const NotificationContextProvider = ({ children }) => {
         setOpenBackdropLoader(false);
       } else {
         setAllReadNotifications([]);
-        throw new Error("Something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (error) {
       setAllReadNotifications([]);
@@ -156,7 +157,7 @@ export const NotificationContextProvider = ({ children }) => {
         setOpenBackdropLoader(false);
         setTimeout(() => window.location.reload(), 500);
       } else {
-        throw new Error("Something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (error) {
       openSnackbarAlert("error", error?.message);
@@ -176,7 +177,7 @@ export const NotificationContextProvider = ({ children }) => {
         setOpenBackdropLoader(false);
         setTimeout(() => window.location.reload(), 500);
       } else {
-        throw new Error("Something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (error) {
       openSnackbarAlert("error", error?.message);

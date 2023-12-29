@@ -7,7 +7,7 @@ import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import { request } from "../../../apis/axios-utils";
 import { addCollarValidationSchema } from "../../../utils/validationSchema";
 import useCollarContext from "../../../hooks/useCollarContext";
-import { statusCardData } from "../Data";
+import { pedometerStatusCardData } from "../Data";
 import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 
@@ -94,7 +94,7 @@ const Overview = ({ data }) => {
         >
           <Box px={1.5}>
             <TabPane
-              text="Collar Information"
+              text="Pedometer Information"
               btnText={isEditCollarInfo ? "Save" : "Edit"}
               btnIcon={false}
               hover={true}
@@ -112,21 +112,21 @@ const Overview = ({ data }) => {
             >
               <CustomInput
                 disabled={!isEditCollarInfo}
-                label="collar UID"
+                label="pedometer UID"
                 register={register}
                 errors={errors}
                 value={collarInfoEdit?.collarUID}
-                name="collarUID"
+                name="pedometerUID"
                 isError={isError}
                 onChange={handleCollarInfoEditChange}
               />
               <CustomInput
                 disabled={!isEditCollarInfo}
-                label="collar name"
+                label="pedometer name"
                 register={register}
                 errors={errors}
                 value={collarInfoEdit?.collarName}
-                name="collarName"
+                name="pedometerName"
                 onChange={handleCollarInfoEditChange}
               />
             </Box>
@@ -139,11 +139,11 @@ const Overview = ({ data }) => {
             >
               <CustomInput
                 disabled={!isEditCollarInfo}
-                label="collar MAC ID"
+                label="pedometer MAC ID"
                 register={register}
                 errors={errors}
                 value={collarInfoEdit?.collarMacId}
-                name="collarMacId"
+                name="pedometerMacId"
                 onChange={handleCollarInfoEditChange}
               />
             </Box>
@@ -158,9 +158,9 @@ const Overview = ({ data }) => {
             justifyContent: "space-evenly",
           }}
         >
-          <TypographyPrimary>Collar status</TypographyPrimary>
-          <Stack direction="column" gap={1}>
-            {statusCardData?.map((ele) => ({
+          <TypographyPrimary>Pedometer status</TypographyPrimary>
+          <Stack direction="column" gap={2}>
+            {pedometerStatusCardData?.map((ele) => ({
                 ...ele,
                 status: data ? `${data[getCamelCase(ele?.text)]}` : "",
               })).map((card) => (

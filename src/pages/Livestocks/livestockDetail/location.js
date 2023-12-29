@@ -14,6 +14,7 @@ import { request } from "../../../apis/axios-utils";
 import useDateFormat from "../../../hooks/useDateFormat";
 import useUserId from "../../../hooks/useUserId";
 import { locationTableHeadData, locationBtnData } from "../Data";
+import useErrorMessage from "../../../hooks/useErrorMessage";
 
 const Location = ({ data }) => {
   const {
@@ -31,6 +32,7 @@ const Location = ({ data }) => {
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate, getRoundOffDigit } =
     useDateFormat();
+    const {getErrorMessage} = useErrorMessage()
   const [locationAlertsData, setLocationAlertsData] = useState([]);
   const [resentAlerts, setResentAlerts] = useState([]);
   const [dataLength, setDataLength] = useState(0);
@@ -112,8 +114,7 @@ const Location = ({ data }) => {
             setPageCount(data?.PageCount);
             setDataLength(data?.dataLength);
           } else {
-            const msg =
-              res2?.value?.response?.data?.message || "Something went wrong";
+            const msg = getErrorMessage(res2)
             setLocationAlertsData([]);
             setPageCount(1);
             setDataLength(0);

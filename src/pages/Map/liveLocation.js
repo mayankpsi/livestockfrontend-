@@ -3,11 +3,13 @@ import { Box, Stack } from "@mui/material";
 import { GetMap, CustomTable, NoData } from "../../ComponentsV2";
 import useMapContext from "../../hooks/useMapContext";
 import { request } from "../../apis/axios-utils";
+import useErrorMessage from "../../hooks/useErrorMessage";
 
 const LiveLocation = () => {
   const [getLivestockStatus, setGetLivestockStatus] = useState([]);
 
   const { geofenceCoordinates } = useMapContext();
+  const { getErrorMessage } = useErrorMessage();
 
   useEffect(() => {
     request({ url: "/devices/isDeviceWithInGeofence" })
@@ -15,7 +17,7 @@ const LiveLocation = () => {
         if (res?.status === 200) {
           setGetLivestockStatus(res?.data?.data);
         } else {
-          throw new Error("Something went wrong");
+          throw new Error(getErrorMessage(res));
         }
       })
       .catch((err) => {
@@ -44,7 +46,7 @@ const LiveLocation = () => {
           isLivestocks={true}
           livestockData={getLivestockStatus?.map((ele) => ({
             id: ele?.liveStockId,
-            safeUnsafeStatus:ele?.liveStockIsSafeOrNot?.status,
+            safeUnsafeStatus: ele?.liveStockIsSafeOrNot?.status,
             position: {
               lat: ele?.location?.latitude,
               lng: ele?.location?.longitude,
@@ -55,18 +57,20 @@ const LiveLocation = () => {
       {getLivestockStatus?.length ? (
         <Stack direction="row" justifyContent="space-between" gap={5}>
           <Box sx={{ margin: "20px 0", width: "100%" }}>
-          <CustomTable
-                headBackgroundColor="#347D00"
-                tableHeadData={["Safe Livestock", "Device"]}
-                tableRowData={getFilteredLivestock(
-                  getLivestockStatus,
-                  "safe"
-                )?.map((ele) => ({
-                  liveStockName: ele.liveStockName,
-                  deviceName: ele.deviceName || "N/A",
-                }))}
-              />
-            {!getFilteredLivestock(getLivestockStatus, "safe").length && <NoData />}
+            <CustomTable
+              headBackgroundColor="#347D00"
+              tableHeadData={["Safe Livestock", "Device"]}
+              tableRowData={getFilteredLivestock(
+                getLivestockStatus,
+                "safe"
+              )?.map((ele) => ({
+                liveStockName: ele.liveStockName,
+                deviceName: ele.deviceName || "N/A",
+              }))}
+            />
+            {!getFilteredLivestock(getLivestockStatus, "safe").length && (
+              <NoData />
+            )}
           </Box>
           <Box sx={{ margin: "20px 0", width: "100%" }}>
             <CustomTable
@@ -80,7 +84,9 @@ const LiveLocation = () => {
                 deviceName: ele.deviceName || "N/A",
               }))}
             />
-            {!getFilteredLivestock(getLivestockStatus, "unsafe").length && <NoData />}
+            {!getFilteredLivestock(getLivestockStatus, "unsafe").length && (
+              <NoData />
+            )}
           </Box>
         </Stack>
       ) : null}

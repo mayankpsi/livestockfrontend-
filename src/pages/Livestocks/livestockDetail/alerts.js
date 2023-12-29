@@ -14,6 +14,7 @@ import useDateFormat from "../../../hooks/useDateFormat";
 import { request } from "../../../apis/axios-utils";
 import { livestockDetailAlertTableHeadData } from "../Data";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
+import useErrorMessage from "../../../hooks/useErrorMessage";
 
 const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   const {
@@ -32,6 +33,7 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate } = useDateFormat();
   const [singleLivestockAlerts, setSingleLivestockAlerts] = useState([]);
+  const { getErrorMessage } = useErrorMessage();
 
   useEffect(() => {
     setOpenBackdropLoader(true);
@@ -64,7 +66,7 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
             setAlertsDataLength(data?.dataLength);
           } else {
             const msg = res?.data?.data?.LiveStockAlertData?.length
-              ? "something went wrong"
+              ? getErrorMessage(res)
               : "No data found";
             setSingleLivestockAlerts([]);
             setPageCount(1);
@@ -103,6 +105,22 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
 
   const handleThresholdChange = (event, id) => {
     const { name, value } = event?.target;
+    const isActivity =
+      id === 4 && name === "low" ? (value >= 0 ? value : 0) : value;
+    // const a = id === 4? name === "low"?value >=0?value:0:name === "high"?value < 23?value:23:value
+    // const a = id === 4?name === "low"?value>=0?value:0:name==="high"?value<23?value:23:value
+    // let newValue;
+    // if(id  === 4){
+    //    if(name === "low"){
+    //      if(value <=0){
+    //       return va
+    //      }
+    //    }
+    // }else{
+    //   return value
+    // }
+
+    // console.log(name, value,id,alertsThresholds[id-1]?.value[`${name}`], "djbfhbfbhvbfhvbhbh")
     const updatedData = alertsThresholds?.map((ele) => {
       if (ele.id === id) {
         return {
@@ -134,7 +152,7 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
         if (res?.status === 200) {
           openSnackbarAlert("success", "Threshold successfully updated");
         } else {
-          throw new Error("Something went wrong");
+          throw new Error(getErrorMessage(res));
         }
         setOpenBackdropLoader(false);
       }
@@ -224,11 +242,10 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
               action: [
                 <IconButton aria-label="delete">
                   <DeleteOutlineOutlinedIcon
-                  fontSize="large"
-                  onClick={() => handleAlertDelete(ele.id)}
-                />
-                </IconButton>
-                ,
+                    fontSize="large"
+                    onClick={() => handleAlertDelete(ele.id)}
+                  />
+                </IconButton>,
               ],
             }))
             .map((ele) => {

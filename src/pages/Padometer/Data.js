@@ -1,8 +1,8 @@
 import ShowCollars from "./ShowCollars";
 // SHOW COLLAR DETAIL DATA
-import Overview from "./viewCollarDetails/overview";
-import AssignLivestock from "./viewCollarDetails/assignLivestock";
-import CollarLogs from "./viewCollarDetails/CollarLogs";
+import Overview from "./viewPedometerDetails/overview";
+import AssignLivestock from "./viewPedometerDetails/assignLivestock";
+import CollarLogs from "./viewPedometerDetails/CollarLogs";
 import {
     InfoOutlinedIcon,
     Battery5BarOutlinedIcon,
@@ -24,8 +24,8 @@ export const collarTabData = [
 ];
 
 export const showCollarTableHeadData = [
-  "collar UID",
-  "collar name",
+  "Pedometer UID",
+  "Pedometer name",
   "power",
   "current status",
   "added on",
@@ -92,4 +92,27 @@ export const viewCollarDetailsBreadcrumbData = (data) => [
       statusColor: "#F19B4F",
       suffix:"%"
     },
+  ];
+
+  
+  export const pedometerStatusCardData = [
+    {
+      text: "status",
+      status: "online",
+      icon: <InfoOutlinedIcon fontSize="large" sx={{ mr: 1 }} />,
+      statusColor: "#347D00",
+      suffix:""
+    },
+    {
+      text: "pedometer battery",
+      status: "56",
+      icon: (
+        <Battery5BarOutlinedIcon
+          fontSize="large"
+          sx={{ mr: 1, color: "#347D00" }}
+        />
+      ),
+      statusColor: "#F19B4F",
+      suffix:"%"
+    }
   ];

@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { request } from "../apis/axios-utils";
 import useUserId from "../hooks/useUserId";
+import useErrorMessage from "../hooks/useErrorMessage";
 
 export const MapContext = createContext();
 
@@ -15,6 +16,7 @@ export const MapContentProvider = ({ children }) => {
   const [onGeofenceEdit, setOnGeofenceEdit] = useState(false);
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const {getErrorMessage} = useErrorMessage()
 
   //SNACKBAR ALERT
   const [snackbarAlert, setSnackbarAlert] = useState({
@@ -75,7 +77,7 @@ export const MapContentProvider = ({ children }) => {
           address: data?.Address,
         });
       } else {
-        const message = res?.response?.statusText || "Something went wrong :(";
+        const message = getErrorMessage(res);
         throw new Error(message);
       }
       setOpenBackdropLoader(false);
@@ -141,6 +143,7 @@ export const MapContentProvider = ({ children }) => {
       lat: 26.84039,
       lng: 80.94731,
       address: "",
+      radius:null
     });
   };
 
@@ -166,7 +169,7 @@ export const MapContentProvider = ({ children }) => {
         openSnackbarAlert("success", res?.data?.message);
         setOpenBackdropLoader(false);
       } else {
-        throw new Error("Something went wrong");
+        throw new Error(getErrorMessage(res));
       }
     } catch (error) {
       openSnackbarAlert("success", error?.message);
