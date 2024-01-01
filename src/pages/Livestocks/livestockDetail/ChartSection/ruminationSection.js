@@ -105,7 +105,7 @@ const RuminationSection = ({thresholds}) => {
           dateRange={true}
           setSelectedDate={setDateRange}
         >
-          <RuminationChart height={500} thresholds={thresholds}/>
+          <RuminationChart selectedDate={dateRange} height={500} thresholds={thresholds}/>
         </HealthChartsModalContent>
       </Stack>
 
@@ -115,9 +115,16 @@ const RuminationSection = ({thresholds}) => {
             paneText="Rumination"
             paneTextColor="#000"
             datePicker={true}
+            btnDisabled={dataLength ? false : true}
             btnText={
               dataLength ? (
-                <ExportAsCSV headers={[]} data={[]} fileName="logs">
+                <ExportAsCSV
+                  headers={[]?.map((ele) =>
+                    ele === "Date & Time" ? "date" : ele
+                  )}
+                  data={[]}
+                  fileName="logs"
+                >
                   Export
                 </ExportAsCSV>
               ) : (
@@ -135,14 +142,18 @@ const RuminationSection = ({thresholds}) => {
           } out of ${dataLength} Logs`}</TypographySecondary>
         </Box>
         <Box>
-          <TableV2
+         {
+          []?.length?(
+            <TableV2
             btnColor="#fff"
             btnBg="#B58B5D"
             tableHeadData={tableHeadData}
-            tableRowData={tableRowData}
+            tableRowData={[]}
           />
-          {true ? (
-            true ? (
+          ):null
+         }
+          {[]?.length ? (
+            false ? (
               <Stack direction="row" justifyContent="center" pt={3}>
                 <CustomPagination
                   size="large"

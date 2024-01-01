@@ -28,7 +28,7 @@ const CollarLogs = () => {
 
   const { setOpenBackdropLoader, openSnackbarAlert } = useCollarContext();
   const { formattedDate, paginationDateFormat } = useDateFormat();
-  const {getErrorMessage} = useErrorMessage()
+  const { getErrorMessage } = useErrorMessage();
 
   const { id } = useParams();
 
@@ -51,7 +51,7 @@ const CollarLogs = () => {
       } else {
         setCollarLogs([]);
         setCollarLogsDataLength(0);
-        const message = getErrorMessage(res)
+        const message = getErrorMessage(res);
         throw new Error(message);
       }
     } catch (error) {
@@ -70,6 +70,12 @@ const CollarLogs = () => {
     return res || [];
   };
 
+  const handleSnackBarAlert = () => {
+    if (!collarLogsDataLength) {
+      openSnackbarAlert("error", "Nothing to Export");
+    }
+  };
+
   return (
     <Box>
       <Stack sx={{ width: "100%", pb: 3 }}>
@@ -81,15 +87,19 @@ const CollarLogs = () => {
             clearBtn={false}
             onClearAll={() => {}}
             btnText={
-              <ExportAsCSV
-                headers={tableHeaders}
-                data={getFormattedData(collarLog)}
-                fileName="alerts"
-              >
-                Export
-              </ExportAsCSV>
+              collarLogsDataLength ? (
+                <ExportAsCSV
+                  headers={tableHeaders}
+                  data={getFormattedData(collarLog)}
+                  fileName="alerts"
+                >
+                  Export
+                </ExportAsCSV>
+              ) : (
+                "Export"
+              )
             }
-            onBtnClick={() => {}}
+            onBtnClick={handleSnackBarAlert}
             btnColor="#fff"
             btnBg="#B58B5D"
             selectedDate={selectedDate}

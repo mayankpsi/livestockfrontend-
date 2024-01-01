@@ -204,18 +204,23 @@ const Location = ({ data }) => {
               setSelectedDate={setSelectedDate}
             />
           </Stack>
-          <TableV2
-            paneText="activity log"
-            paneTextColor="#B58B5D"
-            isBtn={true}
-            datePicker
-            btnText="Export"
-            btnColor="#fff"
-            btnBg="#B58B5D"
-            tableHeadData={locationTableHeadData}
-            tableRowData={locationAlertsData}
-            tableColors={tableColors}
-          />
+          {
+            locationAlertsData?.length?(
+              <TableV2
+              paneText="activity log"
+              paneTextColor="#B58B5D"
+              isBtn={true}
+              datePicker
+              btnText="Export"
+              btnColor="#fff"
+              btnBg="#B58B5D"
+              tableHeadData={locationTableHeadData}
+              tableRowData={locationAlertsData}
+              tableColors={tableColors}
+            />
+            ):null
+          }
+        
           {locationAlertsData?.length ? (
             pageCount > 1 ? (
               <Stack direction="row" justifyContent="center" mt={5}>

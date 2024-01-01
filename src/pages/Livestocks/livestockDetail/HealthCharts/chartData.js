@@ -308,3 +308,14 @@ export const ruminationfake = [
   { xAxis: "22:00", dataValue: 0 },
   { xAxis: "23:00", dataValue: 20 },
 ];
+
+export const ruminationDayWise = [
+  { xAxis: "20/12/23", dataValue: 2200 },
+  { xAxis: "21/12/23", dataValue: 3200 },
+  { xAxis: "22/12/23", dataValue: 1200 },
+  { xAxis: "23/12/23", dataValue: 2500 },
+  { xAxis: "24/12/23", dataValue: 2800 },
+  { xAxis: "25/12/23", dataValue: 3500 },
+  { xAxis: "26/12/23", dataValue: 2000 },
+];
+

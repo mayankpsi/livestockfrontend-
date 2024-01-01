@@ -58,7 +58,7 @@ const ActivitySection = ({thresholds}) => {
               <Spinner />
             </Stack>
           ) : (
-            <ActivityChart data={chartData} height={500} thresholds={thresholds}/>
+            <ActivityChart selectedDate={chartDateRange} data={chartData} height={500} thresholds={thresholds}/>
           )}
         </HealthChartsModalContent>
       </Stack>

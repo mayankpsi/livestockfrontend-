@@ -123,26 +123,31 @@ const LivestockLogs = ({ livestockData }) => {
             setSelectedDate={setSelectedDate}
           />
         </Stack>
-        <TableV2
-          tableHeadData={tableHeaders}
-          tableRowData={livestockLogs?.map((ele) => ({
-            name: ele?.name,
-            value: [
-              <TableTypography
-                sx={{
-                  color:
-                    ele?.alertValue || ele?.locationStatus === "unsafe"
-                      ? "#FC5555"
-                      : null,
-                }}
-              >
-                {ele?.value}
-              </TableTypography>,
-            ],
-            time: ele?.time,
-          }))}
-          logs={livestockLogs}
-        />
+        {
+          dataLength?(
+            <TableV2
+            tableHeadData={tableHeaders}
+            tableRowData={livestockLogs?.map((ele) => ({
+              name: ele?.name,
+              value: [
+                <TableTypography
+                  sx={{
+                    color:
+                      ele?.alertValue || ele?.locationStatus === "unsafe"
+                        ? "#FC5555"
+                        : null,
+                  }}
+                >
+                  {ele?.value}
+                </TableTypography>,
+              ],
+              time: ele?.time,
+            }))}
+            logs={livestockLogs}
+          />
+          ):null
+        }
+       
       </Stack>
       {livestockLogs?.length ? (
         dataLength > 10 && (

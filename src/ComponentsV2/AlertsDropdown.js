@@ -181,6 +181,7 @@ const AlertsDropdown = () => {
                         handleNotificationClick(item?.liveStock, item?._id)
                       }
                       key={item?._id}
+                      sx={{ py:1, px:2}}
                     >
                       <Box
                         sx={{
@@ -189,7 +190,6 @@ const AlertsDropdown = () => {
                           alignItems: "center",
                         }}
                       >
-                        {/* <Avatar alt={item?.name} src="/images/avatars/4.png" size="large" /> */}
                         <Box
                           sx={{
                             flex: "1 1",

@@ -57,7 +57,7 @@ const StepsSection = ({thresholds}) => {
               <Spinner />
             </Stack>
           ) : (
-            <StepsChart data={chartData} height={500} thresholds={thresholds}/>
+            <StepsChart selectedDate={chartDateRange} data={chartData} height={500} thresholds={thresholds}/>
           )}
         </HealthChartsModalContent>
       </Stack>

@@ -4,6 +4,7 @@ import {
   TabPane,
   CustomModal,
   BackdropLoader,
+  NoData
 } from "../../ComponentsV2";
 import { Stack } from "@mui/material";
 import AddPedometerModalContent from "./AddPedometerModalContent";
@@ -33,7 +34,8 @@ const Pedometer = () => {
 
   return (
     <Stack>
-      <BackdropLoader open={openBackdropLoader} />
+      <NoData/>
+      {/* <BackdropLoader open={openBackdropLoader} />
       <TabPane
         text="All Pedometers"
         btnText="Add New Pedometer"
@@ -46,7 +48,7 @@ const Pedometer = () => {
         openModal={openAddCollarModal}
         handleClose={handleCollarModalClose}
       />
-      <CustomTabs tabData={collarTabData} />
+      <CustomTabs tabData={collarTabData} /> */}
     </Stack>
   );
 };

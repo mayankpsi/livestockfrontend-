@@ -13,14 +13,16 @@ import { Stack } from "@mui/material";
 import { chartData, stepsFakeData, stepByDay } from "./chartData";
 import { renderLegend } from "../ChartSection/legend";
 import { stepsLegends } from "../ChartSection/dataFormats";
+import useDateFormat from "../../../../hooks/useDateFormat";
 
-function StepsChart({ height = 200, width, data, thresholds }) {
+function StepsChart({ height = 200, width, data, thresholds, selectedDate }) {
   const colors = {
-    steps: { stroke: "#FF9777", fill: "#FF9777" },
+    steps: { stroke: "rgba(255, 151, 119, 1)", fill: "rgba(255, 151, 119, 0.5)" },
     threshold: { stroke: "#16a34a", fill: "#dcfce7" },
     text: "#374151",
     background: "#fff",
   };
+  const { paginationDateFormat } = useDateFormat();
   const getData = data?.length ? data : chartData;
   const xLabel = data?.length && "hour" in data?.[0] ? "hour" : "day";
   const xUnit = data?.length && "hour" in data?.[0] ? " hr" : "";
@@ -33,15 +35,16 @@ function StepsChart({ height = 200, width, data, thresholds }) {
     ...ele,
     step: randomIntFromInterval(1500, 2200),
   }));
-
-  const byDay = true;
+  const start = paginationDateFormat(selectedDate[0]?.startDate)
+  const end = paginationDateFormat(selectedDate[0]?.endDate)
+  const byDay = start === end;
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
-        <ComposedChart data={byDay ? stepByDay : stepsFakeData}>
+        <ComposedChart data={!byDay ? stepByDay : stepsFakeData}>
           <XAxis
             dataKey={"xAxis"}
-            angle="0"
+            angle={byDay?"30":"0"}
             tickSize={10}
             tickMargin={10}
             tick={{ fill: colors.text }}
@@ -50,7 +53,7 @@ function StepsChart({ height = 200, width, data, thresholds }) {
             padding={{ bottom: 100 }}
           />
           <YAxis
-            domain={[0, Number(byDay?4100:200) + 10]}
+            domain={[0, Number(!byDay?4100:200) + 10]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
@@ -71,14 +74,14 @@ function StepsChart({ height = 200, width, data, thresholds }) {
             barSize={30}
           />
           <ReferenceLine
-            y={Number(byDay?4000:200)}
+            y={Number(!byDay?4000:200)}
             label="Max"
             stroke="red"
             strokeWidth={1}
             strokeDasharray="10 20"
           />
           <ReferenceLine
-            y={Number(byDay?1500:50)}
+            y={Number(!byDay?1500:50)}
             label="Min"
             stroke="red"
             strokeWidth={1}

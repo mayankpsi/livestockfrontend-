@@ -45,6 +45,7 @@ const TemperatureSection = ({thresholds}) => {
     getChartData(id);
   }, [id, singleSelectedDate, activeTab]);
 
+
   return (
     <Stack width="100%" direction={"column"} gap={5}>
       <Stack width="100%">

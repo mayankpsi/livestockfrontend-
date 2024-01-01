@@ -227,7 +227,9 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
             setSelectedDate={setSelectedDate}
           />
         </Stack>
-        <TableV2
+        {
+          alertsDataLength?(
+            <TableV2
           paneText="showing 10 out of 20 Alerts"
           paneTextColor="#000"
           isBtn={true}
@@ -253,6 +255,9 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
               return ele;
             })}
         />
+          ):null
+        }
+        
         {singleLivestockAlerts?.length ? (
           alertsDataLength > 10 ? (
             <Stack direction="row" justifyContent="center" pt={5}>

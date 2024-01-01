@@ -41,7 +41,7 @@ function TemperatureChart({ height = 200, data, width, thresholds }) {
         <ComposedChart data={formattedTempData}>
           <XAxis
             dataKey={'time'}
-            angle="-30"
+            angle="30"
             tickSize={10}
             tickMargin={10}
             tick={{ fill: colors.text }}

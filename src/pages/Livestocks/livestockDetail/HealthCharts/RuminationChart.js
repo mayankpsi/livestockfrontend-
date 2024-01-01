@@ -1,10 +1,8 @@
 import {
-  Area,
-  AreaChart,
+  Bar,
   CartesianGrid,
   ComposedChart,
   Legend,
-  Line,
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
@@ -12,32 +10,37 @@ import {
   YAxis,
 } from "recharts";
 import { Stack } from "@mui/material";
-import { chartData, ruminationfake } from "./chartData";
+import { chartData, ruminationfake, ruminationDayWise } from "./chartData";
 import { renderLegend } from "../ChartSection/legend";
 import { ruminationLegends } from "../ChartSection/dataFormats";
+import useDateFormat from "../../../../hooks/useDateFormat";
 
-function RuminationChart({ height = 200, width, data, thresholds }) {
+function RuminationChart({ height = 200, width, data, thresholds, selectedDate}) {
+  const {paginationDateFormat} = useDateFormat()
   const colors = {
-    rumination: { stroke: "#61A9FF", fill: "#61A9FF" },
+    rumination: { stroke: "rgba(97, 169, 255, 1)", fill: "rgba(97, 169, 255, 0.5)" },
     threshold: { stroke: "#16a34a", fill: "#dcfce7" },
     text: "#374151",
     background: "#fff",
   };
   const getData = chartData;
-  const isDay = false
+  const start = paginationDateFormat(selectedDate[0]?.startDate)
+  const end = paginationDateFormat(selectedDate[0]?.endDate)
+  const isDay = start === end;
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
-        <ComposedChart data={isDay?null:ruminationfake}>
+        <ComposedChart data={!isDay?ruminationDayWise:ruminationfake}>
           <XAxis
             dataKey="xAxis"
-            angle="-20"
+            angle={isDay?"30":"0"}
+            tickSize={10}
+            tickMargin={10}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
           <YAxis
-            unit="/min"
-            // domain={[0, Number(thresholds?.high) + 10]}
+            domain={[0, Number(!isDay?3700:50) + 10]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
@@ -49,23 +52,23 @@ function RuminationChart({ height = 200, width, data, thresholds }) {
             height={36}
             content={renderLegend(ruminationLegends)}
           />
-          <Line
+          <Bar
             dataKey="dataValue"
             stroke={colors.rumination.stroke}
             fill={colors.rumination.fill}
             strokeWidth={2}
             name="Rumination"
-            unit=""
+            barSize={30}
           />
           <ReferenceLine
-            y={Number(50)}
+            y={Number(!isDay?3400:50)}
             label="Max"
             stroke="red"
             strokeWidth={1}
             strokeDasharray="10 20"
           />
           <ReferenceLine
-            y={Number(10)}
+            y={Number(!isDay?1100:10)}
             label="Min"
             stroke="red"
             strokeWidth={1}
