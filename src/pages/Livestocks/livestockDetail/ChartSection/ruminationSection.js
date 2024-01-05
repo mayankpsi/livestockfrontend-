@@ -12,6 +12,7 @@ import HealthChartsModalContent from "../HealthCharts/HealthChartsModalContent";
 import useGetColorDynamically from "../../../../hooks/useGetColorDynamically";
 import useDateFormat from "../../../../hooks/useDateFormat";
 import { TypographySecondary } from "../../../../ComponentsV2/themeComponents";
+import { ruminationfake, ruminationDayWise } from "../HealthCharts/chartData";
 
 const tableHeadData = [
   "sensor name",
@@ -82,7 +83,7 @@ const tableRowData = [
   },
 ];
 
-const RuminationSection = ({thresholds}) => {
+const RuminationSection = ({ thresholds }) => {
   const { formattedDate, getLongDateFormat, paginationDateFormat } =
     useDateFormat();
   const { getDynamicColor } = useGetColorDynamically();
@@ -96,6 +97,13 @@ const RuminationSection = ({thresholds}) => {
     },
   ]);
   const dataLength = 0;
+  const start = paginationDateFormat(dateRange[0]?.startDate);
+  const end = paginationDateFormat(dateRange[0]?.endDate);
+  const isDay = start === end;
+  const total = (isDay ? ruminationfake : ruminationDayWise).reduce(
+    (total, ele) => total + ele?.dataValue,
+    0
+  );
   return (
     <Stack width="100%" direction={"column"} gap={5}>
       <Stack width="100%">
@@ -103,9 +111,14 @@ const RuminationSection = ({thresholds}) => {
           selectedDate={dateRange}
           label={"Rumination"}
           dateRange={true}
+          total={`${total} min`}
           setSelectedDate={setDateRange}
         >
-          <RuminationChart selectedDate={dateRange} height={500} thresholds={thresholds}/>
+          <RuminationChart
+            dayWise={isDay}
+            height={500}
+            thresholds={thresholds}
+          />
         </HealthChartsModalContent>
       </Stack>
 
@@ -142,16 +155,14 @@ const RuminationSection = ({thresholds}) => {
           } out of ${dataLength} Logs`}</TypographySecondary>
         </Box>
         <Box>
-         {
-          []?.length?(
+          {[]?.length ? (
             <TableV2
-            btnColor="#fff"
-            btnBg="#B58B5D"
-            tableHeadData={tableHeadData}
-            tableRowData={[]}
-          />
-          ):null
-         }
+              btnColor="#fff"
+              btnBg="#B58B5D"
+              tableHeadData={tableHeadData}
+              tableRowData={[]}
+            />
+          ) : null}
           {[]?.length ? (
             false ? (
               <Stack direction="row" justifyContent="center" pt={3}>

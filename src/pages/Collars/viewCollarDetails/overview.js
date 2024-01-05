@@ -1,27 +1,26 @@
 import { Box, Stack } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { TabPane, CustomInput, StatusCard } from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
-import { request } from "../../../apis/axios-utils";
 import { addCollarValidationSchema } from "../../../utils/validationSchema";
 import useCollarContext from "../../../hooks/useCollarContext";
 import { statusCardData } from "../Data";
 import useGetCamelCase from "../../../hooks/useGetCamelCase";
-import useErrorMessage from "../../../hooks/useErrorMessage";
+import { useDeviceDetailContext } from "../../../context/DeviceDetailContext";
 
 const Overview = ({ data }) => {
-  const [isEditCollarInfo, setIsEditCollarInfo] = useState(false);
-  const [collarInfoEdit, setCollarInfoEdit] = useState({
-    collarUID: "",
-    collarName: "",
-    collarMacId: "",
-  });
-  const {getErrorMessage} = useErrorMessage();
+  const {
+    handelCollarNewInfo,
+    handleCollarInfoEditChange,
+    collarInfoEdit,
+    setCollarInfoEdit,
+    isEditCollarInfo,
+  } = useDeviceDetailContext();
 
-  const { isError, setIsError, openSnackbarAlert } = useCollarContext();
-  const {getCamelCase} = useGetCamelCase()
+  const { isError } = useCollarContext();
+  const { getCamelCase } = useGetCamelCase();
 
   useEffect(() => {
     setCollarInfoEdit({
@@ -41,48 +40,9 @@ const Overview = ({ data }) => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(addCollarValidationSchema) });
 
-  const handleCollarInfoEditChange = (e) => {
-    const { name, value } = e.target;
-    setCollarInfoEdit({ ...collarInfoEdit, [name]: value });
-  };
-
-  const handelCollarNewInfo = async () => {
-    setIsEditCollarInfo(true);
-    if (isEditCollarInfo) {
-      const body = {
-        deviceName: collarInfoEdit?.collarName,
-        uID: collarInfoEdit?.collarUID,
-        macID: collarInfoEdit?.collarMacId,
-      };
-      try {
-        const editRes = await request({
-          url: `/devices/update?deviceID=${data.collarId}`,
-          method: "PATCH",
-          data: body,
-        });
-        if (editRes.status === 200) {
-          openSnackbarAlert("success", "Collar successfully edited :)");
-          setIsEditCollarInfo(false);
-          setIsError({
-            error: false,
-            message: null,
-          });
-        } else if (editRes?.response?.data?.statusCode === 409) {
-          setIsError({
-            error: true,
-            message: editRes?.response?.data?.message,
-          });
-        } else {
-          throw new Error(getErrorMessage(editRes));
-        }
-      } catch (err) {
-        openSnackbarAlert("error", err.message);
-        setIsEditCollarInfo(false);
-      }
-    }
-  };
+  const onCollarEdit = () => handelCollarNewInfo(data?.collarId);
   return (
-    <form onSubmit={handleSubmit(handelCollarNewInfo)}>
+    <form onSubmit={handleSubmit(onCollarEdit)}>
       <Stack my={4} direction="row" justifyContent="space-between">
         <Stack
           sx={{
@@ -160,19 +120,24 @@ const Overview = ({ data }) => {
         >
           <TypographyPrimary>Collar status</TypographyPrimary>
           <Stack direction="column" gap={1}>
-            {statusCardData?.map((ele) => ({
+            {statusCardData
+              ?.filter(
+                (ele) => !ele?.text?.toLowerCase()?.includes("pedometer")
+              )
+              ?.map((ele) => ({
                 ...ele,
                 status: data ? `${data[getCamelCase(ele?.text)]}` : "",
-              })).map((card) => (
-              <StatusCard
-                key={card.text}
-                text={card.text}
-                status={card.status}
-                icon={card.icon}
-                statusColor={card.statusColor}
-                suffix={card.suffix}
-              />
-            ))}
+              }))
+              .map((card) => (
+                <StatusCard
+                  key={card.text}
+                  text={card.text}
+                  status={card.status}
+                  icon={card.icon}
+                  statusColor={card.statusColor}
+                  suffix={card.suffix}
+                />
+              ))}
           </Stack>
         </Box>
       </Stack>

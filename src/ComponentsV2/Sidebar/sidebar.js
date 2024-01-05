@@ -1,5 +1,9 @@
 import React from "react";
-import { DashboardNoData as Logo } from "../../assets";
+import {
+  DashboardNoData as Logo,
+  LivestockSidebar,
+  LivestockSidebarFade,
+} from "../../assets";
 import { useNavigate } from "react-router-dom";
 import { Box, Stack, Typography, Button, createTheme } from "@mui/material";
 import { SidebarComp } from "../themeComponents";
@@ -33,6 +37,17 @@ const Sidebar = () => {
     navigate(link);
   };
 
+  const handleIcons = (link) => {
+    const isLivestock = link.title === "livestocks";
+    return isLivestock ? (
+      <img
+        src={isActivePath(link.link) ? LivestockSidebar : LivestockSidebarFade}
+      />
+    ) : (
+      <link.icon fontSize="large" />
+    );
+  };
+
   return (
     <SidebarComp>
       <Box
@@ -43,7 +58,12 @@ const Sidebar = () => {
           p: theme.spacing(2),
         }}
       >
-        <Box component="img" sx={{ width: 130,my:theme.spacing(2)}} alt="logo" src={Logo} />
+        <Box
+          component="img"
+          sx={{ width: 130, my: theme.spacing(2) }}
+          alt="logo"
+          src={Logo}
+        />
         <Typography
           variant="h2"
           sx={{
@@ -51,7 +71,7 @@ const Sidebar = () => {
             textAlign: "center",
             fontWeight: "bold",
             textTransform: "uppercase",
-            mb:2
+            mb: 2,
           }}
         >
           Livestock MONITORING
@@ -63,7 +83,7 @@ const Sidebar = () => {
             key={ind}
             onClick={() => handleClick(link.link)}
             sx={buttonStyles(link)}
-            startIcon={<link.icon fontSize="large" />}
+            startIcon={handleIcons(link)}
           >
             {link.title}
           </Button>

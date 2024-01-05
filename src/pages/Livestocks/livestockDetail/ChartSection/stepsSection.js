@@ -18,8 +18,10 @@ import {
   logsTableHeadData,
 } from "./dataFormats";
 import { useLivestockHealthContext } from "../../../../context/LivestockHealthContext";
+import useDateFormat from "../../../../hooks/useDateFormat";
+import { stepsFakeData,stepByDay } from "../HealthCharts/chartData";
 
-const StepsSection = ({thresholds}) => {
+const StepsSection = ({ thresholds }) => {
   const { id } = useParams();
   const {
     getLogs,
@@ -30,11 +32,13 @@ const StepsSection = ({thresholds}) => {
     chartDataLoader,
     getChartData,
     activeTab,
-    chartDateRange, setChartDateRange,
+    chartDateRange,
+    setChartDateRange,
     healthChartData: chartData,
   } = useLivestockHealthContext();
   //DESTRUCTING LOGS DATA
   const { logsData, logsDataLength, pagination, loading } = healthLogData;
+  const { paginationDateFormat } = useDateFormat();
 
   useEffect(() => {
     getLogs(id);
@@ -43,13 +47,19 @@ const StepsSection = ({thresholds}) => {
   useEffect(() => {
     getChartData(id);
   }, [id, chartDateRange, activeTab]);
+
+  const start = paginationDateFormat(chartDateRange[0]?.startDate);
+  const end = paginationDateFormat(chartDateRange[0]?.endDate);
+  const byDay = start === end;
+  const totalSteps = (byDay?stepsFakeData:stepByDay).reduce((total, ele) => total + ele?.dataValue,0); 
   return (
     <Stack width="100%" direction={"column"} gap={5}>
       <Stack width="100%">
         <HealthChartsModalContent
           dateRange={true}
           selectedDate={chartDateRange}
-          label={"Steps Counter"}
+          label={"Steps"}
+          total={totalSteps}
           setSelectedDate={setChartDateRange}
         >
           {chartDataLoader ? (
@@ -57,7 +67,12 @@ const StepsSection = ({thresholds}) => {
               <Spinner />
             </Stack>
           ) : (
-            <StepsChart selectedDate={chartDateRange} data={chartData} height={500} thresholds={thresholds}/>
+            <StepsChart
+              dayWise={byDay}
+              data={chartData}
+              height={500}
+              thresholds={thresholds}
+            />
           )}
         </HealthChartsModalContent>
       </Stack>

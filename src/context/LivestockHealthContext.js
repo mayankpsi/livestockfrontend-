@@ -200,20 +200,20 @@ export const LivestockHealthContextProvider = ({ children }) => {
             } = res?.data?.data;
             const formattedData = {
               temperature: temperature || "0",
-              temperatureTime: temperatureTime || "00:00 00/00/00",
+              temperatureTime: temperatureTime || new Date(),
               temperatureAlertStatus,
               heartbeat: heartBeat || "0",
-              heartbeatTime: heartBeatTime || "00:00 00/00/00",
+              heartbeatTime: heartBeatTime || new Date(),
               heartbeatAlertStatus: heartBeatAlertStatus,
               steps: stepsDataObject || "0",
-              stepsTime: stepsTime || "00:00 00/00/00",
+              stepsTime: stepsTime || new Date(),
               stepsAlertStatus: stepsAlertStatus,
               activityHour: activeTimeInHours || "0",
               activityMin: activeTimeInMinutes || "0",
-              activityTime: activityTime || "00:00 00/00/00",
+              activityTime: activityTime || new Date(),
               activityAlertStatus,
               rumination: rumination || "0",
-              ruminationTime: ruminationTime || "00:00 00/00/00",
+              ruminationTime: ruminationTime || new Date(),
               ruminationAlertStatus,
             };
             setHealthCardData({ cardData: formattedData, threshold });

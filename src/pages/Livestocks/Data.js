@@ -65,23 +65,23 @@ export const livestockDetailAlertTableHeadData = [
 
 export const deviceInfoData = [
   {
-    label: "Collar UID",
+    label: "UID",
     value: "collar_1",
   },
   {
-    label: "Collar Name",
+    label: "Name",
     value: "device name",
   },
   {
-    label: "Collar MAC ID",
+    label: "MAC ID",
     value: "#3537HDB83728",
   },
   {
-    label: "Collar Added on",
+    label: "Added on",
     value: "24/02/23, 04:23 PM",
   },
   {
-    label: "Collar Battery",
+    label: "Battery",
     value: "56",
   },
 ];
@@ -141,13 +141,13 @@ export const statusCardData = [
 export const chartCardData = [
   {
     label: "temperature",
-    value: "56",
+    value: "101",
     icon: (
       <ThermostatIcon
         sx={{ fontSize: "3.5rem", color: "rgba(253, 55, 48,1)" }}
       />
     ),
-    valueColor: "err-color",
+    valueColor: "color-success--dark",
     suffix: " °F",
     colors: {
       main: "rgba(255, 0, 0, 1)",
@@ -157,7 +157,7 @@ export const chartCardData = [
   },
   {
     label: "heartbeat",
-    value: "78",
+    value: "76",
     icon: (
       <MonitorHeartIcon
         sx={{ fontSize: "3.5rem", color: "rgba(253, 55, 48,1)" }}
@@ -173,28 +173,28 @@ export const chartCardData = [
   },
   {
     label: "steps",
-    value: "5000",
+    value: "1200",
     icon: <Box sx={{ width: "4rem" }} component="img" src={Steps} />,
     valueColor: "color-success--dark",
-    suffix: "/day",
+    suffix: "",
     colors: {
       main: "rgba(215, 127, 74, 1)",
       bg: "rgba(215, 127, 74, 0.25)",
     },
     createdAt: "10:59 PM, 23/08/23",
   },
-  {
-    label: "activity",
-    value: "52",
-    icon: <Box sx={{ width: "4rem" }} component="img" src={Steps} />,
-    valueColor: "color-success--dark",
-    suffix: " min",
-    colors: {
-      main: "rgba(215, 127, 74, 1)",
-      bg: "rgba(215, 127, 74, 0.25)",
-    },
-    createdAt: "10:59 PM, 23/08/23",
-  },
+  // {
+  //   label: "activity",
+  //   value: "52",
+  //   icon: <Box sx={{ width: "4rem" }} component="img" src={Steps} />,
+  //   valueColor: "color-success--dark",
+  //   suffix: " min",
+  //   colors: {
+  //     main: "rgba(215, 127, 74, 1)",
+  //     bg: "rgba(215, 127, 74, 0.25)",
+  //   },
+  //   createdAt: "10:59 PM, 23/08/23",
+  // },
   {
     label: "rumination",
     value: "2",

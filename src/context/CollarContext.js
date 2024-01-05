@@ -11,10 +11,10 @@ import useErrorMessage from "../hooks/useErrorMessage";
 export const CollarContext = createContext();
 
 export const CollarContextProvider = ({ children }) => {
-  const {getErrorMessage} = useErrorMessage()
+  const { getErrorMessage } = useErrorMessage();
   const navigate = useNavigate();
   const { formattedDate } = useDateFormat();
-
+  const [activeDevice, setActiveDevice] = useState("collar");
   const [collars, setCollars] = useState([]);
   const [isError, setIsError] = useState({ error: false, message: "" });
   const [isLoading, setIsLoading] = useState(false);
@@ -54,10 +54,16 @@ export const CollarContextProvider = ({ children }) => {
     message: "",
   });
 
+  const deviceCapitalized =
+    activeDevice?.charAt(0)?.toUpperCase() +
+    activeDevice?.slice(1)?.toLowerCase();
+
   //GET ALL COLLARS
   useEffect(() => {
     setOpenBackdropLoader(true);
-    request({ url: `/devices/getDeviceByUserId?userID=${userId}` })
+    request({
+      url: `/devices/getDeviceByUserId?userID=${userId}&deviceType=${activeDevice}`,
+    })
       .then((res) => {
         const formattedData = res?.data?.data?.map((col) => ({
           id: col._id + "id",
@@ -86,7 +92,7 @@ export const CollarContextProvider = ({ children }) => {
               fontSize="large"
               onClick={() => {
                 setOpenBackdropLoader(true);
-                navigate(`/devices/collars/${col?._id}`);
+                navigate(`/devices/${activeDevice}/${col?._id}`);
               }}
             />,
             <DeleteOutlineOutlinedIcon
@@ -99,7 +105,7 @@ export const CollarContextProvider = ({ children }) => {
       })
       .catch((err) => console.log(err.message))
       .finally(() => setOpenBackdropLoader(false));
-  }, [isLoading]);
+  }, [isLoading, activeDevice]);
 
   // HANDLE ADD COLLAR
   const handleAddCollarChange = (data) => {
@@ -107,12 +113,13 @@ export const CollarContextProvider = ({ children }) => {
     setNewCollar({ ...newCollar, [name]: value });
   };
 
-  const handleAddCollar = async () => {
+  const handleAddCollar = async (type) => {
     setIsLoading(true);
     const body = {
       uID: newCollar?.collarUID?.toString(),
       deviceName: newCollar?.collarName,
       macID: newCollar?.collarMacId,
+      deviceType: type,
     };
     const res = await request({
       url: "/devices/create",
@@ -121,7 +128,10 @@ export const CollarContextProvider = ({ children }) => {
     });
     if (res?.status === 200) {
       handleAddCollarModalClose();
-      openSnackbarAlert("success", "Collar successfully created!");
+      openSnackbarAlert(
+        "success",
+        `${deviceCapitalized} successfully created!`
+      );
     } else {
       if (res?.response?.status === 409) {
         setIsError({
@@ -170,7 +180,10 @@ export const CollarContextProvider = ({ children }) => {
     });
     if (res?.status === 200) {
       setOpenBackdropLoader(false);
-      openSnackbarAlert("success", "Collar successfully deleted!");
+      openSnackbarAlert(
+        "success",
+        `${deviceCapitalized} successfully deleted!`
+      );
       setTimeout(() => window.location.reload(), 500);
     } else {
       setOpenBackdropLoader(false);
@@ -216,6 +229,8 @@ export const CollarContextProvider = ({ children }) => {
         snackbarAlert,
         onSnackbarAlertClose,
         openSnackbarAlert,
+        activeDevice,
+        setActiveDevice,
       }}
     >
       {children}

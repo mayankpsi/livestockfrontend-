@@ -18,10 +18,10 @@ const Overview = ({ data }) => {
     collarName: "",
     collarMacId: "",
   });
-  const {getErrorMessage} = useErrorMessage();
+  const { getErrorMessage } = useErrorMessage();
 
   const { isError, setIsError, openSnackbarAlert } = useCollarContext();
-  const {getCamelCase} = useGetCamelCase()
+  const { getCamelCase } = useGetCamelCase();
 
   useEffect(() => {
     setCollarInfoEdit({
@@ -116,7 +116,7 @@ const Overview = ({ data }) => {
                 register={register}
                 errors={errors}
                 value={collarInfoEdit?.collarUID}
-                name="pedometerUID"
+                name="collarUID"
                 isError={isError}
                 onChange={handleCollarInfoEditChange}
               />
@@ -126,7 +126,7 @@ const Overview = ({ data }) => {
                 register={register}
                 errors={errors}
                 value={collarInfoEdit?.collarName}
-                name="pedometerName"
+                name="collarName"
                 onChange={handleCollarInfoEditChange}
               />
             </Box>
@@ -143,7 +143,7 @@ const Overview = ({ data }) => {
                 register={register}
                 errors={errors}
                 value={collarInfoEdit?.collarMacId}
-                name="pedometerMacId"
+                name="collarMacId"
                 onChange={handleCollarInfoEditChange}
               />
             </Box>
@@ -160,19 +160,22 @@ const Overview = ({ data }) => {
         >
           <TypographyPrimary>Pedometer status</TypographyPrimary>
           <Stack direction="column" gap={2}>
-            {pedometerStatusCardData?.map((ele) => ({
+            {pedometerStatusCardData
+              ?.filter((ele) => !ele?.text?.toLowerCase()?.includes("collar"))
+              ?.map((ele) => ({
                 ...ele,
                 status: data ? `${data[getCamelCase(ele?.text)]}` : "",
-              })).map((card) => (
-              <StatusCard
-                key={card.text}
-                text={card.text}
-                status={card.status}
-                icon={card.icon}
-                statusColor={card.statusColor}
-                suffix={card.suffix}
-              />
-            ))}
+              }))
+              .map((card) => (
+                <StatusCard
+                  key={card.text}
+                  text={card.text}
+                  status={card.status}
+                  icon={card.icon}
+                  statusColor={card.statusColor}
+                  suffix={card.suffix}
+                />
+              ))}
           </Stack>
         </Box>
       </Stack>

@@ -56,6 +56,7 @@ export const AuthContextProvider = ({ children }) => {
         method: "POST",
         data: body,
       });
+      console.log(res,"jbcjfjnvjfnjvnfjnj")
       if (res?.status === 200) {
         // res.data.data.statusCode -- 200 success
         // accessToken - res.data.data.accessToken
@@ -72,6 +73,7 @@ export const AuthContextProvider = ({ children }) => {
       } else if (res?.response?.data?.statusCode === 401) {
         //res.response.data.statusCode - 401 - email not registered
         // res.response.data.statusCode - 401 - incorrect password
+        
         showSnackbarAlert("error", res?.response?.data?.message);
       } else {
         const message = getErrorMessage(res);

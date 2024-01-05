@@ -39,7 +39,7 @@ function App() {
           <Route path="/" element={<AdminDashBoard />} />
           <Route path="map" element={<Map />} />
           <Route path="/devices" element={<Devices />} />
-          <Route path="devices/collars/:id" element={<ViewCollarDetails />} />
+          <Route path="devices/collar/:id" element={<ViewCollarDetails />} />
           <Route path="devices/pedometer/:id" element={<ViewPedometerDetails />} />
           <Route path="livestocks" element={<Livestocks />} />
           <Route path="livestocks/:id" element={<LivestockDetails />} />

@@ -3,8 +3,13 @@ import { TextField, MenuItem, Box } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import useMapContext from "../hooks/useMapContext";
 
-export default function CustomSelect({disable}) {
-  const { saveLocationData, geofenceCoordinates, setGeofenceCoordinates } = useMapContext();
+export default function CustomSelect({ disable }) {
+  const {
+    saveLocationData,
+    geofenceCoordinates,
+    setGeofenceCoordinates,
+    customError,
+  } = useMapContext();
 
   const handleChange = (event) => {
     const { value } = event.target;
@@ -49,6 +54,8 @@ export default function CustomSelect({disable}) {
           label="Radius"
           onChange={handleChange}
           InputLabelProps={{ style: { fontSize: 18, fontWeight: "bold" } }}
+          error={customError?.error}
+          helperText={customError?.message}
         >
           {radiusData?.map((ele) => (
             <MenuItem value={Number(ele.slice(0, -1))}>{ele}</MenuItem>

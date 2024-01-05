@@ -7,13 +7,13 @@ import Pedometer from "../Padometer/Pedometer";
 import { CollarContext } from "../../context/CollarContext";
 
 const Devices = () => {
-  const [activeDevice, setActiveDevice] = useState("collar");
   const {
     showConfirmModal,
     handleConfirmWindowClose,
     handleCollarDeleteConfirm,
     snackbarAlert,
     onSnackbarAlertClose,
+    activeDevice, setActiveDevice
   } = useContext(CollarContext);
 
   const devicesTabData = [

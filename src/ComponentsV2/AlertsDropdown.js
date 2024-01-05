@@ -140,9 +140,9 @@ const AlertsDropdown = () => {
       >
         <Badge
           className="badge"
-          max={999}
+          max={99}
           badgeContent={unReadUtils?.dataLength}
-          color="primary"
+          color="error"
         >
           <NotificationsNoneIcon sx={{ fontSize: "24px" }} />
         </Badge>

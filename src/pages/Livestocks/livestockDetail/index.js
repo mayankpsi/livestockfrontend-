@@ -57,6 +57,8 @@ const LivestockDetails = () => {
             lastUpdateDeviceDependent: formattedDate(data?.livestockLocationStatusTime),
             img: data?.imgPath,
             liveStocklocationStatus: data?.liveStocklocationStatus,
+            collar:data?.assignedDevice?.collarDevice,
+            pedometer:data?.assignedDevice?.pedometerDevice,
             collarId: data?.assignedDevice?._id,
             collarUid: data?.assignedDevice?.uID,
             collarWifiStatus: data?.assignedDevice?.wifiStatus,

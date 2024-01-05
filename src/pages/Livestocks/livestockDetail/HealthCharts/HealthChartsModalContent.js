@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Stack, Typography, Box } from "@mui/material";
 import { TypographyPrimary } from "../../../../ComponentsV2/themeComponents";
 import { DatePicker } from "../../../../ComponentsV2";
 import CustomDateRangePicker from "../../../../ComponentsV2/dateRangePicker";
@@ -8,7 +8,8 @@ const HealthChartsModalContent = ({
   setSelectedDate,
   children,
   label,
-  dateRange
+  dateRange,
+  total
 }) => {
   return (
     <Stack
@@ -18,7 +19,7 @@ const HealthChartsModalContent = ({
         mt: 2,
         border: "1px solid rgba(0,0,0,0.3)",
         gap: 2,
-        minHeight:600
+        minHeight: 600,
       }}
     >
       <Stack
@@ -27,11 +28,29 @@ const HealthChartsModalContent = ({
         justifyContent="space-between"
         width="100%"
       >
-        <TypographyPrimary
-          sx={{ fontSize: "18px", mt: 0, textTransform: "capitalize" }}
-        >
-          {label} overview
-        </TypographyPrimary>
+        <Box sx={{display:'flex', flexDirection:'column', gap:1}}>
+          <TypographyPrimary
+            sx={{ fontSize: "18px", my: 0, textTransform: "capitalize" }}
+          >
+            {label} overview
+          </TypographyPrimary>
+          {
+            total?(
+              <Typography
+              sx={{
+                fontSize: "15px",
+                textTransform: "capitalize",
+                fontWeight: 600,
+                
+              }}
+            >
+              Total {label}: <span style={{textTransform:'lowercase'}}>{total}</span>
+            </Typography>
+            ):null
+          }
+         
+        </Box>
+
         {dateRange ? (
           <CustomDateRangePicker
             selectedDate={selectedDate}

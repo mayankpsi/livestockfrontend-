@@ -26,8 +26,10 @@ const AddCollarModalContent = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(addCollarValidationSchema) });
 
+  const onSubmit = () => handleAddCollar("collar")
+
   return (
-    <form onSubmit={handleSubmit(handleAddCollar)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Box>
         <TypographyWithBg id="modal-modal-title" variant="h6" component="h2">
           Add Collar

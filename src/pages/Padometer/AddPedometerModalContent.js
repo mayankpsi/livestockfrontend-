@@ -25,9 +25,9 @@ const AddPedometerModalContent = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(addCollarValidationSchema) });
-
+  const onSubmit = () => handleAddCollar("pedometer");
   return (
-    <form onSubmit={handleSubmit(handleAddCollar)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Box>
         <TypographyWithBg id="modal-modal-title" variant="h6" component="h2">
           Add Pedometer
@@ -46,7 +46,7 @@ const AddPedometerModalContent = () => {
               register={register}
               errors={errors}
               value={newCollar?.collarUID}
-              name="pedometerUID"
+              name="collarUID"
               isError={
                 isError.message.toLowerCase().includes("uid")
                   ? isError
@@ -59,7 +59,7 @@ const AddPedometerModalContent = () => {
               register={register}
               errors={errors}
               value={newCollar?.collarName}
-              name="pedometerName"
+              name="collarName"
               isError={{ error: false, message: "" }}
               onChange={handleAddCollarChange}
             />
@@ -76,7 +76,7 @@ const AddPedometerModalContent = () => {
               register={register}
               errors={errors}
               value={newCollar?.collarMacId}
-              name="pedometerMacId"
+              name="collarMacId"
               type="number"
               isError={
                 isError.message.toLowerCase().includes("macid")

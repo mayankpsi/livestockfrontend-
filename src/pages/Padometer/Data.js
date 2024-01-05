@@ -3,10 +3,7 @@ import ShowCollars from "./ShowCollars";
 import Overview from "./viewPedometerDetails/overview";
 import AssignLivestock from "./viewPedometerDetails/assignLivestock";
 import CollarLogs from "./viewPedometerDetails/CollarLogs";
-import {
-    InfoOutlinedIcon,
-    Battery5BarOutlinedIcon,
-  } from "../../icons";
+import { InfoOutlinedIcon, Battery5BarOutlinedIcon } from "../../icons";
 
 export const collarTabData = [
   {
@@ -33,18 +30,20 @@ export const showCollarTableHeadData = [
 ];
 
 // SHOW COLLAR DETAIL DATA
-export const viewCollarDetailTabData = (data) => [
+export const viewCollarDetailTabData = (data, loading, setLoading) => [
   {
     label: "overview",
     child: <Overview data={data} />,
   },
   {
     label: "assigned",
-    child: <AssignLivestock data={data} />,
+    child: (
+      <AssignLivestock data={data} loading={loading} setLoading={setLoading} />
+    ),
   },
   {
     label: "logs",
-    child: <CollarLogs/>,
+    child: <CollarLogs />,
   },
 ];
 
@@ -59,60 +58,58 @@ export const viewCollarDetailsBreadcrumbData = (data) => [
   },
 ];
 
+export const statusCardData = [
+  {
+    text: "status",
+    status: "online",
+    icon: <InfoOutlinedIcon fontSize="large" sx={{ mr: 1 }} />,
+    statusColor: "#347D00",
+    suffix: "",
+  },
+  {
+    text: "pedometer battery",
+    status: "56",
+    icon: (
+      <Battery5BarOutlinedIcon
+        fontSize="large"
+        sx={{ mr: 1, color: "#347D00" }}
+      />
+    ),
+    statusColor: "#F19B4F",
+    suffix: "%",
+  },
+  {
+    text: "collar battery",
+    status: "56",
+    icon: (
+      <Battery5BarOutlinedIcon
+        fontSize="large"
+        sx={{ mr: 1, color: "#347D00" }}
+      />
+    ),
+    statusColor: "#F19B4F",
+    suffix: "%",
+  },
+];
 
-  export const statusCardData = [
-    {
-      text: "status",
-      status: "online",
-      icon: <InfoOutlinedIcon fontSize="large" sx={{ mr: 1 }} />,
-      statusColor: "#347D00",
-      suffix:""
-    },
-    {
-      text: "pedometer battery",
-      status: "56",
-      icon: (
-        <Battery5BarOutlinedIcon
-          fontSize="large"
-          sx={{ mr: 1, color: "#347D00" }}
-        />
-      ),
-      statusColor: "#F19B4F",
-      suffix:"%"
-    },
-    {
-      text: "collar battery",
-      status: "56",
-      icon: (
-        <Battery5BarOutlinedIcon
-          fontSize="large"
-          sx={{ mr: 1, color: "#347D00" }}
-        />
-      ),
-      statusColor: "#F19B4F",
-      suffix:"%"
-    },
-  ];
-
-  
-  export const pedometerStatusCardData = [
-    {
-      text: "status",
-      status: "online",
-      icon: <InfoOutlinedIcon fontSize="large" sx={{ mr: 1 }} />,
-      statusColor: "#347D00",
-      suffix:""
-    },
-    {
-      text: "pedometer battery",
-      status: "56",
-      icon: (
-        <Battery5BarOutlinedIcon
-          fontSize="large"
-          sx={{ mr: 1, color: "#347D00" }}
-        />
-      ),
-      statusColor: "#F19B4F",
-      suffix:"%"
-    }
-  ];
+export const pedometerStatusCardData = [
+  {
+    text: "status",
+    status: "online",
+    icon: <InfoOutlinedIcon fontSize="large" sx={{ mr: 1 }} />,
+    statusColor: "#347D00",
+    suffix: "",
+  },
+  {
+    text: "pedometer battery",
+    status: "56",
+    icon: (
+      <Battery5BarOutlinedIcon
+        fontSize="large"
+        sx={{ mr: 1, color: "#347D00" }}
+      />
+    ),
+    statusColor: "#F19B4F",
+    suffix: "%",
+  },
+];

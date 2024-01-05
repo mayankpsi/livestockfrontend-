@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Stack, Box, TextField, MenuItem } from "@mui/material";
-import { TabPane, ImageUpload } from "../../../ComponentsV2";
+import { TabPane, ImageUpload, Spinner } from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addLivestockValidationSchema } from "../../../utils/validationSchema";
@@ -10,9 +10,9 @@ import { genderData } from "../../Data";
 import useFormattedImage from "../../../hooks/useFormatedImage";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 
-const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
+const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
   const { getLivestockImg } = useFormattedImage();
-  const {getErrorMessage} = useErrorMessage()
+  const { getErrorMessage } = useErrorMessage();
   const { setLiveStockImage, liveStockImage } = useLivestockContext();
 
   const { openSnackbarAlert, setIsError, isError } = useLivestockContext();
@@ -44,6 +44,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
       setValue("livestockName", data?.name || "");
       setValue("livestockGender", data?.gender || "");
     }
+    console.log(data, "bfbvjfjvnjfnjvfjnjfnjvfnj")
   }, [data]);
 
   const handleLivestockInfoEditChange = (e) => {
@@ -139,6 +140,14 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
     );
   };
 
+  const getImgUrl = (str) => {
+    if (str?.toString()?.length) {
+      const img = str?.toString()?.split("://");
+      return "http://" + img[1];
+    }
+    // return "http://livestock.psiborg.s3.ap-south-1.amazonaws.com/1702616270710-4437%204.png ";
+  };
+
   return (
     <form onSubmit={handleSubmit(handelLivestockNewInfoSubmit)}>
       <Stack
@@ -152,8 +161,9 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
       >
         <TabPane
           text="Livestock Information"
+          loading={loading}
           btnText={btnText ? btnText : isEditLivestockInfo ? "Edit" : "Save"}
-          btnIcon={false}
+          btnIcon={loading?<Spinner sx={{mr:1}} size={20} color={'#fff'}/>:null}
           hover={true}
           btnBgColor={btnBgColor}
           type="submit"
@@ -172,7 +182,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
           //   alt="The house from the offer."
           //   src={data?.img}
           // />
-          
+
           <img
             style={{
               height: "33vh",
@@ -180,7 +190,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
               objectFit: "cover",
               borderRadius: "10px",
             }}
-            src={data?.img}
+            src={getImgUrl(data?.img)}
             alt="livestock image"
           />
         ) : (
@@ -195,7 +205,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
             () => {}
           )}
           {getTextFiled(
-            isEditLivestockInfo,       
+            isEditLivestockInfo,
             "Livestock UID",
             "livestockUID",
             LivestockInfoEdit?.livestockUID,

@@ -10,7 +10,7 @@ export const LivestockContext = createContext();
 
 export const LivestockContextProvider = ({ children }) => {
   const navigate = useNavigate();
-  const {getErrorMessage} = useErrorMessage();
+  const { getErrorMessage } = useErrorMessage();
 
   const [allLivestocks, setAllLivestocks] = useState([]);
   const [modalContentType, setModalContentType] = useState("add");
@@ -68,7 +68,8 @@ export const LivestockContextProvider = ({ children }) => {
     setOpenBackdropLoader(true);
     request({ url: "/liveStock/getAll" })
       .then((res) => {
-        const formattedData = res?.data?.data?.map((col) => ({
+        const formattedData = res?.data?.data?.liveStockData
+        ?.map((col, ind) => ({
           id: col._id + "id",
           liveStockUID: col?.uID,
           livestockName: col?.name,
@@ -148,15 +149,15 @@ export const LivestockContextProvider = ({ children }) => {
 
   const handleAddLivestock = async () => {
     setAddNewLivestockLoading(true);
-    const config = {     
-      headers: { 'content-type': 'multipart/form-data' }
-  }
+    const config = {
+      headers: { "content-type": "multipart/form-data" },
+    };
 
     const formData = new FormData();
     formData.append("uID", addNewLivestock?.livestockUID);
     formData.append("name", addNewLivestock?.livestockName);
     formData.append("gender", addNewLivestock?.livestockGender);
-    formData.append("deviceID", addNewLivestock?.collarUID);
+    formData.append("collarID", addNewLivestock?.collarUID);
     formData.append("liveStockImage", liveStockImage);
 
     try {
@@ -164,7 +165,7 @@ export const LivestockContextProvider = ({ children }) => {
         url: "/liveStock/create",
         method: "POST",
         data: formData,
-        config
+        config,
       });
       if (res?.status === 200) {
         handleAddLivestockModalClose();
@@ -183,7 +184,7 @@ export const LivestockContextProvider = ({ children }) => {
       }
     } catch (error) {
       setAddNewLivestockLoading(false);
-      const msg = error?.message
+      const msg = error?.message;
       openSnackbarAlert("error", msg);
     }
   };
@@ -316,7 +317,7 @@ export const LivestockContextProvider = ({ children }) => {
         alertsDataLength,
         setAlertsDataLength,
         setLiveStockImage,
-        liveStockImage
+        liveStockImage,
       }}
     >
       {children}

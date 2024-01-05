@@ -1,5 +1,7 @@
 const useUserId = () => {
-  return  JSON.parse(window?.localStorage?.getItem("userData"))?.userId || '';
+  let userId =
+    JSON.parse(window?.localStorage?.getItem("userData"))?.userId || "";
+  return userId;
 };
 
 export default useUserId;

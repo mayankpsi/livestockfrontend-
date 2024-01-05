@@ -12,6 +12,7 @@ import {
 } from "../Data";
 
 const ViewCollarDetails = () => {
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     collarUid: "",
     collarName: "",
@@ -29,7 +30,7 @@ const ViewCollarDetails = () => {
   } = useCollarContext();
 
   useEffect(() => {
-    request({ url: `/devices/getDeviceByID?deviceID=${id}`})
+    request({ url: `/devices/getDeviceByID?deviceID=${id}` })
       .then((res) => {
         const { data } = res?.data;
         let formattedData = {
@@ -40,8 +41,8 @@ const ViewCollarDetails = () => {
           collarMacId: data?.macID,
           status: data?.status ? "online" : "offline",
           networkStrength: data?.NetworkStrength,
-          pedometerBattery : data?.pedometerBattery,
-          collarBattery:data?.collarBattery, 
+          pedometerBattery: data?.pedometerBattery,
+          collarBattery: data?.collarBattery,
           Uid: data?.liveStock?.uID,
           name: data?.liveStock?.name,
           gender: data?.liveStock?.gender,
@@ -53,7 +54,7 @@ const ViewCollarDetails = () => {
         // alert(e.message)
       })
       .finally(() => setOpenBackdropLoader(false));
-  }, []);
+  }, [loading]);
 
   return (
     <AdminUIContainer
@@ -68,7 +69,9 @@ const ViewCollarDetails = () => {
         <TypographyPrimary sx={{ textTransform: "capitalize", fontSize: 21 }}>
           {data?.collarUid}
         </TypographyPrimary>
-        <CustomTabs tabData={viewCollarDetailTabData(data)} />
+        <CustomTabs
+          tabData={viewCollarDetailTabData(data, loading, setLoading)}
+        />
       </Container>
     </AdminUIContainer>
   );

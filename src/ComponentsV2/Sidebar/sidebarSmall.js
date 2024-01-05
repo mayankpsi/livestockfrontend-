@@ -1,7 +1,11 @@
 import * as React from "react";
 import { Box, SwipeableDrawer, Button, List, Typography } from "@mui/material";
-import {MenuIcon} from "../../icons";
-import { DashboardNoData as Logo } from "../../assets";
+import { MenuIcon } from "../../icons";
+import {
+  DashboardNoData as Logo,
+  LivestockSidebar,
+  LivestockSidebarFade,
+} from "../../assets";
 import { routes } from "./routeData";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +27,8 @@ export default function SidebarSmall() {
     setState({ ...state, [anchor]: open });
   };
 
-  const isActivePath = (link) => window?.location?.pathname?.split("/")[1] === link.slice(1);
+  const isActivePath = (link) =>
+    window?.location?.pathname?.split("/")[1] === link.slice(1);
   const buttonStyles = (ele) => ({
     background: `${isActivePath(ele.link) ? "#C6A580" : "none"}`,
     color: `${isActivePath(ele.link) ? "#fff" : "#696969"}`,
@@ -46,7 +51,16 @@ export default function SidebarSmall() {
     localStorage.setItem("currentTab", 0);
     navigate(link);
   };
-
+  const handleIcons = (link) => {
+    const isLivestock = link.title === "livestocks";
+    return isLivestock ? (
+      <img
+        src={isActivePath(link.link) ? LivestockSidebar : LivestockSidebarFade}
+      />
+    ) : (
+      <link.icon fontSize="large" />
+    );
+  };
 
   const list = (anchor) => (
     <Box
@@ -61,7 +75,7 @@ export default function SidebarSmall() {
             key={ind}
             onClick={() => handleClick(ele.link)}
             sx={buttonStyles(ele)}
-            startIcon={<ele.icon fontSize="large" />}
+            startIcon={handleIcons(ele)}
           >
             {ele.title}
           </Button>
@@ -92,7 +106,12 @@ export default function SidebarSmall() {
                 alignItems: "center",
               }}
             >
-              <Box component="img" sx={{ width: 130,my:2}} alt="logo" src={Logo} />
+              <Box
+                component="img"
+                sx={{ width: 130, my: 2 }}
+                alt="logo"
+                src={Logo}
+              />
               <Typography
                 variant="h2"
                 sx={{

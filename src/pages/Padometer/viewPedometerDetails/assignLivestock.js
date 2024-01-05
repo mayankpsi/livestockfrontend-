@@ -4,66 +4,69 @@ import ShowLivestocks from "./showLivestocks";
 import LivestockInfo from "./livestockInfo";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import { request } from "../../../apis/axios-utils";
-import useUserId from "../../../hooks/useUserId";
 import { useEffect } from "react";
 import { useState } from "react";
 import useCollarContext from "../../../hooks/useCollarContext";
 import useErrorMessage from "../../../hooks/useErrorMessage";
+import { useParams } from "react-router-dom";
 
-const AssignLivestock = ({ data }) => {
-  const {getErrorMessage} = useErrorMessage()
+const AssignLivestock = ({ data, setLoading, loading }) => {
+  const { getErrorMessage } = useErrorMessage();
   const [allUnassignLivestocks, setAllUnassignLivestocks] = useState([]);
-  const { userId } = useUserId();
   const {
     openAddLiveStockModal,
     setOpenAddLivestockModal,
     setOpenBackdropLoader,
   } = useLivestockContext();
   const { openSnackbarAlert } = useCollarContext();
+  const { id } = useParams();
 
   useEffect(() => {
     if (!data?.Uid) {
       getUnassignLivestock();
     }
-  }, [data]);
+  }, [data, loading]);
+
+  const getDeviceData = () => {
+    request({ url: `/devices/getDeviceByID?deviceID=${id}` });
+  };
 
   const handelLivestockRemove = async (collarId, livestockId) => {
+    setLoading(true);
     setOpenBackdropLoader(true);
-    console.log(collarId, livestockId, "dcjbhrbvhfbhvbfhbhvbfhbvfh")
     const body = {
       liveStockID: livestockId,
       deviceID: collarId,
     };
     try {
       const res = await request({
-        url: `/devices/unassign-liveStock`,
+        url: `/devices/unassign-liveStock?unassignType=pedometer`,
         method: "POST",
         data: body,
       });
       if (res.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Livestock successfully removed :)");
-        setTimeout(() => window.location.reload(), 500);
+        getDeviceData();
       } else {
         throw new Error(getErrorMessage(res));
       }
     } catch (err) {
       setOpenBackdropLoader(false);
-      openSnackbarAlert(
-        "error",
-        getErrorMessage(err)
-      );
+      openSnackbarAlert("error", getErrorMessage(err));
+    } finally {
+      setLoading(false);
     }
   };
   const getUnassignLivestock = async () => {
     setOpenBackdropLoader(true);
     try {
       const res = await request({
-        url: `/liveStock/getAll?status=false&userID=${userId}`,
+        url: `/liveStock/getAll?status=false&deviceType=pedometer`,
       });
       if (res.status === 200) {
         setOpenBackdropLoader(false);
-        setAllUnassignLivestocks(res.data.data);
+        setAllUnassignLivestocks(res?.data?.data?.liveStockData);
       } else {
         throw new Error(getErrorMessage(res));
       }
@@ -74,6 +77,8 @@ const AssignLivestock = ({ data }) => {
   };
 
   const handelLivestockAssign = async (selectedValue) => {
+    setLoading(true);
+    setOpenAddLivestockModal(false);
     const body = {
       liveStockID: selectedValue,
       deviceID: data?.collarId,
@@ -81,48 +86,53 @@ const AssignLivestock = ({ data }) => {
     setOpenBackdropLoader(true);
     try {
       const res = await request({
-        url: `/devices/assign-liveStock`,
+        url: `/devices/assign-liveStock?assignType=pedometer`,
         method: "POST",
         data: body,
       });
       if (res.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Livestock successfully Added :)");
-        setTimeout(() => window.location.reload(), 500);
+        getDeviceData();
       } else {
         throw new Error(getErrorMessage(res));
       }
     } catch (err) {
       setOpenBackdropLoader(false);
-      openSnackbarAlert(
-        "error",
-        getErrorMessage(err)
-      );
+      openSnackbarAlert("error", getErrorMessage(err));
+    } finally {
+      setLoading(false);
     }
-    setOpenAddLivestockModal(false);
   };
-
   return (
     <Box py={4}>
-      <Stack sx={{ width: { lg: "55%", md: "100%" } }}>
-        {data?.Uid ? (
+      {data?.Uid ? (
+        <Stack sx={{ width: { lg: "55%", md: "100%" } }}>
           <LivestockInfo
             data={data}
+            loading={loading}
             btnText="remove"
             btnBgColor="#FF0505"
             onBtnClick={handelLivestockRemove}
           />
-        ) : (
-          <AddBtn text1="livestock" text2="collar"  onClick={() => setOpenAddLivestockModal(true)} />
-        )}
-      </Stack>
+        </Stack>
+      ) : (
+        <AddBtn
+          text1="livestock"
+          text2="collar"
+          loading={loading}
+          onClick={() => setOpenAddLivestockModal(true)}
+        />
+      )}
       <CustomModal
         content={
           <ShowLivestocks
             data={allUnassignLivestocks}
             onSubmit={(selectedValue) => handelLivestockAssign(selectedValue)}
             setOpenAddLivestockModal={setOpenAddLivestockModal}
-            openSnackbarAlert={() => openSnackbarAlert("error","Please choose a livestock to assign")}
+            openSnackbarAlert={() =>
+              openSnackbarAlert("error", "Please choose a livestock to assign")
+            }
             isLivestock={true}
           />
         }

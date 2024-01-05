@@ -34,8 +34,8 @@ const Pedometer = () => {
 
   return (
     <Stack>
-      <NoData/>
-      {/* <BackdropLoader open={openBackdropLoader} />
+      {/* <NoData/> */}
+      <BackdropLoader open={openBackdropLoader} />
       <TabPane
         text="All Pedometers"
         btnText="Add New Pedometer"
@@ -48,7 +48,7 @@ const Pedometer = () => {
         openModal={openAddCollarModal}
         handleClose={handleCollarModalClose}
       />
-      <CustomTabs tabData={collarTabData} /> */}
+      <CustomTabs tabData={collarTabData} />
     </Stack>
   );
 };

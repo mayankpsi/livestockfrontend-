@@ -9,6 +9,7 @@ import { AuthContextProvider } from "./context/AuthContext";
 import { NotificationContextProvider } from "./context/NotificationContext";
 import { LivestockHealthContextProvider } from "./context/LivestockHealthContext";
 import { AlertsContextProvider } from "./context/AlertsContext";
+import { DeviceDetailContextProvider } from "./context/DeviceDetailContext";
 import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
 import "./assets/css/style.css";
 import "./assets/css/header.css";
@@ -47,20 +48,22 @@ root.render(
       <NotificationContextProvider>
         <MapContentProvider>
           <CollarContextProvider>
-            <LivestockContextProvider>
-              <LivestockHealthContextProvider>
-                <ProfileContextProvider>
-                  <AlertsContextProvider>
-                    <ThemeProvider theme={theme}>
-                      <CssBaseline />
-                      <Routes>
-                        <Route path="/*" element={<App />} />
-                      </Routes>
-                    </ThemeProvider>
-                  </AlertsContextProvider>
-                </ProfileContextProvider>
-              </LivestockHealthContextProvider>
-            </LivestockContextProvider>
+            <DeviceDetailContextProvider>
+              <LivestockContextProvider>
+                <LivestockHealthContextProvider>
+                  <ProfileContextProvider>
+                    <AlertsContextProvider>
+                      <ThemeProvider theme={theme}>
+                        <CssBaseline />
+                        <Routes>
+                          <Route path="/*" element={<App />} />
+                        </Routes>
+                      </ThemeProvider>
+                    </AlertsContextProvider>
+                  </ProfileContextProvider>
+                </LivestockHealthContextProvider>
+              </LivestockContextProvider>
+            </DeviceDetailContextProvider>
           </CollarContextProvider>
         </MapContentProvider>
       </NotificationContextProvider>

@@ -16,7 +16,11 @@ export const MapContentProvider = ({ children }) => {
   const [onGeofenceEdit, setOnGeofenceEdit] = useState(false);
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const {getErrorMessage} = useErrorMessage()
+  const [customError, setCustomError] = useState({
+    error: false,
+    message: null,
+  });
+  const { getErrorMessage } = useErrorMessage();
 
   //SNACKBAR ALERT
   const [snackbarAlert, setSnackbarAlert] = useState({
@@ -36,6 +40,14 @@ export const MapContentProvider = ({ children }) => {
       type,
       message,
     });
+  };
+
+  const addCustomError = (message) => {
+    setCustomError({ error: true, message });
+  };
+
+  const removeCustomError = () => {
+    setCustomError({ error: false, message: null });
   };
 
   // auto detect the location of the user
@@ -140,10 +152,10 @@ export const MapContentProvider = ({ children }) => {
   const handleGeofenceAddressEdit = () => {
     setGeofenceCoordinates({
       ...geofenceCoordinates,
-      lat: 26.84039,
-      lng: 80.94731,
+      lat: 28.597300752377528,
+      lng: 77.35768470574658,
       address: "",
-      radius:null
+      radius: null,
     });
   };
 
@@ -172,7 +184,7 @@ export const MapContentProvider = ({ children }) => {
         throw new Error(getErrorMessage(res));
       }
     } catch (error) {
-      openSnackbarAlert("success", error?.message);
+      openSnackbarAlert("error", error?.message);
       setOpenBackdropLoader(false);
     }
   };
@@ -248,6 +260,9 @@ export const MapContentProvider = ({ children }) => {
         onSnackbarAlertClose,
         openSnackbarAlert,
         openBackdropLoader,
+        customError,
+        addCustomError,
+        removeCustomError,
       }}
     >
       {children}

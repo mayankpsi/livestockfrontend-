@@ -11,7 +11,7 @@ const DeviceCard = ({ label, data, onRemove, deviceDataFormat }) => {
   const { getCamelCase } = useGetCamelCase();
   const theme = useTheme();
   return (
-    <Stack width="100%" my={4} direction="row" alignItems="flex-start" gap={4}>
+    <Stack width="40%" my={4} direction="row" alignItems="flex-start" gap={4}>
       <Stack
         width="100%"
         sx={{ border: "1px solid #dddddd", borderRadius: "10px" }}
@@ -32,7 +32,7 @@ const DeviceCard = ({ label, data, onRemove, deviceDataFormat }) => {
             <TypographyPrimary
               sx={{
                 color: "#B5B5C3",
-                minWidth: "30%",
+                minWidth: "40%",
                 display: "flex",
                 justifyContent: "space-between",
                 pr: 5,
@@ -43,7 +43,7 @@ const DeviceCard = ({ label, data, onRemove, deviceDataFormat }) => {
             </TypographyPrimary>
             <TypographyPrimary
               sx={{
-                color: data?.collarWifiStatus
+                color: data?.status
                   ? theme.palette.success.light
                   : theme.palette.error.light,
               }}
@@ -65,7 +65,7 @@ const DeviceCard = ({ label, data, onRemove, deviceDataFormat }) => {
                 <TypographyPrimary
                   sx={{
                     color: "#B5B5C3",
-                    minWidth: "30%",
+                    minWidth: "40%",
                     display: "flex",
                     justifyContent: "space-between",
                     pr: 5,

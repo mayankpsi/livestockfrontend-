@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Stack, Box, TextField, MenuItem } from "@mui/material";
-import { TabPane, ImageUpload } from "../../../ComponentsV2";
+import { TabPane, ImageUpload, Spinner } from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addLivestockValidationSchema } from "../../../utils/validationSchema";
@@ -10,7 +10,7 @@ import { genderData } from "../../Data";
 import useFormattedImage from "../../../hooks/useFormatedImage";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 
-const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
+const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading}) => {
   const { getLivestockImg } = useFormattedImage();
   const {getErrorMessage} = useErrorMessage()
   const { setLiveStockImage, liveStockImage } = useLivestockContext();
@@ -152,8 +152,9 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick }) => {
       >
         <TabPane
           text="Livestock Information"
+          loading={loading}
           btnText={btnText ? btnText : isEditLivestockInfo ? "Edit" : "Save"}
-          btnIcon={false}
+          btnIcon={loading?<Spinner sx={{mr:1}} size={20} color={'#fff'}/>:null}
           hover={true}
           btnBgColor={btnBgColor}
           type="submit"

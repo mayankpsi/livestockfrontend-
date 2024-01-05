@@ -5,7 +5,6 @@ import {
 } from "../../../ComponentsV2/themeComponents";
 import { useState, useEffect } from "react";
 import { ChartCard, BtnGroup } from "../../../ComponentsV2";
-import useLivestockContext from "../../../hooks/useLivestockContext";
 import useDateFormat from "../../../hooks/useDateFormat";
 import { chartCardData } from "../Data";
 import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
@@ -27,9 +26,9 @@ const btnData = [
   {
     label: "steps counter",
   },
-  {
-    label: "activity tracker",
-  },
+  // {
+  //   label: "activity tracker",
+  // },
   {
     label: "rumination",
   },
@@ -141,11 +140,11 @@ const Health = ({ data }) => {
         {chartCardData
           ?.map((ele) => ({
             ...ele,
-            value: getCardValue(ele),
+            // value: getCardValue(ele),
             createdAt: formattedDate(
               cardData?.[ele?.label?.toLowerCase() + "Time"]
             ),
-            valueColor: getDynamicColor(data, ele?.label),
+            // valueColor: getDynamicColor(data, ele?.label),
             suffix: isActivity(ele)
               ? isHour(ele)
                 ? " hr"

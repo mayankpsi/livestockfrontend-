@@ -1,8 +1,11 @@
 import React from "react";
 import { Typography, Paper, Stack, Box } from "@mui/material";
-import {GetMap, SkeletonLoader, CustomSelect} from "../../ComponentsV2";
+import { GetMap, SkeletonLoader, CustomSelect } from "../../ComponentsV2";
 import { styled } from "@mui/system";
-import { ButtonPrimary, ButtonOutlinedRound } from "../../ComponentsV2/themeComponents";
+import {
+  ButtonPrimary,
+  ButtonOutlinedRound,
+} from "../../ComponentsV2/themeComponents";
 import useMapContext from "../../hooks/useMapContext";
 
 const CreateGeoFence = () => {
@@ -16,8 +19,10 @@ const CreateGeoFence = () => {
     handleCreateGeofence,
     handleGeofenceSave,
     handleGeofenceCancel,
-    handleGeofenceEdit
-  } = useMapContext()
+    handleGeofenceEdit,
+    addCustomError,
+    removeCustomError,
+  } = useMapContext();
 
   const Para = styled(Typography)({
     fontSize: "2rem",
@@ -38,9 +43,25 @@ const CreateGeoFence = () => {
 
   const submitState = localStorage.getItem("geofenceCreation") === "showEdit";
 
+  const handleSubmit = () => {
+    if (geofenceCoordinates?.radius) {
+      removeCustomError();
+     handleGeofenceSave();
+    } else {
+      addCustomError("Please select the radius");
+    }
+  };
   return (
-    <Stack direction="row" justifyContent="space-between" mt={3} sx={{gap:{xl:5, lg:5, md:3, sm:2}}} >
-      <Stack direction="column" sx={{width:{xl:'19%', lg:'25%', md:'25%', sm:'30%'}}}>
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      mt={3}
+      sx={{ gap: { xl: 5, lg: 5, md: 3, sm: 2 } }}
+    >
+      <Stack
+        direction="column"
+        sx={{ width: { xl: "19%", lg: "25%", md: "25%", sm: "30%" } }}
+      >
         {!geofenceCoordinates?.address ? (
           <Paper elevation={2} sx={{ padding: 2 }}>
             <Para variant="h5">Step: 1</Para>
@@ -50,7 +71,12 @@ const CreateGeoFence = () => {
             </Para>
             <ButtonPrimary
               variant="contained"
-              sx={{ width: "100%", padding:'5px 0', display:'flex', justifyContent:'center'}}
+              sx={{
+                width: "100%",
+                padding: "5px 0",
+                display: "flex",
+                justifyContent: "center",
+              }}
               onClick={() => getGeolocationAddress(true, null, null)}
             >
               Auto detect my location
@@ -71,7 +97,12 @@ const CreateGeoFence = () => {
               {!submitState && (
                 <ButtonPrimary
                   variant="contained"
-                  sx={{ width: "100%", padding:'5px 0', display:'flex', justifyContent:'center'}}
+                  sx={{
+                    width: "100%",
+                    padding: "5px 0",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
                   onClick={handleGeofenceAddressEdit}
                 >
                   Edit
@@ -91,23 +122,32 @@ const CreateGeoFence = () => {
                   margin: "20px 0",
                 }}
               >
-                {submitState? (
-                  
-                   <ButtonPrimary
-                   variant="contained"
-                   sx={{ width: "100px", padding:'5px 0', display:'flex', justifyContent:'center'}}
-                   onClick={handleGeofenceEdit}
-                 >
-                   Edit
-                 </ButtonPrimary>
+                {submitState ? (
+                  <ButtonPrimary
+                    variant="contained"
+                    sx={{
+                      width: "100px",
+                      padding: "5px 0",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                    onClick={handleGeofenceEdit}
+                  >
+                    Edit
+                  </ButtonPrimary>
                 ) : (
                   <ButtonPrimary
-                  variant="contained"
-                  sx={{ width: "100px", padding:'5px 0', display:'flex', justifyContent:'center'}}
-                  onClick={handleCreateGeofence}
-                >
-                  Submit
-                </ButtonPrimary>
+                    variant="contained"
+                    sx={{
+                      width: "100px",
+                      padding: "5px 0",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                    onClick={handleCreateGeofence}
+                  >
+                    Submit
+                  </ButtonPrimary>
                 )}
               </Box>
             )}
@@ -120,13 +160,22 @@ const CreateGeoFence = () => {
                   margin: "20px 0",
                 }}
               >
-                <ButtonOutlinedRound variant="outlined" sx={{ minWidth: "100px", borderRadius:1 }} onClick={handleGeofenceCancel}>
+                <ButtonOutlinedRound
+                  variant="outlined"
+                  sx={{ minWidth: "100px", borderRadius: 1 }}
+                  onClick={handleGeofenceCancel}
+                >
                   Cancel
                 </ButtonOutlinedRound>
                 <ButtonPrimary
                   variant="contained"
-                  sx={{ width: "100px", padding:'5px 0', display:'flex', justifyContent:'center'}}
-                  onClick={handleGeofenceSave}
+                  sx={{
+                    width: "100px",
+                    padding: "5px 0",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                  onClick={handleSubmit}
                 >
                   Save
                 </ButtonPrimary>
@@ -135,8 +184,12 @@ const CreateGeoFence = () => {
           </>
         )}
       </Stack>
-      <Stack sx={{width:{xl:'81%', lg:'75%', md:'75%', sm:'70%'}}}>
-      <GetMap mapWidth="100%" mapHeight="600px" geofenceCoordinates={geofenceCoordinates}/>
+      <Stack sx={{ width: { xl: "81%", lg: "75%", md: "75%", sm: "70%" } }}>
+        <GetMap
+          mapWidth="100%"
+          mapHeight="600px"
+          geofenceCoordinates={geofenceCoordinates}
+        />
       </Stack>
     </Stack>
   );

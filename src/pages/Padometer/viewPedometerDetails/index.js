@@ -12,6 +12,7 @@ import {
 } from "../Data";
 
 const ViewPedometerDetails = () => {
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     collarUid: "",
     collarName: "",
@@ -53,7 +54,7 @@ const ViewPedometerDetails = () => {
         // alert(e.message)
       })
       .finally(() => setOpenBackdropLoader(false));
-  }, []);
+  }, [loading]);
 
   return (
     <AdminUIContainer
@@ -68,7 +69,7 @@ const ViewPedometerDetails = () => {
         <TypographyPrimary sx={{ textTransform: "capitalize", fontSize: 21 }}>
           {data?.collarUid}
         </TypographyPrimary>
-        <CustomTabs tabData={viewCollarDetailTabData(data)} />
+        <CustomTabs tabData={viewCollarDetailTabData(data, loading, setLoading)} />
       </Container>
     </AdminUIContainer>
   );

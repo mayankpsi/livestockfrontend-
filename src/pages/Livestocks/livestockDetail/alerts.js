@@ -16,6 +16,49 @@ import { livestockDetailAlertTableHeadData } from "../Data";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 
+const alerts = [
+  {
+    id: 1,
+    alertName: "High Temperature alert",
+    thresholdValue: "90 F",
+    alarmValue:[<TypographyPrimary sx={{color:'red'}}>92 °F</TypographyPrimary>],
+    time: "17:50 PM",
+    date: "07/07/23",
+  },
+  {
+    id: 2,
+    alertName: "Low Temperature alert",
+    thresholdValue: "35 F",
+    alarmValue:[<TypographyPrimary sx={{color:'red'}}>30 °F</TypographyPrimary>],
+    time: "17:50 PM",
+    date: "07/07/23",
+  },
+  {
+    id: 3,
+    alertName: "Low heartbeat alert",
+    thresholdValue: "72/min",
+    alarmValue:[<TypographyPrimary sx={{color:'red'}}>65/min</TypographyPrimary>],
+    time: "17:50 PM",
+    date: "07/07/23",
+  },
+  {
+    id: 4,
+    alertName: "High heartbeat alert",
+    thresholdValue: "120/min",
+    alarmValue:[<TypographyPrimary sx={{color:'red'}}>122/min</TypographyPrimary>],
+    time: "17:50 PM",
+    date: "07/07/23",
+  },
+  {
+    id: 5,
+    alertName: "Geo Fence crossed",
+    thresholdValue: "500 m",
+    alarmValue: [<TypographyPrimary sx={{color:'red'}}>550 m</TypographyPrimary>],
+    time: "17:50 PM",
+    date: "07/07/23",
+  },
+];
+
 const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
   const {
     selectedDate,
@@ -28,12 +71,14 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
     handleAlertDelete,
     openSnackbarAlert,
     setOpenBackdropLoader,
-    alertsDataLength,
+    // alertsDataLength,
     setAlertsDataLength,
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate } = useDateFormat();
-  const [singleLivestockAlerts, setSingleLivestockAlerts] = useState([]);
+  const [singleLivestockAlerts, setSingleLivestockAlerts] = useState(alerts);
   const { getErrorMessage } = useErrorMessage();
+
+const alertsDataLength = 5
 
   useEffect(() => {
     setOpenBackdropLoader(true);
@@ -61,14 +106,14 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
               time: formattedDate(ele?.createdAt, "time"),
               date: formattedDate(ele?.createdAt, "date"),
             }));
-            setSingleLivestockAlerts(formattedData);
+            // setSingleLivestockAlerts(formattedData);
             setPageCount(data?.totalPage);
             setAlertsDataLength(data?.dataLength);
           } else {
             const msg = res?.data?.data?.LiveStockAlertData?.length
               ? getErrorMessage(res)
               : "No data found";
-            setSingleLivestockAlerts([]);
+            // setSingleLivestockAlerts([]);
             setPageCount(1);
             setAlertsDataLength(0);
             throw new Error(msg);
@@ -183,7 +228,9 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
         {alertsThresholds?.map((ele) => (
           <AlertCard
             key={ele?.id}
-            paneText={`${ele?.label}`}
+            paneText={`${
+              ele?.label === "heartBeat" ? "heartbeat" : ele?.label
+            }`}
             label={ele?.label}
             valueSuffix={ele?.suffix}
             labelData={ele?.value}
@@ -227,37 +274,35 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
             setSelectedDate={setSelectedDate}
           />
         </Stack>
-        {
-          alertsDataLength?(
-            <TableV2
-          paneText="showing 10 out of 20 Alerts"
-          paneTextColor="#000"
-          isBtn={true}
-          btnText="export"
-          datePicker={true}
-          btnColor="#fff"
-          btnBg="#B58B5D"
-          tableHeadData={livestockDetailAlertTableHeadData}
-          tableRowData={singleLivestockAlerts
-            .map((ele) => ({
-              ...ele,
-              action: [
-                <IconButton aria-label="delete">
-                  <DeleteOutlineOutlinedIcon
-                    fontSize="large"
-                    onClick={() => handleAlertDelete(ele.id)}
-                  />
-                </IconButton>,
-              ],
-            }))
-            .map((ele) => {
-              delete ele.id;
-              return ele;
-            })}
-        />
-          ):null
-        }
-        
+        {alertsDataLength ? (
+          <TableV2
+            paneText="showing 10 out of 20 Alerts"
+            paneTextColor="#000"
+            isBtn={true}
+            btnText="export"
+            datePicker={true}
+            btnColor="#fff"
+            btnBg="#B58B5D"
+            tableHeadData={livestockDetailAlertTableHeadData}
+            tableRowData={singleLivestockAlerts
+              .map((ele) => ({
+                ...ele,
+                action: [
+                  <IconButton aria-label="delete">
+                    <DeleteOutlineOutlinedIcon
+                      fontSize="large"
+                      onClick={() => handleAlertDelete(ele.id)}
+                    />
+                  </IconButton>,
+                ],
+              }))
+              .map((ele) => {
+                delete ele.id;
+                return ele;
+              })}
+          />
+        ) : null}
+
         {singleLivestockAlerts?.length ? (
           alertsDataLength > 10 ? (
             <Stack direction="row" justifyContent="center" pt={5}>

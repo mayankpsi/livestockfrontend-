@@ -4,7 +4,7 @@ import { AddBtn, CustomModal } from "../../../ComponentsV2";
 import ShowLivestocks from "../../Collars/viewCollarDetails/showLivestocks";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
-import { deviceInfoData, pedometerInfoData} from "../Data";
+import { deviceInfoData, pedometerInfoData } from "../Data";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 import DeviceCard from "../components/DeviceCard";
 
@@ -16,18 +16,17 @@ const CollarInfo = ({ data }) => {
 
   useEffect(() => {
     if (!data?.collarUid) {
-      getUnassignCollars();
     }
   }, [data]);
 
-  const handelCollarRemove = async () => {
+  const handelCollarRemove = async (type) => {
     const body = {
       liveStockID: data?.id,
-      deviceID: data?.collarId,
+      deviceID: data?.collar?._id,
     };
     try {
       const res = await request({
-        url: `/devices/unassign-liveStock`,
+        url: `/devices/unassign-liveStock?unassignType=${type}`,
         method: "POST",
         data: body,
       });
@@ -42,10 +41,10 @@ const CollarInfo = ({ data }) => {
     }
   };
 
-  const getUnassignCollars = async () => {
+  const getUnassignCollars = async (type) => {
     try {
       const res = await request({
-        url: `/devices/getFreeDeviceOfUser?page=1&limit=25`,
+        url: `/devices/getFreeDeviceOfUser?page=1&limit=25&deviceType=${type}`,
       });
       if (res.status === 200) {
         setAllUnassignCollars(res?.data?.data?.UserFreeDeviceInfo);
@@ -57,14 +56,14 @@ const CollarInfo = ({ data }) => {
     }
   };
 
-  const handleCollarAssign = async (selectedValue) => {
+  const handleCollarAssign = async (selectedValue, type) => {
     const body = {
       liveStockID: data?.id,
       deviceID: selectedValue,
     };
     try {
       const res = await request({
-        url: `/devices/assign-liveStock`,
+        url: `/devices/assign-liveStock?assignType=${type}`,
         method: "POST",
         data: body,
       });
@@ -80,42 +79,60 @@ const CollarInfo = ({ data }) => {
     setShowModal(false);
   };
 
+  const getData = (data) => {
+    return {
+      status: data?.deviceActiveStatus,
+      uid: data?.uID,
+      name: data?.deviceName,
+      macId: data?.macID,
+      addedOn: data?.createdAt,
+      battery: data?.collarBattery,
+    };
+  };
+
   return (
     <>
-      {data?.collarUid ? (
-        <Stack direction={"row"} gap={4}>
+      <Stack direction={"row"} gap={4} py={4}>
+        {data?.collar?.uID ? (
           <DeviceCard
             label="collar"
-            data={data}
+            data={getData(data?.collar)}
             deviceDataFormat={deviceInfoData}
-            onRemove={handelCollarRemove}
+            onRemove={() => handelCollarRemove("collar")}
           />
-          <DeviceCard
-            label="pedometer"
-            data={data}
-            deviceDataFormat={pedometerInfoData}
-            onRemove={() => {}}
-          />
-        </Stack>
-      ) : (
-        <Stack direction={'row'} my={4} gap={4}>
+        ) : (
           <AddBtn
             text1="collar"
             text2="livestock"
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              getUnassignCollars("collar");
+              setShowModal(true);
+            }}
           />
-           <AddBtn
+        )}
+        {data?.pedometer?.uID ? (
+          <DeviceCard
+            label="pedometer"
+            data={getData(data?.pedometer)}
+            deviceDataFormat={deviceInfoData}
+            onRemove={() => handelCollarRemove("pedometer")}
+          />
+        ) : (
+          <AddBtn
             text1="Pedometer"
             text2="livestock"
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              getUnassignCollars("pedometer");
+              setShowModal(true);
+            }}
           />
-        </Stack>
-      )}
+        )}
+      </Stack>
       <CustomModal
         content={
           <ShowLivestocks
             data={allUnassignCollars}
-            onSubmit={(selectedValue) => handleCollarAssign(selectedValue)}
+            onSubmit={handleCollarAssign}
             setOpenAddLivestockModal={() => setShowModal(false)}
             openSnackbarAlert={() =>
               openSnackbarAlert("error", "Please choose a collar to assign")

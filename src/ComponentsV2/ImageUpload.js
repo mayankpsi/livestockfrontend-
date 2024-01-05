@@ -53,11 +53,11 @@ const ImageUpload = ({ onUpload }) => {
           />
         </>
       ) : (
-        <Stack direction="column" alignItems="flex-end">
+        <Stack direction="row-reverse" alignItems="flex-start" gap={2}>
           <Button variant="contained" color="error" sx={{ width: 60 }} onClick={() => setImageUrl(null)}>
             <DeleteOutlineOutlinedIcon sx={{ fontSize: 32 }} />
           </Button>
-          <img style={{width:200, height:200}} src={imageUrl} alt="Uploaded Image" height="300" />
+          <img style={{height:200}} src={imageUrl} alt="Uploaded Image" height="300" />
         </Stack>
       )}
     </Box>

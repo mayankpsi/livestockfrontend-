@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Stack, Button } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { AddCircleOutlineIcon } from "../icons";
 import { ButtonPrimary, TypographyPrimary } from "./themeComponents";
 
@@ -13,6 +13,7 @@ const TabPane = ({
   secondaryText,
   btnColor,
   hover,
+  loading,
 }) => {
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -29,16 +30,19 @@ const TabPane = ({
         )}
       </Box>
       <ButtonPrimary
+        disabled={loading}
         sx={{
           background: btnBgColor ? btnBgColor : "#B58B5D",
           p: "5px 15px",
           color: `${btnColor ? btnColor : "#fff"}`,
-          cursor:`${!hover?'default':'pointer'}`,
+          cursor: `${!hover ? "default" : "pointer"}`,
           "&:hover": { backgroundColor: !hover ? btnBgColor : "" },
         }}
         onClick={onBtnClick}
         type={type}
-        startIcon={btnIcon ? <AddCircleOutlineIcon fontSize="large" /> : null}
+        startIcon={
+          btnIcon ? btnIcon || <AddCircleOutlineIcon fontSize="large" /> : null
+        }
       >
         {btnText}
       </ButtonPrimary>
