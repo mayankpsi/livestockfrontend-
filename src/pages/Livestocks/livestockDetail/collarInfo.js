@@ -17,7 +17,7 @@ const CollarInfo = ({
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [allUnassignCollars, setAllUnassignCollars] = useState([]);
-  const { openSnackbarAlert } = useLivestockContext();
+  const { openSnackbarAlert, getAllLivestock } = useLivestockContext();
   const { getErrorMessage } = useErrorMessage();
 
   useEffect(() => {
@@ -47,8 +47,11 @@ const CollarInfo = ({
         data: body,
       });
       if (res.status === 200) {
-        openSnackbarAlert("success", "Livestock successfully removed :)");
-        // setTimeout(() => window.location.reload(), 500);
+        const msg = `${
+          type?.charAt(0).toUpperCase() + type.slice(1).toLowerCase()
+        } successfully Removed :)`;
+        openSnackbarAlert("success", msg);
+        getAllLivestock();
       } else {
         throw new Error(getErrorMessage(res));
       }
@@ -81,7 +84,6 @@ const CollarInfo = ({
   const handleCollarAssign = async (selectedValue, type) => {
     setShowModal(false);
     loadingOn(type);
-    console.log(type, "fcjbfvjfvjfbvfbjbfvj");
     const body = {
       liveStockID: data?.id,
       deviceID: selectedValue,
@@ -93,8 +95,11 @@ const CollarInfo = ({
         data: body,
       });
       if (res.status === 200) {
-        openSnackbarAlert("success", "Collar successfully Added :)");
-        // setTimeout(() => window.location.reload(), 500);
+        const msg = `${
+          type?.charAt(0).toUpperCase() + type.slice(1).toLowerCase()
+        } successfully Added :)`;
+        openSnackbarAlert("success", msg);
+        getAllLivestock();
       } else {
         throw new Error(getErrorMessage(res));
       }

@@ -203,7 +203,7 @@ export const LivestockHealthContextProvider = ({ children }) => {
               temperatureTime: temperatureTime || new Date(),
               temperatureAlertStatus,
               heartbeat: heartBeat || "0",
-              heartbeatTime: heartBeatTime || new Date(),
+              heartbeatTime: heartBeatTime || new Date(), 
               heartbeatAlertStatus: heartBeatAlertStatus,
               steps: stepsDataObject || "0",
               stepsTime: stepsTime || new Date(),

@@ -66,6 +66,10 @@ export const LivestockContextProvider = ({ children }) => {
 
   //GET ALL LIVESTOCK
   useEffect(() => {
+    getAllLivestock();
+  }, [addNewLivestockLoading]);
+
+  const getAllLivestock = () => {
     setOpenBackdropLoader(true);
     request({ url: "/liveStock/getAll" })
       .then((res) => {
@@ -100,19 +104,19 @@ export const LivestockContextProvider = ({ children }) => {
                 onClick={() =>
                   handleLivestockDelete(
                     col?._id,
-                    col?.assignedDevice?.collarDevice?.uID
+                    col?.assignedDevice?.collarDevice?.uID ||
+                      col?.assignedDevice?.pedometerDevice?.uID
                   )
                 }
               />,
             ],
           };
         });
-        console.log(formattedData, "knjfjvnjfnvjfnvnfjnvjfnjvnfj");
         setAllLivestocks(formattedData);
       })
       .catch((err) => console.log(err.message))
       .finally(() => setOpenBackdropLoader(false));
-  }, [addNewLivestockLoading]);
+  };
 
   // handle modal open
   const handleLivestockModalOpen = (type) => {
@@ -327,6 +331,7 @@ export const LivestockContextProvider = ({ children }) => {
         setAlertsDataLength,
         setLiveStockImage,
         liveStockImage,
+        getAllLivestock,
       }}
     >
       {children}

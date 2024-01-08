@@ -61,7 +61,7 @@ const Overview = ({ data }) => {
           data: body,
         });
         if (editRes.status === 200) {
-          openSnackbarAlert("success", "Collar successfully edited :)");
+          openSnackbarAlert("success", "Pedometer successfully edited :)");
           setIsEditCollarInfo(false);
           setIsError({
             error: false,

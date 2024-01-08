@@ -39,6 +39,7 @@ const LivestockDetails = () => {
   const { getErrorMessage } = useErrorMessage();
 
   useEffect(() => {
+    setOpenBackdropLoader(true);
     request({ url: `/liveStock/getLiveStockByID/?liveStockID=${id}` })
       .then((res) => {
         if (res?.data?.data && res?.data?.statusCode === 200) {
