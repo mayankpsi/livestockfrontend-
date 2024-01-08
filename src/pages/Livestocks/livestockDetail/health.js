@@ -26,9 +26,9 @@ const btnData = [
   {
     label: "steps counter",
   },
-  // {
-  //   label: "activity tracker",
-  // },
+  {
+    label: "activity tracker",
+  },
   {
     label: "rumination",
   },
@@ -52,11 +52,12 @@ const Health = ({ data }) => {
 
   useEffect(() => {
     getHealthCardData(id);
-    // setInterval(() => {
+    // const interval = setInterval(() => {
     //   getHealthCardData(id);
     //   getChartData(id);
     //   getLogs(id);
     // }, 60000);
+    // return () => clearInterval(interval);
   }, [id]);
 
   const showSection = (key) => {
@@ -116,6 +117,10 @@ const Health = ({ data }) => {
     handleRefreshButton(id);
   };
 
+  const getAlertStatus = (ele) => {
+    const status = cardData?.[ele?.label?.toLowerCase() + "AlertStatus"];
+    return status === false ? "color-success--dark" : "err-color";
+  };
   return (
     <Stack mt={4} direction="column" alignItems="center" gap={4}>
       <Stack
@@ -140,16 +145,16 @@ const Health = ({ data }) => {
         {chartCardData
           ?.map((ele) => ({
             ...ele,
-            // value: getCardValue(ele),
+            value: getCardValue(ele),
             createdAt: formattedDate(
               cardData?.[ele?.label?.toLowerCase() + "Time"]
             ),
-            // valueColor: getDynamicColor(data, ele?.label),
             suffix: isActivity(ele)
               ? isHour(ele)
                 ? " hr"
                 : " min"
               : ele?.suffix,
+            valueColor: getAlertStatus(ele),
           }))
           ?.map((ele) => (
             <ChartCard

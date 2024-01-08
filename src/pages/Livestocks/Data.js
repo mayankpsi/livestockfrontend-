@@ -183,18 +183,18 @@ export const chartCardData = [
     },
     createdAt: "10:59 PM, 23/08/23",
   },
-  // {
-  //   label: "activity",
-  //   value: "52",
-  //   icon: <Box sx={{ width: "4rem" }} component="img" src={Steps} />,
-  //   valueColor: "color-success--dark",
-  //   suffix: " min",
-  //   colors: {
-  //     main: "rgba(215, 127, 74, 1)",
-  //     bg: "rgba(215, 127, 74, 0.25)",
-  //   },
-  //   createdAt: "10:59 PM, 23/08/23",
-  // },
+  {
+    label: "activity",
+    value: "52",
+    icon: <Box sx={{ width: "4rem" }} component="img" src={Steps} />,
+    valueColor: "color-success--dark",
+    suffix: " min",
+    colors: {
+      main: "rgba(215, 127, 74, 1)",
+      bg: "rgba(215, 127, 74, 0.25)",
+    },
+    createdAt: "10:59 PM, 23/08/23",
+  },
   {
     label: "rumination",
     value: "2",

@@ -157,7 +157,7 @@ const GetMap = ({
     >
       {isLivestocks &&
         livestockData &&
-        livestocks?.map(({ id, position, safeUnsafeStatus }) => (
+        livestockData?.map(({ id, position, safeUnsafeStatus }) => (
           <Marker
             key={id}
             position={position}

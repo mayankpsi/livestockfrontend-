@@ -20,6 +20,7 @@ export const LivestockContextProvider = ({ children }) => {
   // new livestock
   const [addNewLivestock, setAddNewLivestock] = useState({
     collarUID: "",
+    pedometerUID: "",
     livestockUID: "",
     livestockName: "",
     livestockGender: "",
@@ -68,38 +69,45 @@ export const LivestockContextProvider = ({ children }) => {
     setOpenBackdropLoader(true);
     request({ url: "/liveStock/getAll" })
       .then((res) => {
-        const formattedData = res?.data?.data?.liveStockData
-        ?.map((col, ind) => ({
-          id: col._id + "id",
-          liveStockUID: col?.uID,
-          livestockName: col?.name,
-          collarID: col?.assignedDevice?.uID ? col?.assignedDevice?.uID : "N/A",
-          addedOn: formattedDate(col?.createdAt, false),
-          status: col?.liveStocklocationStatus,
-          currentStatus: (
-            <CustomLabel
-              text={col?.liveStocklocationStatus || "N/A"}
-              type={
-                col?.liveStocklocationStatus?.toLowerCase() === "safe"
-                  ? "success"
-                  : "error"
-              }
-              width={125}
-              marginAuto={true}
-            />
-          ),
-          lastUpdate: formattedDate(col?.updatedAt, true),
-          action: [
-            <VisibilityOutlinedIcon
-              fontSize="large"
-              onClick={() => navigate(`/livestocks/${col?._id}`)}
-            />,
-            <DeleteOutlineOutlinedIcon
-              fontSize="large"
-              onClick={() => handleLivestockDelete(col?._id, col?.status)}
-            />,
-          ],
-        }));
+        const formattedData = res?.data?.data?.liveStockData?.map((col) => {
+          return {
+            id: col._id + "_id_",
+            liveStockUID: col?.uID || "N/A",
+            livestockName: col?.name,
+            collarID: col?.assignedDevice?.collarDevice?.uID || "N/A",
+            addedOn: formattedDate(col?.createdAt, false),
+            status: col?.liveStocklocationStatus,
+            currentStatus: (
+              <CustomLabel
+                text={col?.liveStocklocationStatus || "N/A"}
+                type={
+                  col?.liveStocklocationStatus?.toLowerCase() === "safe"
+                    ? "success"
+                    : "error"
+                }
+                width={125}
+                marginAuto={true}
+              />
+            ),
+            lastUpdate: formattedDate(col?.updatedAt, true),
+            action: [
+              <VisibilityOutlinedIcon
+                fontSize="large"
+                onClick={() => navigate(`/livestocks/${col?._id}`)}
+              />,
+              <DeleteOutlineOutlinedIcon
+                fontSize="large"
+                onClick={() =>
+                  handleLivestockDelete(
+                    col?._id,
+                    col?.assignedDevice?.collarDevice?.uID
+                  )
+                }
+              />,
+            ],
+          };
+        });
+        console.log(formattedData, "knjfjvnjfnvjfnvnfjnvjfnjvnfj");
         setAllLivestocks(formattedData);
       })
       .catch((err) => console.log(err.message))
@@ -134,7 +142,7 @@ export const LivestockContextProvider = ({ children }) => {
     if (res?.status === 200) {
       setOpenBackdropLoader(false);
       openSnackbarAlert("success", "Livestock successfully deleted!");
-      setTimeout(() => window.location.reload(), 500);
+      // setTimeout(() => window.location.reload(), 500);
     } else {
       setOpenBackdropLoader(false);
 
@@ -156,7 +164,8 @@ export const LivestockContextProvider = ({ children }) => {
     const formData = new FormData();
     formData.append("uID", addNewLivestock?.livestockUID);
     formData.append("name", addNewLivestock?.livestockName);
-    formData.append("gender", addNewLivestock?.livestockGender);
+    // formData.append("gender", addNewLivestock?.livestockGender);
+    formData.append("pedometerID", addNewLivestock?.pedometerUID);
     formData.append("collarID", addNewLivestock?.collarUID);
     formData.append("liveStockImage", liveStockImage);
 

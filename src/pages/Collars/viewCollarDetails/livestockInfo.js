@@ -19,6 +19,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
   const [isEditLivestockInfo, setIsEditLivestockInfo] = useState(true);
   const [LivestockInfoEdit, setLivestockInfoEdit] = useState({
     collarUID: "",
+    pedometerUID: "",
     livestockUID: "",
     livestockName: "",
     livestockGender: "",
@@ -33,18 +34,19 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
 
   useEffect(() => {
     setLivestockInfoEdit({
-      collarUID: data?.collarUid || "N/A",
+      collarUID: data?.collar?.uID || "N/A",
+      pedometerUID: data?.pedometer?.uID || "N/A",
       livestockUID: data?.Uid,
       livestockName: data?.name,
       livestockGender: data?.gender,
     });
     if (data) {
-      setValue("collarUID", data?.collarUid || "N/A");
+      setValue("collarUID", data?.collar?.uID || "N/A");
+      setValue("pedometerUID", data?.pedometer?.uID || "N/A");
       setValue("livestockUID", data?.Uid || "");
       setValue("livestockName", data?.name || "");
       setValue("livestockGender", data?.gender || "");
     }
-    console.log(data, "bfbvjfjvnjfnjvfjnjfnjvfnj")
   }, [data]);
 
   const handleLivestockInfoEditChange = (e) => {
@@ -65,7 +67,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
         formData.append("id", data?.id);
         formData.append("uID", LivestockInfoEdit?.livestockUID);
         formData.append("name", LivestockInfoEdit?.livestockName);
-        formData.append("gender", LivestockInfoEdit?.livestockGender);
+        // formData.append("gender", LivestockInfoEdit?.livestockGender);
         if (liveStockImage) {
           formData.append("imageChanges", true);
           formData.append("liveStockImage", liveStockImage);
@@ -163,26 +165,14 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
           text="Livestock Information"
           loading={loading}
           btnText={btnText ? btnText : isEditLivestockInfo ? "Edit" : "Save"}
-          btnIcon={loading?<Spinner sx={{mr:1}} size={20} color={'#fff'}/>:null}
+          btnIcon={
+            loading ? <Spinner sx={{ mr: 1 }} size={20} color={"#fff"} /> : null
+          }
           hover={true}
           btnBgColor={btnBgColor}
           type="submit"
         />
-        {console.log(data?.img, "dchdhbcdhbdcbhdcbhbdhbdhbc")}
         {isEditLivestockInfo ? (
-          // <Box
-          //   component="img"
-          //   sx={{
-          //     height: "33vh",
-          //     width: "100%",
-          //     objectFit: "cover",
-          //     borderRadius: "10px",
-          //   }}
-          //   crossOrigin="anonymous"
-          //   alt="The house from the offer."
-          //   src={data?.img}
-          // />
-
           <img
             style={{
               height: "33vh",
@@ -199,11 +189,20 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
         <Stack direction="row" gap={2}>
           {getTextFiled(
             true,
-            "Collar UID",
+            "Collar",
             "collarUID",
             LivestockInfoEdit?.collarUID,
             () => {}
           )}
+          {getTextFiled(
+            true,
+            "Pedometer",
+            "pedometerUID",
+            LivestockInfoEdit?.pedometerUID,
+            () => {}
+          )}
+        </Stack>
+        <Stack direction="row" gap={2}>
           {getTextFiled(
             isEditLivestockInfo,
             "Livestock UID",
@@ -214,8 +213,6 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
             null,
             isError
           )}
-        </Stack>
-        <Stack direction="row" gap={2}>
           {getTextFiled(
             isEditLivestockInfo,
             "Livestock Name",
@@ -223,7 +220,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
             LivestockInfoEdit?.livestockName,
             handleLivestockInfoEditChange
           )}
-          {getTextFiled(
+          {/* {getTextFiled(
             isEditLivestockInfo,
             "Gender",
             "livestockGender",
@@ -231,7 +228,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
             handleLivestockInfoEditChange,
             true,
             genderData
-          )}
+          )} */}
         </Stack>
       </Stack>
     </form>

@@ -24,7 +24,7 @@ const AddCollarModalContent = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(addCollarValidationSchema) });
+  } = useForm({ resolver: yupResolver(addCollarValidationSchema)});
 
   const onSubmit = () => handleAddCollar("collar")
 

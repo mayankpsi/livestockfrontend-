@@ -42,7 +42,7 @@ const CollarLogs = () => {
       const res = await request({
         url: `/devices/getDeviceLogs?deviceId=${id}&page=${collarLogsPagination}&limit=10&startDate=${paginationDateFormat(
           selectedDate?.startDate
-        )}&endDate=${paginationDateFormat(selectedDate?.endDate)}`,
+        )}&endDate=${paginationDateFormat(selectedDate?.endDate)}&deviceType=pedometer`,
       });
       if (res.status === 200) {
         const { data: dataV2 } = res?.data;

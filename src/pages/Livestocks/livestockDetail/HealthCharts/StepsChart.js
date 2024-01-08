@@ -25,35 +25,25 @@ function StepsChart({ height = 200, width, data, thresholds, dayWise }) {
     background: "#fff",
   };
   const getData = data?.length ? data : chartData;
-  const xLabel = data?.length && "hour" in data?.[0] ? "hour" : "day";
+  const xLabel = data?.length ? ("hour" in data?.[0] ? "hour" : "day") : "hour";
   const xUnit = data?.length && "hour" in data?.[0] ? " hr" : "";
-
-  function randomIntFromInterval(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
-  const stepFakeData = chartData?.map((ele) => ({
-    ...ele,
-    step: randomIntFromInterval(1500, 2200),
-  }));
 
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
-        <ComposedChart data={!dayWise ? stepByDay : stepsFakeData}>
+        <ComposedChart data={getData}>
           <XAxis
-            style={{ paddingBottom: "20px" }}
-            dataKey={"xAxis"}
+            dataKey={xLabel}
             angle={dayWise ? "40" : "0"}
             tickSize={10}
             tickMargin={15}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
             height={47}
-            // unit={xUnit}
+            unit={xUnit}
           />
           <YAxis
-            domain={[0, Number(!dayWise ? 4100 : 200) + 10]}
+            domain={[0, Number(thresholds?.high) + 10]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
@@ -69,7 +59,7 @@ function StepsChart({ height = 200, width, data, thresholds, dayWise }) {
             content={renderLegend(stepsLegends)}
           />
           <Bar
-            dataKey="dataValue"
+            dataKey="steps"
             stroke={colors.steps.stroke}
             fill={colors.steps.fill}
             strokeWidth={2}
@@ -77,14 +67,14 @@ function StepsChart({ height = 200, width, data, thresholds, dayWise }) {
             barSize={30}
           />
           <ReferenceLine
-            y={Number(!dayWise ? 4000 : 200)}
+            y={Number(thresholds?.high)}
             label="Max"
             stroke="red"
             strokeWidth={1}
             strokeDasharray="10 20"
           />
           <ReferenceLine
-            y={Number(!dayWise ? 1500 : 50)}
+            y={Number(thresholds?.low)}
             label="Min"
             stroke="red"
             strokeWidth={1}

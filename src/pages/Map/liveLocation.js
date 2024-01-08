@@ -5,60 +5,6 @@ import useMapContext from "../../hooks/useMapContext";
 import { request } from "../../apis/axios-utils";
 import useErrorMessage from "../../hooks/useErrorMessage";
 
-const safe = [
-  {
-    liveStockName: "Cow 1",
-    deviceName: "Collar1",
-  },
-  {
-    liveStockName: "Cow 2",
-    deviceName: "Collar2",
-  },
-  {
-    liveStockName: "Cow 3",
-    deviceName: "Collar4",
-  },
-  {
-    liveStockName: "Cow 4",
-    deviceName: "Collar4",
-  },
-  {
-    liveStockName: "Cow 5",
-    deviceName: "Collar5",
-  },
-  {
-    liveStockName: "Cow 6",
-    deviceName: "Collar6",
-  },
-  {
-    liveStockName: "Cow 7",
-    deviceName: "Collar7",
-  },
-  {
-    liveStockName: "Cow 8",
-    deviceName: "Collar8",
-  },
-  {
-    liveStockName: "Cow 9",
-    deviceName: "Collar9",
-  },
-  {
-    liveStockName: "Cow 10",
-    deviceName: "Collar10",
-  },
-];
-
-const unsafe = [
-  {
-    liveStockName: "Cow 11",
-    deviceName: "Collar 11",
-  },
-  {
-    liveStockName: "Cow 12",
-    deviceName: "Collar 12",
-  },
-];
-
 const LiveLocation = () => {
   const [getLivestockStatus, setGetLivestockStatus] = useState([]);
 
@@ -66,7 +12,7 @@ const LiveLocation = () => {
   const { getErrorMessage } = useErrorMessage();
 
   useEffect(() => {
-    request({ url: "/devices/isDeviceWithInGeofence" })
+    request({ url: "/liveStock/safeUnsafeLiveStock" })
       .then((res) => {
         if (res?.status === 200) {
           setGetLivestockStatus(res?.data?.data);
@@ -81,7 +27,7 @@ const LiveLocation = () => {
 
   const getFilteredLivestock = (data, filter) => {
     const filteredData = data?.filter(
-      (ele) => ele?.liveStockIsSafeOrNot?.status?.toLowerCase() === filter
+      (ele) => ele?.liveStocklocationStatus?.toLowerCase() === filter
     );
     return filteredData;
   };
@@ -99,11 +45,11 @@ const LiveLocation = () => {
           geofenceCoordinates={geofenceCoordinates}
           isLivestocks={true}
           livestockData={getLivestockStatus?.map((ele) => ({
-            id: ele?.liveStockId,
-            safeUnsafeStatus: ele?.liveStockIsSafeOrNot?.status,
+            id: ele?._id,
+            safeUnsafeStatus: ele?.liveStocklocationStatus,
             position: {
-              lat: ele?.location?.latitude,
-              lng: ele?.location?.longitude,
+              lat: ele?.geolocation?.lat,
+              lng: ele?.geolocation?.lng,
             },
           }))}
         />
@@ -113,36 +59,36 @@ const LiveLocation = () => {
           <Box sx={{ margin: "20px 0", width: "100%" }}>
             <CustomTable
               headBackgroundColor="#347D00"
-              tableHeadData={["Safe Livestock", "Device"]}
-              // tableRowData={getFilteredLivestock(
-              //   getLivestockStatus,
-              //   "safe"
-              // )?.map((ele) => ({
-              //   liveStockName: ele.liveStockName,
-              //   deviceName: ele.deviceName || "N/A",
-              // }))}
-              tableRowData={safe}
+              tableHeadData={["Safe Livestock", "Collar", "Pedometer"]}
+              tableRowData={getFilteredLivestock(
+                getLivestockStatus,
+                "safe"
+              )?.map((ele) => ({
+                liveStockName: ele?.name,
+                collar: ele?.collarDevice?.deviceName || "N/A",
+                pedometer: ele?.pedometerDevice?.deviceName || "N/A",
+              }))}
             />
-            {/* {!getFilteredLivestock(getLivestockStatus, "safe").length && (
+            {!getFilteredLivestock(getLivestockStatus, "safe").length && (
               <NoData />
-            )} */}
+            )}
           </Box>
           <Box sx={{ margin: "20px 0", width: "100%" }}>
             <CustomTable
               headBackgroundColor="#FF0505"
-              tableHeadData={["Unsafe Livestock", "Device"]}
-              // tableRowData={getFilteredLivestock(
-              //   getLivestockStatus,
-              //   "unsafe"
-              // )?.map((ele) => ({
-              //   liveStockName: ele.liveStockName,
-              //   deviceName: ele.deviceName || "N/A",
-              // }))}
-              tableRowData={unsafe}
+              tableHeadData={["Unsafe Livestock", "Collar", "Pedometer"]}
+              tableRowData={getFilteredLivestock(
+                getLivestockStatus,
+                "unsafe"
+              )?.map((ele) => ({
+                liveStockName: ele?.name,
+                collar: ele?.collarDevice?.deviceName || "N/A",
+                pedometer: ele?.pedometerDevice?.deviceName || "N/A",
+              }))}
             />
-            {/* {!getFilteredLivestock(getLivestockStatus, "unsafe").length && (
+            {!getFilteredLivestock(getLivestockStatus, "unsafe").length && (
               <NoData />
-            )} */}
+            )}
           </Box>
         </Stack>
       ) : null}

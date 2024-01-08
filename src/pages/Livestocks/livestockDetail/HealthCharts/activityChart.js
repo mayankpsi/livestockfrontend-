@@ -1,10 +1,8 @@
 import {
-  Area,
   Bar,
   CartesianGrid,
   ComposedChart,
   Legend,
-  Line,
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
@@ -29,23 +27,21 @@ function ActivityChart({ height = 200, width, data,thresholds,selectedDate }) {
   const xLabel = data?.length && "hour" in data?.[0] ? "hour" : "_id";
   const xUnit = data?.length && "hour" in data?.[0] ? " hr" : " day";
 
-  const start = paginationDateFormat(selectedDate[0]?.startDate)
-  const end = paginationDateFormat(selectedDate[0]?.endDate)
-  const isDay = start === end;
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
-        <ComposedChart data={!isDay?activityDayWise:activityFakeData}>
+        <ComposedChart data={getData}>
           <XAxis
-            dataKey={'xAxis'}
-            angle={isDay?"30":"0"}
+            dataKey={xLabel}
+            angle={30}
             tickSize={10}
             tickMargin={10}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
+            unit={xUnit}
           />
           <YAxis
-            domain={[0, Number(!isDay?3500:22) + 5]}
+            domain={[0, Number(thresholds?.high) + 5]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
@@ -58,7 +54,7 @@ function ActivityChart({ height = 200, width, data,thresholds,selectedDate }) {
             content={renderLegend(activityLegends)}
           />
           <Bar
-            dataKey="dataValue"
+            dataKey="activeTimeInMinutes"
             stroke={colors.steps.stroke}
             fill={colors.steps.fill}
             strokeWidth={2}
@@ -66,14 +62,14 @@ function ActivityChart({ height = 200, width, data,thresholds,selectedDate }) {
             barSize={30}
           />
           <ReferenceLine
-            y={Number(!isDay?3300:22)}
+            y={Number(thresholds?.high)}
             label="Max"
             stroke="red"
             strokeWidth={1}
             strokeDasharray="10 20"
           />
           <ReferenceLine
-            y={Number(!isDay?1600:5)}
+            y={Number(thresholds?.low)}
             label="Min"
             stroke="red"
             strokeWidth={1}

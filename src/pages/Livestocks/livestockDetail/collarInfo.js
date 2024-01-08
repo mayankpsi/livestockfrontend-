@@ -8,7 +8,13 @@ import { deviceInfoData, pedometerInfoData } from "../Data";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 import DeviceCard from "../components/DeviceCard";
 
-const CollarInfo = ({ data }) => {
+const CollarInfo = ({
+  data,
+  collarLoading,
+  setCollarLoading,
+  pedometerLoading,
+  setPedometerLoading,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [allUnassignCollars, setAllUnassignCollars] = useState([]);
   const { openSnackbarAlert } = useLivestockContext();
@@ -19,10 +25,20 @@ const CollarInfo = ({ data }) => {
     }
   }, [data]);
 
+  const loadingOn = (type) =>
+    type?.toLowerCase() === "collar"
+      ? setCollarLoading(true)
+      : setPedometerLoading(true);
+  const loadingOff = (type) =>
+    type?.toLowerCase() === "collar"
+      ? setCollarLoading(false)
+      : setPedometerLoading(false);
+
   const handelCollarRemove = async (type) => {
+    loadingOn(type);
     const body = {
       liveStockID: data?.id,
-      deviceID: data?.collar?._id,
+      deviceID: data?.[`${type}`]?._id,
     };
     try {
       const res = await request({
@@ -32,31 +48,40 @@ const CollarInfo = ({ data }) => {
       });
       if (res.status === 200) {
         openSnackbarAlert("success", "Livestock successfully removed :)");
-        setTimeout(() => window.location.reload(), 500);
+        // setTimeout(() => window.location.reload(), 500);
       } else {
         throw new Error(getErrorMessage(res));
       }
     } catch (err) {
       openSnackbarAlert("error", getErrorMessage(err));
+    } finally {
+      loadingOff(type);
     }
   };
 
   const getUnassignCollars = async (type) => {
+    loadingOn(type);
     try {
       const res = await request({
         url: `/devices/getFreeDeviceOfUser?page=1&limit=25&deviceType=${type}`,
       });
       if (res.status === 200) {
         setAllUnassignCollars(res?.data?.data?.UserFreeDeviceInfo);
+        setShowModal(true);
       } else {
         throw new Error(getErrorMessage(res));
       }
     } catch (error) {
       console.log(error.message);
+    } finally {
+      loadingOff(type);
     }
   };
 
   const handleCollarAssign = async (selectedValue, type) => {
+    setShowModal(false);
+    loadingOn(type);
+    console.log(type, "fcjbfvjfvjfbvfbjbfvj");
     const body = {
       liveStockID: data?.id,
       deviceID: selectedValue,
@@ -69,14 +94,15 @@ const CollarInfo = ({ data }) => {
       });
       if (res.status === 200) {
         openSnackbarAlert("success", "Collar successfully Added :)");
-        setTimeout(() => window.location.reload(), 500);
+        // setTimeout(() => window.location.reload(), 500);
       } else {
         throw new Error(getErrorMessage(res));
       }
     } catch (err) {
       openSnackbarAlert("error", getErrorMessage(err));
+    } finally {
+      loadingOff(type);
     }
-    setShowModal(false);
   };
 
   const getData = (data) => {
@@ -97,6 +123,7 @@ const CollarInfo = ({ data }) => {
           <DeviceCard
             label="collar"
             data={getData(data?.collar)}
+            loading={collarLoading}
             deviceDataFormat={deviceInfoData}
             onRemove={() => handelCollarRemove("collar")}
           />
@@ -104,9 +131,9 @@ const CollarInfo = ({ data }) => {
           <AddBtn
             text1="collar"
             text2="livestock"
+            loading={collarLoading}
             onClick={() => {
               getUnassignCollars("collar");
-              setShowModal(true);
             }}
           />
         )}
@@ -115,15 +142,16 @@ const CollarInfo = ({ data }) => {
             label="pedometer"
             data={getData(data?.pedometer)}
             deviceDataFormat={deviceInfoData}
+            loading={pedometerLoading}
             onRemove={() => handelCollarRemove("pedometer")}
           />
         ) : (
           <AddBtn
             text1="Pedometer"
             text2="livestock"
+            loading={pedometerLoading}
             onClick={() => {
               getUnassignCollars("pedometer");
-              setShowModal(true);
             }}
           />
         )}

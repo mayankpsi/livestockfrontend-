@@ -6,6 +6,8 @@ import Spinner from "./Spinner";
 const AddBtn = ({ text1, text2, onClick, loading }) => {
   return (
     <Stack
+    height={385}
+    my={4}
       sx={{
         display: "flex",
         flexDirection: "column",

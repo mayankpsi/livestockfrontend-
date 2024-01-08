@@ -66,13 +66,13 @@ export const CollarContextProvider = ({ children }) => {
     })
       .then((res) => {
         const formattedData = res?.data?.data?.map((col) => ({
-          id: col._id + "id",
+          id: col._id + "_id_",
           collarID: col.uID,
           collarName: col.deviceName,
           power: (
             <CustomLabel
-              text={col?.wifiStatus ? "ON" : "OFF"}
-              type={col?.wifiStatus ? "success" : "error"}
+              text={col?.deviceActiveStatus ? "ON" : "OFF"}
+              type={col?.deviceActiveStatus ? "success" : "error"}
               width={80}
               marginAuto={true}
             />

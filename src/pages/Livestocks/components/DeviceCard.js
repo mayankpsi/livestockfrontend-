@@ -1,12 +1,12 @@
 import React from "react";
 import { Stack, Box, Divider } from "@mui/material";
-import { TabPane } from "../../../ComponentsV2";
+import { Spinner, TabPane } from "../../../ComponentsV2";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import { useTheme } from "@emotion/react";
 import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import useDateFormat from "../../../hooks/useDateFormat";
 
-const DeviceCard = ({ label, data, onRemove, deviceDataFormat }) => {
+const DeviceCard = ({ label, data, onRemove, deviceDataFormat, loading }) => {
   const { formattedDate } = useDateFormat();
   const { getCamelCase } = useGetCamelCase();
   const theme = useTheme();
@@ -18,9 +18,14 @@ const DeviceCard = ({ label, data, onRemove, deviceDataFormat }) => {
       >
         <Box p="10px 20px">
           <TabPane
+            loading={loading}
             text={`${label} Info`}
             btnText="remove"
-            btnIcon={false}
+            btnIcon={
+              loading ? (
+                <Spinner sx={{ mr: 1 }} size={20} color={"#fff"} />
+              ) : null
+            }
             hover={true}
             btnBgColor="#FF0505"
             onBtnClick={onRemove}
@@ -55,7 +60,7 @@ const DeviceCard = ({ label, data, onRemove, deviceDataFormat }) => {
             ?.map((ele) => ({
               ...ele,
               value: data
-                ? ele?.label?.toLowerCase()?.includes('battery')
+                ? ele?.label?.toLowerCase()?.includes("battery")
                   ? `${data[getCamelCase(ele.label)]}%`
                   : data[getCamelCase(ele.label)]
                 : "N/A",

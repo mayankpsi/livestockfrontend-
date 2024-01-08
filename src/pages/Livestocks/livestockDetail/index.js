@@ -32,12 +32,13 @@ const LivestockDetails = () => {
     openSnackbarAlert,
   } = useLivestockContext();
   const { formattedDate } = useDateFormat();
+  const [collarLoading, setCollarLoading] = useState(false);
+  const [pedometerLoading, setPedometerLoading] = useState(false);
   const [alertsThreshold, setAlertsThreshold] = useState([]);
   const { id } = useParams();
-  const {getErrorMessage} = useErrorMessage()
+  const { getErrorMessage } = useErrorMessage();
 
   useEffect(() => {
-    setOpenBackdropLoader(true);
     request({ url: `/liveStock/getLiveStockByID/?liveStockID=${id}` })
       .then((res) => {
         if (res?.data?.data && res?.data?.statusCode === 200) {
@@ -53,12 +54,16 @@ const LivestockDetails = () => {
             steps: data?.steps,
             rumination: data?.rumination,
             lastUpdate: formattedDate(data?.updatedAt),
-            lastUpdateGeoFenceDependent: formattedDate(data?.livestockLocationStatusTime),
-            lastUpdateDeviceDependent: formattedDate(data?.livestockLocationStatusTime),
+            lastUpdateGeoFenceDependent: formattedDate(
+              data?.livestockLocationStatusTime
+            ),
+            lastUpdateDeviceDependent: formattedDate(
+              data?.livestockLocationStatusTime
+            ),
             img: data?.imgPath,
             liveStocklocationStatus: data?.liveStocklocationStatus,
-            collar:data?.assignedDevice?.collarDevice,
-            pedometer:data?.assignedDevice?.pedometerDevice,
+            collar: data?.assignedDevice?.collarDevice,
+            pedometer: data?.assignedDevice?.pedometerDevice,
             collarId: data?.assignedDevice?._id,
             collarUid: data?.assignedDevice?.uID,
             collarWifiStatus: data?.assignedDevice?.wifiStatus,
@@ -66,19 +71,12 @@ const LivestockDetails = () => {
             collarMacId: data?.assignedDevice?.macID,
             collarAddedOn: data?.assignedDevice?.createdAt,
             networkStrength: data?.assignedDevice?.networkStrength,
-            pedometerBattery : data?.assignedDevice?.pedometerBattery,
-            collarBattery:data?.assignedDevice?.collarBattery, 
+            pedometerBattery: data?.assignedDevice?.pedometerBattery,
+            collarBattery: data?.assignedDevice?.collarBattery,
             geolocation: data?.geolocation,
             thresholds: data?.threshold,
           };
           setData(formattedData);
-          const thresholdFormattedData = alertsThresholdData?.map((ele) => {
-            return {
-              ...ele,
-              value: data?.threshold[ele?.label],
-            };
-          });
-          setAlertsThreshold(thresholdFormattedData);
         } else {
           throw new Error(getErrorMessage(res));
         }
@@ -86,8 +84,10 @@ const LivestockDetails = () => {
       .catch((e) => {
         openSnackbarAlert("error", e.message);
       })
-      .finally(() => setOpenBackdropLoader(false));
-  }, []);
+      .finally(() => {
+        setOpenBackdropLoader(false);
+      });
+  }, [collarLoading, pedometerLoading]);
 
   const tabData = [
     {
@@ -114,7 +114,15 @@ const LivestockDetails = () => {
     },
     {
       label: "Device",
-      child: <CollarInfo data={data} />,
+      child: (
+        <CollarInfo
+          data={data}
+          collarLoading={collarLoading}
+          setCollarLoading={setCollarLoading}
+          pedometerLoading={pedometerLoading}
+          setPedometerLoading={setPedometerLoading}
+        />
+      ),
     },
     {
       label: "Logs",

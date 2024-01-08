@@ -105,9 +105,9 @@ export const AlertsContextProvider = ({ children }) => {
       message,
     });
   };
-  const [AllAlertData, setAllAlertData] = useState(alerts);
+  const [AllAlertData, setAllAlertData] = useState();
   const [pageCount, setPageCount] = useState(1);
-  const [alertsDataLength, setAlertsDataLength] = useState(alerts?.length);
+  const [alertsDataLength, setAlertsDataLength] = useState();
   const [selectedDate, setSelectedDate] = useState([
     {
       startDate: new Date(),
@@ -149,12 +149,12 @@ export const AlertsContextProvider = ({ children }) => {
           }));
           setAllAlertData(formattedData);
           setPageCount(res?.data?.data?.pageCount);
-          setAlertsDataLength(res?.data?.data?.dataLength);
+          setAlertsDataLength(res?.data?.data?.dataLength||0);
         } else {
           const msg = getErrorMessage(res);
-          // setAllAlertData([]);
+          setAllAlertData([]);
           setPageCount(0);
-          // setAlertsDataLength(0);
+          setAlertsDataLength(0);
           throw new Error(msg);
         }
       })

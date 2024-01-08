@@ -34,6 +34,7 @@ const TemperatureSection = ({thresholds}) => {
     activeTab,
     healthChartData: chartData,
   } = useLivestockHealthContext();
+  
   //DESTRUCTING LOGS DATA
   const { logsData, logsDataLength, pagination, loading } = healthLogData;
 

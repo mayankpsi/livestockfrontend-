@@ -106,11 +106,11 @@ export const LivestockHealthContextProvider = ({ children }) => {
       paginationDateFormat(singleSelectedDate, "date");
 
   const getChartUrl = (id, step) => {
-    const showDateRange = step !== 1 || step !== 2;
-    const start = showDateRange
+    const showDateRange = step === 1 || step === 2;
+    const start = !showDateRange
       ? chartDateRange[0]?.startDate
       : singleSelectedDate;
-    const end = showDateRange ? chartDateRange[0]?.endDate : singleSelectedDate;
+    const end = !showDateRange ? chartDateRange[0]?.endDate : singleSelectedDate;
     return `/liveStock/getLiveStockHistory?LiveStockId=${id}&startDate=${paginationDateFormat(
       start,
       "date"

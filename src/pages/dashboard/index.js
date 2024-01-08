@@ -20,7 +20,7 @@ import useErrorMessage from "../../hooks/useErrorMessage";
 
 const AdminDashBoard = () => {
   const theme = useTheme();
-  const {getErrorMessage} = useErrorMessage();
+  const { getErrorMessage } = useErrorMessage();
 
   const handleCompleteProfileModal =
     localStorage.getItem("showProfileCompleteModal") === "true";
@@ -48,48 +48,37 @@ const AdminDashBoard = () => {
     geolocationRadius: 0,
   });
 
-
   useEffect(() => {
     setOpenBackdropLoader(true);
-    Promise.all([
-      request({
-        url: "/user/getAllRecords",
-      }),
-      request({ url: "/devices/isDeviceWithInGeofence" }),
-    ])
+    request({
+      url: "/user/getAllRecords",
+    })
       .then((res) => {
-        const [res1, res2] = res;
-        if (res1?.status === 200) {
-          const { data } = res1?.data;
+        if (res?.status === 200) {
+          const { data } = res?.data;
           const formattedData = {
-            totalCollars: data?.TotalDevice,
-            totalLiveStock: data?.TotalLiveStock,
-            totalSafeLiveStock: data?.TotalSafeLiveStock,
-            totalUnSafeLiveStock: data?.TotalUnSafeLiveStock,
-            totalAlerts: data?.AllAlertsCount[0]?.totalAlerts
-              ? data?.AllAlertsCount[0]?.totalAlerts
-              : 0,
+            totalCollars: data?.TotalDevice || 0,
+            totalLiveStock: data?.TotalLiveStock || 0,
+            totalSafeLiveStock: data?.TotalSafeLiveStock || 0,
+            totalUnSafeLiveStock: data?.TotalUnSafeLiveStock || 0,
+            totalAlerts: data?.AllAlertsCount[0] || 0,
             geolocationLat: data?.GeofenceData?.lat,
             geolocationLng: data?.GeofenceData?.lng,
             geolocationRadius: data?.GeofenceData?.radius,
           };
-          setDashboardData(formattedData);
-        } else {
-          throw new Error(getErrorMessage(res1));
-        }
-        if (res2?.status === 200) {
-          const { data } = res2?.data;
-          const formattedData = data?.map((ele) => ({
-            id: ele?.liveStockId,
-            safeUnsafeStatus: ele?.liveStockIsSafeOrNot?.status,
+
+          const livestockFormattedData = data?.LivestockLatLog?.map((ele) => ({
+            id: ele?._id,
+            safeUnsafeStatus: ele?.liveStocklocationStatus,
             position: {
-              lat: ele?.location?.latitude,
-              lng: ele?.location?.longitude,
+              lat: ele?.geolocation?.lat,
+              lng: ele?.geolocation?.lng,
             },
           }));
-          setGetLivestockStatus(formattedData);
+          setDashboardData(formattedData);
+          setGetLivestockStatus(livestockFormattedData);
         } else {
-          throw new Error(getErrorMessage(res2));
+          throw new Error(getErrorMessage(res));
         }
       })
       .catch((err) => console.log(err.message))

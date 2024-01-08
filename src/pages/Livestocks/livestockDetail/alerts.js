@@ -15,51 +15,12 @@ import { request } from "../../../apis/axios-utils";
 import { livestockDetailAlertTableHeadData } from "../Data";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import useErrorMessage from "../../../hooks/useErrorMessage";
+import { useLivestockHealthContext } from "../../../context/LivestockHealthContext";
+import { useParams } from "react-router-dom";
+import { alertsThresholdData } from "./alertThresholdData";
 
-const alerts = [
-  {
-    id: 1,
-    alertName: "High Temperature alert",
-    thresholdValue: "90 F",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>92 °F</TypographyPrimary>],
-    time: "17:50 PM",
-    date: "07/07/23",
-  },
-  {
-    id: 2,
-    alertName: "Low Temperature alert",
-    thresholdValue: "35 F",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>30 °F</TypographyPrimary>],
-    time: "17:50 PM",
-    date: "07/07/23",
-  },
-  {
-    id: 3,
-    alertName: "Low heartbeat alert",
-    thresholdValue: "72/min",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>65/min</TypographyPrimary>],
-    time: "17:50 PM",
-    date: "07/07/23",
-  },
-  {
-    id: 4,
-    alertName: "High heartbeat alert",
-    thresholdValue: "120/min",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>122/min</TypographyPrimary>],
-    time: "17:50 PM",
-    date: "07/07/23",
-  },
-  {
-    id: 5,
-    alertName: "Geo Fence crossed",
-    thresholdValue: "500 m",
-    alarmValue: [<TypographyPrimary sx={{color:'red'}}>550 m</TypographyPrimary>],
-    time: "17:50 PM",
-    date: "07/07/23",
-  },
-];
 
-const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
+const Alerts = ({ data }) => {
   const {
     selectedDate,
     setSelectedDate,
@@ -71,14 +32,30 @@ const Alerts = ({ data, alertsThresholds, setAlertsThresholds }) => {
     handleAlertDelete,
     openSnackbarAlert,
     setOpenBackdropLoader,
-    // alertsDataLength,
+    alertsDataLength,
     setAlertsDataLength,
   } = useLivestockContext();
+  const { getHealthCardData, healthCardData } = useLivestockHealthContext();
   const { paginationDateFormat, formattedDate } = useDateFormat();
-  const [singleLivestockAlerts, setSingleLivestockAlerts] = useState(alerts);
+  const [alertsThresholds, setAlertsThresholds] = useState([]);
+  const [singleLivestockAlerts, setSingleLivestockAlerts] = useState([]);
   const { getErrorMessage } = useErrorMessage();
+  const { id } = useParams();
+  const { threshold } = healthCardData;
 
-const alertsDataLength = 5
+  useEffect(() => {
+    getHealthCardData(id);
+    // const interval = setInterval(() => {
+    //   getHealthCardData(id);
+    //   getChartData(id);
+    //   getLogs(id);
+    // }, 60000);
+    // return () => clearInterval(interval);
+  }, [id]);
+
+  useEffect(() => {
+    getThresholdFormattedData(threshold);
+  }, [threshold]);
 
   useEffect(() => {
     setOpenBackdropLoader(true);
@@ -106,14 +83,14 @@ const alertsDataLength = 5
               time: formattedDate(ele?.createdAt, "time"),
               date: formattedDate(ele?.createdAt, "date"),
             }));
-            // setSingleLivestockAlerts(formattedData);
+            setSingleLivestockAlerts(formattedData);
             setPageCount(data?.totalPage);
             setAlertsDataLength(data?.dataLength);
           } else {
             const msg = res?.data?.data?.LiveStockAlertData?.length
               ? getErrorMessage(res)
               : "No data found";
-            // setSingleLivestockAlerts([]);
+            setSingleLivestockAlerts([]);
             setPageCount(1);
             setAlertsDataLength(0);
             throw new Error(msg);
@@ -136,6 +113,7 @@ const alertsDataLength = 5
   }, [selectedDate]);
 
   const handleThresholdEdit = (id) => {
+    console.log(id, "djvfhvbfbvhfbhvbfhbvhfbhvfbh");
     const updatedData = alertsThresholds?.map((ele) => {
       if (ele.id === id) {
         return {
@@ -212,6 +190,15 @@ const alertsDataLength = 5
     if (!alertsDataLength) {
       openSnackbarAlert("error", "Nothing to Export");
     }
+  };
+
+  const getThresholdFormattedData = (data) => {
+    if (!data) return [];
+    const thresholdFormattedData = alertsThresholdData?.map((ele) => ({
+      ...ele,
+      value: data?.[ele?.label],
+    }));
+    setAlertsThresholds(thresholdFormattedData);
   };
 
   return (

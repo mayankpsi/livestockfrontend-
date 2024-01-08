@@ -3,20 +3,16 @@ import { Stack, Box } from "@mui/material";
 import LivestockInfo from "../../Collars/viewCollarDetails/livestockInfo";
 import { TabPane, ParameterCard, StatusCard } from "../../../ComponentsV2";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
-import useGetCamelCase from "../../../hooks/useGetCamelCase";
-import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
-import { statusCardData, parameterCardData, chartCardData } from "../Data";
+import { statusCardData, chartCardData } from "../Data";
 import { useLivestockHealthContext } from "../../../context/LivestockHealthContext";
 import { useParams } from "react-router-dom";
 import useDateFormat from "../../../hooks/useDateFormat";
 
 const Overview = ({ data }) => {
-  const { getCamelCase } = useGetCamelCase();
   const { formattedDate } = useDateFormat();
-  const { getDynamicColor } = useGetColorDynamically();
   const { id } = useParams();
   const { healthCardData, getHealthCardData } = useLivestockHealthContext();
-  const { cardData, threshold } = healthCardData;
+  const { cardData } = healthCardData;
 
   useEffect(() => {
     getHealthCardData(id);
@@ -31,6 +27,11 @@ const Overview = ({ data }) => {
         ? cardData?.[ele?.label + "Hour"]?.toString()?.slice(0, 2)
         : cardData?.[ele?.label + "Min"]?.toString()?.slice(0, 2)
       : cardData?.[ele?.label];
+  };
+
+  const getAlertStatus = (ele) => {
+    const status = cardData?.[ele?.label?.toLowerCase() + "AlertStatus"];
+    return status === false ? "color-success--dark" : "err-color";
   };
 
   return (
@@ -63,10 +64,15 @@ const Overview = ({ data }) => {
             <TypographyPrimary>Device status</TypographyPrimary>
             <Stack direction="row" gap={2} width="100%">
               {statusCardData
-                ?.map((ele) => ({
-                  ...ele,
-                  status: data ? `${data[getCamelCase(ele?.text)]}` : "",
-                }))
+                ?.map((ele) => {
+                  const label = ele?.text?.toString()?.split(" ");
+                  const device = label[0]?.toLowerCase();
+                  const battery = label[1]?.toLowerCase() + "Percent";
+                  return {
+                    ...ele,
+                    status: data ? `${data?.[device]?.[battery]}` : "",
+                  };
+                })
                 ?.map((card) => (
                   <StatusCard
                     key={card.text}
@@ -123,7 +129,7 @@ const Overview = ({ data }) => {
                       ? " hr"
                       : " min"
                     : ele?.suffix,
-                  valueColor: getDynamicColor(data, ele?.label),
+                  valueColor: getAlertStatus(ele),
                 }))
                 ?.map((ele) => (
                   <ParameterCard
