@@ -44,6 +44,7 @@ export const showLivestockTableHeadData = [
   "UID",
   "livestock name",
   "collar ID",
+  "Pedometer ID",
   "Added on",
   "current status",
   "last update",

@@ -79,6 +79,7 @@ export const LivestockContextProvider = ({ children }) => {
             liveStockUID: col?.uID || "N/A",
             livestockName: col?.name,
             collarID: col?.assignedDevice?.collarDevice?.uID || "N/A",
+            pedometerID: col?.assignedDevice?.pedometerDevice?.uID || "N/A",
             addedOn: formattedDate(col?.createdAt, false),
             status: col?.liveStocklocationStatus,
             currentStatus: (

@@ -120,7 +120,7 @@ const CollarInfo = ({
       battery: data?.collarBattery,
     };
   };
-
+ 
   return (
     <>
       <Stack direction={"row"} gap={4} py={4}>
