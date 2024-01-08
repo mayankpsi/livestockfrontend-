@@ -147,7 +147,7 @@ export const LivestockContextProvider = ({ children }) => {
     if (res?.status === 200) {
       setOpenBackdropLoader(false);
       openSnackbarAlert("success", "Livestock successfully deleted!");
-      // setTimeout(() => window.location.reload(), 500);
+      getAllLivestock()
     } else {
       setOpenBackdropLoader(false);
 
