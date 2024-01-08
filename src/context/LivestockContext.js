@@ -61,59 +61,71 @@ export const LivestockContextProvider = ({ children }) => {
   ]);
   const [alertsDataLength, setAlertsDataLength] = useState(0);
   const [paginationPageNo, setPaginationPageNo] = useState(1);
+  const [livestockPagination, setLivestockPagination] = useState(1);
+  const [livestockDataLength, setLiveStockDataLength] = useState(0);
   const [pageCount, setPageCount] = useState(1);
   const pageLimit = 10;
 
   //GET ALL LIVESTOCK
   useEffect(() => {
     getAllLivestock();
-  }, [addNewLivestockLoading]);
+  }, [addNewLivestockLoading, livestockPagination]);
 
   const getAllLivestock = () => {
     setOpenBackdropLoader(true);
-    request({ url: "/liveStock/getAll" })
+    request({
+      url: `/liveStock/getAll?page=${livestockPagination}&limit=${10}`,
+    })
       .then((res) => {
-        const formattedData = res?.data?.data?.liveStockData?.map((col) => {
-          return {
-            id: col._id + "_id_",
-            liveStockUID: col?.uID || "N/A",
-            livestockName: col?.name,
-            collarID: col?.assignedDevice?.collarDevice?.uID || "N/A",
-            pedometerID: col?.assignedDevice?.pedometerDevice?.uID || "N/A",
-            addedOn: formattedDate(col?.createdAt, false),
-            status: col?.liveStocklocationStatus,
-            currentStatus: (
-              <CustomLabel
-                text={col?.liveStocklocationStatus || "N/A"}
-                type={
-                  col?.liveStocklocationStatus?.toLowerCase() === "safe"
-                    ? "success"
-                    : "error"
-                }
-                width={125}
-                marginAuto={true}
-              />
-            ),
-            lastUpdate: formattedDate(col?.updatedAt, true),
-            action: [
-              <VisibilityOutlinedIcon
-                fontSize="large"
-                onClick={() => navigate(`/livestocks/${col?._id}`)}
-              />,
-              <DeleteOutlineOutlinedIcon
-                fontSize="large"
-                onClick={() =>
-                  handleLivestockDelete(
-                    col?._id,
-                    col?.assignedDevice?.collarDevice?.uID ||
-                      col?.assignedDevice?.pedometerDevice?.uID
-                  )
-                }
-              />,
-            ],
-          };
-        });
-        setAllLivestocks(formattedData);
+        if (res.status === 200) {
+          const { liveStockData, dataLength } = res?.data?.data;
+          const formattedData = liveStockData?.map((col) => {
+            return {
+              id: col._id + "_id_",
+              liveStockUID: col?.uID || "N/A",
+              livestockName: col?.name,
+              collarID: col?.assignedDevice?.collarDevice?.uID || "N/A",
+              pedometerID: col?.assignedDevice?.pedometerDevice?.uID || "N/A",
+              addedOn: formattedDate(col?.createdAt, false),
+              status: col?.liveStocklocationStatus,
+              currentStatus: (
+                <CustomLabel
+                  text={col?.liveStocklocationStatus || "N/A"}
+                  type={
+                    col?.liveStocklocationStatus?.toLowerCase() === "safe"
+                      ? "success"
+                      : "error"
+                  }
+                  width={125}
+                  marginAuto={true}
+                />
+              ),
+              lastUpdate: formattedDate(col?.updatedAt, true),
+              action: [
+                <VisibilityOutlinedIcon
+                  fontSize="large"
+                  onClick={() => navigate(`/livestocks/${col?._id}`)}
+                />,
+                <DeleteOutlineOutlinedIcon
+                  fontSize="large"
+                  onClick={() =>
+                    handleLivestockDelete(
+                      col?._id,
+                      col?.assignedDevice?.collarDevice?.uID ||
+                        col?.assignedDevice?.pedometerDevice?.uID
+                    )
+                  }
+                />,
+              ],
+            };
+          });
+          setAllLivestocks(formattedData);
+          setLiveStockDataLength(dataLength);
+        } else {
+          setAllLivestocks([]);
+          setLiveStockDataLength(0);
+          throw new Error(res);
+        }
       })
       .catch((err) => console.log(err.message))
       .finally(() => setOpenBackdropLoader(false));
@@ -333,6 +345,9 @@ export const LivestockContextProvider = ({ children }) => {
         setLiveStockImage,
         liveStockImage,
         getAllLivestock,
+        livestockDataLength,
+        livestockPagination,
+        setLivestockPagination,
       }}
     >
       {children}

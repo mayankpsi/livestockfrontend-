@@ -40,6 +40,8 @@ export const CollarContextProvider = ({ children }) => {
 
   //BACKDROP
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
+  const [deviceDataLength, setDeviceDataLength] = useState(0);
+  const [paginationPageNo, setPaginationPageNo] = useState(1);
 
   //GET USER ID
   const userId = useUserId();
@@ -60,52 +62,65 @@ export const CollarContextProvider = ({ children }) => {
 
   //GET ALL COLLARS
   useEffect(() => {
+    getAllDevices();
+  }, [isLoading, activeDevice, paginationPageNo]);
+
+  // GET ALL DEVICES
+  const getAllDevices = () => {
     setOpenBackdropLoader(true);
     request({
-      url: `/devices/getDeviceByUserId?userID=${userId}&deviceType=${activeDevice}`,
+      url: `/devices/getDeviceByUserId?userID=${userId}&deviceType=${activeDevice}&page=${paginationPageNo}&limit=${10}`,
     })
       .then((res) => {
-        const formattedData = res?.data?.data?.map((col) => ({
-          id: col._id + "_id_",
-          collarID: col.uID,
-          collarName: col.deviceName,
-          power: (
-            <CustomLabel
-              text={col?.deviceActiveStatus ? "ON" : "OFF"}
-              type={col?.deviceActiveStatus ? "success" : "error"}
-              width={80}
-              marginAuto={true}
-            />
-          ),
-          currentStatus: (
-            <CustomLabel
-              text={col?.status ? "assigned" : "not assigned"}
-              type={col?.status ? "success" : "error"}
-              width={125}
-              marginAuto={true}
-            />
-          ),
-          status: col?.status ? "assigned" : "not assigned",
-          addedOn: formattedDate(col?.createdAt, false),
-          action: [
-            <VisibilityOutlinedIcon
-              fontSize="large"
-              onClick={() => {
-                setOpenBackdropLoader(true);
-                navigate(`/devices/${activeDevice}/${col?._id}`);
-              }}
-            />,
-            <DeleteOutlineOutlinedIcon
-              fontSize="large"
-              onClick={() => handleCollarDelete(col?._id, col?.status)}
-            />,
-          ],
-        }));
-        setCollars(formattedData);
+        if (res.status === 200) {
+          const { dataLength, deviceData } = res?.data?.data;
+          const formattedData = deviceData?.map((col) => ({
+            id: col._id + "_id_",
+            collarID: col.uID,
+            collarName: col.deviceName,
+            power: (
+              <CustomLabel
+                text={col?.deviceActiveStatus ? "ON" : "OFF"}
+                type={col?.deviceActiveStatus ? "success" : "error"}
+                width={80}
+                marginAuto={true}
+              />
+            ),
+            currentStatus: (
+              <CustomLabel
+                text={col?.status ? "assigned" : "not assigned"}
+                type={col?.status ? "success" : "error"}
+                width={125}
+                marginAuto={true}
+              />
+            ),
+            status: col?.status ? "assigned" : "not assigned",
+            addedOn: formattedDate(col?.createdAt, false),
+            action: [
+              <VisibilityOutlinedIcon
+                fontSize="large"
+                onClick={() => {
+                  setOpenBackdropLoader(true);
+                  navigate(`/devices/${activeDevice}/${col?._id}`);
+                }}
+              />,
+              <DeleteOutlineOutlinedIcon
+                fontSize="large"
+                onClick={() => handleCollarDelete(col?._id, col?.status)}
+              />,
+            ],
+          }));
+          setDeviceDataLength(dataLength);
+          setCollars(formattedData);
+        } else {
+          setDeviceDataLength(0);
+          setCollars([]);
+          throw new Error(res);
+        }
       })
       .catch((err) => console.log(err.message))
       .finally(() => setOpenBackdropLoader(false));
-  }, [isLoading, activeDevice]);
+  };
 
   // HANDLE ADD COLLAR
   const handleAddCollarChange = (data) => {
@@ -231,6 +246,9 @@ export const CollarContextProvider = ({ children }) => {
         openSnackbarAlert,
         activeDevice,
         setActiveDevice,
+        deviceDataLength,
+        paginationPageNo,
+        setPaginationPageNo,
       }}
     >
       {children}

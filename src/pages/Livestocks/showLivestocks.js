@@ -1,10 +1,15 @@
-import { Box } from "@mui/material";
-import { CustomTable, NoData } from "../../ComponentsV2";
+import { Box, Stack } from "@mui/material";
+import { CustomPagination, CustomTable, NoData } from "../../ComponentsV2";
 import useLivestockContext from "../../hooks/useLivestockContext";
 import { showLivestockTableHeadData } from "./Data";
 
 const ShowLivestocks = ({ show }) => {
-  const { allLivestocks } = useLivestockContext();
+  const {
+    allLivestocks,
+    livestockDataLength,
+    livestockPagination,
+    setLivestockPagination,
+  } = useLivestockContext();
 
   const livestockFiltering = () => {
     let filteredLivestock;
@@ -26,7 +31,20 @@ const ShowLivestocks = ({ show }) => {
         tableHeadData={showLivestockTableHeadData}
         tableRowData={livestockFiltering()}
       />
-      {!livestockFiltering()?.length ? <NoData /> : null}
+      {livestockFiltering()?.length ? (
+        livestockDataLength > 10 && (
+          <Stack direction="row" justifyContent="center" p={2}>
+            <CustomPagination
+              size="large"
+              page={livestockPagination}
+              count={Math.ceil(livestockDataLength / 10)}
+              onPageChange={(pageNo) => setLivestockPagination(pageNo)}
+            />
+          </Stack>
+        )
+      ) : (
+        <NoData />
+      )}
     </Box>
   );
 };

@@ -54,7 +54,7 @@ export const viewCollarDetailsBreadcrumbData = (data) => [
   },
   {
     label: data?.collarUid ? data.collarUid : "Collar UID",
-    link: `collars/${data?.collarUid}`,
+    link: `devices/collar/${data?.collarId}`,
   },
 ];
 
