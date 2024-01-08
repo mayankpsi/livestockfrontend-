@@ -34,14 +34,14 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
 
   useEffect(() => {
     setLivestockInfoEdit({
-      collarUID: data?.collar?.uID || "N/A",
+      collarUID: data?.collar?.uID || data?.collarUid || "N/A",
       pedometerUID: data?.pedometer?.uID || "N/A",
       livestockUID: data?.Uid,
       livestockName: data?.name,
       livestockGender: data?.gender,
     });
     if (data) {
-      setValue("collarUID", data?.collar?.uID || "N/A");
+      setValue("collarUID", data?.collar?.uID || data?.collarUid || "N/A");
       setValue("pedometerUID", data?.pedometer?.uID || "N/A");
       setValue("livestockUID", data?.Uid || "");
       setValue("livestockName", data?.name || "");
