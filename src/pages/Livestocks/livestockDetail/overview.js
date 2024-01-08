@@ -34,6 +34,15 @@ const Overview = ({ data }) => {
     return status === false ? "color-success--dark" : "err-color";
   };
 
+  const getParameterCardDate = (ele) => {
+    const date = cardData?.[ele?.label?.toLowerCase() + "Time"];
+    if (date) {
+      return formattedDate(date);
+    } else {
+      return "N/A";
+    }
+  };
+
   return (
     <Stack>
       <Stack
@@ -105,12 +114,14 @@ const Overview = ({ data }) => {
           >
             <TabPane
               text="Status"
-              secondaryText={`Last Update : ${data?.lastUpdateGeoFenceDependent}`}
-              btnText={data?.liveStocklocationStatus || "N/A"}
+              secondaryText={`Last Update : ${
+                cardData?.livestockLocationStatusTime || "N/A"
+              }`}
+              btnText={cardData?.liveStocklocationStatus || "N/A"}
               hover={false}
               btnIcon={false}
               btnBgColor={
-                data?.liveStocklocationStatus?.toLowerCase() === "safe"
+                cardData?.liveStocklocationStatus?.toLowerCase() === "safe"
                   ? "#47CD75"
                   : "#FF5C33"
               }
@@ -120,9 +131,7 @@ const Overview = ({ data }) => {
               {chartCardData
                 ?.map((ele) => ({
                   ...ele,
-                  time: formattedDate(
-                    cardData?.[ele?.label?.toLowerCase() + "Time"]
-                  ),
+                  time: getParameterCardDate(ele),
                   value: getCardValue(ele),
                   suffix: isActivity(ele)
                     ? isHour(ele)
@@ -137,7 +146,6 @@ const Overview = ({ data }) => {
                     time={ele.time}
                     value={ele.value}
                     icon={ele.icon}
-                    iconBg={ele.iconBg}
                     colors={ele.colors}
                     valueColor={ele.valueColor}
                     suffix={ele.suffix}

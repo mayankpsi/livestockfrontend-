@@ -121,6 +121,15 @@ const Health = ({ data }) => {
     const status = cardData?.[ele?.label?.toLowerCase() + "AlertStatus"];
     return status === false ? "color-success--dark" : "err-color";
   };
+
+  const getParameterCardDate = (ele) => {
+    const date = cardData?.[ele?.label?.toLowerCase() + "Time"];
+    if (date) {
+      return formattedDate(date);
+    } else {
+      return "N/A";
+    }
+  };
   return (
     <Stack mt={4} direction="column" alignItems="center" gap={4}>
       <Stack
@@ -146,9 +155,7 @@ const Health = ({ data }) => {
           ?.map((ele) => ({
             ...ele,
             value: getCardValue(ele),
-            createdAt: formattedDate(
-              cardData?.[ele?.label?.toLowerCase() + "Time"]
-            ),
+            createdAt: getParameterCardDate(ele),
             suffix: isActivity(ele)
               ? isHour(ele)
                 ? " hr"

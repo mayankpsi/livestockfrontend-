@@ -7,7 +7,6 @@ const ParameterCard = ({
   time,
   value,
   icon,
-  iconBg,
   colors,
   valueColor,
   suffix,
