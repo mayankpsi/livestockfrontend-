@@ -38,6 +38,7 @@ export default function ProfileMenu() {
   const userName = JSON.parse(localStorage.getItem("userData"))
     ?.userName?.charAt(0)
     .toUpperCase();
+
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>

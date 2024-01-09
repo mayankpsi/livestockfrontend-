@@ -1,4 +1,11 @@
-import { Stack, TextField, Box, Button } from "@mui/material";
+import {
+  Stack,
+  TextField,
+  Box,
+  Button,
+  InputAdornment,
+  CircularProgress,
+} from "@mui/material";
 import { TypographyPrimary } from "../../ComponentsV2/themeComponents";
 import { styled } from "@mui/system";
 import { useForm } from "react-hook-form";
@@ -44,9 +51,17 @@ const ShowProfile = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(showProfileSchema) });
 
-  const { editProfile, setEditProfile } = useProfileContext();
+  const { editProfile, setEditProfile, pinCodeLoading } = useProfileContext();
 
-  const getTextFiled = (label, name, value, type, disable,inputError) => {
+  const getTextFiled = (
+    label,
+    name,
+    value,
+    type,
+    disable,
+    inputError,
+    inputLoading
+  ) => {
     return (
       <TextField
         fullWidth
@@ -60,9 +75,16 @@ const ShowProfile = () => {
         sx={{ mr: 1 }}
         value={value}
         name={name}
+        InputProps={{
+          endAdornment: inputLoading ? (
+            <InputAdornment position="end" sx={{ cursor: "pointer" }}>
+              <CircularProgress size={20} />
+            </InputAdornment>
+          ) : null,
+        }}
         {...register(name, { required: true })}
         onChange={handleProfileChange}
-        error={errors?.[name] || inputError?.error }
+        error={errors?.[name] || inputError?.error}
         helperText={errors?.[name]?.message || inputError?.errorMessage}
         placeholder={`Please Enter your ${label}`}
         multiline={type === "textArea" ? true : false}
@@ -77,129 +99,132 @@ const ShowProfile = () => {
     handleProfileChange,
     handleProfileEdit,
     inputError,
-    handleAccountDelete
+    handleAccountDelete,
   } = useProfileContext();
 
-  useEffect(()=> {
+  useEffect(() => {
+    setValue("pincode", showProfileData?.pincode);
+    setValue("address", showProfileData?.address);
     setValue("email", showProfileData?.email);
     setValue("phoneNumber", showProfileData?.phoneNumber);
     setValue("fullName", showProfileData?.fullName);
-  },[showProfileData])
+  }, [showProfileData, pinCodeLoading]);
 
   return (
     <Stack width="100%">
       <TypographyPrimary sx={{ fontSize: "2rem" }}>Profile</TypographyPrimary>
       <form onSubmit={handleSubmit(handleProfileEdit)}>
-            <Stack>
-              <Stack
-                gap={3}
-                p="20px 15px"
-                borderRadius={"10px"}
-                border="1px solid #dddddd"
-              >
-                <Box display="flex" gap={5}>
-                  {getTextFiled(
-                    "Full Name",
-                    "fullName",
-                    showProfileData.fullName,
-                    "textField",
-                    editProfile
-                  )}
-                  {getTextFiled(
-                    "Email",
-                    "email",
-                    showProfileData?.email,
-                    "email",
-                    true
-                  )}
-                </Box>
-                <Box display="flex" gap={5}>
-                  {getTextFiled(
-                    "Phone Number",
-                    "phoneNumber",
-                    showProfileData?.phoneNumber,
-                    "number",
-                    true
-                  )}
-                  {getTextFiled(
-                    "Pincode",
-                    "pincode",
-                    showProfileData?.pincode,
-                    "number",
-                    editProfile,
-                    inputError
-                  )}
-                </Box>
-                <Box display="flex" gap={5}>
-                  <Box width="100%" display="flex" flexWrap="wrap">
-                    {getTextFiled(
-                      "Full Address",
-                      "address",
-                      showProfileData?.address,
-                      "textArea",
-                      editProfile
-                    )}
-                  </Box>
-                  <Box width="100%" display="flex" flexWrap="wrap" gap={3}>
-                    {getTextFiled(
-                      "State",
-                      "state",
-                      showProfileData?.state,
-                      "textField",
-                      true
-                    )}
-                    {getTextFiled(
-                      "Country",
-                      "country",
-                      showProfileData?.country,
-                      "textField",
-                      true
-                    )}
-                  </Box>
-                </Box>
-              </Stack>
-              <Box display="flex" justifyContent="flex-end" mt={5}>
-                {editProfile ? (
-                  <>
-                    <ButtonOutlined
-                      variant="outlined"
-                      sx={{ minWidth: "100px" }}
-                      onClick={handleAccountDelete}
-                    >
-                      Delete Profile
-                    </ButtonOutlined>
-                    <ButtonPrimary
-                      variant="contained"
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setEditProfile(false)
-                      }}
-                    >
-                      Edit Profile
-                    </ButtonPrimary>
-                  </>
-                ) : (
-                  <>
-                    <ButtonOutlined
-                      variant="outlined"
-                      sx={{ minWidth: "100px" }}
-                      onClick={() => setEditProfile(true)}
-                    >
-                      Cancel Changes
-                    </ButtonOutlined>
-                    <ButtonPrimary
-                      variant="contained"
-                      type="submit"
-                      onClick={() => {}}
-                    >
-                      Save Changes
-                    </ButtonPrimary>
-                  </>
+        <Stack>
+          <Stack
+            gap={3}
+            p="20px 15px"
+            borderRadius={"10px"}
+            border="1px solid #dddddd"
+          >
+            <Box display="flex" gap={5}>
+              {getTextFiled(
+                "Full Name",
+                "fullName",
+                showProfileData.fullName,
+                "textField",
+                editProfile
+              )}
+              {getTextFiled(
+                "Email",
+                "email",
+                showProfileData?.email,
+                "email",
+                true
+              )}
+            </Box>
+            <Box display="flex" gap={5}>
+              {getTextFiled(
+                "Phone Number",
+                "phoneNumber",
+                showProfileData?.phoneNumber,
+                "number",
+                true
+              )}
+              {getTextFiled(
+                "Pincode",
+                "pincode",
+                showProfileData?.pincode,
+                "number",
+                editProfile,
+                inputError,
+                pinCodeLoading
+              )}
+            </Box>
+            <Box display="flex" gap={5}>
+              <Box width="100%" display="flex" flexWrap="wrap">
+                {getTextFiled(
+                  "Full Address",
+                  "address",
+                  showProfileData?.address,
+                  "textArea",
+                  editProfile
                 )}
               </Box>
-            </Stack>
-          </form>
+              <Box width="100%" display="flex" flexWrap="wrap" gap={3}>
+                {getTextFiled(
+                  "State",
+                  "state",
+                  showProfileData?.state,
+                  "textField",
+                  true
+                )}
+                {getTextFiled(
+                  "Country",
+                  "country",
+                  showProfileData?.country,
+                  "textField",
+                  true
+                )}
+              </Box>
+            </Box>
+          </Stack>
+          <Box display="flex" justifyContent="flex-end" mt={5}>
+            {editProfile ? (
+              <>
+                <ButtonOutlined
+                  variant="outlined"
+                  sx={{ minWidth: "100px" }}
+                  onClick={handleAccountDelete}
+                >
+                  Delete Profile
+                </ButtonOutlined>
+                <ButtonPrimary
+                  variant="contained"
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setEditProfile(false);
+                  }}
+                >
+                  Edit Profile
+                </ButtonPrimary>
+              </>
+            ) : (
+              <>
+                <ButtonOutlined
+                  variant="outlined"
+                  sx={{ minWidth: "100px" }}
+                  onClick={() => setEditProfile(true)}
+                >
+                  Cancel Changes
+                </ButtonOutlined>
+                <ButtonPrimary
+                  variant="contained"
+                  type="submit"
+                  onClick={() => {}}
+                >
+                  Save Changes
+                </ButtonPrimary>
+              </>
+            )}
+          </Box>
+        </Stack>
+      </form>
     </Stack>
   );
 };

@@ -36,6 +36,7 @@ export const ProfileContextProvider = ({ children }) => {
     message: "",
   });
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
+  const [pinCodeLoading, setPinCodeLoading] = useState(false)
   const {getErrorMessage} = useErrorMessage();
 
   // HANDLE PROFILE CHANGE AND UPDATE
@@ -132,6 +133,7 @@ export const ProfileContextProvider = ({ children }) => {
   useEffect(() => {
     const delayDebounceFnc = showProfileData?.pincode
       ? setTimeout(() => {
+        setPinCodeLoading(true)
           axios
             .get(
               `https://api.postalpincode.in/pincode/${showProfileData?.pincode}`
@@ -159,7 +161,8 @@ export const ProfileContextProvider = ({ children }) => {
                 });
               }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.log(err))
+            .finally(()=> setPinCodeLoading(false))
         }, 1000)
       : null;
     return () => clearTimeout(delayDebounceFnc);
@@ -250,6 +253,7 @@ export const ProfileContextProvider = ({ children }) => {
         snackbarAlert,
         onSnackbarAlertClose,
         openBackdropLoader,
+        pinCodeLoading
       }}
     >
       {children}
