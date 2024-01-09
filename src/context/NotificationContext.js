@@ -26,7 +26,7 @@ export const NotificationContextProvider = ({ children }) => {
     paginationPageNo: 1,
     pageCount: 1,
   });
-  const {getErrorMessage} = useErrorMessage();
+  const { getErrorMessage } = useErrorMessage();
   const userId = useUserId();
 
   //SNACKBAR ALERT
@@ -63,13 +63,17 @@ export const NotificationContextProvider = ({ children }) => {
     });
   }, []);
 
+  const handleSocketLogout = () => {
+    socket.emit("logout", { userId: userId });
+  };
+
   const getAllUnreadNotification = async () => {
     setOpenBackdropLoader(true);
     try {
       const res = await request({
         url: `/liveStock/getUnreadNotification?page=${unReadUtils?.paginationPageNo}&limit=10`,
       });
-      if (res?.status === 200) {   
+      if (res?.status === 200) {
         const { data } = res?.data;
         setAllUnreadNotifications(data?.unreadAlertData);
         setOpenBackdropLoader(false);
@@ -204,6 +208,7 @@ export const NotificationContextProvider = ({ children }) => {
         setUnreadUtils,
         readUtils,
         setReadUtils,
+        handleSocketLogout
       }}
     >
       {children}

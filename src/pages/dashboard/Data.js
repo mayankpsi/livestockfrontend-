@@ -9,7 +9,7 @@ import {
 export const deviceData = [
     {
       id: 1,
-      title: "total collars",
+      title: "total Devices",
       total: 'totalCollars',
       img: TotalCollars,
     },

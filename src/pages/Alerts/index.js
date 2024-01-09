@@ -109,10 +109,12 @@ const AlertsPage = () => {
               setSelectedDate={setSelectedDate}
             />
           </Stack>
-          <TableV2
-            tableHeadData={tableHeadData}
-            tableRowData={getTableFormattedData(AllAlertData)}
-          />
+          {AllAlertData?.length ? (
+            <TableV2
+              tableHeadData={tableHeadData}
+              tableRowData={getTableFormattedData(AllAlertData)}
+            />
+          ) : null}
         </Stack>
         {AllAlertData?.length ? (
           alertsDataLength > 10 && (
