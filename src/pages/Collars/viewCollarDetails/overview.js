@@ -41,6 +41,19 @@ const Overview = ({ data }) => {
   } = useForm({ resolver: yupResolver(addCollarValidationSchema) });
 
   const onCollarEdit = () => handelCollarNewInfo(data?.collarId);
+
+  const getStatus = (ele, data) => {
+    const label = ele?.text?.toLowerCase();
+    const status = data?.status?.toLowerCase();
+
+    if (label === "status" && status === "online") {
+      return "green";
+    } else if (label === "status" && status === "offline") {
+      return "red";
+    } else {
+      return ele?.statusColor;
+    }
+  };
   return (
     <form onSubmit={handleSubmit(onCollarEdit)}>
       <Stack my={4} direction="row" justifyContent="space-between">
@@ -127,6 +140,7 @@ const Overview = ({ data }) => {
               ?.map((ele) => ({
                 ...ele,
                 status: data ? `${data[getCamelCase(ele?.text)]}` : "",
+                statusColor: getStatus(ele, data),
               }))
               .map((card) => (
                 <StatusCard

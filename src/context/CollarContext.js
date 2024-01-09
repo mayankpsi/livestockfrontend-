@@ -56,7 +56,7 @@ export const CollarContextProvider = ({ children }) => {
     message: "",
   });
 
-  const deviceCapitalized =
+  const deviceCapitalized = 
     activeDevice?.charAt(0)?.toUpperCase() +
     activeDevice?.slice(1)?.toLowerCase();
 

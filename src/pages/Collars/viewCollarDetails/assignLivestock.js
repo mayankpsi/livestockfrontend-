@@ -4,8 +4,6 @@ import ShowLivestocks from "./showLivestocks";
 import LivestockInfo from "./livestockInfo";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import { request } from "../../../apis/axios-utils";
-import useUserId from "../../../hooks/useUserId";
-import { useEffect } from "react";
 import { useState } from "react";
 import useCollarContext from "../../../hooks/useCollarContext";
 import useErrorMessage from "../../../hooks/useErrorMessage";
@@ -13,7 +11,6 @@ import useErrorMessage from "../../../hooks/useErrorMessage";
 const AssignLivestock = ({ data, loading, setLoading }) => {
   const { getErrorMessage } = useErrorMessage();
   const [allUnassignLivestocks, setAllUnassignLivestocks] = useState([]);
-  const { userId } = useUserId();
   const {
     openAddLiveStockModal,
     setOpenAddLivestockModal,
@@ -21,16 +18,9 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
   } = useLivestockContext();
   const { openSnackbarAlert } = useCollarContext();
 
-  useEffect(() => {
-    if (!data?.Uid) {
-      getUnassignLivestock(userId);
-    }
-  }, [data]);
-
   const handelLivestockRemove = async (collarId, livestockId) => {
     setLoading(true);
     setOpenBackdropLoader(true);
-    console.log(collarId, livestockId, "dcjbhrbvhfbhvbfhbhvbfhbvfh");
     const body = {
       liveStockID: livestockId,
       deviceID: collarId,
@@ -44,7 +34,6 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
       if (res.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Livestock successfully removed :)");
-        // setTimeout(() => window.location.reload(), 500);
       } else {
         throw new Error(getErrorMessage(res));
       }
@@ -58,19 +47,23 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
 
   const getUnassignLivestock = async () => {
     setOpenBackdropLoader(true);
+    setLoading(true);
     try {
       const res = await request({
         url: `/liveStock/getAll?status=false&deviceType=collar`,
       });
       if (res.status === 200) {
         setOpenBackdropLoader(false);
+        setOpenAddLivestockModal(true);
         setAllUnassignLivestocks(res.data.data.liveStockData);
       } else {
         throw new Error(getErrorMessage(res));
       }
     } catch (error) {
-      setOpenBackdropLoader(false);
       openSnackbarAlert("error", error.message);
+    } finally {
+      setOpenBackdropLoader(false);
+      setLoading(false);
     }
   };
 
@@ -112,7 +105,11 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
             btnText="remove"
             btnBgColor="#FF0505"
             loading={loading}
-            btnIcon={loading?<Spinner sx={{mr:1}} size={20} color={'#fff'}/>:null}
+            btnIcon={
+              loading ? (
+                <Spinner sx={{ mr: 1 }} size={20} color={"#fff"} />
+              ) : null
+            }
             onBtnClick={handelLivestockRemove}
           />
         </Stack>
@@ -122,7 +119,7 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
             text1="livestock"
             text2="collar"
             loading={loading}
-            onClick={() => setOpenAddLivestockModal(true)}
+            onClick={() => getUnassignLivestock()}
           />
         </Stack>
       )}

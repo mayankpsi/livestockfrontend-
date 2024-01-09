@@ -30,9 +30,9 @@ const Location = ({ data }) => {
     setOpenBackdropLoader,
     openSnackbarAlert,
   } = useLivestockContext();
-  const { paginationDateFormat, formattedDate, getRoundOffDigit } =
+  const { paginationDateFormat, formattedDate} =
     useDateFormat();
-    const {getErrorMessage} = useErrorMessage()
+  const { getErrorMessage } = useErrorMessage();
   const [locationAlertsData, setLocationAlertsData] = useState([]);
   const [resentAlerts, setResentAlerts] = useState([]);
   const [dataLength, setDataLength] = useState(0);
@@ -84,14 +84,12 @@ const Location = ({ data }) => {
             });
             errorMessage = res?.response?.data?.message;
           }
-
           if (res3?.value?.status === 200) {
             const { data } = res3.value?.data;
             const formattedData = data?.LocationAlert?.map((ele) => ({
               title: ele?.locationStatus,
               updated: formattedDate(ele?.createdAt),
             }));
-            console.log(res3?.value, "dcjdbjndcnjdnjdnjcndjnj");
             setResentAlerts(formattedData);
           } else {
             setResentAlerts([]);
@@ -99,7 +97,6 @@ const Location = ({ data }) => {
           }
           if (res2?.value?.status === 200) {
             const { data } = res2.value?.data;
-            console.log(res, "dcjdbjndcnjdnjdnjcndjnjres2");
             const formattedData = data?.LocationAlert?.map((ele) => ({
               title: ele?.locationStatus,
               location: `${ele?.geolocation?.lat
@@ -114,7 +111,7 @@ const Location = ({ data }) => {
             setPageCount(data?.PageCount);
             setDataLength(data?.dataLength);
           } else {
-            const msg = getErrorMessage(res2)
+            const msg = getErrorMessage(res2);
             setLocationAlertsData([]);
             setPageCount(1);
             setDataLength(0);
@@ -204,9 +201,8 @@ const Location = ({ data }) => {
               setSelectedDate={setSelectedDate}
             />
           </Stack>
-          {
-            locationAlertsData?.length?(
-              <TableV2
+          {locationAlertsData?.length ? (
+            <TableV2
               paneText="activity log"
               paneTextColor="#B58B5D"
               isBtn={true}
@@ -218,9 +214,8 @@ const Location = ({ data }) => {
               tableRowData={locationAlertsData}
               tableColors={tableColors}
             />
-            ):null
-          }
-        
+          ) : null}
+
           {locationAlertsData?.length ? (
             pageCount > 1 ? (
               <Stack direction="row" justifyContent="center" mt={5}>

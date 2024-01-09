@@ -1,11 +1,10 @@
+import { useState } from "react";
 import { Box, Stack } from "@mui/material";
 import { AddBtn, CustomModal } from "../../../ComponentsV2";
 import ShowLivestocks from "./showLivestocks";
 import LivestockInfo from "./livestockInfo";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import { request } from "../../../apis/axios-utils";
-import { useEffect } from "react";
-import { useState } from "react";
 import useCollarContext from "../../../hooks/useCollarContext";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 import { useParams } from "react-router-dom";
@@ -20,12 +19,6 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
   } = useLivestockContext();
   const { openSnackbarAlert } = useCollarContext();
   const { id } = useParams();
-
-  useEffect(() => {
-    if (!data?.Uid) {
-      getUnassignLivestock();
-    }
-  }, [data, loading]);
 
   const getDeviceData = () => {
     request({ url: `/devices/getDeviceByID?deviceID=${id}` });
@@ -60,6 +53,7 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
   };
   const getUnassignLivestock = async () => {
     setOpenBackdropLoader(true);
+    setLoading(true);
     try {
       const res = await request({
         url: `/liveStock/getAll?status=false&deviceType=pedometer`,
@@ -67,12 +61,15 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
       if (res.status === 200) {
         setOpenBackdropLoader(false);
         setAllUnassignLivestocks(res?.data?.data?.liveStockData);
+        setOpenAddLivestockModal(true);
       } else {
         throw new Error(getErrorMessage(res));
       }
     } catch (error) {
       setOpenBackdropLoader(false);
       openSnackbarAlert("error", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -121,7 +118,7 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
           text1="livestock"
           text2="collar"
           loading={loading}
-          onClick={() => setOpenAddLivestockModal(true)}
+          onClick={() => getUnassignLivestock()}
         />
       )}
       <CustomModal

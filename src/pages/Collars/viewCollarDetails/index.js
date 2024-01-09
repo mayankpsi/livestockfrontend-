@@ -39,7 +39,7 @@ const ViewCollarDetails = () => {
           collarUid: data?.uID,
           collarName: data?.deviceName,
           collarMacId: data?.macID,
-          status: data?.status ? "online" : "offline",
+          status: data?.deviceActiveStatus ? "online" : "offline",
           networkStrength: data?.NetworkStrength,
           pedometerBattery: data?.pedometerBattery,
           collarBattery: data?.collarBattery,

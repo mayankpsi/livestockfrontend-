@@ -115,7 +115,9 @@ const Overview = ({ data }) => {
             <TabPane
               text="Status"
               secondaryText={`Last Update : ${
-                cardData?.livestockLocationStatusTime || "N/A"
+                cardData?.livestockLocationStatusTime
+                  ? formattedDate(cardData?.livestockLocationStatusTime)
+                  : "N/A"
               }`}
               btnText={cardData?.liveStocklocationStatus || "N/A"}
               hover={false}

@@ -110,6 +110,9 @@ const ShowProfile = () => {
     setValue("fullName", showProfileData?.fullName);
   }, [showProfileData, pinCodeLoading]);
 
+  // connection request -> with a note 
+
+  
   return (
     <Stack width="100%">
       <TypographyPrimary sx={{ fontSize: "2rem" }}>Profile</TypographyPrimary>

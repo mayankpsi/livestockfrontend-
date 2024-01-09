@@ -81,6 +81,19 @@ const Overview = ({ data }) => {
       }
     }
   };
+
+  const getStatus = (ele, data) => {
+    const label = ele?.text?.toLowerCase();
+    const status = data?.status?.toLowerCase();
+
+    if (label === "status" && status === "online") {
+      return "green";
+    } else if (label === "status" && status === "offline") {
+      return "red";
+    } else {
+      return ele?.statusColor;
+    }
+  };
   return (
     <form onSubmit={handleSubmit(handelCollarNewInfo)}>
       <Stack my={4} direction="row" justifyContent="space-between">
@@ -165,6 +178,7 @@ const Overview = ({ data }) => {
               ?.map((ele) => ({
                 ...ele,
                 status: data ? `${data[getCamelCase(ele?.text)]}` : "",
+                statusColor: getStatus(ele, data),
               }))
               .map((card) => (
                 <StatusCard
