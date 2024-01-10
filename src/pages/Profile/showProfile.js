@@ -111,8 +111,14 @@ const ShowProfile = () => {
   }, [showProfileData, pinCodeLoading]);
 
   // connection request -> with a note 
+  // follow people to create audience 
+  // starting two lines should be attractive - keep it short and crisp 
+  // make it interactive - add image also if needed
+  // use hashtags - max 5
+  // post every single day
 
-  
+  // Beauty of programming 
+
   return (
     <Stack width="100%">
       <TypographyPrimary sx={{ fontSize: "2rem" }}>Profile</TypographyPrimary>

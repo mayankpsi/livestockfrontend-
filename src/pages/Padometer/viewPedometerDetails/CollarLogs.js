@@ -41,8 +41,8 @@ const CollarLogs = () => {
     try {
       const res = await request({
         url: `/devices/getDeviceLogs?deviceId=${id}&page=${collarLogsPagination}&limit=10&startDate=${paginationDateFormat(
-          selectedDate?.startDate
-        )}&endDate=${paginationDateFormat(selectedDate?.endDate)}&deviceType=pedometer`,
+          selectedDate[0]?.startDate
+        )}&endDate=${paginationDateFormat(selectedDate[0]?.endDate)}&deviceType=pedometer`,
       });
       if (res.status === 200) {
         const { data: dataV2 } = res?.data;
