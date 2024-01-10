@@ -85,16 +85,16 @@ export const signUpSchema = Yup.object().shape({
 export const addCollarValidationSchema = Yup.object().shape({
   collarUID: Yup.string()
     .required()
-    .min(3, "Collar UID must be long")
+    .min(3, "UID must be long")
     .matches(whiteSpace, "Cant'\t be white spaces only"),
   collarName: Yup.string()
     .required()
-    .min(3, "Collar Name must be long")
+    .min(3, "Name must be long")
     .matches(whiteSpace, "Cant'\t be white spaces only"),
   collarMacId: Yup.string()
     .required()
-    .min(8, "Collar UID must 8 digit long")
-    .max(8, "Collar UID must 8 digit long")
+    .min(8, "UID must 8 digit long")
+    .max(8, "UID must 8 digit long")
     .matches(whiteSpace, "Cant'\t be white spaces only"),
 });
 

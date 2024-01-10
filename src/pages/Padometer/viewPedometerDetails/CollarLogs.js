@@ -28,7 +28,7 @@ const CollarLogs = () => {
 
   const { setOpenBackdropLoader, openSnackbarAlert } = useCollarContext();
   const { formattedDate, paginationDateFormat } = useDateFormat();
-  const {getErrorMessage} = useErrorMessage()
+  const { getErrorMessage } = useErrorMessage();
 
   const { id } = useParams();
 
@@ -42,7 +42,9 @@ const CollarLogs = () => {
       const res = await request({
         url: `/devices/getDeviceLogs?deviceId=${id}&page=${collarLogsPagination}&limit=10&startDate=${paginationDateFormat(
           selectedDate[0]?.startDate
-        )}&endDate=${paginationDateFormat(selectedDate[0]?.endDate)}&deviceType=pedometer`,
+        )}&endDate=${paginationDateFormat(
+          selectedDate[0]?.endDate
+        )}&deviceType=pedometer`,
       });
       if (res.status === 200) {
         const { data: dataV2 } = res?.data;
@@ -51,7 +53,7 @@ const CollarLogs = () => {
       } else {
         setCollarLogs([]);
         setCollarLogsDataLength(0);
-        const message = getErrorMessage(res)
+        const message = getErrorMessage(res);
         throw new Error(message);
       }
     } catch (error) {
@@ -69,6 +71,7 @@ const CollarLogs = () => {
     }));
     return res || [];
   };
+
 
   return (
     <Box>

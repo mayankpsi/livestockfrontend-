@@ -168,7 +168,7 @@ const CollarInfo = ({
             onSubmit={handleCollarAssign}
             setOpenAddLivestockModal={() => setShowModal(false)}
             openSnackbarAlert={() =>
-              openSnackbarAlert("error", "Please choose a collar to assign")
+              openSnackbarAlert("error", `Please choose a device to assign`)
             }
           />
         }

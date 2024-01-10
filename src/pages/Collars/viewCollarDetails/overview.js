@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
-import React, { useEffect } from "react";
-import { TabPane, CustomInput, StatusCard } from "../../../ComponentsV2";
+import React, { useEffect, useState } from "react";
+import { TabPane, CustomInput, StatusCard, Spinner } from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
@@ -17,6 +17,7 @@ const Overview = ({ data }) => {
     collarInfoEdit,
     setCollarInfoEdit,
     isEditCollarInfo,
+    loading
   } = useDeviceDetailContext();
 
   const { isError } = useCollarContext();
@@ -69,7 +70,8 @@ const Overview = ({ data }) => {
             <TabPane
               text="Collar Information"
               btnText={isEditCollarInfo ? "Save" : "Edit"}
-              btnIcon={false}
+              loading={loading}
+              btnIcon={loading?<Spinner sx={{ mr: 1 }} size={20} color={"#fff"} /> :false}
               hover={true}
               type="submit"
             />

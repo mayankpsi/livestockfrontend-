@@ -32,6 +32,7 @@ const ShowLivestocks = ({
   };
 
   const handleLivestockAssignSave = () => {
+    
     if(selectedValue){
       const type = data?.find(ele => ele?._id === selectedValue)?.deviceType;
       onSubmit(selectedValue,type)

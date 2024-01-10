@@ -17,6 +17,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
 
   const { openSnackbarAlert, setIsError, isError } = useLivestockContext();
   const [isEditLivestockInfo, setIsEditLivestockInfo] = useState(true);
+  const [loader, setLoader] = useState(false);
   const [LivestockInfoEdit, setLivestockInfoEdit] = useState({
     collarUID: "",
     pedometerUID: "",
@@ -60,6 +61,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
     } else {
       setIsEditLivestockInfo(false);
       if (!isEditLivestockInfo) {
+        setLoader(true);
         const config = {
           headers: { "content-type": "multipart/form-data" },
         };
@@ -88,7 +90,6 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
               message: null,
             });
             setIsEditLivestockInfo(true);
-            setTimeout(() => window.location.reload(), 500);
           } else if (res?.response?.data?.statusCode === 409) {
             setIsError({
               error: true,
@@ -100,6 +101,8 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
         } catch (err) {
           setIsEditLivestockInfo(true);
           openSnackbarAlert("error", err.message);
+        } finally {
+          setLoader(false);
         }
       }
     }
@@ -163,10 +166,12 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
       >
         <TabPane
           text="Livestock Information"
-          loading={loading}
+          loading={loading || loader}
           btnText={btnText ? btnText : isEditLivestockInfo ? "Edit" : "Save"}
           btnIcon={
-            loading ? <Spinner sx={{ mr: 1 }} size={20} color={"#fff"} /> : null
+            loading || loader ? (
+              <Spinner sx={{ mr: 1 }} size={20} color={"#fff"} />
+            ) : null
           }
           hover={true}
           btnBgColor={btnBgColor}

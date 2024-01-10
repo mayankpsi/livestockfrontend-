@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState} from "react";
+import React, { createContext, useContext, useState } from "react";
 import useErrorMessage from "../hooks/useErrorMessage";
 import useCollarContext from "../hooks/useCollarContext";
 import { request } from "../apis/axios-utils";
@@ -7,12 +7,13 @@ const DeviceDetailContext = createContext();
 
 export const DeviceDetailContextProvider = ({ children }) => {
   const [isEditCollarInfo, setIsEditCollarInfo] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [collarInfoEdit, setCollarInfoEdit] = useState({
     collarUID: "",
     collarName: "",
     collarMacId: "",
   });
-  
+
   const { getErrorMessage } = useErrorMessage();
 
   const { isError, setIsError, openSnackbarAlert } = useCollarContext();
@@ -25,6 +26,7 @@ export const DeviceDetailContextProvider = ({ children }) => {
   const handelCollarNewInfo = async (deviceId) => {
     setIsEditCollarInfo(true);
     if (isEditCollarInfo) {
+      setLoading(true);
       const body = {
         deviceName: collarInfoEdit?.collarName,
         uID: collarInfoEdit?.collarUID,
@@ -54,11 +56,22 @@ export const DeviceDetailContextProvider = ({ children }) => {
       } catch (err) {
         openSnackbarAlert("error", err.message);
         setIsEditCollarInfo(false);
+      } finally {
+        setLoading(false);
       }
     }
   };
   return (
-    <DeviceDetailContext.Provider value={{handelCollarNewInfo,handleCollarInfoEditChange, collarInfoEdit, setCollarInfoEdit, isEditCollarInfo}}>
+    <DeviceDetailContext.Provider
+      value={{
+        loading,
+        handelCollarNewInfo,
+        handleCollarInfoEditChange,
+        collarInfoEdit,
+        setCollarInfoEdit,
+        isEditCollarInfo,
+      }}
+    >
       {children}
     </DeviceDetailContext.Provider>
   );

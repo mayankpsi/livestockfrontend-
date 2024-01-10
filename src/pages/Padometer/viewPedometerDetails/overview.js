@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { TabPane, CustomInput, StatusCard } from "../../../ComponentsV2";
+import { TabPane, CustomInput, StatusCard, Spinner } from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
@@ -13,6 +13,7 @@ import useErrorMessage from "../../../hooks/useErrorMessage";
 
 const Overview = ({ data }) => {
   const [isEditCollarInfo, setIsEditCollarInfo] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [collarInfoEdit, setCollarInfoEdit] = useState({
     collarUID: "",
     collarName: "",
@@ -49,6 +50,7 @@ const Overview = ({ data }) => {
   const handelCollarNewInfo = async () => {
     setIsEditCollarInfo(true);
     if (isEditCollarInfo) {
+      setLoading(true)
       const body = {
         deviceName: collarInfoEdit?.collarName,
         uID: collarInfoEdit?.collarUID,
@@ -78,6 +80,9 @@ const Overview = ({ data }) => {
       } catch (err) {
         openSnackbarAlert("error", err.message);
         setIsEditCollarInfo(false);
+      }
+      finally{
+        setLoading(false)
       }
     }
   };
@@ -109,7 +114,8 @@ const Overview = ({ data }) => {
             <TabPane
               text="Pedometer Information"
               btnText={isEditCollarInfo ? "Save" : "Edit"}
-              btnIcon={false}
+              loading={loading}
+              btnIcon={loading?<Spinner sx={{ mr: 1 }} size={20} color={"#fff"} /> :false}
               hover={true}
               type="submit"
             />
