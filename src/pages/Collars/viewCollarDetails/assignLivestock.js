@@ -4,19 +4,33 @@ import ShowLivestocks from "./showLivestocks";
 import LivestockInfo from "./livestockInfo";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import { request } from "../../../apis/axios-utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCollarContext from "../../../hooks/useCollarContext";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 
 const AssignLivestock = ({ data, loading, setLoading }) => {
   const { getErrorMessage } = useErrorMessage();
-  const [allUnassignLivestocks, setAllUnassignLivestocks] = useState([]);
+  const [allUnassignLivestocks, setAllUnassignLivestocks] = useState({
+    livestockData: [],
+    dataLength: 0,
+  });
+  const [unassignLivestockPagination, setUnassignLivestockPagination] =
+    useState(1);
+  const [isInputChange, setIsInputChange] = useState(false);
+  const [query, setQuery] = useState("");
   const {
     openAddLiveStockModal,
     setOpenAddLivestockModal,
     setOpenBackdropLoader,
   } = useLivestockContext();
   const { openSnackbarAlert } = useCollarContext();
+
+  useEffect(() => {
+    if (query || isInputChange) {
+      const timeout = setTimeout(() => getUnassignLivestock(query), 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [query]);
 
   const handelLivestockRemove = async (collarId, livestockId) => {
     setLoading(true);
@@ -45,18 +59,26 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
     }
   };
 
-  const getUnassignLivestock = async () => {
+  const getUnassignLivestock = async (searchTerm = "", page = 1) => {
     setOpenBackdropLoader(true);
     setLoading(true);
     try {
       const res = await request({
-        url: `/liveStock/getAll?status=false&deviceType=collar`,
+        url: `/liveStock/getAll?status=false&deviceType=pedometer&searchTerm=${searchTerm}&page=${page}&limit=${10}`,
       });
       if (res.status === 200) {
+        const { liveStockData, dataLength } = res?.data?.data;
         setOpenBackdropLoader(false);
+        setAllUnassignLivestocks({
+          livestockData: liveStockData,
+          dataLength: dataLength,
+        });
         setOpenAddLivestockModal(true);
-        setAllUnassignLivestocks(res.data.data.liveStockData);
       } else {
+        setAllUnassignLivestocks({
+          livestockData: [],
+          dataLength: 0,
+        });
         throw new Error(getErrorMessage(res));
       }
     } catch (error) {
@@ -118,7 +140,7 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
           <AddBtn
             text1="livestock"
             text2="collar"
-            loading={loading}
+            loading={!openAddLiveStockModal && loading}
             onClick={() => getUnassignLivestock()}
           />
         </Stack>
@@ -127,12 +149,23 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
       <CustomModal
         content={
           <ShowLivestocks
-            data={allUnassignLivestocks}
+            data={allUnassignLivestocks?.livestockData}
+            dataLength={allUnassignLivestocks?.dataLength}
+            pagination={unassignLivestockPagination}
+            setPagination={(page) => {
+              setUnassignLivestockPagination(page);
+              getUnassignLivestock(query, page);
+            }}
             onSubmit={handelLivestockAssign}
             setOpenAddLivestockModal={setOpenAddLivestockModal}
+            loading={loading}
             openSnackbarAlert={() =>
               openSnackbarAlert("error", "Please choose a livestock to assign")
             }
+            onSearch={(term) => {
+              setQuery(term);
+              setIsInputChange(true);
+            }}
             isLivestock={true}
           />
         }

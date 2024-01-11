@@ -5,7 +5,12 @@ import {
   ButtonPrimary,
 } from "../../../ComponentsV2/themeComponents";
 import LivestockCard from "./livestockCard";
-import { CustomPagination, SearchInput, NoData } from "../../../ComponentsV2";
+import {
+  CustomPagination,
+  SearchInput,
+  NoData,
+  Spinner,
+} from "../../../ComponentsV2";
 
 const ShowLivestocks = ({
   data,
@@ -17,6 +22,7 @@ const ShowLivestocks = ({
   onSearch,
   setOpenAddLivestockModal,
   openSnackbarAlert,
+  loading,
 }) => {
   const [showLivestocks, setShowLivestocks] = useState(data);
   const [selectedValue, setSelectedValue] = useState();
@@ -39,31 +45,32 @@ const ShowLivestocks = ({
   return (
     <Box>
       <TypographyWithBg>Assign Livestock</TypographyWithBg>
-      {dataLength ? (
-        <Stack direction="row" p={4}>
-          <SearchInput
-            placeholder="Search Livestock Id or Name"
-            name="search"
-            onChange={(e) => onSearch(e.target.value)}
-          />
-        </Stack>
-      ) : null}
-
-      {data?.length ? (
-        <Stack direction="row" flexWrap="wrap" justifyContent="space-evenly">
-          {showLivestocks?.map((el) => (
-            <LivestockCard
-              key={el._id}
-              name={isLivestock ? el?.name : el?.deviceName} //fd - deviceName
-              id={el.uID}
-              value={el._id}
-              handleChange={handleChange}
-              selectedValue={selectedValue === el._id}
-            />
-          ))}
-        </Stack>
+      <Stack direction="row" p={4}>
+        <SearchInput
+          placeholder="Search Livestock Id or Name"
+          name="search"
+          onChange={(e) => onSearch(e.target.value)}
+        />
+      </Stack>
+      {!loading ? (
+        data?.length ? (
+          <Stack direction="row" flexWrap="wrap" justifyContent="space-evenly">
+            {showLivestocks?.map((el) => (
+              <LivestockCard
+                key={el._id}
+                name={isLivestock ? el?.name : el?.deviceName}
+                id={el.uID}
+                value={el._id}
+                handleChange={handleChange}
+                selectedValue={selectedValue === el._id}
+              />
+            ))}
+          </Stack>
+        ) : (
+          <NoData />
+        )
       ) : (
-        <NoData />
+        <Spinner />
       )}
 
       {dataLength ? (

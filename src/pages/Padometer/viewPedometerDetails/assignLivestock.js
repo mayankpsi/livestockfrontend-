@@ -17,6 +17,7 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
   });
   const [unassignLivestockPagination, setUnassignLivestockPagination] =
     useState(1);
+  const [isInputChange, setIsInputChange] = useState(false);
   const [query, setQuery] = useState("");
   const {
     openAddLiveStockModal,
@@ -29,9 +30,10 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
   const getDeviceData = () => {
     request({ url: `/devices/getDeviceByID?deviceID=${id}` });
   };
+
   useEffect(() => {
-    if (query) {
-      const timeout = setTimeout(() => getUnassignLivestock(query), 500);
+    if (query || isInputChange) {
+      const timeout = setTimeout(() => getUnassignLivestock(query), 1000);
       return () => clearTimeout(timeout);
     }
   }, [query]);
@@ -64,12 +66,12 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
     }
   };
 
-  const getUnassignLivestock = async (searchTerm = "") => {
+  const getUnassignLivestock = async (searchTerm = "", page = 1) => {
     setOpenBackdropLoader(true);
     setLoading(true);
     try {
       const res = await request({
-        url: `/liveStock/getAll?status=false&deviceType=pedometer&searchTerm=${searchTerm}`,
+        url: `/liveStock/getAll?status=false&deviceType=pedometer&searchTerm=${searchTerm}&page=${page}&limit=${10}`,
       });
       if (res.status === 200) {
         const { liveStockData, dataLength } = res?.data?.data;
@@ -122,7 +124,6 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
       setLoading(false);
     }
   };
- 
 
   return (
     <Box py={4}>
@@ -140,7 +141,7 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
         <AddBtn
           text1="livestock"
           text2="pedometer"
-          loading={loading}
+          loading={!openAddLiveStockModal && loading}
           onClick={() => getUnassignLivestock()}
         />
       )}
@@ -150,13 +151,20 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
             data={allUnassignLivestocks?.livestockData}
             dataLength={allUnassignLivestocks?.dataLength}
             pagination={unassignLivestockPagination}
-            setPagination={setUnassignLivestockPagination}
+            setPagination={(page) => {
+              setUnassignLivestockPagination(page);
+              getUnassignLivestock(query, page);
+            }}
             onSubmit={(selectedValue) => handelLivestockAssign(selectedValue)}
             setOpenAddLivestockModal={setOpenAddLivestockModal}
+            loading={loading}
             openSnackbarAlert={() =>
               openSnackbarAlert("error", "Please choose a livestock to assign")
             }
-            onSearch={(term) => setQuery(term)}
+            onSearch={(term) => {
+              setQuery(term);
+              setIsInputChange(true);
+            }}
             isLivestock={true}
           />
         }

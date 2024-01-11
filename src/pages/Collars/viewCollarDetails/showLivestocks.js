@@ -5,18 +5,27 @@ import {
   ButtonPrimary,
 } from "../../../ComponentsV2/themeComponents";
 import LivestockCard from "./livestockCard";
-import { CustomPagination, SearchInput, NoData } from "../../../ComponentsV2";
+import {
+  CustomPagination,
+  SearchInput,
+  NoData,
+  Spinner,
+} from "../../../ComponentsV2";
 
 const ShowLivestocks = ({
   data,
+  dataLength,
+  pagination,
+  setPagination,
   isLivestock,
   onSubmit,
+  onSearch,
   setOpenAddLivestockModal,
-  openSnackbarAlert
+  openSnackbarAlert,
+  loading,
 }) => {
   const [showLivestocks, setShowLivestocks] = useState(data);
   const [selectedValue, setSelectedValue] = useState();
-  const [query, setQuery] = useState("");
 
   useEffect(() => {
     setShowLivestocks(data);
@@ -25,68 +34,57 @@ const ShowLivestocks = ({
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
-
-  const handleLivestockSearch = (e) => {
-    const { value } = e.target;
-    setQuery(value);
-  };
-
   const handleLivestockAssignSave = () => {
-    
-    if(selectedValue){
-      const type = data?.find(ele => ele?._id === selectedValue)?.deviceType;
-      onSubmit(selectedValue,type)
-    }else{
-      openSnackbarAlert()
+    if (selectedValue) {
+      onSubmit(selectedValue);
+    } else {
+      openSnackbarAlert();
     }
-  }
+  };
 
   return (
     <Box>
       <TypographyWithBg>Assign Livestock</TypographyWithBg>
-      {data?.length ? (
-        <Stack direction="row" p={4}>
-          <SearchInput
-            placeholder="Search Livestock Id or Name"
-            name="search"
-            onChange={handleLivestockSearch}
-          />
-        </Stack>
-      ) : null}
-
-      {data?.length ? (
-        <Stack direction="row" flexWrap="wrap" justifyContent="space-evenly">
-          {showLivestocks
-            ?.filter((ele) =>
-              query
-                ? ele?.name?.toLowerCase()?.includes(query?.toLowerCase()) ||
-                  ele?.uID?.toLowerCase()?.includes(query?.toLowerCase())
-                : true
-            )
-            ?.map((el) => (
+      <Stack direction="row" p={4}>
+        <SearchInput
+          placeholder="Search Livestock Id or Name"
+          name="search"
+          onChange={(e) => onSearch(e.target.value)}
+        />
+      </Stack>
+      {!loading ? (
+        data?.length ? (
+          <Stack direction="row" flexWrap="wrap" justifyContent="space-evenly">
+            {showLivestocks?.map((el) => (
               <LivestockCard
                 key={el._id}
-                name={isLivestock ? el?.name : el?.deviceName} //fd - deviceName
+                name={isLivestock ? el?.name : el?.deviceName}
                 id={el.uID}
                 value={el._id}
                 handleChange={handleChange}
                 selectedValue={selectedValue === el._id}
               />
             ))}
-        </Stack>
+          </Stack>
+        ) : (
+          <NoData />
+        )
       ) : (
-        <NoData />
+        <Spinner />
       )}
 
-      {data?.length ? (
-        <Stack direction="row" justifyContent="center" py={7}>
-          {/* <CustomPagination
-            showFirstButton={true}
-            showLastButton={true}
-            size="large"
-            paginationData={[]}
-            setPaginatedData={(data) => {}}
-          /> */}
+      {dataLength ? (
+        <Stack direction="row" justifyContent="center" py={5} pb={7}>
+          {dataLength > 10 ? (
+            <CustomPagination
+              showFirstButton={true}
+              showLastButton={true}
+              size="large"
+              page={pagination}
+              count={Math.ceil(dataLength / 10)}
+              onPageChange={(pageNo) => setPagination(pageNo)}
+            />
+          ) : null}
           <ButtonPrimary
             onClick={handleLivestockAssignSave}
             sx={{

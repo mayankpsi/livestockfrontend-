@@ -16,7 +16,14 @@ const CollarInfo = ({
   setPedometerLoading,
 }) => {
   const [showModal, setShowModal] = useState(false);
-  const [allUnassignCollars, setAllUnassignCollars] = useState([]);
+  const [allUnassignCollars, setAllUnassignCollars] = useState({
+    collarData: [],
+    dataLength: 0,
+  });
+  const [unassignDevicePagination, setUnassignDevicePagination] = useState(1);
+  const [choseDevice, setChoseDevice] = useState("");
+  const [isInputChange, setIsInputChange] = useState(false);
+  const [query, setQuery] = useState("");
   const { openSnackbarAlert, getAllLivestock } = useLivestockContext();
   const { getErrorMessage } = useErrorMessage();
 
@@ -33,6 +40,16 @@ const CollarInfo = ({
     type?.toLowerCase() === "collar"
       ? setCollarLoading(false)
       : setPedometerLoading(false);
+
+  useEffect(() => {
+    if (query || isInputChange) {
+      const timeout = setTimeout(
+        () => getUnassignCollars(choseDevice, query, unassignDevicePagination),
+        1000
+      );
+      return () => clearTimeout(timeout);
+    }
+  }, [query]);
 
   const handelCollarRemove = async (type) => {
     loadingOn(type);
@@ -62,16 +79,24 @@ const CollarInfo = ({
     }
   };
 
-  const getUnassignCollars = async (type) => {
+  const getUnassignCollars = async (type, searchTerm = "", page = 1) => {
     loadingOn(type);
     try {
       const res = await request({
-        url: `/devices/getFreeDeviceOfUser?page=1&limit=25&deviceType=${type}`,
+        url: `/devices/getFreeDeviceOfUser?deviceType=${type}&page=${page}&limit=${9}&searchTerm=${searchTerm}`,
       });
       if (res.status === 200) {
-        setAllUnassignCollars(res?.data?.data?.UserFreeDeviceInfo);
+        const { UserFreeDeviceInfo, dataLength } = res?.data?.data;
+        setAllUnassignCollars({
+          collarData: UserFreeDeviceInfo,
+          dataLength: dataLength,
+        });
         setShowModal(true);
       } else {
+        setAllUnassignCollars({
+          collarData: [],
+          dataLength: 0,
+        });
         throw new Error(getErrorMessage(res));
       }
     } catch (error) {
@@ -120,7 +145,7 @@ const CollarInfo = ({
       battery: data?.collarBattery,
     };
   };
- 
+
   return (
     <>
       <Stack direction={"row"} gap={4} py={4}>
@@ -136,8 +161,9 @@ const CollarInfo = ({
           <AddBtn
             text1="collar"
             text2="livestock"
-            loading={collarLoading}
+            loading={!showModal && collarLoading}
             onClick={() => {
+              setChoseDevice("collar");
               getUnassignCollars("collar");
             }}
           />
@@ -154,8 +180,9 @@ const CollarInfo = ({
           <AddBtn
             text1="Pedometer"
             text2="livestock"
-            loading={pedometerLoading}
+            loading={!showModal && pedometerLoading}
             onClick={() => {
+              setChoseDevice("pedometer");
               getUnassignCollars("pedometer");
             }}
           />
@@ -164,16 +191,36 @@ const CollarInfo = ({
       <CustomModal
         content={
           <ShowLivestocks
-            data={allUnassignCollars}
+            data={allUnassignCollars?.collarData}
+            dataLength={allUnassignCollars?.dataLength}
+            pagination={unassignDevicePagination}
+            setPagination={(page) => {
+              setUnassignDevicePagination(page);
+              getUnassignCollars(choseDevice, query, page);
+            }}
             onSubmit={handleCollarAssign}
             setOpenAddLivestockModal={() => setShowModal(false)}
-            openSnackbarAlert={() =>
-              openSnackbarAlert("error", `Please choose a device to assign`)
+            loading={
+              choseDevice === "collar" ? collarLoading : pedometerLoading
             }
+            openSnackbarAlert={() =>
+              openSnackbarAlert(
+                "error",
+                `Please choose a ${choseDevice} to assign`
+              )
+            }
+            onSearch={(term) => {
+              console.log(term, "Cjfbjbvfbvfhbvhbfhbhv");
+              setQuery(term);
+              setIsInputChange(true);
+            }}
           />
         }
         openModal={showModal}
-        handleClose={() => setShowModal(false)}
+        handleClose={() => {
+          setShowModal(false);
+          setUnassignDevicePagination(1);
+        }}
       />
     </>
   );

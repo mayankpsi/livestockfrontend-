@@ -42,6 +42,7 @@ export const CollarContextProvider = ({ children }) => {
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
   const [deviceDataLength, setDeviceDataLength] = useState(0);
   const [paginationPageNo, setPaginationPageNo] = useState(1);
+  const [pedometerPagination, setPedometerPagination] = useState(1);
 
   //GET USER ID
   const userId = useUserId();
@@ -56,20 +57,24 @@ export const CollarContextProvider = ({ children }) => {
     message: "",
   });
 
-  const deviceCapitalized = 
+  const deviceCapitalized =
     activeDevice?.charAt(0)?.toUpperCase() +
     activeDevice?.slice(1)?.toLowerCase();
 
   //GET ALL COLLARS
   useEffect(() => {
     getAllDevices();
-  }, [isLoading, activeDevice, paginationPageNo]);
+  }, [isLoading, activeDevice, paginationPageNo, pedometerPagination]);
 
   // GET ALL DEVICES
   const getAllDevices = () => {
     setOpenBackdropLoader(true);
+    const pag =
+      activeDevice?.toLowerCase() === "collar"
+        ? paginationPageNo
+        : pedometerPagination;
     request({
-      url: `/devices/getDeviceByUserId?userID=${userId}&deviceType=${activeDevice}&page=${paginationPageNo}&limit=${10}`,
+      url: `/devices/getDeviceByUserId?userID=${userId}&deviceType=${activeDevice}&page=${pag}&limit=${10}`,
     })
       .then((res) => {
         if (res.status === 200) {
@@ -249,6 +254,8 @@ export const CollarContextProvider = ({ children }) => {
         deviceDataLength,
         paginationPageNo,
         setPaginationPageNo,
+        pedometerPagination,
+        setPedometerPagination,
       }}
     >
       {children}

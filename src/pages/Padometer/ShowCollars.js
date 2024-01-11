@@ -4,7 +4,12 @@ import useCollarContext from "../../hooks/useCollarContext";
 import { showCollarTableHeadData } from "./Data";
 
 const ShowCollars = ({ show }) => {
-  const  { collars, deviceDataLength, paginationPageNo, setPaginationPageNo }  = useCollarContext();
+  const {
+    collars,
+    deviceDataLength,
+    pedometerPagination,
+    setPedometerPagination,
+  } = useCollarContext();
 
   const collarFiltering = () => {
     let filteredCollars;
@@ -28,9 +33,9 @@ const ShowCollars = ({ show }) => {
           <Stack direction="row" justifyContent="center" p={2}>
             <CustomPagination
               size="large"
-              page={paginationPageNo}
+              page={pedometerPagination}
               count={Math.ceil(deviceDataLength / 10)}
-              onPageChange={(pageNo) => setPaginationPageNo(pageNo)}
+              onPageChange={(pageNo) => setPedometerPagination(pageNo)}
             />
           </Stack>
         )
