@@ -57,14 +57,17 @@ const DeviceCard = ({ label, data, onRemove, deviceDataFormat, loading }) => {
             </TypographyPrimary>
           </Box>
           {deviceDataFormat
-            ?.map((ele) => ({
-              ...ele,
-              value: data
-                ? ele?.label?.toLowerCase()?.includes("battery")
-                  ? `${data[getCamelCase(ele.label)]}%`
-                  : data[getCamelCase(ele.label)]
-                : "N/A",
-            }))
+            ?.map((ele) => {
+              console.log(ele,data, "vfbfjbvbfjvbjfbjfv")
+              return ({
+                ...ele,
+                value: data
+                  ? ele?.label?.toLowerCase()?.includes("battery")
+                    ? `${data[getCamelCase(ele.label)]}%`
+                    : data[getCamelCase(ele.label)]
+                  : "N/A",
+              })
+            })
             ?.map((ele) => (
               <Box display="flex" justifyContent="flex-start">
                 <TypographyPrimary

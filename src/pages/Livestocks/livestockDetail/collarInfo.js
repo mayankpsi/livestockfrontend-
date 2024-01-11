@@ -142,7 +142,7 @@ const CollarInfo = ({
       name: data?.deviceName,
       macId: data?.macID,
       addedOn: data?.createdAt,
-      battery: data?.collarBattery,
+      battery: data?.batteryPercent,
     };
   };
 
