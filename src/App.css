@@ -9,6 +9,7 @@
   
   html {
     font-size: 62.5% !important;
+    overflow-y: scroll;
   }
   body{
    font-family: "Poppins" !important;
@@ -208,6 +209,8 @@ width: 120px !important;
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: rgba(0,0,0,.2);
+  position: relative !important;
+  right:10px;
   /* -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5); */
 }
 

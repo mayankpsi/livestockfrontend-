@@ -64,7 +64,7 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
     setLoading(true);
     try {
       const res = await request({
-        url: `/liveStock/getAll?status=false&deviceType=pedometer&searchTerm=${searchTerm}&page=${page}&limit=${10}`,
+        url: `/liveStock/getAll?status=false&deviceType=collar&searchTerm=${searchTerm}&page=${page}&limit=${10}`,
       });
       if (res.status === 200) {
         const { liveStockData, dataLength } = res?.data?.data;

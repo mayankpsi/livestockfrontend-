@@ -16,43 +16,42 @@ const HeaderAdmin = ({ BreadcrumbData }) => {
   const navigate = useNavigate();
 
   return (
-    <>
-      <Grid
-        container
-        justifyContent="space-between"
-        sx={{ padding: "10px", paddingRight: 6 }}
-      >
-        <Box sx={{ display: { lg: "none", md: "inline" } }}>
-          <SidebarSmall />
-        </Box>
-        <Stack
-          direction={"row"}
-          alignItems="center"
-          justifyContent="space-between"
-          flexGrow={1}
-          sx={{ pl: 4 }}
+    <Grid
+    container
+    justifyContent="space-between"
+    width="100%"
+    sx={{ padding: "10px", paddingRight: 6, width: "100%"}}
+  >
+    <Box sx={{ display: { lg: "none", md: "inline" } }}>
+      <SidebarSmall />
+    </Box>
+    <Stack
+      direction={"row"}
+      alignItems="center"
+      justifyContent="space-between"
+      flexGrow={1}
+      sx={{ pl: 4 }}
+    >
+      {window?.location?.pathname !== "/" ? 
+        <Breadcrumb data={BreadcrumbData} />:<div></div>
+      }
+      <Grid item sx={{ columnGap: "1rem" }} className="flex">
+        <Grid item className="flex center">
+        <AlertsDropdown/>
+        </Grid>
+        <Grid
+          item
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          {window?.location?.pathname !== "/" ? 
-            <Breadcrumb data={BreadcrumbData} />:<div></div>
-          }
-          <Grid item sx={{ columnGap: "1rem" }} className="flex">
-            <Grid item className="flex center">
-            <AlertsDropdown/>
-            </Grid>
-            <Grid
-              item
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <ProfileMenu />
-            </Grid>
-          </Grid>
-        </Stack>
+          <ProfileMenu />
+        </Grid>
       </Grid>
-    </>
+    </Stack>
+  </Grid>
   );
 };
 

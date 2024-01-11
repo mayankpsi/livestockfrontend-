@@ -131,7 +131,7 @@ export const SidebarComp = styled(Stack)({
   position: "fixed",
   top: 0,
   left: 0,
-  width: "17.5%",
+  width: "17%",
   paddingRight: "20px",
 });
 
