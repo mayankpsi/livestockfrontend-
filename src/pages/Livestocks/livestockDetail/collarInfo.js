@@ -108,20 +108,20 @@ const CollarInfo = ({
 
   const handleCollarAssign = async (selectedValue, type) => {
     setShowModal(false);
-    loadingOn(type);
+    loadingOn(choseDevice);
     const body = {
       liveStockID: data?.id,
       deviceID: selectedValue,
     };
     try {
       const res = await request({
-        url: `/devices/assign-liveStock?assignType=${type}`,
+        url: `/devices/assign-liveStock?assignType=${choseDevice}`,
         method: "POST",
         data: body,
       });
       if (res.status === 200) {
         const msg = `${
-          type?.charAt(0).toUpperCase() + type.slice(1).toLowerCase()
+          choseDevice?.charAt(0).toUpperCase() + choseDevice.slice(1).toLowerCase()
         } successfully Added :)`;
         openSnackbarAlert("success", msg);
         getAllLivestock();
@@ -131,7 +131,7 @@ const CollarInfo = ({
     } catch (err) {
       openSnackbarAlert("error", getErrorMessage(err));
     } finally {
-      loadingOff(type);
+      loadingOff(choseDevice);
     }
   };
 
@@ -210,7 +210,6 @@ const CollarInfo = ({
               )
             }
             onSearch={(term) => {
-              console.log(term, "Cjfbjbvfbvfhbvhbfhbhv");
               setQuery(term);
               setIsInputChange(true);
             }}
