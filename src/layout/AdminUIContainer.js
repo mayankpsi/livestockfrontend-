@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import {
   HeaderAdmin,
   Sidebar,
@@ -19,6 +19,7 @@ const AdminUIContainer = ({
   alertMessage,
   alertType,
 }) => {
+  
   return (
     <>
       <ConfirmWindowModal
@@ -67,7 +68,7 @@ const AdminUIContainer = ({
       </Stack>
 
       {/* <Grid sx={{ marginBottom: "20px" }}>
-        <Stack direction="coloumn">
+        <Stack direction="column">
           <Grid
             sx={{
               width: "18%",

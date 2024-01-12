@@ -62,19 +62,26 @@ export const LivestockContextProvider = ({ children }) => {
   const [alertsDataLength, setAlertsDataLength] = useState(0);
   const [paginationPageNo, setPaginationPageNo] = useState(1);
   const [livestockPagination, setLivestockPagination] = useState(1);
+  const [paginationSafe, setPaginationSafe] = useState(1);
+  const [paginationUnsafe, setPaginationUnsafe] = useState(1);
   const [livestockDataLength, setLiveStockDataLength] = useState(0);
   const [pageCount, setPageCount] = useState(1);
   const pageLimit = 10;
 
-  //GET ALL LIVESTOCK
-  useEffect(() => {
-    getAllLivestock();
-  }, [addNewLivestockLoading, livestockPagination]);
 
-  const getAllLivestock = () => {
+  const getPagination = (status) => {
+    const label = status?.toString()?.toLowerCase();
+    if (label === "safe") return paginationSafe;
+    else if (label === "unsafe") return paginationUnsafe;
+    else return livestockPagination;
+  };
+
+  const getAllLivestock = (status) => {
+    const pag = getPagination(status);
     setOpenBackdropLoader(true);
+    const stat = status?.toString()?.length?`status=${status}`:``
     request({
-      url: `/liveStock/getAll?page=${livestockPagination}&limit=${10}`,
+      url: `/liveStock/getAll?page=${pag}&limit=${10}&${stat}`,
     })
       .then((res) => {
         if (res.status === 200) {
@@ -104,7 +111,10 @@ export const LivestockContextProvider = ({ children }) => {
               action: [
                 <VisibilityOutlinedIcon
                   fontSize="large"
-                  onClick={() => navigate(`/livestocks/${col?._id}`)}
+                  onClick={() => {
+                    navigate(`/livestocks/${col?._id}`);
+                    localStorage.setItem("currentTab", 0);
+                  }}
                 />,
                 <DeleteOutlineOutlinedIcon
                   fontSize="large"
@@ -348,6 +358,10 @@ export const LivestockContextProvider = ({ children }) => {
         livestockDataLength,
         livestockPagination,
         setLivestockPagination,
+        paginationSafe,
+        setPaginationSafe,
+        paginationUnsafe,
+        setPaginationUnsafe,
       }}
     >
       {children}

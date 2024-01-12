@@ -2,19 +2,43 @@ import { CustomPagination, CustomTable, NoData } from "../../ComponentsV2";
 import { Box, Stack } from "@mui/material";
 import useCollarContext from "../../hooks/useCollarContext";
 import { showCollarTableHeadData } from "./Data";
+import { useEffect } from "react";
 
 const ShowCollars = ({ show }) => {
-  const { collars, deviceDataLength, paginationPageNo, setPaginationPageNo } =
-    useCollarContext();
+  const {
+    getAllDevices,
+    collars,
+    deviceDataLength,
+    activeDevice,
+    isLoading,
+    paginationPageNo,
+    setPaginationPageNo,
+    paginationPageAssigned,
+    setPaginationPageAssigned,
+    paginationPageNotAssigned,
+    setPaginationPageNotAssigned,
+  } = useCollarContext();
+
+  const activePag = (status) => {
+    const label = status?.toString()?.toLowerCase();
+    if (label === "all")
+      return { get: paginationPageNo, set: setPaginationPageNo };
+    else if (label === "true")
+      return { get: paginationPageAssigned, set: setPaginationPageAssigned };
+    else if (label === "false")
+      return {
+        get: paginationPageNotAssigned,
+        set: setPaginationPageNotAssigned,
+      };
+    else return { get: paginationPageNo, set: setPaginationPageNo };
+  };
+
+  useEffect(() => {
+    getAllDevices(show);
+  }, [isLoading, activeDevice, activePag(show).get]);
 
   const collarFiltering = () => {
-    let filteredCollars;
-    if (show === "all") {
-      filteredCollars = collars;
-    } else {
-      filteredCollars = collars?.filter((collar) => collar?.status === show);
-    }
-    return filteredCollars?.map((el) => ({ ...el, status: null }));
+    return collars?.map((el) => ({ ...el, status: null }));
   };
 
   return (
@@ -29,9 +53,9 @@ const ShowCollars = ({ show }) => {
           <Stack direction="row" justifyContent="center" p={2}>
             <CustomPagination
               size="large"
-              page={paginationPageNo}
+              page={activePag(show)?.get}
               count={Math.ceil(deviceDataLength / 10)}
-              onPageChange={(pageNo) => setPaginationPageNo(pageNo)}
+              onPageChange={(pageNo) => activePag(show)?.set(pageNo)}
             />
           </Stack>
         )

@@ -20,7 +20,7 @@ const SnackbarAlert = ({ open, closeAlert, message, type }) => {
     <Stack spacing={2} sx={{ width: "100%" }}>
       <Snackbar
         open={open}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >

@@ -24,7 +24,7 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
     setOpenAddLivestockModal,
     setOpenBackdropLoader,
   } = useLivestockContext();
-  const { openSnackbarAlert } = useCollarContext();
+  const { openSnackbarAlert, getAllDevices } = useCollarContext();
   const { id } = useParams();
 
   const getDeviceData = () => {
@@ -55,6 +55,7 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Livestock successfully removed :)");
         getDeviceData();
+        getAllDevices();
       } else {
         throw new Error(getErrorMessage(res));
       }
@@ -114,6 +115,7 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Livestock successfully Added :)");
         getDeviceData();
+        getAllDevices();
       } else {
         throw new Error(getErrorMessage(res));
       }

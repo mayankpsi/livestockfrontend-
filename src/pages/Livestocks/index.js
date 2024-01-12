@@ -45,7 +45,7 @@ const Livestocks = () => {
       <Container maxWidth="xl" sx={{ marginTop: 8, pb: 5 }}>
         <BackdropLoader open={openBackdropLoader} />
         <TabPane
-          text="All Livestocks"
+          text="All Livestock"
           btnText="Add Livestock"
           btnIcon={true}
           hover={true}

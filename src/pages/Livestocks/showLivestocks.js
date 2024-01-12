@@ -2,6 +2,7 @@ import { Box, Stack } from "@mui/material";
 import { CustomPagination, CustomTable, NoData } from "../../ComponentsV2";
 import useLivestockContext from "../../hooks/useLivestockContext";
 import { showLivestockTableHeadData } from "./Data";
+import { useEffect } from "react";
 
 const ShowLivestocks = ({ show }) => {
   const {
@@ -9,20 +10,28 @@ const ShowLivestocks = ({ show }) => {
     livestockDataLength,
     livestockPagination,
     setLivestockPagination,
+    paginationSafe,
+    setPaginationSafe,
+    paginationUnsafe,
+    setPaginationUnsafe,
+    addNewLivestockLoading,
+    getAllLivestock,
   } = useLivestockContext();
 
+  const activePag = (status) => {
+    const label = status?.toString()?.toLowerCase();
+    if (label === "safe")
+      return { get: paginationSafe, set: setPaginationSafe };
+    else if (label === "unsafe")
+      return { get: paginationUnsafe, set: setPaginationUnsafe };
+    else return { get: livestockPagination, set: setLivestockPagination };
+  };
+  useEffect(() => {
+    getAllLivestock(show);
+  }, [addNewLivestockLoading, activePag(show).get]);
+
   const livestockFiltering = () => {
-    let filteredLivestock;
-    if (show === "all") {
-      filteredLivestock = allLivestocks;
-    } else {
-      filteredLivestock = allLivestocks?.filter(
-        (livestock) => livestock?.status?.toLowerCase() === show
-      );
-    }
-    return filteredLivestock
-      ?.toReversed()
-      ?.map((el) => ({ ...el, status: null }));
+    return allLivestocks?.map((el) => ({ ...el, status: null }));
   };
   return (
     <Box my={4}>
@@ -36,9 +45,9 @@ const ShowLivestocks = ({ show }) => {
           <Stack direction="row" justifyContent="center" p={2}>
             <CustomPagination
               size="large"
-              page={livestockPagination}
+              page={activePag(show).get}
               count={Math.ceil(livestockDataLength / 10)}
-              onPageChange={(pageNo) => setLivestockPagination(pageNo)}
+              onPageChange={(pageNo) => activePag(show).set(pageNo)}
             />
           </Stack>
         )

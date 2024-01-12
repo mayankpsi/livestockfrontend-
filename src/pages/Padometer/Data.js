@@ -12,11 +12,11 @@ export const collarTabData = [
   },
   {
     label: "assigned",
-    child: <ShowCollars show="assigned" />,
+    child: <ShowCollars show={true} />,
   },
   {
     label: "not assigned",
-    child: <ShowCollars show="not assigned" />,
+    child: <ShowCollars show={false}/>,
   },
 ];
 

@@ -21,7 +21,7 @@ import RuminationChart from "./livestockDetail/HealthCharts/RuminationChart";
 export const livestockTabData = [
   {
     label: "All Livestocks",
-    child: <ShowLivestocks show="all" />,
+    child: <ShowLivestocks show="" />,
   },
   {
     label: "Safe",

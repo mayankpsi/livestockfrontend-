@@ -23,7 +23,7 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
     setOpenAddLivestockModal,
     setOpenBackdropLoader,
   } = useLivestockContext();
-  const { openSnackbarAlert } = useCollarContext();
+  const { openSnackbarAlert, getAllDevices } = useCollarContext();
 
   useEffect(() => {
     if (query || isInputChange) {
@@ -48,6 +48,7 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
       if (res.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Livestock successfully removed :)");
+        getAllDevices();
       } else {
         throw new Error(getErrorMessage(res));
       }
@@ -106,7 +107,7 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
       if (res.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Livestock successfully Added :)");
-        // setTimeout(() => window.location.reload(), 500);
+        getAllDevices();
       } else {
         throw new Error(getErrorMessage(res));
       }

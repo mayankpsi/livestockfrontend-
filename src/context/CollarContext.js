@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { CustomLabel } from "../ComponentsV2";
 import { VisibilityOutlinedIcon, DeleteOutlineOutlinedIcon } from "../icons";
 import { request } from "../apis/axios-utils";
-import useUserId from "../hooks/useUserId";
 import useDateFormat from "../hooks/useDateFormat";
 import useErrorMessage from "../hooks/useErrorMessage";
 
@@ -42,10 +41,16 @@ export const CollarContextProvider = ({ children }) => {
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
   const [deviceDataLength, setDeviceDataLength] = useState(0);
   const [paginationPageNo, setPaginationPageNo] = useState(1);
+  const [paginationPageAssigned, setPaginationPageAssigned] = useState(1);
+  const [paginationPageNotAssigned, setPaginationPageNotAssigned] = useState(1);
   const [pedometerPagination, setPedometerPagination] = useState(1);
+  const [pedometerPaginationPageAssigned, setPedometerPaginationPageAssigned] =
+    useState(1);
 
-  //GET USER ID
-  const userId = useUserId();
+  const [
+    pedometerPaginationPageNotAssigned,
+    setPedometerPaginationPageNotAssigned,
+  ] = useState(1);
 
   //HANDLE COLLAR MODAL CLOSE
   const handleCollarModalClose = () => setOpenAddCollarModal(false);
@@ -57,24 +62,31 @@ export const CollarContextProvider = ({ children }) => {
     message: "",
   });
 
+  const getPagination = (device, status) => {
+    const label = status?.toString()?.toLowerCase();
+    if (device?.toLowerCase() === "collar") {
+      if (label === "all") return paginationPageNo;
+      else if (label === "true") return paginationPageAssigned;
+      else if (label === "false") return paginationPageNotAssigned;
+      else return paginationPageNo;
+    } else if (device?.toLowerCase() === "pedometer") {
+      if (label === "all") return pedometerPagination;
+      else if (label === "true") return pedometerPaginationPageAssigned;
+      else if (label === "false") return pedometerPaginationPageNotAssigned;
+      else return pedometerPagination;
+    }
+  };
+
   const deviceCapitalized =
     activeDevice?.charAt(0)?.toUpperCase() +
     activeDevice?.slice(1)?.toLowerCase();
 
-  //GET ALL COLLARS
-  useEffect(() => {
-    getAllDevices();
-  }, [isLoading, activeDevice, paginationPageNo, pedometerPagination]);
-
   // GET ALL DEVICES
-  const getAllDevices = () => {
+  const getAllDevices = (status) => {
     setOpenBackdropLoader(true);
-    const pag =
-      activeDevice?.toLowerCase() === "collar"
-        ? paginationPageNo
-        : pedometerPagination;
+    const pag = getPagination(activeDevice, status);
     request({
-      url: `/devices/getDeviceByUserId?userID=${userId}&deviceType=${activeDevice}&page=${pag}&limit=${10}`,
+      url: `/devices/getDeviceByUserId?deviceType=${activeDevice}&page=${pag}&limit=${10}&status=${status}`,
     })
       .then((res) => {
         if (res.status === 200) {
@@ -107,6 +119,7 @@ export const CollarContextProvider = ({ children }) => {
                 onClick={() => {
                   setOpenBackdropLoader(true);
                   navigate(`/devices/${activeDevice}/${col?._id}`);
+                  localStorage.setItem("currentTab", 0);
                 }}
               />,
               <DeleteOutlineOutlinedIcon
@@ -256,6 +269,15 @@ export const CollarContextProvider = ({ children }) => {
         setPaginationPageNo,
         pedometerPagination,
         setPedometerPagination,
+        getAllDevices,
+        paginationPageAssigned,
+        setPaginationPageAssigned,
+        paginationPageNotAssigned,
+        setPaginationPageNotAssigned,
+        pedometerPaginationPageAssigned,
+        setPedometerPaginationPageAssigned,
+        pedometerPaginationPageNotAssigned,
+        setPedometerPaginationPageNotAssigned,
       }}
     >
       {children}
