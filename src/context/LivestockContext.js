@@ -68,7 +68,6 @@ export const LivestockContextProvider = ({ children }) => {
   const [pageCount, setPageCount] = useState(1);
   const pageLimit = 10;
 
-
   const getPagination = (status) => {
     const label = status?.toString()?.toLowerCase();
     if (label === "safe") return paginationSafe;
@@ -79,7 +78,7 @@ export const LivestockContextProvider = ({ children }) => {
   const getAllLivestock = (status) => {
     const pag = getPagination(status);
     setOpenBackdropLoader(true);
-    const stat = status?.toString()?.length?`status=${status}`:``
+    const stat = status?.toString()?.length ? `status=${status}` : ``;
     request({
       url: `/liveStock/getAll?page=${pag}&limit=${10}&${stat}`,
     })
@@ -147,7 +146,16 @@ export const LivestockContextProvider = ({ children }) => {
     setOpenAddLivestockModal(true);
   };
   // handle livestock modal close
-  const handleLivestockModalClose = () => setOpenAddLivestockModal(false);
+  const handleLivestockModalClose = () => {
+    setOpenAddLivestockModal(false);
+    setAddNewLivestock({
+      collarUID: "",
+      pedometerUID: "",
+      livestockUID: "",
+      livestockName: "",
+      livestockGender: "",
+    });
+  };
 
   //HANDLE LIVESTOCK DELETE
   const handleLivestockDelete = async (livestockId, isCollarAssign) => {

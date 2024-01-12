@@ -16,7 +16,6 @@ export const request = async ({ ...options }) => {
       localStorage.removeItem("userData");
       localStorage.removeItem("geofenceCreation");
       localStorage.removeItem("currentTab");
-      // window.location.reload();
     } else {
       return error;
     }

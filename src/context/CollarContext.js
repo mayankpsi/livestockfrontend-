@@ -53,7 +53,10 @@ export const CollarContextProvider = ({ children }) => {
   ] = useState(1);
 
   //HANDLE COLLAR MODAL CLOSE
-  const handleCollarModalClose = () => setOpenAddCollarModal(false);
+  const handleCollarModalClose = () => {
+    setOpenAddCollarModal(false);
+    setNewCollar({ collarUID: "", collarName: "", collarMacId: "" });
+  };
 
   //SNACKBAR ALERT
   const [snackbarAlert, setSnackbarAlert] = useState({
