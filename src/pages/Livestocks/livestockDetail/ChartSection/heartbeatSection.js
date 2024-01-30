@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import { useEffect } from "react";
-import { TableV2, ExportAsCSV, TabPaneV2, CustomPagination, NoData, Spinner } from "../../../../ComponentsV2";
+import { TableV2, ExportAsCSV, TabPaneV2, CustomPagination, NoData, Spinner, TableSkeleton } from "../../../../ComponentsV2";
 import HeartBeatChart from "../HealthCharts/HeartbeatChart";
 import HealthChartsModalContent from "../HealthCharts/HealthChartsModalContent";
 import { TypographySecondary } from "../../../../ComponentsV2/themeComponents";
@@ -87,9 +87,10 @@ const HeartbeatSection = ({thresholds}) => {
           } out of ${logsDataLength} Logs`}</TypographySecondary>
         </Box>
         {loading ? (
-          <Stack height={"600px"}>
-            <Spinner />
-          </Stack>
+           <TableSkeleton
+              rowNumber={new Array(10).fill(0)}
+              tableCell={new Array(3).fill("33%")}
+            />
         ) : logsDataLength ? (
           <Box>
             <TableV2

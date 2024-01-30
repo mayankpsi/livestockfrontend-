@@ -1,10 +1,8 @@
 import {
   Area,
-  Bar,
   CartesianGrid,
   ComposedChart,
   Legend,
-  Line,
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
@@ -36,6 +34,7 @@ function RuminationChart({
     background: "#fff",
   };
   const getData = chartData;
+
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
@@ -69,9 +68,7 @@ function RuminationChart({
             unit=" mins"
           />
           <CartesianGrid strokeDasharray="4" />
-          <Tooltip
-            contentStyle={{ backgroundColor: colors.background }}
-          />
+          <Tooltip contentStyle={{ backgroundColor: colors.background }} />
           <Legend
             align="left"
             verticalAlign="top"

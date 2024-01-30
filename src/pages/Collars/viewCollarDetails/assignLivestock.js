@@ -1,5 +1,5 @@
 import { Box, Stack } from "@mui/material";
-import { AddBtn, CustomModal, Spinner } from "../../../ComponentsV2";
+import { AddBtn, CustomModal, Skeleton, Spinner } from "../../../ComponentsV2";
 import ShowLivestocks from "./showLivestocks";
 import LivestockInfo from "./livestockInfo";
 import useLivestockContext from "../../../hooks/useLivestockContext";
@@ -23,7 +23,7 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
     setOpenAddLivestockModal,
     setOpenBackdropLoader,
   } = useLivestockContext();
-  const { openSnackbarAlert, getAllDevices } = useCollarContext();
+  const { openSnackbarAlert, getAllDevices, openBackdropLoader:firstLoadingLoader} = useCollarContext();
 
   useEffect(() => {
     if (query || isInputChange) {
@@ -121,30 +121,34 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
 
   return (
     <Box py={4}>
-      {data?.Uid ? (
-        <Stack sx={{ width: { lg: "55%", md: "100%" } }}>
-          <LivestockInfo
-            data={data}
-            btnText="remove"
-            btnBgColor="#FF0505"
-            loading={loading}
-            btnIcon={
-              loading ? (
-                <Spinner sx={{ mr: 1 }} size={20} color={"#fff"} />
-              ) : null
-            }
-            onBtnClick={handelLivestockRemove}
-          />
-        </Stack>
+      {!firstLoadingLoader ? (
+        data?.Uid ? (
+          <Stack sx={{ width: { lg: "55%", md: "100%" } }}>
+            <LivestockInfo
+              data={data}
+              btnText="remove"
+              btnBgColor="#FF0505"
+              loading={loading}
+              btnIcon={
+                loading ? (
+                  <Spinner sx={{ mr: 1 }} size={20} color={"#fff"} />
+                ) : null
+              }
+              onBtnClick={handelLivestockRemove}
+            />
+          </Stack>
+        ) : (
+          <Stack direction={"row"} gap={4} py={4}>
+            <AddBtn
+              text1="livestock"
+              text2="collar"
+              loading={!openAddLiveStockModal && loading}
+              onClick={() => getUnassignLivestock()}
+            />
+          </Stack>
+        )
       ) : (
-        <Stack direction={"row"} gap={4} py={4}>
-          <AddBtn
-            text1="livestock"
-            text2="collar"
-            loading={!openAddLiveStockModal && loading}
-            onClick={() => getUnassignLivestock()}
-          />
-        </Stack>
+        <Skeleton width="43vw" height="60vh" sx={{background:"#F7F8FD"}}/>
       )}
 
       <CustomModal

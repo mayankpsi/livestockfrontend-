@@ -6,6 +6,7 @@ import {
   CustomPagination,
   NoData,
   ExportAsCSV,
+  TableSkeleton,
 } from "../../../ComponentsV2";
 import useCollarContext from "../../../hooks/useCollarContext";
 import { request } from "../../../apis/axios-utils";
@@ -26,7 +27,7 @@ const CollarLogs = () => {
     },
   ]);
 
-  const { setOpenBackdropLoader, openSnackbarAlert } = useCollarContext();
+  const { setOpenBackdropLoader, openSnackbarAlert, openBackdropLoader } = useCollarContext();
   const { formattedDate, paginationDateFormat } = useDateFormat();
   const { getErrorMessage } = useErrorMessage();
 
@@ -72,7 +73,6 @@ const CollarLogs = () => {
     return res || [];
   };
 
-
   return (
     <Box>
       <Stack sx={{ width: "100%", pb: 3 }}>
@@ -99,7 +99,12 @@ const CollarLogs = () => {
             setSelectedDate={setSelectedDate}
           />
         </Stack>
-        {collarLogsDataLength > 0 ? (
+        {openBackdropLoader ? (
+          <TableSkeleton
+            rowNumber={new Array(10).fill(0)}
+            tableCell={new Array(3).fill("25%")}
+          />
+        ) : collarLogsDataLength > 0 ? (
           <Stack direction={"column"} gap={3}>
             <TableV2
               tableHeadData={tableHeaders}

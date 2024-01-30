@@ -1,5 +1,10 @@
 import { Box, Stack } from "@mui/material";
-import { CustomPagination, CustomTable, NoData } from "../../ComponentsV2";
+import {
+  CustomPagination,
+  CustomTable,
+  NoData,
+  TableSkeleton,
+} from "../../ComponentsV2";
 import useLivestockContext from "../../hooks/useLivestockContext";
 import { showLivestockTableHeadData } from "./Data";
 import { useEffect } from "react";
@@ -16,6 +21,7 @@ const ShowLivestocks = ({ show }) => {
     setPaginationUnsafe,
     addNewLivestockLoading,
     getAllLivestock,
+    openBackdropLoader,
   } = useLivestockContext();
 
   const activePag = (status) => {
@@ -35,12 +41,21 @@ const ShowLivestocks = ({ show }) => {
   };
   return (
     <Box my={4}>
-      <CustomTable
-        headBackgroundColor="#B58B5D"
-        tableHeadData={showLivestockTableHeadData}
-        tableRowData={livestockFiltering()}
-      />
-      {livestockFiltering()?.length ? (
+      {openBackdropLoader ? (
+        <TableSkeleton
+          rowNumber={new Array(10).fill(0)}
+          tableCell={new Array(7).fill("12%")}
+          actions={new Array(2).fill(0)}
+        />
+      ) : (
+        <CustomTable
+          headBackgroundColor="#B58B5D"
+          tableHeadData={showLivestockTableHeadData}
+          tableRowData={livestockFiltering()}
+        />
+      )}
+
+      {!openBackdropLoader && livestockFiltering()?.length ? (
         livestockDataLength > 10 && (
           <Stack direction="row" justifyContent="center" p={2}>
             <CustomPagination
@@ -51,9 +66,11 @@ const ShowLivestocks = ({ show }) => {
             />
           </Stack>
         )
-      ) : (
-        <NoData />
-      )}
+      ) : openBackdropLoader ? (
+        <Stack sx={{ pt: 10 }}>
+          <NoData />
+        </Stack>
+      ) : null}
     </Box>
   );
 };

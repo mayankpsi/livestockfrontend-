@@ -7,6 +7,7 @@ import {
   CustomPagination,
   Spinner,
   NoData,
+  TableSkeleton,
 } from "../../../../ComponentsV2";
 import TemperatureChart from "../HealthCharts/TemperatureChart";
 import HealthChartsModalContent from "../HealthCharts/HealthChartsModalContent";
@@ -19,7 +20,7 @@ import {
   logsTableHeadData,
 } from "./dataFormats";
 
-const TemperatureSection = ({thresholds}) => {
+const TemperatureSection = ({ thresholds }) => {
   const { id } = useParams();
   const {
     getLogs,
@@ -34,7 +35,7 @@ const TemperatureSection = ({thresholds}) => {
     activeTab,
     healthChartData: chartData,
   } = useLivestockHealthContext();
-  
+
   //DESTRUCTING LOGS DATA
   const { logsData, logsDataLength, pagination, loading } = healthLogData;
 
@@ -45,7 +46,6 @@ const TemperatureSection = ({thresholds}) => {
   useEffect(() => {
     getChartData(id);
   }, [id, singleSelectedDate, activeTab]);
-
 
   return (
     <Stack width="100%" direction={"column"} gap={5}>
@@ -60,7 +60,11 @@ const TemperatureSection = ({thresholds}) => {
               <Spinner />
             </Stack>
           ) : (
-            <TemperatureChart thresholds={thresholds} data={chartData} height={500} />
+            <TemperatureChart
+              thresholds={thresholds}
+              data={chartData}
+              height={500}
+            />
           )}
         </HealthChartsModalContent>
       </Stack>
@@ -97,16 +101,21 @@ const TemperatureSection = ({thresholds}) => {
           } out of ${logsDataLength} Logs`}</TypographySecondary>
         </Box>
         {loading ? (
-          <Stack height={"600px"}>
-            <Spinner />
-          </Stack>
+            <TableSkeleton
+              rowNumber={new Array(10).fill(0)}
+              tableCell={new Array(3).fill("33%")}
+            />
         ) : logsDataLength ? (
           <Box>
             <TableV2
               btnColor="#fff"
               btnBg="#B58B5D"
               tableHeadData={logsTableHeadData}
-              tableRowData={getFormattedHealthLogsData(logsData, "temperature"," °F")}
+              tableRowData={getFormattedHealthLogsData(
+                logsData,
+                "temperature",
+                " °F"
+              )}
             />
             {logsDataLength > 10 ? (
               <Stack direction="row" justifyContent="center" pt={3}>
@@ -119,7 +128,9 @@ const TemperatureSection = ({thresholds}) => {
               </Stack>
             ) : null}
           </Box>
-        ) :  <NoData/>}
+        ) : (
+          <NoData />
+        )}
       </Stack>
     </Stack>
   );

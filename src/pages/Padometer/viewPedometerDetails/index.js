@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminUIContainer from "../../../layout/AdminUIContainer";
-import { CustomTabs, BackdropLoader } from "../../../ComponentsV2";
+import { CustomTabs, BackdropLoader, Skeleton} from "../../../ComponentsV2";
 import { Container } from "@mui/material";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import { useParams } from "react-router-dom";
@@ -30,6 +30,7 @@ const ViewPedometerDetails = () => {
   } = useCollarContext();
 
   useEffect(() => {
+    setOpenBackdropLoader(true)
     request({ url: `/devices/getDeviceByID?deviceID=${id}`})
       .then((res) => {
         const { data } = res?.data;
@@ -65,10 +66,16 @@ const ViewPedometerDetails = () => {
       BreadcrumbData={viewCollarDetailsBreadcrumbData(data)}
     >
       <Container maxWidth="xl" sx={{ marginTop: 8, pb: 5 }}>
-        <BackdropLoader open={openBackdropLoader} />
-        <TypographyPrimary sx={{ textTransform: "capitalize", fontSize: 21 }}>
+        {/* <BackdropLoader open={openBackdropLoader} /> */}
+        {
+          openBackdropLoader?(
+            <Skeleton width="77.5vw" height={'65px'} sx={{background:"#F7F8FD"}}/>
+          ):(
+            <TypographyPrimary sx={{ textTransform: "capitalize", fontSize: 21 }}>
           {data?.collarUid}
         </TypographyPrimary>
+          )
+        }
         <CustomTabs tabData={viewCollarDetailTabData(data, loading, setLoading)} />
       </Container>
     </AdminUIContainer>

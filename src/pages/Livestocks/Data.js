@@ -12,6 +12,8 @@ import {
   LiveStockRumination,
   Steps,
   Rumination,
+  LiveStockActivity,
+  LiveStockTemperature,
 } from "../../assets";
 import TemperatureChart from "./livestockDetail/HealthCharts/TemperatureChart";
 import HeartBeatChart from "./livestockDetail/HealthCharts/HeartbeatChart";
@@ -144,15 +146,13 @@ export const chartCardData = [
     label: "temperature",
     value: "101",
     icon: (
-      <ThermostatIcon
-        sx={{ fontSize: "3.5rem", color: "rgba(253, 55, 48,1)" }}
-      />
+      <Box sx={{ width: "4rem" }} component="img" src={LiveStockTemperature} />
     ),
     valueColor: "color-success--dark",
     suffix: " °F",
     colors: {
-      main: "rgba(255, 0, 0, 1)",
-      bg: "rgba(255, 0, 0, 0.04)",
+      main: "rgba(96, 174, 218, 1)",
+      bg: "rgba(96, 174, 218, 0.25)",
     },
     createdAt: "10:59 PM, 23/08/23",
   },
@@ -165,7 +165,7 @@ export const chartCardData = [
       />
     ),
     valueColor: "color-success--dark",
-    suffix: "/min",
+    suffix: " Bpm",
     colors: {
       main: "rgba(253, 55, 48, 1)",
       bg: "rgba(253, 55, 48, 0.25)",
@@ -187,12 +187,14 @@ export const chartCardData = [
   {
     label: "activity",
     value: "52",
-    icon: <Box sx={{ width: "4rem" }} component="img" src={Steps} />,
+    icon: (
+      <Box sx={{ width: "4rem" }} component="img" src={LiveStockActivity} />
+    ),
     valueColor: "color-success--dark",
     suffix: " min",
     colors: {
-      main: "rgba(215, 127, 74, 1)",
-      bg: "rgba(215, 127, 74, 0.25)",
+      main: "rgba(104, 202, 68, 1)",
+      bg: "rgba(104, 202, 68, 0.25)",
     },
     createdAt: "10:59 PM, 23/08/23",
   },
@@ -203,7 +205,7 @@ export const chartCardData = [
     valueColor: "color-success--dark",
     suffix: " hr",
     colors: {
-      main: "rgba(68, 75, 84, 0.25)",
+      main: "rgba(68, 75, 84, 1)",
       bg: "rgba(68, 75, 84, 0.25)",
     },
     createdAt: "10:59 PM, 23/08/23",

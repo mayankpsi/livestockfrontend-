@@ -1,6 +1,12 @@
 import { Box, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { TabPane, CustomInput, StatusCard, Spinner } from "../../../ComponentsV2";
+import {
+  TabPane,
+  CustomInput,
+  StatusCard,
+  Spinner,
+  Skeleton,
+} from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
@@ -17,8 +23,9 @@ const Overview = ({ data }) => {
     collarInfoEdit,
     setCollarInfoEdit,
     isEditCollarInfo,
-    loading
+    loading,
   } = useDeviceDetailContext();
+  const { openBackdropLoader } = useCollarContext();
 
   const { isError } = useCollarContext();
   const { getCamelCase } = useGetCamelCase();
@@ -58,104 +65,118 @@ const Overview = ({ data }) => {
   return (
     <form onSubmit={handleSubmit(onCollarEdit)}>
       <Stack my={4} direction="row" justifyContent="space-between">
-        <Stack
-          sx={{
-            width: "55%",
-            background: "#F7F8FD",
-            p: 2,
-            borderRadius: "10px",
-          }}
-        >
-          <Box px={1.5}>
-            <TabPane
-              text="Collar Information"
-              btnText={isEditCollarInfo ? "Save" : "Edit"}
-              loading={loading}
-              btnIcon={loading?<Spinner sx={{ mr: 1 }} size={20} color={"#fff"} /> :false}
-              hover={true}
-              type="submit"
-            />
-          </Box>
-          <Stack>
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "space-between",
-                mt: 1,
-              }}
-            >
-              <CustomInput
-                disabled={!isEditCollarInfo}
-                label="collar UID"
-                register={register}
-                errors={errors}
-                value={collarInfoEdit?.collarUID}
-                name="collarUID"
-                isError={isError}
-                onChange={handleCollarInfoEditChange}
-              />
-              <CustomInput
-                disabled={!isEditCollarInfo}
-                label="collar name"
-                register={register}
-                errors={errors}
-                value={collarInfoEdit?.collarName}
-                name="collarName"
-                onChange={handleCollarInfoEditChange}
+        {openBackdropLoader ? (
+          <Skeleton width="42vw" height={"245px"} sx={{background:"#F7F8FD"}}/>
+        ) : (
+          <Stack
+            sx={{
+              width: "55%",
+              background: "#F7F8FD",
+              p: 2,
+              borderRadius: "10px",
+            }}
+          >
+            <Box px={1.5}>
+              <TabPane
+                text="Collar Information"
+                btnText={isEditCollarInfo ? "Save" : "Edit"}
+                loading={loading}
+                btnIcon={
+                  loading ? (
+                    <Spinner sx={{ mr: 1 }} size={20} color={"#fff"} />
+                  ) : (
+                    false
+                  )
+                }
+                hover={true}
+                type="submit"
               />
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "space-between",
-              }}
-            >
-              <CustomInput
-                disabled={!isEditCollarInfo}
-                label="collar MAC ID"
-                register={register}
-                errors={errors}
-                value={collarInfoEdit?.collarMacId}
-                name="collarMacId"
-                onChange={handleCollarInfoEditChange}
-              />
-            </Box>
-          </Stack>
-        </Stack>
-        <Box
-          sx={{
-            width: "43%",
-            background: "#F7F8FD",
-            p: 2,
-            borderRadius: "10px",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <TypographyPrimary>Collar status</TypographyPrimary>
-          <Stack direction="column" gap={1}>
-            {statusCardData
-              ?.filter(
-                (ele) => !ele?.text?.toLowerCase()?.includes("pedometer")
-              )
-              ?.map((ele) => ({
-                ...ele,
-                status: data ? `${data[getCamelCase(ele?.text)]}` : "",
-                statusColor: getStatus(ele, data),
-              }))
-              .map((card) => (
-                <StatusCard
-                  key={card.text}
-                  text={card.text}
-                  status={card.status}
-                  icon={card.icon}
-                  statusColor={card.statusColor}
-                  suffix={card.suffix}
+            <Stack>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "space-between",
+                  mt: 1,
+                }}
+              >
+                <CustomInput
+                  disabled={!isEditCollarInfo}
+                  label="collar UID"
+                  register={register}
+                  errors={errors}
+                  value={collarInfoEdit?.collarUID}
+                  name="collarUID"
+                  isError={isError}
+                  onChange={handleCollarInfoEditChange}
                 />
-              ))}
+                <CustomInput
+                  disabled={!isEditCollarInfo}
+                  label="collar name"
+                  register={register}
+                  errors={errors}
+                  value={collarInfoEdit?.collarName}
+                  name="collarName"
+                  onChange={handleCollarInfoEditChange}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <CustomInput
+                  disabled={!isEditCollarInfo}
+                  label="collar MAC ID"
+                  register={register}
+                  errors={errors}
+                  value={collarInfoEdit?.collarMacId}
+                  name="collarMacId"
+                  onChange={handleCollarInfoEditChange}
+                />
+              </Box>
+            </Stack>
           </Stack>
-        </Box>
+        )}
+        {openBackdropLoader ? (
+          <Skeleton width="33vw" height={"245px"} sx={{background:"#F7F8FD"}}/>
+        ) : (
+          <Box
+            sx={{
+              width: "43%",
+              background: "#F7F8FD",
+              p: 2,
+              borderRadius: "10px",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <TypographyPrimary>Collar status</TypographyPrimary>
+            <Stack direction="column" gap={1}>
+              {statusCardData
+                ?.filter(
+                  (ele) => !ele?.text?.toLowerCase()?.includes("pedometer")
+                )
+                ?.map((ele) => ({
+                  ...ele,
+                  status: data ? `${data[getCamelCase(ele?.text)]}` : "",
+                  statusColor: getStatus(ele, data),
+                }))
+                .map((card) => (
+                  <StatusCard
+                    key={card.text}
+                    text={card.text}
+                    status={card.status}
+                    icon={card.icon}
+                    statusColor={card.statusColor}
+                    suffix={card.suffix}
+                  />
+                ))}
+            </Stack>
+          </Box>
+        )}
       </Stack>
     </form>
   );

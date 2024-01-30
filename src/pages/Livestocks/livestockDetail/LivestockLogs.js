@@ -6,6 +6,7 @@ import {
   CustomPagination,
   NoData,
   ExportAsCSV,
+  TableSkeleton,
 } from "../../../ComponentsV2";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import useDateFormat from "../../../hooks/useDateFormat";
@@ -16,12 +17,13 @@ import useErrorMessage from "../../../hooks/useErrorMessage";
 
 const LivestockLogs = ({ livestockData }) => {
   const tableHeaders = ["name", "value", "time"];
-  const {getErrorMessage} = useErrorMessage()
+  const { getErrorMessage } = useErrorMessage();
 
   const {
     selectedDate,
     setSelectedDate,
     openSnackbarAlert,
+    openBackdropLoader,
     setOpenBackdropLoader,
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate } = useDateFormat();
@@ -68,7 +70,7 @@ const LivestockLogs = ({ livestockData }) => {
             setDataLength(data?.dataLength);
             setPageCount(data?.pageCount);
           } else {
-            const msg = getErrorMessage(res)
+            const msg = getErrorMessage(res);
             setLivestockLogs([]);
             setDataLength(0);
             setPageCount(1);
@@ -123,9 +125,13 @@ const LivestockLogs = ({ livestockData }) => {
             setSelectedDate={setSelectedDate}
           />
         </Stack>
-        {
-          dataLength?(
-            <TableV2
+        {openBackdropLoader ? (
+          <TableSkeleton
+            rowNumber={new Array(10).fill(0)}
+            tableCell={new Array(3).fill("28")}
+          />
+        ) : dataLength ? (
+          <TableV2
             tableHeadData={tableHeaders}
             tableRowData={livestockLogs?.map((ele) => ({
               name: ele?.name,
@@ -145,11 +151,9 @@ const LivestockLogs = ({ livestockData }) => {
             }))}
             logs={livestockLogs}
           />
-          ):null
-        }
-       
+        ) : null}
       </Stack>
-      {livestockLogs?.length ? (
+      {!openBackdropLoader && livestockLogs?.length ? (
         dataLength > 10 && (
           <Stack direction="row" justifyContent="center">
             <CustomPagination

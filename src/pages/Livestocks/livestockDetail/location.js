@@ -8,6 +8,7 @@ import {
   TabPaneV2,
   CustomPagination,
   NoData,
+  TableSkeleton,
 } from "../../../ComponentsV2";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 import { request } from "../../../apis/axios-utils";
@@ -15,6 +16,7 @@ import useDateFormat from "../../../hooks/useDateFormat";
 import useUserId from "../../../hooks/useUserId";
 import { locationTableHeadData, locationBtnData } from "../Data";
 import useErrorMessage from "../../../hooks/useErrorMessage";
+import { SignalCellularNull } from "@mui/icons-material";
 
 const Location = ({ data }) => {
   const {
@@ -29,6 +31,7 @@ const Location = ({ data }) => {
     pageLimit,
     setOpenBackdropLoader,
     openSnackbarAlert,
+    openBackDropLoader
   } = useLivestockContext();
   const { paginationDateFormat, formattedDate} =
     useDateFormat();
@@ -201,21 +204,29 @@ const Location = ({ data }) => {
               setSelectedDate={setSelectedDate}
             />
           </Stack>
-          {locationAlertsData?.length ? (
-            <TableV2
-              paneText="activity log"
-              paneTextColor="#B58B5D"
-              isBtn={true}
-              datePicker
-              btnText="Export"
-              btnColor="#fff"
-              btnBg="#B58B5D"
-              tableHeadData={locationTableHeadData}
-              tableRowData={locationAlertsData}
-              tableColors={tableColors}
-            />
-          ) : null}
-
+          {
+          openBackDropLoader?(
+            <TableSkeleton
+            rowNumber={new Array(10).fill(0)}
+            tableCell={new Array(4).fill("20%")}
+          />
+          ):(
+            locationAlertsData?.length ? (
+              <TableV2
+                paneText="activity log"
+                paneTextColor="#B58B5D"
+                isBtn={true}
+                datePicker
+                btnText="Export"
+                btnColor="#fff"
+                btnBg="#B58B5D"
+                tableHeadData={locationTableHeadData}
+                tableRowData={locationAlertsData}
+                tableColors={tableColors}
+              />
+            ) : null
+          )
+          }
           {locationAlertsData?.length ? (
             pageCount > 1 ? (
               <Stack direction="row" justifyContent="center" mt={5}>

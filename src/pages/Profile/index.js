@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AdminUIContainer from "../../layout/AdminUIContainer";
-import { BtnGroup, BackdropLoader} from "../../ComponentsV2";
+import { BtnGroup, BackdropLoader } from "../../ComponentsV2";
 import { Container, Stack } from "@mui/material";
 import ShowProfile from "./showProfile";
 import ProfileSecurity from "./profileSecurity";
@@ -29,7 +29,7 @@ const ProfilePage = () => {
     handleConfirmAccountDelete,
     snackbarAlert,
     onSnackbarAlertClose,
-    openBackdropLoader
+    openBackdropLoader,
   } = useProfileContext();
 
   return (
@@ -44,8 +44,8 @@ const ProfilePage = () => {
       closeAlert={onSnackbarAlertClose}
       BreadcrumbData={BreadcrumbData}
     >
-      <Container maxWidth="xl" sx={{ marginTop: 8,pb:5 }}>
-      <BackdropLoader open={openBackdropLoader} />
+      <Container maxWidth="xl" sx={{ marginTop: 8, pb: 5 }}>
+        {/* <BackdropLoader open={openBackdropLoader} /> */}
         <Stack direction="column" alignItems={"center"}>
           <BtnGroup
             btnData={btnData}

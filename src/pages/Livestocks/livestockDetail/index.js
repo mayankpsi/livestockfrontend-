@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AdminUIContainer from "../../../layout/AdminUIContainer";
-import { CustomTabs, BackdropLoader } from "../../../ComponentsV2";
+import { CustomTabs, BackdropLoader, Skeleton } from "../../../ComponentsV2";
 import { Container } from "@mui/material";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import { useParams } from "react-router-dom";
@@ -33,6 +33,7 @@ const LivestockDetails = () => {
   } = useLivestockContext();
   const { formattedDate } = useDateFormat();
   const [collarLoading, setCollarLoading] = useState(false);
+  const [livestockEditLoading,setLivestockEditLoading ] = useState(false)
   const [pedometerLoading, setPedometerLoading] = useState(false);
   const [alertsThreshold, setAlertsThreshold] = useState([]);
   const { id } = useParams();
@@ -56,7 +57,7 @@ const LivestockDetails = () => {
             rumination: data?.rumination,
             lastUpdate: formattedDate(data?.updatedAt),
             lastUpdateGeoFenceDependent: formattedDate(
-              data?.livestockLocationStatusTime
+              data?.livestockLocationStatusTime || data?.createdAt
             ),
             lastUpdateDeviceDependent: formattedDate(
               data?.livestockLocationStatusTime
@@ -88,12 +89,12 @@ const LivestockDetails = () => {
       .finally(() => {
         setOpenBackdropLoader(false);
       });
-  }, [collarLoading, pedometerLoading]);
+  }, [collarLoading, pedometerLoading, livestockEditLoading]);
 
   const tabData = [
     {
       label: "overview",
-      child: <Overview data={data} />,
+      child: <Overview data={data} setLivestockEditLoading={setLivestockEditLoading}/>,
     },
     {
       label: "location",
@@ -159,8 +160,19 @@ const LivestockDetails = () => {
       BreadcrumbData={BreadcrumbData}
     >
       <Container maxWidth="xl" sx={{ marginTop: 8, pb: 5 }}>
-        <BackdropLoader open={openBackdropLoader} />
-        <TypographyPrimary sx={{ fontSize: 21 }}>{data?.Uid}</TypographyPrimary>
+        {/* <BackdropLoader open={openBackdropLoader} /> */}
+        {openBackdropLoader ? (
+          <Skeleton
+            width="77.5vw"
+            height={"59px"}
+            sx={{ background: "#F7F8FD" }}
+          />
+        ) : (
+          <TypographyPrimary sx={{ fontSize: 21 }}>
+            {data?.Uid}
+          </TypographyPrimary>
+        )}
+
         <CustomTabs tabData={tabData} />
       </Container>
     </AdminUIContainer>

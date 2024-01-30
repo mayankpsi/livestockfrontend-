@@ -10,7 +10,14 @@ import { genderData } from "../../Data";
 import useFormattedImage from "../../../hooks/useFormatedImage";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 
-const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
+const LivestockInfo = ({
+  data,
+  btnText,
+  btnBgColor,
+  onBtnClick,
+  loading,
+  setLivestockEditLoading,
+}) => {
   const { getLivestockImg } = useFormattedImage();
   const { getErrorMessage } = useErrorMessage();
   const { setLiveStockImage, liveStockImage } = useLivestockContext();
@@ -76,6 +83,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
         } else {
           formData.append("imageChanges", false);
         }
+        setLivestockEditLoading(true);
         try {
           const res = await request({
             url: `/liveStock/update`,
@@ -103,6 +111,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
           openSnackbarAlert("error", err.message);
         } finally {
           setLoader(false);
+          setLivestockEditLoading(false);
         }
       }
     }

@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Box, Stack } from "@mui/material";
-import { GetMap, CustomTable, NoData } from "../../ComponentsV2";
+import {
+  GetMap,
+  CustomTable,
+  NoData,
+  Skeleton,
+  TableSkeleton,
+} from "../../ComponentsV2";
 import useMapContext from "../../hooks/useMapContext";
 import { request } from "../../apis/axios-utils";
 import useErrorMessage from "../../hooks/useErrorMessage";
 
 const LiveLocation = () => {
   const [getLivestockStatus, setGetLivestockStatus] = useState([]);
+  const [tableLoading, setTableLoading] = useState(false);
 
-  const { geofenceCoordinates } = useMapContext();
+  const { geofenceCoordinates, openBackdropLoader } = useMapContext();
   const { getErrorMessage } = useErrorMessage();
 
   useEffect(() => {
+    setTableLoading(true);
     request({ url: "/liveStock/safeUnsafeLiveStock" })
       .then((res) => {
         if (res?.status === 200) {
@@ -22,6 +30,9 @@ const LiveLocation = () => {
       })
       .catch((err) => {
         // alert(err.message)
+      })
+      .finally(() => {
+        setTableLoading(false);
       });
   }, []);
 
@@ -39,23 +50,42 @@ const LiveLocation = () => {
         justifyContent="space-between"
         sx={{ width: "100%", marginTop: 3 }}
       >
-        <GetMap
-          mapWidth="100%"
-          mapHeight="500px"
-          geofenceCoordinates={geofenceCoordinates}
-          isLivestocks={true}
-          livestockData={getLivestockStatus?.map((ele) => ({
-            id: ele?._id,
-            safeUnsafeStatus: ele?.liveStocklocationStatus,
-            position: {
-              lat: ele?.geolocation?.lat,
-              lng: ele?.geolocation?.lng,
-            },
-          }))}
-        />
+        {openBackdropLoader ? (
+          <Skeleton
+            height={"500px"}
+            width={"77.5vw"}
+            sx={{
+              background: "#eee",
+            }}
+          />
+        ) : (
+          <GetMap
+            mapWidth="100%"
+            mapHeight="500px"
+            geofenceCoordinates={geofenceCoordinates}
+            isLivestocks={true}
+            livestockData={getLivestockStatus?.map((ele) => ({
+              id: ele?._id,
+              safeUnsafeStatus: ele?.liveStocklocationStatus,
+              position: {
+                lat: ele?.geolocation?.lat,
+                lng: ele?.geolocation?.lng,
+              },
+            }))}
+          />
+        )}
       </Stack>
-      {getLivestockStatus?.length ? (
-        <Stack direction="row" justifyContent="space-between" gap={5}>
+
+      <Stack direction="row" justifyContent="space-between" gap={5}>
+        {tableLoading ? (
+          <Box sx={{ margin: "20px 0", width: "100%" }}>
+            <TableSkeleton
+              rowNumber={new Array(1).fill(0)}
+              tableCell={new Array(3).fill("33.33%")}
+              showOption={[]}
+            />
+          </Box>
+        ) : (
           <Box sx={{ margin: "20px 0", width: "100%" }}>
             <CustomTable
               headBackgroundColor="#347D00"
@@ -73,6 +103,17 @@ const LiveLocation = () => {
               <NoData />
             )}
           </Box>
+        )}
+
+        {tableLoading ? (
+          <Box sx={{ margin: "20px 0", width: "100%" }}>
+            <TableSkeleton
+              rowNumber={new Array(1).fill(0)}
+              tableCell={new Array(3).fill("33.33%")}
+              showOption={[]}
+            />
+          </Box>
+        ) : (
           <Box sx={{ margin: "20px 0", width: "100%" }}>
             <CustomTable
               headBackgroundColor="#FF0505"
@@ -90,8 +131,8 @@ const LiveLocation = () => {
               <NoData />
             )}
           </Box>
-        </Stack>
-      ) : null}
+        )}
+      </Stack>
     </>
   );
 };

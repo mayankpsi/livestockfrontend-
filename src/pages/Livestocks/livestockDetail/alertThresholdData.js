@@ -3,7 +3,7 @@ export const alertsThresholdData = [
     id: 1,
     suffix: "F",
     label: "temperature",
-    value:  {
+    value: {
       low: 100,
       high: 104,
     },
@@ -11,9 +11,9 @@ export const alertsThresholdData = [
   },
   {
     id: 2,
-    suffix: "/min",
+    suffix: " Bpm",
     label: "heartBeat",
-    value:  {
+    value: {
       low: 100,
       high: 104,
     },
@@ -23,7 +23,7 @@ export const alertsThresholdData = [
     id: 3,
     suffix: "/Day",
     label: "steps",
-    value:  {
+    value: {
       low: 100,
       high: 104,
     },
@@ -33,7 +33,7 @@ export const alertsThresholdData = [
     id: 4,
     suffix: "/day",
     label: "activity",
-    value:  {
+    value: {
       low: 2,
       high: 12,
     },
@@ -43,7 +43,7 @@ export const alertsThresholdData = [
     id: 5,
     suffix: "min/Day",
     label: "rumination",
-    value:  {
+    value: {
       low: 100,
       high: 104,
     },

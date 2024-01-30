@@ -233,7 +233,30 @@ export const LivestockContextProvider = ({ children }) => {
     }
   };
 
-  const handleAddLivestockModalClose = () => {
+// Agro
+// set up the multiple role based routing width react router dom
+// well named url, dynamic url setup 
+// set up the reusable component - modal, pagination, buttons, typography with MUI
+// handing the theme of the project at one place with MUI Theme customization 
+// integration g-map and markers, info windows, and shapes validation & geoFence for multiple circles
+// handing all api request at one place with the help of axios interceptors -> help token expiry, error handling, logout
+// Use Context API, Custom hooks, best practices, scalable project structure for state management and scalable code
+
+// Livestock
+// Establish a routing structure, incorporating well-named URLs and dynamic parameters, using the react-router-dom library.
+// Centralize page layout management to ensure consistency across all pages. Reflection of changes throughout the app by modifying a single location
+// Implement reusable components, including modals, pagination, tables, buttons, and typography, utilizing the MUI library to enhance code reusability.
+// centralizing project themes through MUI theme customization, providing a singular point for adjusting fonts, theme colors, and various customizations, reflecting an efficient design management approach.
+// Integrate G-Map and implement GeoFence creation through geometric shapes (mainly circles) utilizing the GMap API.
+// Enable automatic location detection through the Geolocation API
+// Centralizing API request management through Axios interceptors, addressing token expiry, error management, and logout functionalities within a singular locus
+// Leverage the Context API and custom hooks, adhering to best practices and adopting a scalable project structure for state management.
+// Ensuring optimal application performance through the implementation of useMemo and useCallback hooks in relevant contexts and using advanced React patterns to achieve enhanced efficiency in the application architecture
+// recharts
+
+
+
+const handleAddLivestockModalClose = () => {
     handleLivestockModalClose();
     setAddNewLivestock({
       collarUID: "",

@@ -4,7 +4,7 @@ import {
   TypographyPrimary,
 } from "../../../ComponentsV2/themeComponents";
 import { useState, useEffect } from "react";
-import { ChartCard, BtnGroup } from "../../../ComponentsV2";
+import { ChartCard, BtnGroup, Skeleton } from "../../../ComponentsV2";
 import useDateFormat from "../../../hooks/useDateFormat";
 import { chartCardData } from "../Data";
 import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
@@ -47,6 +47,7 @@ const Health = ({ data }) => {
     handleRefreshButton,
     getChartData,
     getLogs,
+    healthDataLoading
   } = useLivestockHealthContext();
   const { cardData, threshold } = healthCardData;
 
@@ -164,7 +165,10 @@ const Health = ({ data }) => {
             valueColor: getAlertStatus(ele),
           }))
           ?.map((ele) => (
-            <ChartCard
+            healthDataLoading?(
+                  <Skeleton width={'19%'} height={'121px'}/>
+            ):(
+              <ChartCard
               label={ele.label}
               value={ele.value}
               icon={ele.icon}
@@ -173,6 +177,8 @@ const Health = ({ data }) => {
               suffix={ele.suffix}
               createdAt={ele?.createdAt}
             />
+            )
+            
           ))}
       </Stack>
       <BtnGroup

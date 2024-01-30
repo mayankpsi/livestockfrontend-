@@ -6,6 +6,7 @@ import {
   CustomPagination,
   NoData,
   ExportAsCSV,
+  TableSkeleton,
 } from "../../../ComponentsV2";
 import useCollarContext from "../../../hooks/useCollarContext";
 import { request } from "../../../apis/axios-utils";
@@ -26,7 +27,8 @@ const CollarLogs = () => {
     },
   ]);
 
-  const { setOpenBackdropLoader, openSnackbarAlert } = useCollarContext();
+  const { openBackdropLoader, setOpenBackdropLoader, openSnackbarAlert } =
+    useCollarContext();
   const { formattedDate, paginationDateFormat } = useDateFormat();
   const { getErrorMessage } = useErrorMessage();
 
@@ -42,7 +44,9 @@ const CollarLogs = () => {
       const res = await request({
         url: `/devices/getDeviceLogs?deviceId=${id}&page=${collarLogsPagination}&limit=10&startDate=${paginationDateFormat(
           selectedDate[0]?.startDate
-        )}&endDate=${paginationDateFormat(selectedDate[0]?.endDate)}&deviceType=collar`,
+        )}&endDate=${paginationDateFormat(
+          selectedDate[0]?.endDate
+        )}&deviceType=collar`,
       });
       if (res.status === 200) {
         const { data: dataV2 } = res?.data;
@@ -106,7 +110,13 @@ const CollarLogs = () => {
             setSelectedDate={setSelectedDate}
           />
         </Stack>
-        {collarLogsDataLength > 0 ? (
+
+        {openBackdropLoader ? (
+          <TableSkeleton
+            rowNumber={new Array(10).fill(0)}
+            tableCell={new Array(3).fill("25%")}
+          />
+        ) : collarLogsDataLength > 0 ? (
           <Stack direction={"column"} gap={3}>
             <TableV2
               tableHeadData={tableHeaders}

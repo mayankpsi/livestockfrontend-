@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MapContentProvider } from "./context/MapPageContext";
@@ -28,6 +27,13 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           fontSize: labelFontSize,
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          fontSize: "50px",
         },
       },
     },

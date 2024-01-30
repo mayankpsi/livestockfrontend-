@@ -6,6 +6,7 @@ import {
   CustomPagination,
   NoData,
   TabPaneV2,
+  TableSkeleton,
 } from "../../ComponentsV2";
 import { Container, IconButton, Stack } from "@mui/material";
 import { TypographyPrimary } from "../../ComponentsV2/themeComponents";
@@ -77,7 +78,7 @@ const AlertsPage = () => {
       BreadcrumbData={BreadcrumbData}
     >
       <Container maxWidth="xl" sx={{ marginTop: 8, pb: 5 }}>
-        <BackdropLoader open={openBackdropLoader} />
+        {/* <BackdropLoader open={openBackdropLoader} /> */}
         <TypographyPrimary sx={{ fontSize: "2rem" }}>Alerts</TypographyPrimary>
         <Stack sx={{ width: "100%", pb: 3 }}>
           <Stack pb={2}>
@@ -109,14 +110,19 @@ const AlertsPage = () => {
               setSelectedDate={setSelectedDate}
             />
           </Stack>
-          {AllAlertData?.length ? (
+          {openBackdropLoader ? (
+            <TableSkeleton
+              rowNumber={new Array(10).fill(0)}
+              tableCell={new Array(3).fill("28")}
+            />
+          ) : AllAlertData?.length ? (
             <TableV2
               tableHeadData={tableHeadData}
               tableRowData={getTableFormattedData(AllAlertData)}
             />
           ) : null}
         </Stack>
-        {AllAlertData?.length ? (
+        {!openBackdropLoader && AllAlertData?.length ? (
           alertsDataLength > 10 && (
             <Stack direction="row" justifyContent="center">
               <CustomPagination

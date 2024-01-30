@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Stack } from "@mui/material";
-import { AddBtn, CustomModal } from "../../../ComponentsV2";
+import { AddBtn, CustomModal, Skeleton } from "../../../ComponentsV2";
 import ShowLivestocks from "../../Collars/viewCollarDetails/showLivestocks";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
@@ -24,7 +24,8 @@ const CollarInfo = ({
   const [choseDevice, setChoseDevice] = useState("");
   const [isInputChange, setIsInputChange] = useState(false);
   const [query, setQuery] = useState("");
-  const { openSnackbarAlert, getAllLivestock } = useLivestockContext();
+  const { openSnackbarAlert, getAllLivestock, openBackdropLoader } =
+    useLivestockContext();
   const { getErrorMessage } = useErrorMessage();
 
   useEffect(() => {
@@ -121,7 +122,8 @@ const CollarInfo = ({
       });
       if (res.status === 200) {
         const msg = `${
-          choseDevice?.charAt(0).toUpperCase() + choseDevice.slice(1).toLowerCase()
+          choseDevice?.charAt(0).toUpperCase() +
+          choseDevice.slice(1).toLowerCase()
         } successfully Added :)`;
         openSnackbarAlert("success", msg);
         getAllLivestock();
@@ -149,7 +151,9 @@ const CollarInfo = ({
   return (
     <>
       <Stack direction={"row"} gap={4} py={4}>
-        {data?.collar?.uID ? (
+        {openBackdropLoader ? (
+          <Skeleton width="50%" height={420} />
+        ) : data?.collar?.uID ? (
           <DeviceCard
             label="collar"
             data={getData(data?.collar)}
@@ -168,7 +172,9 @@ const CollarInfo = ({
             }}
           />
         )}
-        {data?.pedometer?.uID ? (
+        {openBackdropLoader ? (
+          <Skeleton width="50%" height={420} />
+        ) : data?.pedometer?.uID ? (
           <DeviceCard
             label="pedometer"
             data={getData(data?.pedometer)}

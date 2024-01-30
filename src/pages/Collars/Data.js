@@ -33,7 +33,7 @@ export const showCollarTableHeadData = [
 export const viewCollarDetailTabData = (data, loading, setLoading) => [
   {
     label: "overview",
-    child: <Overview data={data} />,
+    child: <Overview data={data}/>,
   },
   {
     label: "assigned",

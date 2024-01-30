@@ -6,6 +6,7 @@ import {
   DashboardCard,
   CustomModal,
   BackdropLoader,
+  Skeleton,
 } from "../../ComponentsV2";
 import { AddCircleOutlineOutlinedIcon } from "../../icons";
 import { TypographyPrimary } from "../../ComponentsV2/themeComponents";
@@ -61,7 +62,7 @@ const AdminDashBoard = () => {
             totalLiveStock: data?.TotalLiveStock || 0,
             totalSafeLiveStock: data?.TotalSafeLiveStock || 0,
             totalUnSafeLiveStock: data?.TotalUnSafeLiveStock || 0,
-            totalAlerts: data?.AllAlertsCount[0] || 0,
+            totalAlerts: data?.AllAlertsCount || 0,
             geolocationLat: data?.GeofenceData?.lat,
             geolocationLng: data?.GeofenceData?.lng,
             geolocationRadius: data?.GeofenceData?.radius,
@@ -88,7 +89,7 @@ const AdminDashBoard = () => {
   return (
     <>
       <AdminUIContainer>
-        <BackdropLoader open={openBackdropLoader} />
+        {/* <BackdropLoader open={openBackdropLoader} /> */}
         <CustomModal
           content={
             <ModalContent setHandleModal={setHandleCompleteProfileModal} />
@@ -126,14 +127,25 @@ const AdminDashBoard = () => {
               sx={{ width: { lg: "25%", md: "35%", sm: "40%" } }}
               gap={3}
             >
-              {deviceData?.map((ele) => (
-                <DashboardCard
-                  key={ele.id}
-                  title={ele.title}
-                  total={dashboardData[ele.total]}
-                  img={ele.img}
-                />
-              ))}
+              {deviceData?.map((ele) =>
+                openBackdropLoader ? (
+                  <Skeleton
+                    width="100%"
+                    height="100px"
+                    sx={{
+                      background: "#eee",
+                      minHeight: "117.5px",
+                    }}
+                  />
+                ) : (
+                  <DashboardCard
+                    key={ele.id}
+                    title={ele.title}
+                    total={dashboardData[ele.total]}
+                    img={ele.img}
+                  />
+                )
+              )}
             </Stack>
             <Paper
               sx={{
@@ -145,7 +157,7 @@ const AdminDashBoard = () => {
                 alignItems: "center",
               }}
             >
-              {!dashboardData?.geolocationLat ? (
+              {!openBackdropLoader && !dashboardData?.geolocationLat ? (
                 <Box
                   width="100%"
                   height="100%"
@@ -205,6 +217,14 @@ const AdminDashBoard = () => {
                     </Stack>
                   </Box>
                 </Box>
+              ) : openBackdropLoader ? (
+                <Skeleton
+                  sx={{
+                    width: { lg: "58vw", md: "59vw", sm: "54vw" },
+                    height: { lg: "75vh", md: "75vh", sm: "55vh" },
+                    background: "#eee",
+                  }}
+                />
               ) : (
                 <GetMap
                   mapWidth="100%"

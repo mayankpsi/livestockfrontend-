@@ -1,6 +1,12 @@
 import { Box, Stack } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { TabPane, CustomInput, StatusCard, Spinner } from "../../../ComponentsV2";
+import {
+  TabPane,
+  CustomInput,
+  StatusCard,
+  Spinner,
+  Skeleton,
+} from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
@@ -13,13 +19,14 @@ import useErrorMessage from "../../../hooks/useErrorMessage";
 
 const Overview = ({ data }) => {
   const [isEditCollarInfo, setIsEditCollarInfo] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [collarInfoEdit, setCollarInfoEdit] = useState({
     collarUID: "",
     collarName: "",
     collarMacId: "",
   });
   const { getErrorMessage } = useErrorMessage();
+  const { openBackdropLoader } = useCollarContext();
 
   const { isError, setIsError, openSnackbarAlert } = useCollarContext();
   const { getCamelCase } = useGetCamelCase();
@@ -50,7 +57,7 @@ const Overview = ({ data }) => {
   const handelCollarNewInfo = async () => {
     setIsEditCollarInfo(true);
     if (isEditCollarInfo) {
-      setLoading(true)
+      setLoading(true);
       const body = {
         deviceName: collarInfoEdit?.collarName,
         uID: collarInfoEdit?.collarUID,
@@ -80,9 +87,8 @@ const Overview = ({ data }) => {
       } catch (err) {
         openSnackbarAlert("error", err.message);
         setIsEditCollarInfo(false);
-      }
-      finally{
-        setLoading(false)
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -102,102 +108,124 @@ const Overview = ({ data }) => {
   return (
     <form onSubmit={handleSubmit(handelCollarNewInfo)}>
       <Stack my={4} direction="row" justifyContent="space-between">
-        <Stack
-          sx={{
-            width: "55%",
-            background: "#F7F8FD",
-            p: 2,
-            borderRadius: "10px",
-          }}
-        >
-          <Box px={1.5}>
-            <TabPane
-              text="Pedometer Information"
-              btnText={isEditCollarInfo ? "Save" : "Edit"}
-              loading={loading}
-              btnIcon={loading?<Spinner sx={{ mr: 1 }} size={20} color={"#fff"} /> :false}
-              hover={true}
-              type="submit"
-            />
-          </Box>
-          <Stack>
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "space-between",
-                mt: 1,
-              }}
-            >
-              <CustomInput
-                disabled={!isEditCollarInfo}
-                label="pedometer UID"
-                register={register}
-                errors={errors}
-                value={collarInfoEdit?.collarUID}
-                name="collarUID"
-                isError={isError}
-                onChange={handleCollarInfoEditChange}
-              />
-              <CustomInput
-                disabled={!isEditCollarInfo}
-                label="pedometer name"
-                register={register}
-                errors={errors}
-                value={collarInfoEdit?.collarName}
-                name="collarName"
-                onChange={handleCollarInfoEditChange}
+        {!openBackdropLoader ? (
+          <Stack
+            sx={{
+              width: "55%",
+              background: "#F7F8FD",
+              p: 2,
+              borderRadius: "10px",
+            }}
+          >
+            <Box px={1.5}>
+              <TabPane
+                text="Pedometer Information"
+                btnText={isEditCollarInfo ? "Save" : "Edit"}
+                loading={loading}
+                btnIcon={
+                  loading ? (
+                    <Spinner sx={{ mr: 1 }} size={20} color={"#fff"} />
+                  ) : (
+                    false
+                  )
+                }
+                hover={true}
+                type="submit"
               />
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "space-between",
-              }}
-            >
-              <CustomInput
-                disabled={!isEditCollarInfo}
-                label="pedometer MAC ID"
-                register={register}
-                errors={errors}
-                value={collarInfoEdit?.collarMacId}
-                name="collarMacId"
-                onChange={handleCollarInfoEditChange}
-              />
-            </Box>
-          </Stack>
-        </Stack>
-        <Box
-          sx={{
-            width: "43%",
-            background: "#F7F8FD",
-            p: 2,
-            borderRadius: "10px",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <TypographyPrimary>Pedometer status</TypographyPrimary>
-          <Stack direction="column" gap={2}>
-            {pedometerStatusCardData
-              ?.filter((ele) => !ele?.text?.toLowerCase()?.includes("collar"))
-              ?.map((ele) => ({
-                ...ele,
-                status: data ? `${data[getCamelCase(ele?.text)]}` : "",
-                statusColor: getStatus(ele, data),
-              }))
-              .map((card) => (
-                <StatusCard
-                  key={card.text}
-                  text={card.text}
-                  status={card.status}
-                  icon={card.icon}
-                  statusColor={card.statusColor}
-                  suffix={card.suffix}
+            <Stack>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "space-between",
+                  mt: 1,
+                }}
+              >
+                <CustomInput
+                  disabled={!isEditCollarInfo}
+                  label="pedometer UID"
+                  register={register}
+                  errors={errors}
+                  value={collarInfoEdit?.collarUID}
+                  name="collarUID"
+                  isError={isError}
+                  onChange={handleCollarInfoEditChange}
                 />
-              ))}
+                <CustomInput
+                  disabled={!isEditCollarInfo}
+                  label="pedometer name"
+                  register={register}
+                  errors={errors}
+                  value={collarInfoEdit?.collarName}
+                  name="collarName"
+                  onChange={handleCollarInfoEditChange}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <CustomInput
+                  disabled={!isEditCollarInfo}
+                  label="pedometer MAC ID"
+                  register={register}
+                  errors={errors}
+                  value={collarInfoEdit?.collarMacId}
+                  name="collarMacId"
+                  onChange={handleCollarInfoEditChange}
+                />
+              </Box>
+            </Stack>
           </Stack>
-        </Box>
+        ) : (
+          <Skeleton
+            width="42vw"
+            height={"245px"}
+            sx={{ background: "#F7F8FD" }}
+          />
+        )}
+        {openBackdropLoader ? (
+          <Skeleton
+            width="33vw"
+            height={"245px"}
+            sx={{ background: "#F7F8FD" }}
+          />
+        ) : (
+          <Box
+            sx={{
+              width: "43%",
+              background: "#F7F8FD",
+              p: 2,
+              borderRadius: "10px",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <TypographyPrimary>Pedometer status</TypographyPrimary>
+            <Stack direction="column" gap={2}>
+              {pedometerStatusCardData
+                ?.filter((ele) => !ele?.text?.toLowerCase()?.includes("collar"))
+                ?.map((ele) => ({
+                  ...ele,
+                  status: data ? `${data[getCamelCase(ele?.text)]}` : "",
+                  statusColor: getStatus(ele, data),
+                }))
+                .map((card) => (
+                  <StatusCard
+                    key={card.text}
+                    text={card.text}
+                    status={card.status}
+                    icon={card.icon}
+                    statusColor={card.statusColor}
+                    suffix={card.suffix}
+                  />
+                ))}
+            </Stack>
+          </Box>
+        )}
       </Stack>
     </form>
   );

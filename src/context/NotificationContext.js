@@ -150,42 +150,50 @@ export const NotificationContextProvider = ({ children }) => {
   };
 
   const setAllUnreadToReadNotification = async () => {
-    setOpenBackdropLoader(true);
-    try {
-      const res = await request({
-        url: `/liveStock/updateAlertToRead`,
-        method: "PATCH",
-      });
-      if (res?.status === 200) {
-        openSnackbarAlert("success", "Read All Notifications");
+    if (allUnreadNotifications?.length) {
+      setOpenBackdropLoader(true);
+      try {
+        const res = await request({
+          url: `/liveStock/updateAlertToRead`,
+          method: "PATCH",
+        });
+        if (res?.status === 200) {
+          getAllUnreadNotification();
+          openSnackbarAlert("success", "Read All Notifications");
+          setOpenBackdropLoader(false);
+        } else {
+          throw new Error(getErrorMessage(res));
+        }
+      } catch (error) {
+        openSnackbarAlert("error", error?.message);
         setOpenBackdropLoader(false);
-        setTimeout(() => window.location.reload(), 500);
-      } else {
-        throw new Error(getErrorMessage(res));
       }
-    } catch (error) {
-      openSnackbarAlert("error", error?.message);
-      setOpenBackdropLoader(false);
+    } else {
+      openSnackbarAlert("info", "Nothing to Read");
     }
   };
 
   const clearAllReadNotification = async () => {
-    setOpenBackdropLoader(true);
-    try {
-      const res = await request({
-        url: `/liveStock/clearReadNotification`,
-        method: "PUT",
-      });
-      if (res?.status === 200) {
-        openSnackbarAlert("success", "Cleared All Notifications");
+    if (allReadNotifications?.length) {
+      setOpenBackdropLoader(true);
+      try {
+        const res = await request({
+          url: `/liveStock/clearReadNotification`,
+          method: "PUT",
+        });
+        if (res?.status === 200) {
+          getAllReadNotification();
+          openSnackbarAlert("success", "Cleared All Notifications");
+          setOpenBackdropLoader(false);
+        } else {
+          throw new Error(getErrorMessage(res));
+        }
+      } catch (error) {
+        openSnackbarAlert("error", error?.message);
         setOpenBackdropLoader(false);
-        setTimeout(() => window.location.reload(), 500);
-      } else {
-        throw new Error(getErrorMessage(res));
       }
-    } catch (error) {
-      openSnackbarAlert("error", error?.message);
-      setOpenBackdropLoader(false);
+    } else {
+      openSnackbarAlert("info", "Nothing to Clear");
     }
   };
 
@@ -208,7 +216,7 @@ export const NotificationContextProvider = ({ children }) => {
         setUnreadUtils,
         readUtils,
         setReadUtils,
-        handleSocketLogout
+        handleSocketLogout,
       }}
     >
       {children}

@@ -6,6 +6,7 @@ import {
   CustomPagination,
   NoData,
   Spinner,
+  TableSkeleton,
 } from "../../../../ComponentsV2";
 import ActivityChart from "../HealthCharts/activityChart";
 import HealthChartsModalContent from "../HealthCharts/HealthChartsModalContent";
@@ -95,9 +96,10 @@ const ActivitySection = ({thresholds}) => {
           } out of ${logsDataLength} Logs`}</TypographySecondary>
         </Box>
         {loading ? (
-          <Stack height={"600px"}>
-            <Spinner />
-          </Stack>
+         <TableSkeleton
+         rowNumber={new Array(10).fill(0)}
+         tableCell={new Array(3).fill("33%")}
+       />
         ) : logsDataLength ? (
           <Box>
             <TableV2

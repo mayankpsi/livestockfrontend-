@@ -20,7 +20,8 @@ export { default as AlertsDash } from "./images/alerts-dash.svg";
 export { default as SafeLivestockPointer } from "./images/safe.png";
 export { default as UnsafeLivestockPointer } from "./images/unsafe.png";
 export { default as Steps } from "./images/steps.svg";
-export {default as Rumination} from "./images/rumination.svg";
-export { default as LivestockSidebar} from "./images/livestock-sidebar.svg";
-export { default as LivestockSidebarFade} from "./images/livestock-sidebar-fade.svg";
-
+export { default as Rumination } from "./images/rumination.svg";
+export { default as LivestockSidebar } from "./images/livestock-sidebar.svg";
+export { default as LivestockSidebarFade } from "./images/livestock-sidebar-fade.svg";
+export { default as LiveStockActivity } from "./images/activity.png";
+export { default as LiveStockTemperature } from "./images/temp.png";

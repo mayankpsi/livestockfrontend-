@@ -7,6 +7,8 @@ import {
   ExportAsCSV,
   CustomPagination,
   NoData,
+  TableSkeleton,
+  Skeleton,
 } from "../../../ComponentsV2";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import useLivestockContext from "../../../hooks/useLivestockContext";
@@ -18,7 +20,6 @@ import useErrorMessage from "../../../hooks/useErrorMessage";
 import { useLivestockHealthContext } from "../../../context/LivestockHealthContext";
 import { useParams } from "react-router-dom";
 import { alertsThresholdData } from "./alertThresholdData";
-
 
 const Alerts = ({ data }) => {
   const {
@@ -32,10 +33,12 @@ const Alerts = ({ data }) => {
     handleAlertDelete,
     openSnackbarAlert,
     setOpenBackdropLoader,
+    openBackdropLoader,
     alertsDataLength,
     setAlertsDataLength,
   } = useLivestockContext();
-  const { getHealthCardData, healthCardData } = useLivestockHealthContext();
+  const { getHealthCardData, healthCardData, healthDataLoading } =
+    useLivestockHealthContext();
   const { paginationDateFormat, formattedDate } = useDateFormat();
   const [alertsThresholds, setAlertsThresholds] = useState([]);
   const [singleLivestockAlerts, setSingleLivestockAlerts] = useState([]);
@@ -212,24 +215,28 @@ const Alerts = ({ data }) => {
         Set Thresholds
       </TypographyPrimary>
       <Stack direction="row" flexWrap="wrap" width="100%" gap={3}>
-        {alertsThresholds?.map((ele) => (
-          <AlertCard
-            key={ele?.id}
-            paneText={`${
-              ele?.label === "heartBeat" ? "heartbeat" : ele?.label
-            }`}
-            label={ele?.label}
-            valueSuffix={ele?.suffix}
-            labelData={ele?.value}
-            isEdit={ele?.isEdit}
-            onChange={(event) => handleThresholdChange(event, ele?.id)}
-            onBtnClick={() =>
-              ele?.isEdit
-                ? handleThresholdAlertSubmit(ele?.id)
-                : handleThresholdEdit(ele?.id)
-            }
-          />
-        ))}
+        {alertsThresholds?.map((ele) =>
+          healthDataLoading ? (
+            <Skeleton width={"18.6%"} height={"170px"} />
+          ) : (
+            <AlertCard
+              key={ele?.id}
+              paneText={`${
+                ele?.label === "heartBeat" ? "heartbeat" : ele?.label
+              }`}
+              label={ele?.label}
+              valueSuffix={ele?.suffix}
+              labelData={ele?.value}
+              isEdit={ele?.isEdit}
+              onChange={(event) => handleThresholdChange(event, ele?.id)}
+              onBtnClick={() =>
+                ele?.isEdit
+                  ? handleThresholdAlertSubmit(ele?.id)
+                  : handleThresholdEdit(ele?.id)
+              }
+            />
+          )
+        )}
       </Stack>
       <Stack sx={{ width: "100%", py: 3 }}>
         <Stack pb={2}>
@@ -261,7 +268,12 @@ const Alerts = ({ data }) => {
             setSelectedDate={setSelectedDate}
           />
         </Stack>
-        {alertsDataLength ? (
+        {openBackdropLoader ? (
+          <TableSkeleton
+            rowNumber={new Array(10).fill(0)}
+            tableCell={new Array(4).fill("20%")}
+          />
+        ) : alertsDataLength ? (
           <TableV2
             paneText="showing 10 out of 20 Alerts"
             paneTextColor="#000"

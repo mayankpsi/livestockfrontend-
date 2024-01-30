@@ -104,6 +104,7 @@ const RuminationSection = ({ thresholds }) => {
     (total, ele) => total + ele?.dataValue,
     0
   );
+
   return (
     <Stack width="100%" direction={"column"} gap={5}>
       <Stack width="100%">

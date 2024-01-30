@@ -43,7 +43,7 @@ const Livestocks = () => {
       BreadcrumbData={livestockBreadcrumbData}
     >
       <Container maxWidth="xl" sx={{ marginTop: 8, pb: 5 }}>
-        <BackdropLoader open={openBackdropLoader} />
+        {/* <BackdropLoader open={openBackdropLoader} /> */}
         <TabPane
           text="All Livestock"
           btnText="Add Livestock"

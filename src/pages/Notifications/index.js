@@ -6,7 +6,9 @@ import {
   NoNotifications,
   NotificationCard,
   BackdropLoader,
-  CustomPagination
+  CustomPagination,
+  TableSkeleton,
+  Skeleton,
 } from "../../ComponentsV2";
 import { Typography, Container, Stack } from "@mui/material";
 import { notificationBtnData } from "./Data";
@@ -67,10 +69,15 @@ const Notifications = () => {
   };
 
   const getTitle = () => {
-    const dataLength = isUnRead? unReadUtils?.dataLength:readUtils?.dataLength;
-    const title = `showing ${dataLength>10?10:dataLength} out of ${dataLength} Notifications`;
+    const dataLength = isUnRead
+      ? unReadUtils?.dataLength || 0
+      : readUtils?.dataLength || 0;
+    const title = `showing ${
+      dataLength > 10 ? 10 : dataLength
+    } out of ${dataLength} Notifications`;
     return title;
-  }
+  };
+
   return (
     <AdminUIContainer
       openAlert={snackbarAlert.open}
@@ -80,7 +87,6 @@ const Notifications = () => {
       BreadcrumbData={BreadcrumbData}
     >
       <Container maxWidth="xl" sx={{ marginTop: 8 }}>
-        <BackdropLoader open={openBackdropLoader} />
         <Typography
           variant="h2"
           sx={{ fontSize: "2rem", fontWeight: 600, mb: 2 }}
@@ -110,29 +116,43 @@ const Notifications = () => {
             />
           </Stack>
           {selectedNotificationTab === "unread" ? (
-            <Stack width="100%" direction="column" gap={2}>
-              {allUnreadNotifications?.length ? (
-                allUnreadNotifications?.map((notification) => (
-                  <NotificationCard
-                    key={notification?._id}
-                    onClick={() =>
-                      handleNotificationClick(
-                        notification?.liveStock,
-                        notification?._id
-                      )
-                    }
-                    rightData={getNotificationData(notification, "right")}
-                    leftData={getNotificationData(notification, "left")}
-                    customStyle={{
-                      background: "rgba(134, 99, 62, 0.2)",
-                      border: "1px solid rgba(134, 99, 62, 1)",
-                      cursor: "pointer",
-                    }}
-                  />
-                ))
-              ) : (
-                <NoNotifications />
-              )}
+            openBackdropLoader ? (
+              <Stack width={"100%"} direction={"column"} gap={2}>
+                {new Array(5).fill(0).map((ele) => (
+                  <Skeleton width="100%" height={"13vh"} />
+                ))}
+              </Stack>
+            ) : (
+              <Stack width="100%" direction="column" gap={2}>
+                {allUnreadNotifications?.length ? (
+                  allUnreadNotifications?.map((notification) => (
+                    <NotificationCard
+                      key={notification?._id}
+                      onClick={() =>
+                        handleNotificationClick(
+                          notification?.liveStock,
+                          notification?._id
+                        )
+                      }
+                      rightData={getNotificationData(notification, "right")}
+                      leftData={getNotificationData(notification, "left")}
+                      customStyle={{
+                        background: "rgba(134, 99, 62, 0.2)",
+                        border: "1px solid rgba(134, 99, 62, 1)",
+                        cursor: "pointer",
+                      }}
+                    />
+                  ))
+                ) : (
+                  <NoNotifications />
+                )}
+              </Stack>
+            )
+          ) : openBackdropLoader ? (
+            <Stack width={"100%"} direction={"column"} gap={2}>
+              {new Array(5).fill(0).map((ele) => (
+                <Skeleton width="100%" height={"13vh"} />
+              ))}
             </Stack>
           ) : (
             <Stack width="100%" direction="column" gap={2}>
@@ -154,16 +174,26 @@ const Notifications = () => {
             </Stack>
           )}
         </Stack>
-        {(isUnRead? unReadUtils?.dataLength:readUtils?.dataLength) > 10 ? (
+        {(!openBackdropLoader && isUnRead
+          ? unReadUtils?.dataLength
+          : readUtils?.dataLength) > 10 ? (
           <Stack direction="row" justifyContent="center" py={4}>
             <CustomPagination
               size="large"
-              page={isUnRead?unReadUtils?.paginationPageNo:readUtils?.paginationPageNo}
-              count={isUnRead?unReadUtils?.pageCount:readUtils?.pageCount}
-              onPageChange={(pageNo) => isUnRead?setUnreadUtils({...unReadUtils, paginationPageNo:pageNo}):setReadUtils({...readUtils, paginationPageNo:pageNo})}
+              page={
+                isUnRead
+                  ? unReadUtils?.paginationPageNo
+                  : readUtils?.paginationPageNo
+              }
+              count={isUnRead ? unReadUtils?.pageCount : readUtils?.pageCount}
+              onPageChange={(pageNo) =>
+                isUnRead
+                  ? setUnreadUtils({ ...unReadUtils, paginationPageNo: pageNo })
+                  : setReadUtils({ ...readUtils, paginationPageNo: pageNo })
+              }
             />
           </Stack>
-        ):null}
+        ) : null}
       </Container>
     </AdminUIContainer>
   );

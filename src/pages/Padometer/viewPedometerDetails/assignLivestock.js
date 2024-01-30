@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Box, Stack } from "@mui/material";
-import { AddBtn, CustomModal } from "../../../ComponentsV2";
+import { AddBtn, CustomModal, Skeleton } from "../../../ComponentsV2";
 import ShowLivestocks from "./showLivestocks";
 import LivestockInfo from "./livestockInfo";
 import useLivestockContext from "../../../hooks/useLivestockContext";
@@ -24,7 +24,11 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
     setOpenAddLivestockModal,
     setOpenBackdropLoader,
   } = useLivestockContext();
-  const { openSnackbarAlert, getAllDevices } = useCollarContext();
+  const {
+    openSnackbarAlert,
+    getAllDevices,
+    openBackdropLoader: firstLoadingLoader,
+  } = useCollarContext();
   const { id } = useParams();
 
   const getDeviceData = () => {
@@ -129,23 +133,27 @@ const AssignLivestock = ({ data, setLoading, loading }) => {
 
   return (
     <Box py={4}>
-      {data?.Uid ? (
-        <Stack sx={{ width: { lg: "55%", md: "100%" } }}>
-          <LivestockInfo
-            data={data}
-            loading={loading}
-            btnText="remove"
-            btnBgColor="#FF0505"
-            onBtnClick={handelLivestockRemove}
+      {!firstLoadingLoader ? (
+        data?.Uid ? (
+          <Stack sx={{ width: { lg: "55%", md: "100%" } }}>
+            <LivestockInfo
+              data={data}
+              loading={loading}
+              btnText="remove"
+              btnBgColor="#FF0505"
+              onBtnClick={handelLivestockRemove}
+            />
+          </Stack>
+        ) : (
+          <AddBtn
+            text1="livestock"
+            text2="pedometer"
+            loading={!openAddLiveStockModal && loading}
+            onClick={() => getUnassignLivestock()}
           />
-        </Stack>
+        )
       ) : (
-        <AddBtn
-          text1="livestock"
-          text2="pedometer"
-          loading={!openAddLiveStockModal && loading}
-          onClick={() => getUnassignLivestock()}
-        />
+        <Skeleton width="43vw" height="60vh" sx={{ background: "#F7F8FD" }} />
       )}
       <CustomModal
         content={

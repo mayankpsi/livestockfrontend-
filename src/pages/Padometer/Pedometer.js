@@ -35,7 +35,7 @@ const Pedometer = () => {
   return (
     <Stack>
       {/* <NoData/> */}
-      <BackdropLoader open={openBackdropLoader} />
+      {/* <BackdropLoader open={openBackdropLoader} /> */}
       <TabPane
         text="All Pedometers"
         btnText="Add New Pedometer"

@@ -35,7 +35,7 @@ const Collars = () => {
   ];
   return (
     <Stack width="100%">
-    <BackdropLoader open={openBackdropLoader} />
+    {/* <BackdropLoader open={openBackdropLoader} /> */}
     <TabPane
       text="All Collars"
       btnText="Add New Collar"

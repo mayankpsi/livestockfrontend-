@@ -1,4 +1,9 @@
-import { CustomPagination, CustomTable, NoData } from "../../ComponentsV2";
+import {
+  CustomPagination,
+  CustomTable,
+  NoData,
+  TableSkeleton,
+} from "../../ComponentsV2";
 import { Box, Stack } from "@mui/material";
 import useCollarContext from "../../hooks/useCollarContext";
 import { showCollarTableHeadData } from "./Data";
@@ -9,6 +14,7 @@ const ShowCollars = ({ show }) => {
     collars,
     deviceDataLength,
     pedometerPagination,
+    openBackdropLoader,
     isLoading,
     activeDevice,
     setPedometerPagination,
@@ -44,12 +50,21 @@ const ShowCollars = ({ show }) => {
   };
 
   return (
-    <Box my={4}>
-      <CustomTable
-        headBackgroundColor="#B58B5D"
-        tableHeadData={showCollarTableHeadData}
-        tableRowData={collarFiltering()}
-      />
+    <Box my={4} width="100%">
+      {openBackdropLoader ? (
+        <TableSkeleton
+          rowNumber={new Array(10).fill(0)}
+          tableCell={new Array(5).fill("15%")}
+          actions={new Array(2).fill(0)}
+        />
+      ) : (
+        <CustomTable
+          headBackgroundColor="#B58B5D"
+          tableHeadData={showCollarTableHeadData}
+          tableRowData={collarFiltering()}
+        />
+      )}
+
       {collarFiltering()?.length ? (
         deviceDataLength > 10 && (
           <Stack direction="row" justifyContent="center" p={2}>
