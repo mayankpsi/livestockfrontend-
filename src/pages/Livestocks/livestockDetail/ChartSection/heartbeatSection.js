@@ -1,16 +1,26 @@
 import { Box, Stack } from "@mui/material";
 import { useEffect } from "react";
-import { TableV2, ExportAsCSV, TabPaneV2, CustomPagination, NoData, Spinner, TableSkeleton } from "../../../../ComponentsV2";
+import {
+  TableV2,
+  ExportAsCSV,
+  TabPaneV2,
+  CustomPagination,
+  NoData,
+  Spinner,
+  TableSkeleton,
+} from "../../../../ComponentsV2";
 import HeartBeatChart from "../HealthCharts/HeartbeatChart";
 import HealthChartsModalContent from "../HealthCharts/HealthChartsModalContent";
 import { TypographySecondary } from "../../../../ComponentsV2/themeComponents";
 import { useLivestockHealthContext } from "../../../../context/LivestockHealthContext";
 import { useParams } from "react-router-dom";
-import { getFormattedHealthLogsData, exportFormat, logsTableHeadData} from "./dataFormats";
+import {
+  getFormattedHealthLogsData,
+  exportFormat,
+  logsTableHeadData,
+} from "./dataFormats";
 
-
-
-const HeartbeatSection = ({thresholds}) => {
+const HeartbeatSection = ({ thresholds }) => {
   const { id } = useParams();
   const {
     getLogs,
@@ -36,11 +46,10 @@ const HeartbeatSection = ({thresholds}) => {
     getChartData(id);
   }, [id, singleSelectedDate, activeTab]);
 
-
   return (
-    <Stack width="100%" direction={'column'} gap={5}>
+    <Stack width="100%" direction={"column"} gap={5}>
       <Stack width="100%">
-      <HealthChartsModalContent
+        <HealthChartsModalContent
           selectedDate={singleSelectedDate}
           label={"Heartbeat"}
           setSelectedDate={setSingleSelectedDate}
@@ -50,7 +59,11 @@ const HeartbeatSection = ({thresholds}) => {
               <Spinner />
             </Stack>
           ) : (
-            <HeartBeatChart data={chartData} height={500} thresholds={thresholds}/>
+            <HeartBeatChart
+              data={chartData}
+              height={500}
+              thresholds={thresholds}
+            />
           )}
         </HealthChartsModalContent>
       </Stack>
@@ -87,17 +100,21 @@ const HeartbeatSection = ({thresholds}) => {
           } out of ${logsDataLength} Logs`}</TypographySecondary>
         </Box>
         {loading ? (
-           <TableSkeleton
-              rowNumber={new Array(10).fill(0)}
-              tableCell={new Array(3).fill("33%")}
-            />
+          <TableSkeleton
+            rowNumber={new Array(10).fill(0)}
+            tableCell={new Array(3).fill("33%")}
+          />
         ) : logsDataLength ? (
           <Box>
             <TableV2
               btnColor="#fff"
               btnBg="#B58B5D"
               tableHeadData={logsTableHeadData}
-              tableRowData={getFormattedHealthLogsData(logsData,"heartBeat","/min")}
+              tableRowData={getFormattedHealthLogsData(
+                logsData,
+                "heartBeat",
+                " Bpm"
+              )}
             />
             {logsDataLength > 10 ? (
               <Stack direction="row" justifyContent="center" pt={3}>
@@ -110,7 +127,9 @@ const HeartbeatSection = ({thresholds}) => {
               </Stack>
             ) : null}
           </Box>
-        ) : <NoData/>}
+        ) : (
+          <NoData />
+        )}
       </Stack>
     </Stack>
   );

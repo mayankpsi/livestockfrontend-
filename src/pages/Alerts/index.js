@@ -44,7 +44,7 @@ const AlertsPage = () => {
           <Typography
             sx={{
               textTransform: "capitalize",
-              fontSize: "1.8rem",
+              fontSize: "1.6rem",
               fontWeight: "bold",
               color: "red",
             }}

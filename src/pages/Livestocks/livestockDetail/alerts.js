@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IconButton, Stack } from "@mui/material";
+import { IconButton, Stack, Typography } from "@mui/material";
 import {
   AlertCard,
   TableV2,
@@ -286,6 +286,18 @@ const Alerts = ({ data }) => {
             tableRowData={singleLivestockAlerts
               .map((ele) => ({
                 ...ele,
+                alarmValue: [
+                  <Typography
+                    sx={{
+                      textTransform: "capitalize",
+                      fontSize: "1.6rem",
+                      fontWeight: "bold",
+                      color: "red",
+                    }}
+                  >
+                    {ele?.alarmValue}
+                  </Typography>,
+                ],
                 action: [
                   <IconButton aria-label="delete">
                     <DeleteOutlineOutlinedIcon

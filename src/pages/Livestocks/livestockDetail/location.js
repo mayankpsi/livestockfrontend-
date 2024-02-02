@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import LocationLog from "./locationLog";
 import {
   TableV2,
@@ -31,10 +31,9 @@ const Location = ({ data }) => {
     pageLimit,
     setOpenBackdropLoader,
     openSnackbarAlert,
-    openBackDropLoader
+    openBackDropLoader,
   } = useLivestockContext();
-  const { paginationDateFormat, formattedDate} =
-    useDateFormat();
+  const { paginationDateFormat, formattedDate } = useDateFormat();
   const { getErrorMessage } = useErrorMessage();
   const [locationAlertsData, setLocationAlertsData] = useState([]);
   const [resentAlerts, setResentAlerts] = useState([]);
@@ -101,12 +100,37 @@ const Location = ({ data }) => {
           if (res2?.value?.status === 200) {
             const { data } = res2.value?.data;
             const formattedData = data?.LocationAlert?.map((ele) => ({
-              title: ele?.locationStatus,
-              location: `${ele?.geolocation?.lat
-                ?.toString()
-                ?.slice(0, 8)}, ${ele?.geolocation?.lng
-                ?.toString()
-                ?.slice(0, 8)}`,
+              title: [
+                <Typography
+                  sx={{
+                    color: `${
+                      ele?.locationStatus?.toLowerCase() === "safe"
+                        ? "#06B95F"
+                        : "#FF0000"
+                    }`,
+                    fontWeight: "bold",
+                    fontSize: "1.5rem",
+                  }}
+                >
+                  {ele?.locationStatus}
+                </Typography>,
+              ],
+              location: [
+                <Typography
+                  sx={{
+                    color: `${
+                      ele?.locationStatus?.toLowerCase() === "safe"
+                        ? "#06B95F"
+                        : "#FF0000"
+                    }`,
+                    fontWeight: "bold",
+                    fontSize: "1.5rem",
+                  }}
+                >
+                  {ele?.geolocation?.lat?.toString()?.slice(0, 6)},{" "}
+                  {ele?.geolocation?.lng?.toString()?.slice(0, 6)}
+                </Typography>,
+              ],
               address: ele?.address,
               updated: formattedDate(ele?.createdAt),
             }));
@@ -204,29 +228,24 @@ const Location = ({ data }) => {
               setSelectedDate={setSelectedDate}
             />
           </Stack>
-          {
-          openBackDropLoader?(
+          {openBackDropLoader ? (
             <TableSkeleton
-            rowNumber={new Array(10).fill(0)}
-            tableCell={new Array(4).fill("20%")}
-          />
-          ):(
-            locationAlertsData?.length ? (
-              <TableV2
-                paneText="activity log"
-                paneTextColor="#B58B5D"
-                isBtn={true}
-                datePicker
-                btnText="Export"
-                btnColor="#fff"
-                btnBg="#B58B5D"
-                tableHeadData={locationTableHeadData}
-                tableRowData={locationAlertsData}
-                tableColors={tableColors}
-              />
-            ) : null
-          )
-          }
+              rowNumber={new Array(10).fill(0)}
+              tableCell={new Array(4).fill("20%")}
+            />
+          ) : locationAlertsData?.length ? (
+            <TableV2
+              paneText="activity log"
+              paneTextColor="#B58B5D"
+              isBtn={true}
+              datePicker
+              btnText="Export"
+              btnColor="#fff"
+              btnBg="#B58B5D"
+              tableHeadData={locationTableHeadData}
+              tableRowData={locationAlertsData}
+            />
+          ) : null}
           {locationAlertsData?.length ? (
             pageCount > 1 ? (
               <Stack direction="row" justifyContent="center" mt={5}>
