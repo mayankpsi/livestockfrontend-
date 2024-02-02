@@ -11,7 +11,13 @@ const DeviceCard = ({ label, data, onRemove, deviceDataFormat, loading }) => {
   const { getCamelCase } = useGetCamelCase();
   const theme = useTheme();
   return (
-    <Stack width="40%" my={4} direction="row" alignItems="flex-start" gap={4}>
+    <Stack
+      sx={{ width: { lg: "40%", md: "100%", sm: "100%" } }}
+      my={4}
+      direction="row"
+      alignItems="flex-start"
+      gap={4}
+    >
       <Stack
         width="100%"
         sx={{ border: "1px solid #dddddd", borderRadius: "10px" }}
@@ -58,15 +64,15 @@ const DeviceCard = ({ label, data, onRemove, deviceDataFormat, loading }) => {
           </Box>
           {deviceDataFormat
             ?.map((ele) => {
-              console.log(ele,data, "vfbfjbvbfjvbjfbjfv")
-              return ({
+              console.log(ele, data, "vfbfjbvbfjvbjfbjfv");
+              return {
                 ...ele,
                 value: data
                   ? ele?.label?.toLowerCase()?.includes("battery")
                     ? `${data[getCamelCase(ele.label)]}%`
                     : data[getCamelCase(ele.label)]
                   : "N/A",
-              })
+              };
             })
             ?.map((ele) => (
               <Box display="flex" justifyContent="flex-start">

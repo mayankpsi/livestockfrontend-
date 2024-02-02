@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 import useDateFormat from "../../../hooks/useDateFormat";
 import useLivestockContext from "../../../hooks/useLivestockContext";
 
-const Overview = ({ data,setLivestockEditLoading }) => {
+const Overview = ({ data, setLivestockEditLoading }) => {
   const { formattedDate } = useDateFormat();
   const { openBackdropLoader } = useLivestockContext();
   const { id } = useParams();
@@ -89,7 +89,7 @@ const Overview = ({ data,setLivestockEditLoading }) => {
           ) : (
             <Stack
               className="bg-light-gray radius-10"
-              sx={{ width: { lg: "100%", md: "100%", sm: "50%" } }}
+              sx={{ width: { lg: "100%", md: "100%", sm: "100%" } }}
               px={2}
               pb={2}
             >
@@ -120,11 +120,7 @@ const Overview = ({ data,setLivestockEditLoading }) => {
           )}
         </Stack>
         {openBackdropLoader ? (
-          <Skeleton
-            width="31vw"
-            height="78vh"
-            sx={{ background: "#F7F8FD" }}
-          />
+          <Skeleton width="31vw" height="78vh" sx={{ background: "#F7F8FD" }} />
         ) : (
           <Stack
             sx={{
@@ -136,7 +132,7 @@ const Overview = ({ data,setLivestockEditLoading }) => {
             gap={2}
           >
             <Stack
-              sx={{ width: { lg: "100%", md: "100%", sm: "50%" } }}
+              sx={{ width: { lg: "100%", md: "100%", sm: "100%" } }}
               className="bg-light-gray radius-10"
               px={2}
               pb={2}

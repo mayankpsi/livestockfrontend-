@@ -150,7 +150,7 @@ const AdminDashBoard = () => {
             <Paper
               sx={{
                 width: { lg: "75%", md: "65%", sm: "60%" },
-                height: { lg: "75vh", md: "75vh", sm: "55vh" },
+                height: { lg: "75vh", md: "78vh", sm: "78vh" },
                 borderRadius: "10px",
                 display: "flex",
                 justifyContent: "center",
