@@ -19,13 +19,15 @@ const TabPaneV2 = ({
   btnDisabled,
 }) => {
   const theme = useTheme();
-  const disabled = btnDisabled?{
-    cursor:'default',
-    background: "rgba(0,0,0,0.4)",
-    "&:hover": {
-      background: "rgba(0,0,0,0.4)",
-    },
-  }:{};
+  const disabled = btnDisabled
+    ? {
+        cursor: "default",
+        background: "rgba(0,0,0,0.4)",
+        "&:hover": {
+          background: "rgba(0,0,0,0.4)",
+        },
+      }
+    : {};
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       <TypographyPrimary
@@ -45,7 +47,7 @@ const TabPaneV2 = ({
             height="37px"
             gap={1}
             width="100%"
-            sx={{ position: "block", zIndex: 110000 }}
+            sx={{ position: "block", zIndex: 100 }}
           >
             <CustomDateRangePicker
               selectedDate={selectedDate}
@@ -59,7 +61,7 @@ const TabPaneV2 = ({
               fontSize: "1.2rem",
               padding: "5px 15px",
               color: btnColor,
-              ...disabled
+              ...disabled,
             }}
             onClick={onBtnClick}
           >

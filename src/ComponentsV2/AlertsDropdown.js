@@ -9,6 +9,7 @@ import {
   IconButton,
   styled,
   createTheme,
+  Stack,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MuiAvatar from "@mui/material/Avatar";
@@ -76,7 +77,7 @@ const AlertsDropdown = () => {
     getAllUnreadNotification,
     getAllReadNotification,
     allUnreadNotifications,
-    unReadUtils
+    unReadUtils,
   } = useContext(NotificationContext);
   const { formattedDate } = useDateFormat();
 
@@ -154,100 +155,105 @@ const AlertsDropdown = () => {
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            width: "100%",
-            my: 2,
-          }}
-        >
-          <Typography
-            align="center"
-            sx={{ fontSize: "1.5rem", fontWeight: 600, width: "100%" }}
+        <Stack sx={{ position: "relative", zIndex: 1200000 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              my: 2,
+            }}
           >
-            Notifications
-          </Typography>
-        </Box>
-        <Divider />
-        <ScrollWrapper>
-          {allUnreadNotifications?.length > 0 ? (
-            <>
-              {allUnreadNotifications?.map((item) => {
-                return (
-                  <>
-                    <MenuItem
-                      onClick={() =>
-                        handleNotificationClick(item?.liveStock, item?._id)
-                      }
-                      key={item?._id}
-                      sx={{ py:1, px:2}}
-                    >
-                      <Box
+            <Typography
+              align="center"
+              sx={{ fontSize: "1.5rem", fontWeight: 600, width: "100%" }}
+            >
+              Notifications
+            </Typography>
+          </Box>
+          <Divider />
+          <ScrollWrapper>
+            {allUnreadNotifications?.length > 0 ? (
+              <>
+                {allUnreadNotifications?.map((item) => {
+                  return (
+                    <>
+                      <MenuItem
+                        onClick={() =>
+                          handleNotificationClick(item?.liveStock, item?._id)
+                        }
+                        key={item?._id}
                         sx={{
-                          width: "100%",
-                          display: "flex",
-                          alignItems: "center",
+                          py: 1,
+                          px: 2,
                         }}
                       >
                         <Box
                           sx={{
-                            flex: "1 1",
+                            width: "100%",
                             display: "flex",
-                            overflow: "hidden",
-                            flexDirection: "column",
+                            alignItems: "center",
                           }}
                         >
-                          <MenuItemTitle sx={{ fontSize: "12px" }}>
-                            {item?.liveStockName}
-                          </MenuItemTitle>
-                          <MenuItemTitle sx={{ fontSize: "12px" }}>
-                            {item?.assignedDevice?.uID}
-                          </MenuItemTitle>
-                          <MenuItemSubtitle sx={{ fontSize: "14px" }}>
-                            {item?.message}
-                          </MenuItemSubtitle>
+                          <Box
+                            sx={{
+                              flex: "1 1",
+                              display: "flex",
+                              overflow: "hidden",
+                              flexDirection: "column",
+                            }}
+                          >
+                            <MenuItemTitle sx={{ fontSize: "12px" }}>
+                              {item?.liveStockName}
+                            </MenuItemTitle>
+                            <MenuItemTitle sx={{ fontSize: "12px" }}>
+                              {item?.assignedDevice?.uID}
+                            </MenuItemTitle>
+                            <MenuItemSubtitle sx={{ fontSize: "14px" }}>
+                              {item?.message}
+                            </MenuItemSubtitle>
+                          </Box>
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              color: "text.disabled",
+                              fontSize: "12px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {formattedDate(item?.createdAt, "time")}
+                            <br />
+                            {formattedDate(item?.createdAt, "date")}
+                          </Typography>
                         </Box>
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            color: "text.disabled",
-                            fontSize: "12px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {formattedDate(item?.createdAt, "time")}
-                          <br />
-                          {formattedDate(item?.createdAt, "date")}
-                        </Typography>
-                      </Box>
-                    </MenuItem>
-                  </>
-                );
-              })}
-            </>
-          ) : (
-            <NoNotifications />
-          )}
-        </ScrollWrapper>
-        <MenuItem
-          disableRipple
-          sx={{
-            padding: "16px 16px",
-            borderTop: (theme) => `1px solid ${theme.palette.divider}`,
-          }}
-        >
-          <Button
-            fullWidth
-            variant="contained"
-            style={{
-              fontSize: "1.2rem",
+                      </MenuItem>
+                    </>
+                  );
+                })}
+              </>
+            ) : (
+              <NoNotifications />
+            )}
+          </ScrollWrapper>
+          <MenuItem
+            disableRipple
+            sx={{
+              padding: "16px 16px",
+              borderTop: (theme) => `1px solid ${theme.palette.divider}`,
             }}
-            onClick={handleViewAll}
           >
-            View All Notifications
-          </Button>
-        </MenuItem>
+            <Button
+              fullWidth
+              variant="contained"
+              style={{
+                fontSize: "1.2rem",
+              }}
+              onClick={handleViewAll}
+            >
+              View All Notifications
+            </Button>
+          </MenuItem>
+        </Stack>
       </Menu>
     </Fragment>
   );

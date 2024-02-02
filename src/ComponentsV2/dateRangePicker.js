@@ -1,11 +1,11 @@
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
-import { addDays } from 'date-fns';
+import { addDays } from "date-fns";
 import { useEffect, useState, useRef } from "react";
-import { Stack, TextField, InputAdornment} from "@mui/material";
+import { Stack, TextField, InputAdornment } from "@mui/material";
 import format from "date-fns/format";
-import {CalendarMonthIcon} from "../icons"
+import { CalendarMonthIcon } from "../icons";
 
 export default function CustomDateRangePicker({
   selectedDate,
@@ -15,8 +15,8 @@ export default function CustomDateRangePicker({
   const [stateSelectionRange, setStateSelectionRange] = useState({
     startDate: new Date(),
     endDate: addDays(new Date(), 3),
-    key: 'compare'
-  })
+    key: "compare",
+  });
 
   const calenderRef = useRef(null);
 
@@ -68,7 +68,7 @@ export default function CustomDateRangePicker({
             showSelectionPreview={true}
             moveRangeOnFirstSelection={true}
             months={1}
-            maxDate={addDays(new Date(),0)}
+            maxDate={addDays(new Date(), 0)}
             direction="horizontal"
             scroll={{ enabled: true }}
             ranges={selectedDate}

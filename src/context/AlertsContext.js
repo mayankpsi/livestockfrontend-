@@ -10,7 +10,9 @@ const alerts = [
     collarUid: "collar1",
     livestockName: "cow1",
     thresholdValue: "103°F",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>107 °F</TypographyPrimary>],
+    alarmValue: [
+      <TypographyPrimary sx={{ color: "red" }}>107 °F</TypographyPrimary>,
+    ],
     time: "12:45 PM",
     date: "2023-01-05",
   },
@@ -19,7 +21,9 @@ const alerts = [
     collarUid: "collar2",
     livestockName: "cow2",
     thresholdValue: "95°F",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>92 °F</TypographyPrimary>],
+    alarmValue: [
+      <TypographyPrimary sx={{ color: "red" }}>92 °F</TypographyPrimary>,
+    ],
     time: "09:30 AM",
     date: "2023-01-06",
   },
@@ -28,7 +32,9 @@ const alerts = [
     collarUid: "collar1",
     livestockName: "cow1",
     thresholdValue: "120 bpm",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>135 bpm</TypographyPrimary>],
+    alarmValue: [
+      <TypographyPrimary sx={{ color: "red" }}>135 bpm</TypographyPrimary>,
+    ],
     time: "03:15 PM",
     date: "2023-01-07",
   },
@@ -37,7 +43,9 @@ const alerts = [
     collarUid: "collar4",
     livestockName: "cow4",
     thresholdValue: "50 bpm",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>45 bpm</TypographyPrimary>], 
+    alarmValue: [
+      <TypographyPrimary sx={{ color: "red" }}>45 bpm</TypographyPrimary>,
+    ],
     time: "10:00 AM",
     date: "2023-01-08",
   },
@@ -46,7 +54,9 @@ const alerts = [
     collarUid: "collar2",
     livestockName: "cow2",
     thresholdValue: "2000",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>2500</TypographyPrimary>], 
+    alarmValue: [
+      <TypographyPrimary sx={{ color: "red" }}>2500</TypographyPrimary>,
+    ],
     time: "01:30 PM",
     date: "2023-01-09",
   },
@@ -55,7 +65,9 @@ const alerts = [
     collarUid: "collar3",
     livestockName: "cow3",
     thresholdValue: "500",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>400</TypographyPrimary>], 
+    alarmValue: [
+      <TypographyPrimary sx={{ color: "red" }}>400</TypographyPrimary>,
+    ],
     time: "11:45 AM",
     date: "2023-01-10",
   },
@@ -64,7 +76,9 @@ const alerts = [
     collarUid: "collar5",
     livestockName: "cow5",
     thresholdValue: "20",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>15</TypographyPrimary>], 
+    alarmValue: [
+      <TypographyPrimary sx={{ color: "red" }}>15</TypographyPrimary>,
+    ],
     date: "2023-01-13",
   },
   {
@@ -72,7 +86,9 @@ const alerts = [
     collarUid: "collar6",
     livestockName: "cow6",
     thresholdValue: "40",
-    alarmValue:[<TypographyPrimary sx={{color:'red'}}>50</TypographyPrimary>], 
+    alarmValue: [
+      <TypographyPrimary sx={{ color: "red" }}>50</TypographyPrimary>,
+    ],
     time: "08:00 AM",
     date: "2023-01-14",
   },
@@ -149,7 +165,7 @@ export const AlertsContextProvider = ({ children }) => {
           }));
           setAllAlertData(formattedData);
           setPageCount(res?.data?.data?.pageCount);
-          setAlertsDataLength(res?.data?.data?.dataLength||0);
+          setAlertsDataLength(res?.data?.data?.dataLength || 0);
         } else {
           const msg = getErrorMessage(res);
           setAllAlertData([]);

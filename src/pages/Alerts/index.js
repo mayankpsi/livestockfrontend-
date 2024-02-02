@@ -8,7 +8,7 @@ import {
   TabPaneV2,
   TableSkeleton,
 } from "../../ComponentsV2";
-import { Container, IconButton, Stack } from "@mui/material";
+import { Container, IconButton, Stack, Typography } from "@mui/material";
 import { TypographyPrimary } from "../../ComponentsV2/themeComponents";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import useAlertsContext from "../../hooks/useAlertContext";
@@ -36,9 +36,22 @@ const AlertsPage = () => {
   } = useAlertsContext();
 
   const getTableFormattedData = (data) => {
+    console.log(data, "fjbvjnjbvnjgnbjngjbnjg");
     const res = data
       ?.map((ele) => ({
         ...ele,
+        alarmValue: [
+          <Typography
+            sx={{
+              textTransform: "capitalize",
+              fontSize: "1.8rem",
+              fontWeight: "bold",
+              color: "red",
+            }}
+          >
+            {ele?.alarmValue}
+          </Typography>,
+        ],
         action: [
           <IconButton aria-label="delete">
             <DeleteOutlineOutlinedIcon
