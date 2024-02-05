@@ -46,7 +46,7 @@ const CreateGeoFence = () => {
   const handleSubmit = () => {
     if (geofenceCoordinates?.radius) {
       removeCustomError();
-     handleGeofenceSave();
+      handleGeofenceSave();
     } else {
       addCustomError("Please select the radius");
     }
@@ -111,8 +111,8 @@ const CreateGeoFence = () => {
             </Paper>
             <Paper elevation={2} sx={{ padding: 2, marginTop: 2 }}>
               <Para variant="h5">Step: 2</Para>
-              <ParaV2 variant="h5">Select Geofence Radius</ParaV2>
-              <CustomSelect disable={submitState} />
+              <ParaV2 variant="h5">Draw Geofence on the map</ParaV2>
+              {/* <CustomSelect disable={submitState} /> */}
             </Paper>
             {(!localStorage.getItem("geofenceCreation") || submitState) && (
               <Box
@@ -189,6 +189,7 @@ const CreateGeoFence = () => {
           mapWidth="100%"
           mapHeight="600px"
           geofenceCoordinates={geofenceCoordinates}
+          createGeoFence={Boolean(geofenceCoordinates?.address)}
         />
       </Stack>
     </Stack>
