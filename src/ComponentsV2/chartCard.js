@@ -10,7 +10,7 @@ const ChartCard = ({
   colors,
   valueColor,
   suffix,
-  createdAt
+  createdAt,
 }) => {
   const theme = useTheme();
   return (
@@ -23,9 +23,10 @@ const ChartCard = ({
       borderRadius="10px"
       justifyContent="space-evenly"
       position="relative"
-      p="16px"
+      py="16px"
+      px="4px"
     >
-      <Stack direction="row" alignItems="center" gap={3}>
+      <Stack direction="row" alignItems="center" gap={1.5}>
         <Box
           className="flex-row-center border-circle"
           sx={{
@@ -38,7 +39,14 @@ const ChartCard = ({
           {icon}
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-          <Box sx={{ display: "flex",flexDirection:'column', flexGrow: 1, gap: '3px'}}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flexGrow: 1,
+              gap: "3px",
+            }}
+          >
             <TypographySecondary
               className="flex-row-center"
               sx={{
@@ -57,7 +65,7 @@ const ChartCard = ({
                 fontWeight: "bolder",
               }}
             >
-              {value ? value+suffix : "0" + suffix}
+              {value ? value + suffix : "0" + suffix}
             </Typography>
             <TypographySecondary
               className="flex-row-center"

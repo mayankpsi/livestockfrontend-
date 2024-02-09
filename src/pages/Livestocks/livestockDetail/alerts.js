@@ -116,7 +116,6 @@ const Alerts = ({ data }) => {
   }, [selectedDate]);
 
   const handleThresholdEdit = (id) => {
-    console.log(id, "djvfhvbfbvhfbhvbfhbvhfbhvfbh");
     const updatedData = alertsThresholds?.map((ele) => {
       if (ele.id === id) {
         return {
