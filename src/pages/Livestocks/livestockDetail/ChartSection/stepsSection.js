@@ -20,7 +20,8 @@ import {
 } from "./dataFormats";
 import { useLivestockHealthContext } from "../../../../context/LivestockHealthContext";
 import useDateFormat from "../../../../hooks/useDateFormat";
-import { stepsFakeData,stepByDay } from "../HealthCharts/chartData";
+import { stepsFakeData, stepByDay } from "../HealthCharts/chartData";
+import { roundOffUptoTwo } from "../../../../utils/utils";
 
 const StepsSection = ({ thresholds }) => {
   const { id } = useParams();
@@ -52,7 +53,10 @@ const StepsSection = ({ thresholds }) => {
   const start = paginationDateFormat(chartDateRange[0]?.startDate);
   const end = paginationDateFormat(chartDateRange[0]?.endDate);
   const byDay = start === end;
-  const totalSteps = (byDay?stepsFakeData:stepByDay).reduce((total, ele) => total + ele?.dataValue,0); 
+  const totalSteps = roundOffUptoTwo(
+    chartData?.reduce((total, ele) => total + ele?.totalSteps, 0)
+  );
+
   return (
     <Stack width="100%" direction={"column"} gap={5}>
       <Stack width="100%">
@@ -60,7 +64,7 @@ const StepsSection = ({ thresholds }) => {
           dateRange={true}
           selectedDate={chartDateRange}
           label={"Steps"}
-          total={totalSteps}
+          total={totalSteps || "0"}
           setSelectedDate={setChartDateRange}
         >
           {chartDataLoader ? (
@@ -111,9 +115,9 @@ const StepsSection = ({ thresholds }) => {
         </Box>
         {loading ? (
           <TableSkeleton
-          rowNumber={new Array(10).fill(0)}
-          tableCell={new Array(3).fill("33%")}
-        />
+            rowNumber={new Array(10).fill(0)}
+            tableCell={new Array(3).fill("33%")}
+          />
         ) : logsDataLength ? (
           <Box>
             <TableV2

@@ -39,3 +39,4 @@ export { default as Spinner } from "./Spinner";
 export { default as CustomLegend } from "./CustomLegend";
 export { default as TableSkeleton } from "./skeleton.table";
 export { default as Skeleton } from "./Skeleton";
+export { default as DownloadPDF } from "./DownloadPDF";

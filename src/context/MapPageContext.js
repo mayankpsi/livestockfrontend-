@@ -20,6 +20,13 @@ export const MapContentProvider = ({ children }) => {
     error: false,
     message: null,
   });
+  const [geoFenceType, setGeoFenceType] = useState(null);
+  const [polygonPath, setPolygonPath] = useState([]);
+  const [circleGeoFence, setCircleGeoFence] = useState({
+    radius: 0,
+    position: null,
+  });
+  const [isGeoFenceSave, setIsGeoFenceSaved] = useState(false);
   const { getErrorMessage } = useErrorMessage();
 
   //SNACKBAR ALERT
@@ -164,12 +171,26 @@ export const MapContentProvider = ({ children }) => {
   const handleCreateGeofence = async () => {
     setOpenBackdropLoader(true);
     setSaveLocationData(true);
+    // geoFenceType, polygonPath, circleGeoFence
     localStorage.setItem("geofenceCreation", "showEdit");
+    const circleBody = {
+      Address: geofenceCoordinates?.address,
+      centerLat: geofenceCoordinates?.lat,
+      centerLng: geofenceCoordinates?.lng,
+      radius: circleGeoFence?.radius,
+    };
+
     const body = {
       Address: geofenceCoordinates?.address,
       lat: geofenceCoordinates?.lat,
       lng: geofenceCoordinates?.lng,
       radius: geofenceCoordinates?.radius,
+    };
+    const polygonBody = {
+      Address: geofenceCoordinates?.address,
+      centerLat: geofenceCoordinates?.lat,
+      centerLng: geofenceCoordinates?.lng,
+      coordinates: polygonPath,
     };
     try {
       const res = await request({
@@ -263,6 +284,14 @@ export const MapContentProvider = ({ children }) => {
         customError,
         addCustomError,
         removeCustomError,
+        polygonPath,
+        setPolygonPath,
+        circleGeoFence,
+        setCircleGeoFence,
+        geoFenceType,
+        setGeoFenceType,
+        isGeoFenceSave,
+        setIsGeoFenceSaved,
       }}
     >
       {children}

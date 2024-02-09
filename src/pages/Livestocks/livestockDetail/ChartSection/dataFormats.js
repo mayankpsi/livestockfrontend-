@@ -28,8 +28,14 @@ export const logsTableHeadData = [
 ];
 
 export const getFormattedHealthLogsData = (data, label, unit) => {
-  const value = (ele) => label?.toLowerCase() === "activity"?ele?.activeTimeInMinutes:ele?.[label];
-  const date = (ele)=>label?.toLowerCase() === "activity"?`${ele?.hour} - ${Number(ele.hour)+1} hr`:formattedDate(ele?.createdAt)
+  const value = (ele) =>
+    label?.toLowerCase() === "activity"
+      ? ele?.activeTimeInMinutes
+      : ele?.[label];
+  const date = (ele) =>
+    label?.toLowerCase() === "activity" && "hour" in ele
+      ? `${ele?.hour} - ${Number(ele.hour) + 1} hr`
+      : formattedDate(ele?.createdAt);
   return data?.map((ele) => ({
     sensorName: label,
     currentValue: [
@@ -40,11 +46,12 @@ export const getFormattedHealthLogsData = (data, label, unit) => {
           color: `${ele?.alertStatus ? "#FC5555" : ""}`,
         }}
       >
-        {value(ele)}{unit}
+        {value(ele)}
+        {unit}
       </Typography>,
     ],
-    highThreshold: `${(ele?.highThreshold)+unit}`,
-    lowThreshold: `${(ele?.lowThreshold)+unit}`,
+    highThreshold: `${ele?.highThreshold + unit}`,
+    lowThreshold: `${ele?.lowThreshold + unit}`,
     date: date(ele),
   }));
 };
@@ -62,27 +69,26 @@ export const exportFormat = (data, label) => {
 const threshold = [
   { value: "Max Threshold", color: "red", type: "line" },
   { value: "Min Threshold", color: "red", type: "line" },
-]
+];
 export const tempLegends = [
   { value: "temperature", color: "#E1A325", type: "circle" },
-  ...threshold
+  ...threshold,
 ];
 
 export const heartbeatLegends = [
   { value: "heartbeat", color: "#FD3730", type: "circle" },
-  ...threshold
+  ...threshold,
 ];
 
 export const stepsLegends = [
   { value: "Steps", color: "#FF9777", type: "circle" },
-  ...threshold
+  ...threshold,
 ];
 export const activityLegends = [
   { value: "activity", color: "#4f46e5", type: "circle" },
-  ...threshold
+  ...threshold,
 ];
 export const ruminationLegends = [
   { value: "rumination", color: "#61A9FF", type: "circle" },
-  ...threshold
+  ...threshold,
 ];
-

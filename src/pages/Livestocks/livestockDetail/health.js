@@ -4,7 +4,13 @@ import {
   TypographyPrimary,
 } from "../../../ComponentsV2/themeComponents";
 import { useState, useEffect } from "react";
-import { ChartCard, BtnGroup, Skeleton } from "../../../ComponentsV2";
+import {
+  ChartCard,
+  BtnGroup,
+  Skeleton,
+  DownloadPDF,
+  CustomModal,
+} from "../../../ComponentsV2";
 import useDateFormat from "../../../hooks/useDateFormat";
 import { chartCardData } from "../Data";
 import useGetColorDynamically from "../../../hooks/useGetColorDynamically";
@@ -15,6 +21,7 @@ import ActivitySection from "./ChartSection/activitySection";
 import RuminationSection from "./ChartSection/ruminationSection";
 import { useLivestockHealthContext } from "../../../context/LivestockHealthContext";
 import { useParams } from "react-router-dom";
+import ShowQRModalContent from "../../PDFPage/ShowQRModalContent";
 
 const btnData = [
   {
@@ -34,9 +41,20 @@ const btnData = [
   },
 ];
 
+const ShowLivestockQR = ({ collarId, pedometerId }) => {
+  console.log(collarId, pedometerId, "vjjgjngjnbjngjngbjnjnj");
+  return (
+    <Stack direction={"row"} justifyContent={"center"}>
+      <ShowQRModalContent id={collarId} title="Collar" />
+      <ShowQRModalContent id={pedometerId} title="Pedometer" />
+    </Stack>
+  );
+};
+
 const Health = ({ data }) => {
   const [showHealthTab, setShowHealthTab] = useState("temperature");
   const [showRefreshButton, setShowRefreshButton] = useState(false);
+  const [modal, setModal] = useState(false);
   const { id } = useParams();
   const { formattedDate } = useDateFormat();
   const { getDynamicColor } = useGetColorDynamically();
@@ -47,7 +65,7 @@ const Health = ({ data }) => {
     handleRefreshButton,
     getChartData,
     getLogs,
-    healthDataLoading
+    healthDataLoading,
   } = useLivestockHealthContext();
   const { cardData, threshold } = healthCardData;
 
@@ -142,14 +160,23 @@ const Health = ({ data }) => {
         <TypographyPrimary sx={{ fontSize: "21px", m: 0 }}>
           Showing Health Data
         </TypographyPrimary>
-        <ButtonPrimary
-          disabled={showRefreshButton}
-          variant="contained"
-          sx={{ p: "5px 15px" }}
-          onClick={handleRefresh}
-        >
-          Refresh
-        </ButtonPrimary>
+        <Stack direction="row" gap={2}>
+          <ButtonPrimary
+            disabled={showRefreshButton}
+            variant="contained"
+            sx={{ p: "5px 15px" }}
+            onClick={handleRefresh}
+          >
+            Refresh
+          </ButtonPrimary>
+          <ButtonPrimary
+            variant="contained"
+            sx={{ p: "5px 15px" }}
+            onClick={() => setModal(true)}
+          >
+            Show QR
+          </ButtonPrimary>
+        </Stack>
       </Stack>
       <Stack width="100%" direction={"row"} flexWrap={"wrap"} gap={2}>
         {chartCardData
@@ -164,22 +191,21 @@ const Health = ({ data }) => {
               : ele?.suffix,
             valueColor: getAlertStatus(ele),
           }))
-          ?.map((ele) => (
-            healthDataLoading?(
-                  <Skeleton width={'19%'} height={'121px'}/>
-            ):(
+          ?.map((ele) =>
+            healthDataLoading ? (
+              <Skeleton width={"19%"} height={"121px"} />
+            ) : (
               <ChartCard
-              label={ele.label}
-              value={ele.value}
-              icon={ele.icon}
-              colors={ele.colors}
-              valueColor={ele.valueColor}
-              suffix={ele.suffix}
-              createdAt={ele?.createdAt}
-            />
+                label={ele.label}
+                value={ele.value}
+                icon={ele.icon}
+                colors={ele.colors}
+                valueColor={ele.valueColor}
+                suffix={ele.suffix}
+                createdAt={ele?.createdAt}
+              />
             )
-            
-          ))}
+          )}
       </Stack>
       <BtnGroup
         btnData={btnData}
@@ -187,6 +213,20 @@ const Health = ({ data }) => {
         onChange={(ele) => handleActiveTab(ele)}
       />
       {showSection(showHealthTab)}
+      {console.log(data, "hbhgbhhbhbhbhbhbh")}
+      <CustomModal
+        content={
+          <ShowLivestockQR
+            collarId={data?.collar?.macID}
+            pedometerId={data?.pedometer?.macID}
+          />
+        }
+        customWidth="45%"
+        customWidthMd="70%"
+        customWidthSm="90%"
+        openModal={modal}
+        handleClose={() => setModal(false)}
+      />
     </Stack>
   );
 };

@@ -10,30 +10,36 @@ import {
   YAxis,
 } from "recharts";
 import { Stack } from "@mui/material";
-import { chartData, activityFakeData, activityDayWise} from "./chartData";
+import { chartData, activityFakeData, activityDayWise } from "./chartData";
 import { renderLegend } from "../ChartSection/legend";
 import { activityLegends } from "../ChartSection/dataFormats";
 import useDateFormat from "../../../../hooks/useDateFormat";
 
-function ActivityChart({ height = 200, width, data,thresholds,selectedDate }) {
-  const {paginationDateFormat} = useDateFormat();
+function ActivityChart({
+  height = 200,
+  width,
+  data,
+  thresholds,
+  selectedDate,
+}) {
+  const { paginationDateFormat } = useDateFormat();
   const colors = {
     steps: { stroke: "#4f46e5", fill: "#c7d2fe" },
     threshold: { stroke: "#16a34a", fill: "#dcfce7" },
     text: "#374151",
     background: "#fff",
   };
+  const showInHour = Boolean(data?.length && "hour" in data?.[0]);
   const getData = data?.length ? data : chartData;
-  const xLabel = data?.length && "hour" in data?.[0] ? "hour" : "_id";
-  const xUnit = data?.length && "hour" in data?.[0] ? " hr" : " day";
-
+  const xLabel = data?.length ? (showInHour ? "hour" : "day") : "hour";
+  const xUnit = showInHour ? " hr" : "";
+  const dataLabel = showInHour ? "activeTimeInMinutes" : "activeTimeInHours";
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
         <ComposedChart data={getData}>
           <XAxis
             dataKey={xLabel}
-            angle={30}
             tickSize={10}
             tickMargin={10}
             tick={{ fill: colors.text }}
@@ -44,9 +50,15 @@ function ActivityChart({ height = 200, width, data,thresholds,selectedDate }) {
             domain={[0, Number(thresholds?.high) + 5]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
+            unit={data?.length ? (showInHour ? " min" : " hr") : " min"}
           />
           <CartesianGrid strokeDasharray="4" />
-          <Tooltip contentStyle={{ backgroundColor: colors.background, color:colors.steps.stroke}} />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: colors.background,
+              color: colors.steps.stroke,
+            }}
+          />
           <Legend
             align="left"
             verticalAlign="top"
@@ -54,7 +66,7 @@ function ActivityChart({ height = 200, width, data,thresholds,selectedDate }) {
             content={renderLegend(activityLegends)}
           />
           <Bar
-            dataKey="activeTimeInMinutes"
+            dataKey={dataLabel}
             stroke={colors.steps.stroke}
             fill={colors.steps.fill}
             strokeWidth={2}

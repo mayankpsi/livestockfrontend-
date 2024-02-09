@@ -33,12 +33,12 @@ function RuminationChart({
     text: "#374151",
     background: "#fff",
   };
-  const getData = chartData;
+  const getData = data?.length ? data : chartData;
 
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
-        <ComposedChart data={!dayWise ? ruminationDayWise : ruminationfake}>
+        <ComposedChart data={getData}>
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
               <stop
@@ -54,15 +54,16 @@ function RuminationChart({
             </linearGradient>
           </defs>
           <XAxis
-            dataKey="xAxis"
+            dataKey="hour"
             tickSize={10}
             tickMargin={10}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
             height={47}
+            unit=" hr"
           />
           <YAxis
-            domain={[0, Number(!dayWise ? 3700 : 50) + 10]}
+            domain={[0, Number(100) + 10]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
             unit=" mins"
@@ -76,7 +77,7 @@ function RuminationChart({
             content={renderLegend(ruminationLegends)}
           />
           <Area
-            dataKey="dataValue"
+            dataKey="rumination"
             stroke={colors.rumination.stroke}
             fill="url(#colorUv)"
             strokeWidth={2}
@@ -84,14 +85,14 @@ function RuminationChart({
             barSize={30}
           />
           <ReferenceLine
-            y={Number(!dayWise ? 3400 : 50)}
+            y={Number(80)}
             label="Max"
             stroke="red"
             strokeWidth={1}
             strokeDasharray="10 20"
           />
           <ReferenceLine
-            y={Number(!dayWise ? 1100 : 10)}
+            y={Number(30)}
             label="Min"
             stroke="red"
             strokeWidth={1}

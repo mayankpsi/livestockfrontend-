@@ -22,6 +22,7 @@ const CreateGeoFence = () => {
     handleGeofenceEdit,
     addCustomError,
     removeCustomError,
+    isGeoFenceSave,
   } = useMapContext();
 
   const Para = styled(Typography)({
@@ -111,8 +112,9 @@ const CreateGeoFence = () => {
             </Paper>
             <Paper elevation={2} sx={{ padding: 2, marginTop: 2 }}>
               <Para variant="h5">Step: 2</Para>
-              <ParaV2 variant="h5">Draw Geofence on the map</ParaV2>
-              {/* <CustomSelect disable={submitState} /> */}
+              <ParaV2 variant="h5">Select the radius</ParaV2>
+              {/* <ParaV2 variant="h5">Draw Geofence on the map</ParaV2> */}
+              <CustomSelect disable={submitState} />
             </Paper>
             {(!localStorage.getItem("geofenceCreation") || submitState) && (
               <Box
@@ -135,7 +137,7 @@ const CreateGeoFence = () => {
                   >
                     Edit
                   </ButtonPrimary>
-                ) : (
+                ) : isGeoFenceSave ? (
                   <ButtonPrimary
                     variant="contained"
                     sx={{
@@ -148,7 +150,7 @@ const CreateGeoFence = () => {
                   >
                     Submit
                   </ButtonPrimary>
-                )}
+                ) : null}
               </Box>
             )}
 
@@ -189,7 +191,7 @@ const CreateGeoFence = () => {
           mapWidth="100%"
           mapHeight="600px"
           geofenceCoordinates={geofenceCoordinates}
-          createGeoFence={Boolean(geofenceCoordinates?.address)}
+          createGeoFence={!isGeoFenceSave}
         />
       </Stack>
     </Stack>

@@ -10,4 +10,5 @@ export { default as Collars } from "./Collars/Collars";
 export { default as NotFound } from "./notFound";
 export { default as Notifications } from "./Notifications";
 export { default as Devices } from "./Devices";
-export { default as ViewPedometerDetails} from "./Padometer/viewPedometerDetails"
+export { default as ViewPedometerDetails } from "./Padometer/viewPedometerDetails";
+export { default as LivestockHistoryPDF } from "./PDFPage/LivestockHistoryPDF";

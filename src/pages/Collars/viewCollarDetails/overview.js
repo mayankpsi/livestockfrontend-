@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Button, IconButton, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   TabPane,
@@ -6,6 +6,7 @@ import {
   StatusCard,
   Spinner,
   Skeleton,
+  CustomModal,
 } from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,6 +16,8 @@ import useCollarContext from "../../../hooks/useCollarContext";
 import { statusCardData } from "../Data";
 import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import { useDeviceDetailContext } from "../../../context/DeviceDetailContext";
+import { QrCodeIcon } from "../../../icons";
+import ShowQRModalContent from "../../PDFPage/ShowQRModalContent";
 
 const Overview = ({ data }) => {
   const {
@@ -26,6 +29,7 @@ const Overview = ({ data }) => {
     loading,
   } = useDeviceDetailContext();
   const { openBackdropLoader } = useCollarContext();
+  const [modal, setModal] = useState(false);
 
   const { isError } = useCollarContext();
   const { getCamelCase } = useGetCamelCase();
@@ -66,7 +70,11 @@ const Overview = ({ data }) => {
     <form onSubmit={handleSubmit(onCollarEdit)}>
       <Stack my={4} direction="row" justifyContent="space-between">
         {openBackdropLoader ? (
-          <Skeleton width="42vw" height={"245px"} sx={{background:"#F7F8FD"}}/>
+          <Skeleton
+            width="42vw"
+            height={"245px"}
+            sx={{ background: "#F7F8FD" }}
+          />
         ) : (
           <Stack
             sx={{
@@ -142,7 +150,11 @@ const Overview = ({ data }) => {
           </Stack>
         )}
         {openBackdropLoader ? (
-          <Skeleton width="33vw" height={"245px"} sx={{background:"#F7F8FD"}}/>
+          <Skeleton
+            width="33vw"
+            height={"245px"}
+            sx={{ background: "#F7F8FD" }}
+          />
         ) : (
           <Box
             sx={{
@@ -174,9 +186,44 @@ const Overview = ({ data }) => {
                     suffix={card.suffix}
                   />
                 ))}
+              <StatusCard
+                key={"qr"}
+                text={" QR"}
+                status={""}
+                icon={<QrCodeIcon fontSize="large" sx={{ mr: 1 }} />}
+                statusColor={"red"}
+                suffix={""}
+                actions={[
+                  <Button
+                    variant="text"
+                    sx={{
+                      fontWeight: "bold",
+                      fontSize: "13px",
+                      py: 0,
+                      letterSpacing: 1,
+                    }}
+                    onClick={() => setModal(true)}
+                  >
+                    View
+                  </Button>,
+                ]}
+              />
             </Stack>
           </Box>
         )}
+        <CustomModal
+          content={
+            <ShowQRModalContent
+              id={collarInfoEdit?.collarMacId}
+              title="Collar"
+            />
+          }
+          customWidth="25%"
+          customWidthMd="40%"
+          customWidthSm="50%"
+          openModal={modal}
+          handleClose={() => setModal(false)}
+        />
       </Stack>
     </form>
   );

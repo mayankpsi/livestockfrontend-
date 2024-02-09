@@ -26,7 +26,7 @@ function StepsChart({ height = 200, width, data, thresholds, dayWise }) {
   };
   const getData = data?.length ? data : chartData;
   const xLabel = data?.length ? ("hour" in data?.[0] ? "hour" : "day") : "hour";
-  const xUnit = data?.length && "hour" in data?.[0] ? " hr" : "";
+  const xUnit = data?.length ? ("hour" in data?.[0] ? " hr" : "") : " hr";
 
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
@@ -43,7 +43,7 @@ function StepsChart({ height = 200, width, data, thresholds, dayWise }) {
             unit={xUnit}
           />
           <YAxis
-            domain={[0, Number(thresholds?.high) + 10]}
+            domain={[0, Number(data?.[0]?.highThreshold) + 10]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
@@ -59,7 +59,7 @@ function StepsChart({ height = 200, width, data, thresholds, dayWise }) {
             content={renderLegend(stepsLegends)}
           />
           <Bar
-            dataKey="steps"
+            dataKey="totalSteps"
             stroke={colors.steps.stroke}
             fill={colors.steps.fill}
             strokeWidth={2}
@@ -67,14 +67,14 @@ function StepsChart({ height = 200, width, data, thresholds, dayWise }) {
             barSize={30}
           />
           <ReferenceLine
-            y={Number(thresholds?.high)}
+            y={Number(data?.[0]?.highThreshold)}
             label="Max"
             stroke="red"
             strokeWidth={1}
             strokeDasharray="10 20"
           />
           <ReferenceLine
-            y={Number(thresholds?.low)}
+            y={Number(data?.[0]?.lowThreshold)}
             label="Min"
             stroke="red"
             strokeWidth={1}

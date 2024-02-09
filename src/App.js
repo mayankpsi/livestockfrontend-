@@ -15,6 +15,7 @@ import {
   NotFound,
   Devices,
   Notifications,
+  LivestockHistoryPDF,
 } from "./pages";
 import "./App.css";
 import { useEffect } from "react";
@@ -33,6 +34,10 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route path="login" element={<AuthPage />} />
+        <Route
+          path="getLivestockHistory/:id"
+          element={<LivestockHistoryPDF />}
+        />
         <Route element={<RequireAuth />}>
           <Route path="/" element={<AdminDashBoard />} />
           <Route path="map" element={<Map />} />

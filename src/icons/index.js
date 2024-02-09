@@ -22,4 +22,6 @@ export { default as CalendarMonthIcon } from "@mui/icons-material/CalendarMonth"
 export { default as ThermostatIcon } from "@mui/icons-material/Thermostat";
 export { default as MonitorHeartIcon } from "@mui/icons-material/MonitorHeart";
 export { default as PetsIcon } from "@mui/icons-material/Pets";
-export {default as CropFreeIcon} from '@mui/icons-material/CropFree';
+export { default as CropFreeIcon } from "@mui/icons-material/CropFree";
+export { default as QrCodeIcon } from "@mui/icons-material/QrCode";
+export { default as DownloadIcon } from "@mui/icons-material/Download";

@@ -1,11 +1,12 @@
 import { Box, Stack } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   TableV2,
   ExportAsCSV,
   TabPaneV2,
   CustomPagination,
   NoData,
+  Spinner,
 } from "../../../../ComponentsV2";
 import RuminationChart from "../HealthCharts/RuminationChart";
 import HealthChartsModalContent from "../HealthCharts/HealthChartsModalContent";
@@ -13,6 +14,9 @@ import useGetColorDynamically from "../../../../hooks/useGetColorDynamically";
 import useDateFormat from "../../../../hooks/useDateFormat";
 import { TypographySecondary } from "../../../../ComponentsV2/themeComponents";
 import { ruminationfake, ruminationDayWise } from "../HealthCharts/chartData";
+import { useParams } from "react-router-dom";
+import { useLivestockHealthContext } from "../../../../context/LivestockHealthContext";
+import { roundOffUptoTwo } from "../../../../utils/utils";
 
 const tableHeadData = [
   "sensor name",
@@ -84,42 +88,56 @@ const tableRowData = [
 ];
 
 const RuminationSection = ({ thresholds }) => {
-  const { formattedDate, getLongDateFormat, paginationDateFormat } =
-    useDateFormat();
-  const { getDynamicColor } = useGetColorDynamically();
+  const { id } = useParams();
+  const {
+    getLogs,
+    healthLogData,
+    handleLogsPaginationChange,
+    logsDateRange,
+    setLogsDateRange,
+    chartDataLoader,
+    getChartData,
+    chartDateRange,
+    setChartDateRange,
+    activeTab,
+    healthChartData: chartData,
+  } = useLivestockHealthContext();
+  //DESTRUCTING LOGS DATA
+  const { logsData, logsDataLength, pagination, loading } = healthLogData;
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [dateRange, setDateRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
-  const dataLength = 0;
-  const start = paginationDateFormat(dateRange[0]?.startDate);
-  const end = paginationDateFormat(dateRange[0]?.endDate);
-  const isDay = start === end;
-  const total = (isDay ? ruminationfake : ruminationDayWise).reduce(
-    (total, ele) => total + ele?.dataValue,
-    0
+  useEffect(() => {
+    getLogs(id);
+  }, [pagination, logsDateRange, activeTab]);
+
+  useEffect(() => {
+    getChartData(id);
+  }, [id, chartDateRange, activeTab]);
+
+  const rumination = roundOffUptoTwo(
+    chartData?.reduce((total, ele) => total + ele?.activeTimeInHours, 0)
   );
-
   return (
     <Stack width="100%" direction={"column"} gap={5}>
       <Stack width="100%">
         <HealthChartsModalContent
-          selectedDate={dateRange}
           label={"Rumination"}
           dateRange={true}
-          total={`${total} min`}
-          setSelectedDate={setDateRange}
+          total={`${rumination} min`}
+          selectedDate={chartDateRange}
+          setSelectedDate={setChartDateRange}
         >
-          <RuminationChart
-            dayWise={isDay}
-            height={500}
-            thresholds={thresholds}
-          />
+          {chartDataLoader ? (
+            <Stack height={500}>
+              <Spinner />
+            </Stack>
+          ) : (
+            <RuminationChart
+              height={500}
+              thresholds={thresholds}
+              selectedDate={chartDateRange}
+              data={chartData}
+            />
+          )}
         </HealthChartsModalContent>
       </Stack>
 
@@ -129,9 +147,9 @@ const RuminationSection = ({ thresholds }) => {
             paneText="Rumination"
             paneTextColor="#000"
             datePicker={true}
-            btnDisabled={dataLength ? false : true}
+            btnDisabled={logsDataLength ? false : true}
             btnText={
-              dataLength ? (
+              logsDataLength ? (
                 <ExportAsCSV
                   headers={[]?.map((ele) =>
                     ele === "Date & Time" ? "date" : ele
@@ -148,12 +166,12 @@ const RuminationSection = ({ thresholds }) => {
             onBtnClick={() => {}}
             btnColor="#fff"
             btnBg="#B58B5D"
-            selectedDate={dateRange}
-            setSelectedDate={setDateRange}
+            selectedDate={logsDateRange}
+            setSelectedDate={setLogsDateRange}
           />
           <TypographySecondary sx={{ fontSize: "16px" }}>{`showing ${
-            dataLength < 10 ? dataLength : 10
-          } out of ${dataLength} Logs`}</TypographySecondary>
+            logsDataLength < 10 ? logsDataLength : 10
+          } out of ${logsDataLength} Logs`}</TypographySecondary>
         </Box>
         <Box>
           {[]?.length ? (

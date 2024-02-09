@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import {
   TabPane,
@@ -6,6 +6,7 @@ import {
   StatusCard,
   Spinner,
   Skeleton,
+  CustomModal,
 } from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -16,10 +17,13 @@ import useCollarContext from "../../../hooks/useCollarContext";
 import { pedometerStatusCardData } from "../Data";
 import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import useErrorMessage from "../../../hooks/useErrorMessage";
+import { QrCodeIcon } from "../../../icons";
+import ShowQRModalContent from "../../PDFPage/ShowQRModalContent";
 
 const Overview = ({ data }) => {
   const [isEditCollarInfo, setIsEditCollarInfo] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState(false);
   const [collarInfoEdit, setCollarInfoEdit] = useState({
     collarUID: "",
     collarName: "",
@@ -223,9 +227,44 @@ const Overview = ({ data }) => {
                     suffix={card.suffix}
                   />
                 ))}
+              <StatusCard
+                key={"qr"}
+                text={" QR"}
+                status={""}
+                icon={<QrCodeIcon fontSize="large" sx={{ mr: 1 }} />}
+                statusColor={"red"}
+                suffix={""}
+                actions={[
+                  <Button
+                    variant="text"
+                    sx={{
+                      fontWeight: "bold",
+                      fontSize: "13px",
+                      py: 0,
+                      letterSpacing: 1,
+                    }}
+                    onClick={() => setModal(true)}
+                  >
+                    View
+                  </Button>,
+                ]}
+              />
             </Stack>
           </Box>
         )}
+        <CustomModal
+          content={
+            <ShowQRModalContent
+              id={collarInfoEdit?.collarMacId}
+              title="Pedometer"
+            />
+          }
+          customWidth="25%"
+          customWidthMd="40%"
+          customWidthSm="50%"
+          openModal={modal}
+          handleClose={() => setModal(false)}
+        />
       </Stack>
     </form>
   );

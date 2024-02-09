@@ -101,10 +101,10 @@ const TemperatureSection = ({ thresholds }) => {
           } out of ${logsDataLength} Logs`}</TypographySecondary>
         </Box>
         {loading ? (
-            <TableSkeleton
-              rowNumber={new Array(10).fill(0)}
-              tableCell={new Array(3).fill("33%")}
-            />
+          <TableSkeleton
+            rowNumber={new Array(10).fill(0)}
+            tableCell={new Array(3).fill("33%")}
+          />
         ) : logsDataLength ? (
           <Box>
             <TableV2

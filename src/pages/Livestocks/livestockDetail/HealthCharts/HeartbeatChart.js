@@ -38,7 +38,7 @@ function HeartBeatChart({ height = 200, data, width, thresholds }) {
             tickLine={{ stroke: colors.text }}
           />
           <YAxis
-            unit="/min"
+            unit=" Bpm"
             domain={[0, Number(thresholds?.high) + 10]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
@@ -57,7 +57,6 @@ function HeartBeatChart({ height = 200, data, width, thresholds }) {
             fill={colors.heartbeat.fill}
             strokeWidth={2}
             name="Heartbeat"
-            unit="/min"
           />
           <ReferenceLine
             y={Number(thresholds?.high)}

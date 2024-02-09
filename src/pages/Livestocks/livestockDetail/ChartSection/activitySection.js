@@ -19,8 +19,9 @@ import {
   logsTableHeadData,
 } from "./dataFormats";
 import { useEffect } from "react";
+import { roundOffUptoTwo } from "../../../../utils/utils";
 
-const ActivitySection = ({thresholds}) => {
+const ActivitySection = ({ thresholds }) => {
   const { id } = useParams();
   const {
     getLogs,
@@ -45,12 +46,17 @@ const ActivitySection = ({thresholds}) => {
   useEffect(() => {
     getChartData(id);
   }, [id, chartDateRange, activeTab]);
+
+  const activity = roundOffUptoTwo(
+    chartData?.reduce((total, ele) => total + ele?.activeTimeInHours, 0)
+  );
   return (
     <Stack width="100%" direction={"column"} gap={5}>
       <Stack width="100%">
         <HealthChartsModalContent
           label={"Activity"}
           dateRange={true}
+          total={(activity || "0") + " hr"}
           selectedDate={chartDateRange}
           setSelectedDate={setChartDateRange}
         >
@@ -59,7 +65,12 @@ const ActivitySection = ({thresholds}) => {
               <Spinner />
             </Stack>
           ) : (
-            <ActivityChart selectedDate={chartDateRange} data={chartData} height={500} thresholds={thresholds}/>
+            <ActivityChart
+              selectedDate={chartDateRange}
+              data={chartData}
+              height={500}
+              thresholds={thresholds}
+            />
           )}
         </HealthChartsModalContent>
       </Stack>
@@ -96,10 +107,10 @@ const ActivitySection = ({thresholds}) => {
           } out of ${logsDataLength} Logs`}</TypographySecondary>
         </Box>
         {loading ? (
-         <TableSkeleton
-         rowNumber={new Array(10).fill(0)}
-         tableCell={new Array(3).fill("33%")}
-       />
+          <TableSkeleton
+            rowNumber={new Array(10).fill(0)}
+            tableCell={new Array(3).fill("33%")}
+          />
         ) : logsDataLength ? (
           <Box>
             <TableV2
