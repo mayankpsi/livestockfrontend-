@@ -50,7 +50,7 @@ export default function ProfileMenu() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <CustomAvatar>{userName}</CustomAvatar>
+            <CustomAvatar>{userName || "U"}</CustomAvatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -91,7 +91,7 @@ export default function ProfileMenu() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={() => handleClose("profile")}>
-          <CustomAvatar sx={{ marginRight: 1 }}>{userName}</CustomAvatar>{" "}
+          <CustomAvatar sx={{ marginRight: 1 }}>{userName || "U"}</CustomAvatar>{" "}
           Profile
         </MenuItem>
         <Divider />

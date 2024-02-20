@@ -11,6 +11,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function SidebarSmall() {
   const navigate = useNavigate();
+  const currentRole = Number(
+    JSON.parse(window?.localStorage?.getItem("userData"))?.role
+  );
   const [state, setState] = React.useState({
     left: false,
   });
@@ -70,16 +73,18 @@ export default function SidebarSmall() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {routes?.map((ele, ind) => (
-          <Button
-            key={ind}
-            onClick={() => handleClick(ele.link)}
-            sx={buttonStyles(ele)}
-            startIcon={handleIcons(ele)}
-          >
-            {ele.title}
-          </Button>
-        ))}
+        {routes
+          ?.filter((ele) => ele?.role?.includes(currentRole))
+          ?.map((ele, ind) => (
+            <Button
+              key={ind}
+              onClick={() => handleClick(ele.link)}
+              sx={buttonStyles(ele)}
+              startIcon={handleIcons(ele)}
+            >
+              {ele.title}
+            </Button>
+          ))}
       </List>
     </Box>
   );

@@ -34,9 +34,12 @@ const Map = () => {
       closeAlert={onSnackbarAlertClose}
       BreadcrumbData={BreadcrumbData}
     >
-      <Container maxWidth="xl" sx={{ marginTop: 8 }}>
+      <Container maxWidth="xl" sx={{ marginTop: 3 }}>
         <BackdropLoader open={openBackdropLoader} />
-        <Typography variant="h2" sx={{ fontSize: "2rem", fontWeight: 600,mb:2 }}>
+        <Typography
+          variant="h2"
+          sx={{ fontSize: "2rem", fontWeight: 600, mb: 2 }}
+        >
           GeoFence
         </Typography>
         <CustomTabs tabData={tabData} />

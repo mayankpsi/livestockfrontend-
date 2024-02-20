@@ -42,15 +42,15 @@ const CreateGeoFence = () => {
     textAlign: "justify",
   });
 
-  const submitState = localStorage.getItem("geofenceCreation") === "showEdit";
-
   const handleSubmit = () => {
-    if (geofenceCoordinates?.radius) {
-      removeCustomError();
-      handleGeofenceSave();
-    } else {
-      addCustomError("Please select the radius");
-    }
+    handleGeofenceSave();
+
+    // if (geofenceCoordinates?.radius) {
+    //   removeCustomError();
+    //   handleGeofenceSave();
+    // } else {
+    //   addCustomError("Please select the radius");
+    // }
   };
   return (
     <Stack
@@ -80,7 +80,7 @@ const CreateGeoFence = () => {
               }}
               onClick={() => getGeolocationAddress(true, null, null)}
             >
-              Auto detect my location
+              Auto detect location
             </ButtonPrimary>
           </Paper>
         ) : isLoading ? (
@@ -93,9 +93,10 @@ const CreateGeoFence = () => {
                 Address:
               </ParaV2>
               <ParaV3 variant="h5">{geofenceCoordinates?.address}</ParaV3>
-              <ParaV2 variant="h5">Lat: {geofenceCoordinates?.lat}</ParaV2>
-              <ParaV2 variant="h5">Lng: {geofenceCoordinates?.lng}</ParaV2>
-              {!submitState && (
+              <ParaV2 variant="h5">Lat: {geofenceCoordinates?.farmLat}</ParaV2>
+              <ParaV2 variant="h5">Lng: {geofenceCoordinates?.farmLng}</ParaV2>
+              {localStorage.getItem("geofence") === "edit" ||
+              !Boolean(localStorage.getItem("geofence")) ? (
                 <ButtonPrimary
                   variant="contained"
                   sx={{
@@ -108,15 +109,13 @@ const CreateGeoFence = () => {
                 >
                   Edit
                 </ButtonPrimary>
-              )}
+              ) : null}
             </Paper>
             <Paper elevation={2} sx={{ padding: 2, marginTop: 2 }}>
               <Para variant="h5">Step: 2</Para>
-              <ParaV2 variant="h5">Select the radius</ParaV2>
-              {/* <ParaV2 variant="h5">Draw Geofence on the map</ParaV2> */}
-              <CustomSelect disable={submitState} />
+              <ParaV2 variant="h5">Draw Geofence on the map</ParaV2>
             </Paper>
-            {(!localStorage.getItem("geofenceCreation") || submitState) && (
+            {localStorage.getItem("geofence") === "edit" ? null : (
               <Box
                 sx={{
                   display: "flex",
@@ -124,7 +123,7 @@ const CreateGeoFence = () => {
                   margin: "20px 0",
                 }}
               >
-                {submitState ? (
+                {localStorage.getItem("geofence") === "done" ? (
                   <ButtonPrimary
                     variant="contained"
                     sx={{
@@ -137,7 +136,7 @@ const CreateGeoFence = () => {
                   >
                     Edit
                   </ButtonPrimary>
-                ) : isGeoFenceSave ? (
+                ) : (
                   <ButtonPrimary
                     variant="contained"
                     sx={{
@@ -150,11 +149,10 @@ const CreateGeoFence = () => {
                   >
                     Submit
                   </ButtonPrimary>
-                ) : null}
+                )}
               </Box>
             )}
-
-            {localStorage.getItem("geofenceCreation") === "editTrue" && (
+            {localStorage.getItem("geofence") === "edit" && (
               <Box
                 sx={{
                   display: "flex",
@@ -162,13 +160,15 @@ const CreateGeoFence = () => {
                   margin: "20px 0",
                 }}
               >
-                <ButtonOutlinedRound
-                  variant="outlined"
-                  sx={{ minWidth: "100px", borderRadius: 1 }}
-                  onClick={handleGeofenceCancel}
-                >
-                  Cancel
-                </ButtonOutlinedRound>
+                {localStorage.getItem("hideCancel") === "true" ? null : (
+                  <ButtonOutlinedRound
+                    variant="outlined"
+                    sx={{ minWidth: "100px", borderRadius: 1 }}
+                    onClick={handleGeofenceCancel}
+                  >
+                    Cancel
+                  </ButtonOutlinedRound>
+                )}
                 <ButtonPrimary
                   variant="contained"
                   sx={{
@@ -179,7 +179,7 @@ const CreateGeoFence = () => {
                   }}
                   onClick={handleSubmit}
                 >
-                  Save
+                  Submit
                 </ButtonPrimary>
               </Box>
             )}
@@ -191,7 +191,13 @@ const CreateGeoFence = () => {
           mapWidth="100%"
           mapHeight="600px"
           geofenceCoordinates={geofenceCoordinates}
-          createGeoFence={!isGeoFenceSave}
+          createGeoFence={
+            Boolean(localStorage.getItem("geofence"))
+              ? localStorage.getItem("geofence") === "done"
+                ? false
+                : true
+              : Boolean(geofenceCoordinates?.address)
+          }
         />
       </Stack>
     </Stack>

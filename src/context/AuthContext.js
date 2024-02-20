@@ -9,7 +9,7 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const {getErrorMessage} = useErrorMessage()
+  const { getErrorMessage } = useErrorMessage();
   const from = location.state?.from?.pathname || "/";
   const [userData, setUserData] = useState({ data: {}, error: "" });
   const [onUserLogin, setOnUserLogin] = useState({ email: "", password: "" });
@@ -56,7 +56,7 @@ export const AuthContextProvider = ({ children }) => {
         method: "POST",
         data: body,
       });
-      console.log(res,"jbcjfjnvjfnjvnfjnj")
+      console.log(res, "jbcjfjnvjfnjvnfjnj");
       if (res?.status === 200) {
         // res.data.data.statusCode -- 200 success
         // accessToken - res.data.data.accessToken
@@ -65,6 +65,7 @@ export const AuthContextProvider = ({ children }) => {
           accessToken: res.data.data.accessToken,
           userId: res.data.data.user._id,
           userName: res.data.data.user.name,
+          role: res.data.data.user.role,
         };
         localStorage.setItem("userData", JSON.stringify(loginCredentials));
         setOnUserLogin({ email: "", password: "" });
@@ -73,7 +74,7 @@ export const AuthContextProvider = ({ children }) => {
       } else if (res?.response?.data?.statusCode === 401) {
         //res.response.data.statusCode - 401 - email not registered
         // res.response.data.statusCode - 401 - incorrect password
-        
+
         showSnackbarAlert("error", res?.response?.data?.message);
       } else {
         const message = getErrorMessage(res);
@@ -120,7 +121,7 @@ export const AuthContextProvider = ({ children }) => {
         showSnackbarAlert("error", res?.response?.data?.message);
       } else {
         //ALL OTHER ERRORS
-        const message =getErrorMessage(res)
+        const message = getErrorMessage(res);
         throw new Error(message);
       }
     } catch (err) {

@@ -16,10 +16,10 @@ import { useTheme } from "@emotion/react";
 import useCollarContext from "../../hooks/useCollarContext";
 import { useNavigate } from "react-router-dom";
 import { request } from "../../apis/axios-utils";
-import { deviceData } from "./Data";
+import { deviceData, adminDeviceData } from "./Data";
 import useErrorMessage from "../../hooks/useErrorMessage";
 
-const AdminDashBoard = () => {
+const UserDashboard = () => {
   const theme = useTheme();
   const { getErrorMessage } = useErrorMessage();
 
@@ -35,6 +35,7 @@ const AdminDashBoard = () => {
   const userName = JSON.parse(
     localStorage.getItem("userData")
   )?.userName?.split(" ")[0];
+
   const firstName = userName?.charAt(0)?.toUpperCase() + userName?.slice(1);
   const [getLivestockStatus, setGetLivestockStatus] = useState([]);
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
@@ -58,17 +59,30 @@ const AdminDashBoard = () => {
         if (res?.status === 200) {
           const { data } = res?.data;
           const formattedData = {
-            totalCollars: data?.TotalDevice || 0,
-            totalLiveStock: data?.TotalLiveStock || 0,
-            totalSafeLiveStock: data?.TotalSafeLiveStock || 0,
-            totalUnSafeLiveStock: data?.TotalUnSafeLiveStock || 0,
-            totalAlerts: data?.AllAlertsCount || 0,
-            geolocationLat: data?.GeofenceData?.lat,
-            geolocationLng: data?.GeofenceData?.lng,
-            geolocationRadius: data?.GeofenceData?.radius,
+            totalCollars: data?.totalDevice || 0,
+            totalLiveStock: data?.totalLiveStock || 0,
+            totalSafeLiveStock: data?.totalSafeLiveStock || 0,
+            totalUnSafeLiveStock: data?.totalSafeLiveStock || 0,
+            totalAlerts: data?.allAlertsCount || 0,
+            collarCount: data?.collarCount || 0,
+            pedometerCount: data?.pedometerCount || 0,
+            userCount: data?.userCount || 0,
+            totalDevices: `${data?.pedometerCount || 0}/${
+              data?.collarCount || 0
+            }`,
+            geofence: {
+              farmLat: data?.geofenceData?.farmLat,
+              farmLng: data?.geofenceData?.farmLng,
+              circleLat: data?.geofenceData?.centerLat,
+              circleLng: data?.geofenceData?.centerLng,
+              radius: data?.geofenceData?.radius,
+              polygon: data?.geofenceData?.coordinates,
+              geoFenceType: data?.geofenceData?.geofanceType,
+              address: data?.geofenceData?.Address,
+            },
           };
 
-          const livestockFormattedData = data?.LivestockLatLog?.map((ele) => ({
+          const livestockFormattedData = data?.livestockLatLog?.map((ele) => ({
             id: ele?._id,
             safeUnsafeStatus: ele?.liveStocklocationStatus,
             position: {
@@ -86,10 +100,14 @@ const AdminDashBoard = () => {
       .finally(() => setOpenBackdropLoader(false));
   }, []);
 
+  const role = Number(
+    JSON.parse(window?.localStorage?.getItem("userData"))?.role
+  );
+  const data = role == 1 ? adminDeviceData : deviceData;
+
   return (
     <>
       <AdminUIContainer>
-        {/* <BackdropLoader open={openBackdropLoader} /> */}
         <CustomModal
           content={
             <ModalContent setHandleModal={setHandleCompleteProfileModal} />
@@ -110,7 +128,7 @@ const AdminDashBoard = () => {
               className="fs24px bold white_color p_t25px"
               sx={{ p: 5 }}
             >
-              Welcome {firstName},
+              Welcome {firstName ? `${firstName},` : ""}
             </Typography>
           </Stack>
           <Stack
@@ -127,7 +145,7 @@ const AdminDashBoard = () => {
               sx={{ width: { lg: "25%", md: "35%", sm: "40%" } }}
               gap={3}
             >
-              {deviceData?.map((ele) =>
+              {data?.map((ele) =>
                 openBackdropLoader ? (
                   <Skeleton
                     width="100%"
@@ -157,7 +175,7 @@ const AdminDashBoard = () => {
                 alignItems: "center",
               }}
             >
-              {!openBackdropLoader && !dashboardData?.geolocationLat ? (
+              {!openBackdropLoader && !dashboardData?.geofence?.farmLat ? (
                 <Box
                   width="100%"
                   height="100%"
@@ -196,7 +214,7 @@ const AdminDashBoard = () => {
                         borderRadius: theme.spacing(1),
                       }}
                       onClick={() => {
-                        navigate("/collars");
+                        navigate("/devices");
                         handleCollarModalOpen("add");
                       }}
                     >
@@ -229,11 +247,7 @@ const AdminDashBoard = () => {
                 <GetMap
                   mapWidth="100%"
                   mapHeight="100%"
-                  geofenceCoordinates={{
-                    lat: dashboardData?.geolocationLat,
-                    lng: dashboardData?.geolocationLng,
-                    radius: dashboardData?.geolocationRadius,
-                  }}
+                  geofenceCoordinates={dashboardData?.geofence}
                   isLivestocks={true}
                   livestockData={getLivestockStatus}
                 />
@@ -246,4 +260,4 @@ const AdminDashBoard = () => {
   );
 };
 
-export default AdminDashBoard;
+export default UserDashboard;

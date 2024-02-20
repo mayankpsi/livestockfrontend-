@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL_LOCAL = "http://localhost:8085/api/v1";
 const BASE_URL_DEV = "http://shipment.psiborg.io:8085/api/v1";
 
-const client = axios.create({ baseURL: BASE_URL_DEV });
+const client = axios.create({ baseURL: BASE_URL_LOCAL });
 const BEARER_TOKEN =
   `Bearer ${JSON.parse(localStorage.getItem("userData"))?.accessToken}` || "";
 
@@ -16,7 +16,7 @@ export const request = async ({ ...options }) => {
       localStorage.removeItem("userData");
       localStorage.removeItem("geofenceCreation");
       localStorage.removeItem("currentTab");
-      window.location.reload();
+      // window.location.reload();
     } else {
       return error;
     }

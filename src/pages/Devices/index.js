@@ -13,7 +13,8 @@ const Devices = () => {
     handleCollarDeleteConfirm,
     snackbarAlert,
     onSnackbarAlertClose,
-    activeDevice, setActiveDevice
+    activeDevice,
+    setActiveDevice,
   } = useContext(CollarContext);
 
   const devicesTabData = [
@@ -46,7 +47,7 @@ const Devices = () => {
       <Container
         maxWidth="xl"
         sx={{
-          marginTop: 6,
+          marginTop: 3,
           pb: 5,
           p: 0,
           display: "flex",

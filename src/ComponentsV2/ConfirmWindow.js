@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, CircularProgress, Stack } from "@mui/material";
 import {
   TypographyWithBg,
   ButtonPrimaryRound,
@@ -6,7 +6,12 @@ import {
   ButtonOutlinedRound,
 } from "./themeComponents";
 
-const ConfirmWindowModalContent = ({ onCancel, onConfirm, showConfirmBtn }) => {
+const ConfirmWindowModalContent = ({
+  onCancel,
+  onConfirm,
+  showConfirmBtn,
+  loading,
+}) => {
   return (
     <div>
       <Box>
@@ -68,6 +73,12 @@ const ConfirmWindowModalContent = ({ onCancel, onConfirm, showConfirmBtn }) => {
               <ButtonPrimaryRound
                 variant="contained"
                 size="large"
+                disabled={loading}
+                startIcon={
+                  loading ? (
+                    <CircularProgress size={20} sx={{ color: "#fff" }} />
+                  ) : null
+                }
                 sx={{
                   background: "#fc5555",
                   "&:hover": {

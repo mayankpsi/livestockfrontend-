@@ -14,6 +14,7 @@ import { showProfileSchema } from "../../utils/validationSchema";
 import useProfileContext from "../../hooks/useProfileContext";
 import { useEffect } from "react";
 import ProfileSkeleton from "./ProfileSkeleton";
+import useGetProfile from "../../hooks/Profile/useGetProfile";
 
 const common = {
   fontSize: "1.5rem",
@@ -44,7 +45,7 @@ const ButtonOutlined = styled(Button)({
     borderColor: "#C6A580",
   },
 });
-const ShowProfile = () => {
+const ShowProfile = ({ userId }) => {
   const {
     register,
     handleSubmit,
@@ -52,8 +53,19 @@ const ShowProfile = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(showProfileSchema) });
 
-  const { editProfile, setEditProfile, pinCodeLoading, openBackdropLoader } =
-    useProfileContext();
+  const { isLoading, error, profile } = useGetProfile(userId);
+
+  const {
+    editProfile,
+    setEditProfile,
+    pinCodeLoading,
+    openBackdropLoader,
+    showProfileData,
+    handleProfileChange,
+    handleProfileEdit,
+    inputError,
+    handleAccountDelete,
+  } = useProfileContext(userId);
 
   const getTextFiled = (
     label,
@@ -95,14 +107,6 @@ const ShowProfile = () => {
       />
     );
   };
-
-  const {
-    showProfileData,
-    handleProfileChange,
-    handleProfileEdit,
-    inputError,
-    handleAccountDelete,
-  } = useProfileContext();
 
   useEffect(() => {
     setValue("pincode", showProfileData?.pincode);

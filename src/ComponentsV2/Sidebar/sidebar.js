@@ -8,9 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { Box, Stack, Typography, Button, createTheme } from "@mui/material";
 import { SidebarComp } from "../themeComponents";
 import { routes } from "./routeData";
+import useUserId from "../../hooks/useUserId";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const currentRole = Number(
+    JSON.parse(window?.localStorage?.getItem("userData"))?.role
+  );
   const theme = createTheme();
 
   const isActivePath = (link) =>
@@ -78,16 +82,18 @@ const Sidebar = () => {
         </Typography>
       </Box>
       <Stack>
-        {routes?.map((link, ind) => (
-          <Button
-            key={ind}
-            onClick={() => handleClick(link.link)}
-            sx={buttonStyles(link)}
-            startIcon={handleIcons(link)}
-          >
-            {link.title}
-          </Button>
-        ))}
+        {routes
+          ?.filter((ele) => ele?.role?.includes(currentRole))
+          ?.map((link, ind) => (
+            <Button
+              key={ind}
+              onClick={() => handleClick(link.link)}
+              sx={buttonStyles(link)}
+              startIcon={handleIcons(link)}
+            >
+              {link.title}
+            </Button>
+          ))}
       </Stack>
     </SidebarComp>
   );

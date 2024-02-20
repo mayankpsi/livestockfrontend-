@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, CircularProgress, Stack } from "@mui/material";
 import {
   TypographyWithBg,
   ButtonPrimary,
@@ -23,6 +23,8 @@ const ShowLivestocks = ({
   setOpenAddLivestockModal,
   openSnackbarAlert,
   loading,
+  title,
+  assigning,
 }) => {
   const [showLivestocks, setShowLivestocks] = useState(data);
   const [selectedValue, setSelectedValue] = useState();
@@ -44,10 +46,12 @@ const ShowLivestocks = ({
 
   return (
     <Box>
-      <TypographyWithBg>Assign Livestock</TypographyWithBg>
+      <TypographyWithBg sx={{ textTransform: "capitalize" }}>
+        Assign {title || "Livestock"}
+      </TypographyWithBg>
       <Stack direction="row" p={4}>
         <SearchInput
-          placeholder="Search Livestock Id or Name"
+          placeholder={`Search ${title || "Livestock"} Id or name`}
           name="search"
           onChange={(e) => onSearch(e.target.value)}
         />
@@ -87,10 +91,21 @@ const ShowLivestocks = ({
           ) : null}
           <ButtonPrimary
             onClick={handleLivestockAssignSave}
+            disabled={!selectedValue || assigning}
+            startIcon={
+              assigning ? (
+                <CircularProgress size={20} sx={{ color: "#fff" }} />
+              ) : null
+            }
             sx={{
               position: "absolute",
               right: "35px",
               background: "#05254C",
+              color: `${
+                !selectedValue || assigning
+                  ? "rgba(255,255,255,0.4) !important"
+                  : "#fff !important"
+              }`,
               padding: "5px 30px",
             }}
           >

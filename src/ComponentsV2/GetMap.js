@@ -1,9 +1,10 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback, useEffect } from "react";
 import {
   GoogleMap,
   Marker,
   useJsApiLoader,
   Circle,
+  Polygon,
 } from "@react-google-maps/api";
 import { SafeLivestockPointer, UnsafeLivestockPointer } from "../assets";
 import useMapContext from "../hooks/useMapContext";
@@ -28,6 +29,14 @@ const GetMap = ({
     geoFenceType,
     setGeoFenceType,
     setIsGeoFenceSaved,
+    mapRef,
+    drawingManagerRef,
+    dmPolygonRef,
+    finalPoly,
+    dmCircleRef,
+    finalCircle,
+    handleStartOver,
+    openSnackbarAlert,
   } = useMapContext();
   const circleRef = useRef();
 
@@ -36,13 +45,6 @@ const GetMap = ({
     googleMapsApiKey: MAP_KEY,
     libraries: ["drawing"],
   });
-
-  const mapRef = useRef(null);
-  const drawingManagerRef = useRef(null);
-  const dmPolygonRef = useRef(null);
-  const finalPoly = useRef(null);
-  const dmCircleRef = useRef(null);
-  const finalCircle = useRef(null);
 
   const handlePolygonEdit = (polygon) => {
     const paths = getPolygonPaths(polygon);
@@ -93,7 +95,6 @@ const GetMap = ({
       window?.google.maps.event.addListener(polygon, "dragend", () =>
         handlePolygonEdit(polygon)
       );
-      console.log(polyArray, "bjjgnbjgnjbngjnbjngjb");
       setPolygonPath(polyArray);
       // You can add listeners to the polygon as well
       //   window?.google.maps.event.addListener(polygon, "click", function () {
@@ -157,95 +158,91 @@ const GetMap = ({
     // CREATE A REF TO DRAWING MANAGER
     drawingManagerRef.current = drawingManager;
     // CONNECT THE DM WITH MAP INSTANCE
-    // if (createGeoFence) drawingManager.setMap(map); // hide
-    // drawingManager.setMap(map);
 
     // LISTEN FOR EVENT WHEN POLYGON COMPLETE
-    // window.google.maps.event.addListener( //hide
-    //   drawingManager,
-    //   "overlaycomplete",
-    //   onPolygonComplete
-    // );
+    window.google.maps.event.addListener(
+      drawingManager,
+      "overlaycomplete",
+      onPolygonComplete
+    );
   }, []);
 
+  useEffect(() => {
+    if (createGeoFence) {
+      drawingManagerRef.current?.setMap(mapRef.current);
+    } else {
+      drawingManagerRef.current?.setMap(null);
+    }
+  }, [createGeoFence, drawingManagerRef.current, mapRef.current]);
+
   const onPolygonSave = () => {
-    const polygon = new window.google.maps.Polygon({
-      paths: polygonPath,
-      strokeColor: "#06B95F",
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: "#06B95F",
-      fillOpacity: 0.35,
-      clickable: false,
-    });
-    const circle = new window.google.maps.Circle({
-      center: circleGeoFence?.position,
-      radius: circleGeoFence?.radius,
-      strokeColor: "#06B95F",
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: "#06B95F",
-      fillOpacity: 0.35,
-      clickable: false,
-    });
-
-    const farmLocation = {
-      lat: Number(geofenceCoordinates.lat),
-      lng: Number(geofenceCoordinates.lng),
-    };
-
-    if (geoFenceType === "polygon") {
-      const isInside = window?.google?.maps?.geometry?.poly?.containsLocation(
-        farmLocation,
-        polygon
-      );
-      if (isInside) {
-        finalPoly.current = polygon;
-        polygon.setMap(mapRef.current);
-        dmPolygonRef.current.setMap(null);
-        drawingManagerRef.current.setMap(null);
-        setIsGeoFenceSaved(true);
-      } else {
-        alert("the farm location must be inside geo fence");
-      }
-    } else {
-      const distance =
-        window.google.maps.geometry.spherical.computeDistanceBetween(
-          farmLocation,
-          circleGeoFence?.position
-        );
-
-      if (distance <= circleGeoFence?.radius) {
-        finalCircle.current = circle;
-        circle.setMap(mapRef.current);
-        dmCircleRef.current.setMap(null);
-        drawingManagerRef.current.setMap(null);
-        setIsGeoFenceSaved(true);
-      } else {
-        alert("the farm location must be inside geo fence");
-      }
-    }
-  };
-
-  const handleStartOver = () => {
-    if (geoFenceType === "polygon") {
-      setPolygonPath([]);
-      dmPolygonRef.current.setMap(null);
-    } else {
-      setCircleGeoFence({
-        radius: 0,
-        position: null,
+    if (geoFenceType && (circleGeoFence?.radius || polygonPath?.length > 2)) {
+      localStorage.setItem("hideCancel", "true");
+      const polygon = new window.google.maps.Polygon({
+        paths: polygonPath,
+        strokeColor: "#06B95F",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#06B95F",
+        fillOpacity: 0.35,
+        clickable: false,
       });
-      dmCircleRef.current.setMap(null);
+      const circle = new window.google.maps.Circle({
+        center: circleGeoFence?.position,
+        radius: circleGeoFence?.radius,
+        strokeColor: "#06B95F",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#06B95F",
+        fillOpacity: 0.35,
+        clickable: false,
+      });
+
+      const farmLocation = {
+        lat: Number(geofenceCoordinates.farmLat),
+        lng: Number(geofenceCoordinates.farmLng),
+      };
+
+      if (geoFenceType === "polygon") {
+        const isInside = window?.google?.maps?.geometry?.poly?.containsLocation(
+          farmLocation,
+          polygon
+        );
+        if (isInside) {
+          finalPoly.current = polygon;
+          polygon.setMap(mapRef.current);
+          dmPolygonRef.current.setMap(null);
+          drawingManagerRef.current.setMap(null);
+          setIsGeoFenceSaved(true);
+        } else {
+          openSnackbarAlert(
+            "error",
+            "the farm location must be inside geofence"
+          );
+        }
+      } else {
+        const distance =
+          window.google.maps.geometry.spherical.computeDistanceBetween(
+            farmLocation,
+            circleGeoFence?.position
+          );
+
+        if (distance <= circleGeoFence?.radius) {
+          finalCircle.current = circle;
+          circle.setMap(mapRef.current);
+          dmCircleRef.current.setMap(null);
+          drawingManagerRef.current.setMap(null);
+          setIsGeoFenceSaved(true);
+        } else {
+          openSnackbarAlert(
+            "error",
+            "the farm location must be inside geofence"
+          );
+        }
+      }
+    } else {
+      openSnackbarAlert("error", "please create a geofence first");
     }
-
-    // enable drawing mode
-    drawingManagerRef.current.setMap(mapRef.current);
-
-    // enable drawing control
-    drawingManagerRef.current.setOptions({
-      drawingControl: true,
-    });
   };
 
   const onUnmount = useCallback(function callback(map) {
@@ -275,8 +272,8 @@ const GetMap = ({
           : null
       }
       center={{
-        lat: Number(geofenceCoordinates?.lat),
-        lng: Number(geofenceCoordinates?.lng),
+        lat: Number(geofenceCoordinates?.farmLat),
+        lng: Number(geofenceCoordinates?.farmLng),
       }}
       defaultZoom={15}
       zoom={15}
@@ -300,30 +297,53 @@ const GetMap = ({
         key="dcdcde323ddccddc3ded3de"
         title="marker"
         position={{
-          lat: Number(geofenceCoordinates?.lat),
-          lng: Number(geofenceCoordinates?.lng),
+          lat: Number(geofenceCoordinates?.farmLat),
+          lng: Number(geofenceCoordinates?.farmLng),
         }}
       />
-      <Circle
-        ref={circleRef}
-        center={{
-          lat: Number(geofenceCoordinates?.lat),
-          lng: Number(geofenceCoordinates?.lng),
-        }}
-        options={{
-          strokeColor: "#06B95F",
-          strokeOpacity: 1,
-          strokeWeight: 2,
-          fillColor: "#06B95F",
-          fillOpacity: 0.35,
-          clickable: false,
-          draggable: false,
-          editable: false,
-          visible: true,
-          radius: Math.ceil(geofenceCoordinates?.radius),
-        }}
-      />
-      {/* {createGeoFence && (
+      {console.log(geofenceCoordinates, "kjgbnjgnjgnjbngjnbj")}
+      {geofenceCoordinates?.geoFenceType?.toLowerCase() === "polygon" ? (
+        <Polygon
+          paths={
+            localStorage.getItem("geofence") === "edit"
+              ? []
+              : geofenceCoordinates?.polygon
+          }
+          options={{
+            strokeColor: "#06B95F",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#06B95F",
+            fillOpacity: 0.35,
+            clickable: false,
+          }}
+        />
+      ) : (
+        <Circle
+          ref={circleRef}
+          center={{
+            lat: Number(geofenceCoordinates?.circleLat),
+            lng: Number(geofenceCoordinates?.circleLng),
+          }}
+          radius={
+            localStorage.getItem("geofence") === "edit"
+              ? 0
+              : geofenceCoordinates?.radius
+          }
+          options={{
+            strokeColor: "#06B95F",
+            strokeOpacity: 1,
+            strokeWeight: 2,
+            fillColor: "#06B95F",
+            fillOpacity: 0.35,
+            clickable: false,
+            draggable: false,
+            editable: false,
+            visible: true,
+          }}
+        />
+      )}
+      {createGeoFence && (
         <Stack direction={"row"} gap={1} p={1}>
           <Button
             variant="contained"
@@ -340,7 +360,7 @@ const GetMap = ({
             Save
           </Button>
         </Stack>
-      )} hide */}
+      )}
     </GoogleMap>
   ) : (
     <Skeleton width={mapWidth} height={mapHeight} />

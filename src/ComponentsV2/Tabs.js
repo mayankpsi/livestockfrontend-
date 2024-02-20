@@ -37,7 +37,7 @@ function a11yProps(index) {
   };
 }
 
-export default function CustomTabs({ tabData }) {
+export default function CustomTabs({ tabData, onTabChange }) {
   const [value, setValue] = React.useState(0);
 
   useEffect(() => {
@@ -53,7 +53,9 @@ export default function CustomTabs({ tabData }) {
     const tab = Number(localStorage.getItem("currentTab"));
     if (tab) {
       const val =
-        Number(localStorage.getItem("currentTab")) > tabData?.length-1 ? 0 : tab;
+        Number(localStorage.getItem("currentTab")) > tabData?.length - 1
+          ? 0
+          : tab;
       setValue(val);
     }
   }, [value]);
@@ -61,6 +63,7 @@ export default function CustomTabs({ tabData }) {
   const handleChange = (event, newValue) => {
     localStorage.setItem("currentTab", newValue);
     setValue(newValue);
+    onTabChange?.(newValue);
   };
 
   const TabV2 = styled(Tab)({

@@ -23,7 +23,11 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
     setOpenAddLivestockModal,
     setOpenBackdropLoader,
   } = useLivestockContext();
-  const { openSnackbarAlert, getAllDevices, openBackdropLoader:firstLoadingLoader} = useCollarContext();
+  const {
+    openSnackbarAlert,
+    getAllDevices,
+    openBackdropLoader: firstLoadingLoader,
+  } = useCollarContext();
 
   useEffect(() => {
     if (query || isInputChange) {
@@ -148,7 +152,7 @@ const AssignLivestock = ({ data, loading, setLoading }) => {
           </Stack>
         )
       ) : (
-        <Skeleton width="43vw" height="60vh" sx={{background:"#F7F8FD"}}/>
+        <Skeleton width="43vw" height="60vh" sx={{ background: "#F7F8FD" }} />
       )}
 
       <CustomModal

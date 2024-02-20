@@ -5,6 +5,7 @@ import { Container, Stack } from "@mui/material";
 import ShowProfile from "./showProfile";
 import ProfileSecurity from "./profileSecurity";
 import useProfileContext from "../../hooks/useProfileContext";
+import useUserId from "../../hooks/useUserId";
 
 const btnData = [
   {
@@ -32,6 +33,8 @@ const ProfilePage = () => {
     openBackdropLoader,
   } = useProfileContext();
 
+  const userId = useUserId();
+
   return (
     <AdminUIContainer
       openModal={showConfirmModal.open}
@@ -44,7 +47,7 @@ const ProfilePage = () => {
       closeAlert={onSnackbarAlertClose}
       BreadcrumbData={BreadcrumbData}
     >
-      <Container maxWidth="xl" sx={{ marginTop: 8, pb: 5 }}>
+      <Container maxWidth="xl" sx={{ marginTop: 3, pb: 5 }}>
         {/* <BackdropLoader open={openBackdropLoader} /> */}
         <Stack direction="column" alignItems={"center"}>
           <BtnGroup
@@ -52,7 +55,11 @@ const ProfilePage = () => {
             activeBtn={showProfileTab}
             onChange={(ele) => setShowProfileTab(ele)}
           />
-          {showProfileTab === "profile" ? <ShowProfile /> : <ProfileSecurity />}
+          {showProfileTab === "profile" ? (
+            <ShowProfile userId={userId} />
+          ) : (
+            <ProfileSecurity />
+          )}
         </Stack>
       </Container>
     </AdminUIContainer>

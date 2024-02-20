@@ -36,8 +36,8 @@ export const ProfileContextProvider = ({ children }) => {
     message: "",
   });
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
-  const [pinCodeLoading, setPinCodeLoading] = useState(false)
-  const {getErrorMessage} = useErrorMessage();
+  const [pinCodeLoading, setPinCodeLoading] = useState(false);
+  const { getErrorMessage } = useErrorMessage();
 
   // HANDLE PROFILE CHANGE AND UPDATE
   const handleProfileChange = (data) => {
@@ -66,13 +66,13 @@ export const ProfileContextProvider = ({ children }) => {
         if (res.status === 200) {
           setEditProfile(true);
           setOpenBackdropLoader(false);
-          openSnackbarAlert("success","Profile successfully edited");
+          openSnackbarAlert("success", "Profile successfully edited");
         } else {
           throw new Error(getErrorMessage(res));
         }
       } catch (error) {
         setOpenBackdropLoader(false);
-        openSnackbarAlert("error",error?.message);
+        openSnackbarAlert("error", error?.message);
       }
     }
   };
@@ -93,22 +93,22 @@ export const ProfileContextProvider = ({ children }) => {
       });
       if (res.status === 200) {
         setOpenBackdropLoader(false);
-        openSnackbarAlert("success","Password successfully changed");
+        openSnackbarAlert("success", "Password successfully changed");
       } else {
-        throw new Error(getErrorMessage(res))
+        throw new Error(getErrorMessage(res));
       }
     } catch (error) {
       setOpenBackdropLoader(false);
-      openSnackbarAlert("error",error?.message);
+      openSnackbarAlert("error", error?.message);
     }
   };
 
   useEffect(() => {
-    setOpenBackdropLoader(true)
+    setOpenBackdropLoader(true);
     request({ url: `/auth/getUpdatedUserData` })
       .then((res) => {
         if (res.status === 200) {
-          setOpenBackdropLoader(false)
+          setOpenBackdropLoader(false);
           const { data } = res?.data;
           setShowProfileData({
             ...showProfileData,
@@ -121,19 +121,19 @@ export const ProfileContextProvider = ({ children }) => {
             country: data?.address?.country,
           });
         } else {
-          throw new Error(getErrorMessage(res))
+          throw new Error(getErrorMessage(res));
         }
       })
-      .catch((err) =>  {
-        setOpenBackdropLoader(false)
-        openSnackbarAlert("error", err.message)
+      .catch((err) => {
+        setOpenBackdropLoader(false);
+        openSnackbarAlert("error", err.message);
       });
   }, []);
 
   useEffect(() => {
     const delayDebounceFnc = showProfileData?.pincode
       ? setTimeout(() => {
-        setPinCodeLoading(true)
+          setPinCodeLoading(true);
           axios
             .get(
               `https://api.postalpincode.in/pincode/${showProfileData?.pincode}`
@@ -162,7 +162,7 @@ export const ProfileContextProvider = ({ children }) => {
               }
             })
             .catch((err) => console.log(err))
-            .finally(()=> setPinCodeLoading(false))
+            .finally(() => setPinCodeLoading(false));
         }, 1000)
       : null;
     return () => clearTimeout(delayDebounceFnc);
@@ -198,7 +198,7 @@ export const ProfileContextProvider = ({ children }) => {
       if (res?.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "Account successfully deleted!");
-        if(window){
+        if (window) {
           window.location.pathname = "/login";
         }
       } else {
@@ -253,7 +253,7 @@ export const ProfileContextProvider = ({ children }) => {
         snackbarAlert,
         onSnackbarAlertClose,
         openBackdropLoader,
-        pinCodeLoading
+        pinCodeLoading,
       }}
     >
       {children}

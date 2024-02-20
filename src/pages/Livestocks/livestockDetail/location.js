@@ -74,15 +74,25 @@ const Location = ({ data }) => {
           if (res1?.value?.status === 200) {
             const { data } = res1.value?.data;
             setGeofenceData({
-              lat: data?.lat,
-              lng: data?.lng,
+              farmLat: data.farmLat,
+              farmLng: data.farmLng,
+              circleLat: data?.centerLat,
+              circleLng: data?.centerLng,
               radius: data?.radius,
+              polygon: data?.coordinates,
+              geoFenceType: data?.geofanceType,
+              address: data.Address,
             });
           } else {
             setGeofenceData({
-              lat: null,
-              lng: null,
+              farmLat: null,
+              farmLng: null,
+              circleLat: null,
+              circleLng: null,
               radius: 0,
+              polygon: [],
+              geoFenceType: null,
+              address: "",
             });
             errorMessage = res?.response?.data?.message;
           }

@@ -1,4 +1,4 @@
-export { default as AdminDashBoard } from "./dashboard";
+export { default as UserDashboard } from "./dashboard";
 export { default as AuthPage } from "./Authentication";
 export { default as Map } from "./Map/map";
 export { default as Livestocks } from "./Livestocks";

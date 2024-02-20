@@ -59,8 +59,10 @@ const TabPaneV2 = ({
           <ButtonPrimary
             sx={{
               fontSize: "1.2rem",
-              padding: "5px 15px",
+              padding: "7px 15px",
               color: btnColor,
+              display: "flex",
+              justifyContent: "center",
               ...disabled,
             }}
             onClick={onBtnClick}

@@ -1,9 +1,21 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useRef } from "react";
 import { request } from "../apis/axios-utils";
 import useUserId from "../hooks/useUserId";
 import useErrorMessage from "../hooks/useErrorMessage";
 
 export const MapContext = createContext();
+
+const geofenceInitialState = {
+  farmLat: null,
+  farmLng: null,
+  circleLat: null,
+  circleLng: null,
+  radius: 0,
+  polygon: [],
+  geoFenceType: null,
+  address: "",
+  err: null,
+};
 
 export const MapContentProvider = ({ children }) => {
   const [userLiveLocation, setUserLiveLocation] = useState({
@@ -49,6 +61,13 @@ export const MapContentProvider = ({ children }) => {
     });
   };
 
+  const mapRef = useRef(null);
+  const drawingManagerRef = useRef(null);
+  const dmPolygonRef = useRef(null);
+  const finalPoly = useRef(null);
+  const dmCircleRef = useRef(null);
+  const finalCircle = useRef(null);
+
   const addCustomError = (message) => {
     setCustomError({ error: true, message });
   };
@@ -74,13 +93,8 @@ export const MapContentProvider = ({ children }) => {
   };
 
   //geofence
-  const [geofenceCoordinates, setGeofenceCoordinates] = useState({
-    lat: null,
-    lng: null,
-    address: "",
-    radius: null,
-    err: null,
-  });
+  const [geofenceCoordinates, setGeofenceCoordinates] =
+    useState(geofenceInitialState);
 
   const getAddress = async (latitude, longitude) => {
     try {
@@ -91,8 +105,8 @@ export const MapContentProvider = ({ children }) => {
         const { data } = res?.data;
         setGeofenceCoordinates({
           ...geofenceCoordinates,
-          lat: data?.lat,
-          lng: data?.lng,
+          farmLat: data?.lat,
+          farmLng: data?.lng,
           address: data?.Address,
         });
       } else {
@@ -131,23 +145,6 @@ export const MapContentProvider = ({ children }) => {
           openSnackbarAlert("error", err.message);
           setIsLoading(false);
         });
-      // console.log(position,"djbhdbhbhbhbbhbhbhbhbhbhb")
-      // if (position?.coords) {
-      //   let { latitude, longitude } = position?.coords;
-      //   getAddress(latitude, longitude);
-      // }
-      // console.log(position,"jsbhbhbhbhbhbhhbhhbhbhbhbhbh");
-      // if ("geolocation" in navigator) {
-      //   // console.log(navigator?.geolocation?.getCurrentPosition,"jsbhbhbhbhbhbhhbhhbhbhbhbhbh")
-      //    navigator?.geolocation?.getCurrentPosition(async (position) => {
-      //     let { latitude, longitude } = position?.coords;
-      //     getAddress(latitude, longitude);
-      //   });
-      // } else {
-      //   setIsLoading(false);
-      //   setOpenBackdropLoader(false);
-      //   openSnackbarAlert("error", "Error: Make sure you enable location");
-      // }
     } else {
       getAddress(latitude, longitude);
     }
@@ -157,10 +154,9 @@ export const MapContentProvider = ({ children }) => {
 
   // HANDLE GEOFENCE ADDRESS EDIT
   const handleGeofenceAddressEdit = () => {
+    localStorage.removeItem("geofence");
     setGeofenceCoordinates({
       ...geofenceCoordinates,
-      lat: 28.597300752377528,
-      lng: 77.35768470574658,
       address: "",
       radius: null,
     });
@@ -169,69 +165,73 @@ export const MapContentProvider = ({ children }) => {
   const userId = useUserId();
   //HANDEL GEOFENCE SUBMIT AND CREATE A GEOFENCE
   const handleCreateGeofence = async () => {
-    setOpenBackdropLoader(true);
-    setSaveLocationData(true);
-    // geoFenceType, polygonPath, circleGeoFence
-    localStorage.setItem("geofenceCreation", "showEdit");
-    const circleBody = {
-      Address: geofenceCoordinates?.address,
-      centerLat: geofenceCoordinates?.lat,
-      centerLng: geofenceCoordinates?.lng,
-      radius: circleGeoFence?.radius,
-    };
+    if (isGeoFenceSave) {
+      setOpenBackdropLoader(true);
+      localStorage.setItem("geofence", "done");
 
-    const body = {
-      Address: geofenceCoordinates?.address,
-      lat: geofenceCoordinates?.lat,
-      lng: geofenceCoordinates?.lng,
-      radius: geofenceCoordinates?.radius,
-    };
-    const polygonBody = {
-      Address: geofenceCoordinates?.address,
-      centerLat: geofenceCoordinates?.lat,
-      centerLng: geofenceCoordinates?.lng,
-      coordinates: polygonPath,
-    };
-    try {
-      const res = await request({
-        url: `/user/addGeofence/?userId=${userId}`,
-        method: "POST",
-        data: body,
-      });
-      if (res?.status === 200) {
-        openSnackbarAlert("success", res?.data?.message);
+      const circleBody = {
+        Address: geofenceCoordinates?.address,
+        farmLat: geofenceCoordinates?.farmLat,
+        farmLng: geofenceCoordinates?.farmLng,
+        centerLat: circleGeoFence?.position?.lat,
+        centerLng: circleGeoFence?.position?.lng,
+        radius: circleGeoFence?.radius,
+      };
+
+      const polygonBody = {
+        Address: geofenceCoordinates?.address,
+        farmLat: geofenceCoordinates?.farmLat,
+        farmLng: geofenceCoordinates?.farmLng,
+        coordinates: polygonPath,
+      };
+
+      const body = geoFenceType === "polygon" ? polygonBody : circleBody;
+      try {
+        const res = await request({
+          url: `/user/addGeofence?geofenceType=${geoFenceType}`,
+          method: "POST",
+          data: body,
+        });
+        if (res?.status === 200) {
+          openSnackbarAlert("success", res?.data?.message);
+          setOpenBackdropLoader(false);
+        } else {
+          throw new Error(getErrorMessage(res));
+        }
+      } catch (error) {
+        openSnackbarAlert("error", error?.message);
         setOpenBackdropLoader(false);
-      } else {
-        throw new Error(getErrorMessage(res));
       }
-    } catch (error) {
-      openSnackbarAlert("error", error?.message);
-      setOpenBackdropLoader(false);
+    } else {
+      openSnackbarAlert("error", "Please Save the geofence first");
     }
   };
 
-  //HANDLE GEOFENCE EDIT CANCEL
+  //HANDLE GEO FENCE EDIT CANCEL
   const handleGeofenceCancel = () => {
-    setGeofenceCoordinates({ ...geofenceCoordinates, radius: editedRadius });
+    localStorage.setItem("geofence", "done");
+    setGeofenceCoordinates(JSON.parse(localStorage.getItem("prevGeofence")));
+    handleStartOver();
     setEditedRadius(null);
-    setOnGeofenceEdit(false);
-    setSaveLocationData(true);
-    localStorage.setItem("geofenceCreation", "showEdit");
   };
 
   //HANDLE GEOFENCE EDIT SAVE
   const handleGeofenceSave = () => {
-    setOnGeofenceEdit(false);
-    setSaveLocationData(true);
-    handleCreateGeofence();
-    localStorage.setItem("geofenceCreation", "showEdit");
+    if (isGeoFenceSave) {
+      // setOnGeofenceEdit(false);
+      // setSaveLocationData(true);
+      handleCreateGeofence();
+      localStorage.setItem("geofence", "done");
+    } else {
+      openSnackbarAlert("error", "Please Saved the geofence first");
+    }
   };
+
   //HANDLE GEOFENCE EDIT
   const handleGeofenceEdit = () => {
-    setOnGeofenceEdit(true);
-    setSaveLocationData(false);
-    setEditedRadius(geofenceCoordinates?.radius);
-    localStorage.setItem("geofenceCreation", "editTrue");
+    localStorage.setItem("geofence", "edit");
+    localStorage.setItem("prevGeofence", JSON.stringify(geofenceCoordinates));
+    setGeofenceCoordinates({ ...geofenceCoordinates, radius: 0, polygon: [] });
   };
 
   //GET GEOFENCE DETAILS
@@ -241,10 +241,14 @@ export const MapContentProvider = ({ children }) => {
       .then((res) => {
         const { data } = res?.data;
         const formattedData = {
-          lat: data.lat,
-          lng: data.lng,
+          farmLat: data.farmLat,
+          farmLng: data.farmLng,
+          circleLat: data?.centerLat,
+          circleLng: data?.centerLng,
+          radius: data?.radius,
+          polygon: data?.coordinates,
+          geoFenceType: data?.geofanceType,
           address: data.Address,
-          radius: data.radius,
           err: null,
         };
         setGeofenceCoordinates(formattedData);
@@ -254,6 +258,27 @@ export const MapContentProvider = ({ children }) => {
       })
       .finally(() => setOpenBackdropLoader(false));
   }, []);
+
+  const handleStartOver = () => {
+    if (geoFenceType === "polygon") {
+      setPolygonPath([]);
+      dmPolygonRef.current?.setMap(null);
+    } else {
+      setCircleGeoFence({
+        radius: 0,
+        position: null,
+      });
+      dmCircleRef.current?.setMap(null);
+    }
+
+    // enable drawing mode
+    drawingManagerRef.current?.setMap(mapRef.current);
+
+    // enable drawing control
+    drawingManagerRef.current?.setOptions({
+      drawingControl: true,
+    });
+  };
 
   return (
     <MapContext.Provider
@@ -292,6 +317,13 @@ export const MapContentProvider = ({ children }) => {
         setGeoFenceType,
         isGeoFenceSave,
         setIsGeoFenceSaved,
+        mapRef,
+        drawingManagerRef,
+        dmPolygonRef,
+        finalPoly,
+        dmCircleRef,
+        finalCircle,
+        handleStartOver,
       }}
     >
       {children}

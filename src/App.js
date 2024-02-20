@@ -1,10 +1,12 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import RequireAuth from "./utils/RequireAuth";
+import AdminAccess from "./utils/AdminAccess";
+
 import Layout from "./layout/Layout";
 import {
   Collars,
   LivestockDetails,
-  AdminDashBoard,
+  UserDashboard,
   AuthPage,
   Map,
   Livestocks,
@@ -18,7 +20,8 @@ import {
   LivestockHistoryPDF,
 } from "./pages";
 import "./App.css";
-import { useEffect } from "react";
+import UserManagement from "./Role/Admin/UserManagemnet";
+import ViewUserDetails from "./Role/Admin/UserManagemnet/ViewUsers";
 
 function App() {
   // const navigate = useNavigate();
@@ -39,7 +42,11 @@ function App() {
           element={<LivestockHistoryPDF />}
         />
         <Route element={<RequireAuth />}>
-          <Route path="/" element={<AdminDashBoard />} />
+          <Route path="/" element={<UserDashboard />} />
+          <Route element={<AdminAccess />}>
+            <Route path="/users" element={<UserManagement />} />
+            <Route path="/users/:id" element={<ViewUserDetails />} />
+          </Route>
           <Route path="map" element={<Map />} />
           <Route path="/devices" element={<Devices />} />
           <Route path="devices/collar/:id" element={<ViewCollarDetails />} />

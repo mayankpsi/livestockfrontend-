@@ -23,8 +23,9 @@ const LiveLocation = () => {
     request({ url: "/liveStock/safeUnsafeLiveStock" })
       .then((res) => {
         if (res?.status === 200) {
-          setGetLivestockStatus(res?.data?.data);
+          setGetLivestockStatus(res?.data?.data?.livestock_info);
         } else {
+          setGetLivestockStatus([]);
           throw new Error(getErrorMessage(res));
         }
       })
@@ -95,8 +96,9 @@ const LiveLocation = () => {
                 "safe"
               )?.map((ele) => ({
                 liveStockName: ele?.name,
-                collar: ele?.collarDevice?.deviceName || "N/A",
-                pedometer: ele?.pedometerDevice?.deviceName || "N/A",
+                collar: ele?.assignedDevice?.collarDevice?.deviceName || "N/A",
+                pedometer:
+                  ele?.assignedDevice?.pedometerDevice?.deviceName || "N/A",
               }))}
             />
             {!getFilteredLivestock(getLivestockStatus, "safe").length && (
@@ -123,8 +125,9 @@ const LiveLocation = () => {
                 "unsafe"
               )?.map((ele) => ({
                 liveStockName: ele?.name,
-                collar: ele?.collarDevice?.deviceName || "N/A",
-                pedometer: ele?.pedometerDevice?.deviceName || "N/A",
+                collar: ele?.assignedDevice?.collarDevice?.deviceName || "N/A",
+                pedometer:
+                  ele?.assignedDevice?.pedometerDevice?.deviceName || "N/A",
               }))}
             />
             {!getFilteredLivestock(getLivestockStatus, "unsafe").length && (

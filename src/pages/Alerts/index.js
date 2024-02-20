@@ -36,7 +36,6 @@ const AlertsPage = () => {
   } = useAlertsContext();
 
   const getTableFormattedData = (data) => {
-    console.log(data, "fjbvjnjbvnjgnbjngjbnjg");
     const res = data
       ?.map((ele) => ({
         ...ele,
@@ -90,7 +89,7 @@ const AlertsPage = () => {
       closeAlert={onSnackbarAlertClose}
       BreadcrumbData={BreadcrumbData}
     >
-      <Container maxWidth="xl" sx={{ marginTop: 8, pb: 5 }}>
+      <Container maxWidth="xl" sx={{ marginTop: 3, pb: 5 }}>
         {/* <BackdropLoader open={openBackdropLoader} /> */}
         <TypographyPrimary sx={{ fontSize: "2rem" }}>Alerts</TypographyPrimary>
         <Stack sx={{ width: "100%", pb: 3 }}>
