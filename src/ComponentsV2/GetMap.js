@@ -301,7 +301,6 @@ const GetMap = ({
           lng: Number(geofenceCoordinates?.farmLng),
         }}
       />
-      {console.log(geofenceCoordinates, "kjgbnjgnjgnjbngjnbj")}
       {geofenceCoordinates?.geoFenceType?.toLowerCase() === "polygon" ? (
         <Polygon
           paths={

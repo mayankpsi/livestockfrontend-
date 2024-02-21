@@ -77,7 +77,7 @@ const UserDashboard = () => {
               circleLng: data?.geofenceData?.centerLng,
               radius: data?.geofenceData?.radius,
               polygon: data?.geofenceData?.coordinates,
-              geoFenceType: data?.geofenceData?.geofanceType,
+              geoFenceType: data?.geofenceData?.geofenceType,
               address: data?.geofenceData?.Address,
             },
           };

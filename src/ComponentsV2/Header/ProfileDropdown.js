@@ -28,7 +28,8 @@ export default function ProfileMenu() {
       handleSocketLogout();
       navigate("/");
       localStorage.removeItem("userData");
-      localStorage.removeItem("geofenceCreation");
+      localStorage.removeItem("geofence");
+      localStorage.removeItem("prevGeofence");
       localStorage.removeItem("currentTab");
       window.location.reload();
     }

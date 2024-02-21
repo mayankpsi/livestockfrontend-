@@ -14,7 +14,8 @@ export const request = async ({ ...options }) => {
   const onError = (error) => {
     if (error?.response?.status === 401) {
       localStorage.removeItem("userData");
-      localStorage.removeItem("geofenceCreation");
+      localStorage.removeItem("geofence");
+      localStorage.removeItem("prevGeofence");
       localStorage.removeItem("currentTab");
       // window.location.reload();
     } else {

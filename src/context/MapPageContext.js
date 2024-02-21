@@ -32,6 +32,7 @@ export const MapContentProvider = ({ children }) => {
     error: false,
     message: null,
   });
+  const [geofenceLoading, setGeofenceLoading] = useState(false);
   const [geoFenceType, setGeoFenceType] = useState(null);
   const [polygonPath, setPolygonPath] = useState([]);
   const [circleGeoFence, setCircleGeoFence] = useState({
@@ -166,7 +167,7 @@ export const MapContentProvider = ({ children }) => {
   //HANDEL GEOFENCE SUBMIT AND CREATE A GEOFENCE
   const handleCreateGeofence = async () => {
     if (isGeoFenceSave) {
-      setOpenBackdropLoader(true);
+      setGeofenceLoading(true);
       localStorage.setItem("geofence", "done");
 
       const circleBody = {
@@ -194,13 +195,13 @@ export const MapContentProvider = ({ children }) => {
         });
         if (res?.status === 200) {
           openSnackbarAlert("success", res?.data?.message);
-          setOpenBackdropLoader(false);
         } else {
           throw new Error(getErrorMessage(res));
         }
       } catch (error) {
         openSnackbarAlert("error", error?.message);
-        setOpenBackdropLoader(false);
+      } finally {
+        setGeofenceLoading(false);
       }
     } else {
       openSnackbarAlert("error", "Please Save the geofence first");
@@ -247,7 +248,7 @@ export const MapContentProvider = ({ children }) => {
           circleLng: data?.centerLng,
           radius: data?.radius,
           polygon: data?.coordinates,
-          geoFenceType: data?.geofanceType,
+          geoFenceType: data?.geofenceType,
           address: data.Address,
           err: null,
         };
@@ -257,7 +258,7 @@ export const MapContentProvider = ({ children }) => {
         // alert(err.message)
       })
       .finally(() => setOpenBackdropLoader(false));
-  }, []);
+  }, [geofenceLoading]);
 
   const handleStartOver = () => {
     if (geoFenceType === "polygon") {
