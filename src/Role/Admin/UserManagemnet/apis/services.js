@@ -30,7 +30,7 @@ export const getGeofenceAndLivestock = (userId) => {
 
 export const getAllDevices = (userId, deviceType, pagination, query) =>
   request({
-    url: `/devices/getDeviceByUserId?userId=${userId}&deviceType=${deviceType}&page=${pagination}&limit=${10}&searchTerm=${query}`,
+    url: `/devices/getDeviceByUserId?userId=${userId}&deviceType=${deviceType}&page=${pagination}&limit=${10}&searchTerm=${query}&status=all`,
   });
 
 export const getUnassignDevicesApi = (deviceType, pagination, query) =>
