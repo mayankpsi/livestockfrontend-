@@ -1,16 +1,16 @@
-import { createContext, useEffect } from "react";
+import { createContext } from "react";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { request } from "../apis/axios-utils";
 import useErrorMessage from "../hooks/useErrorMessage";
+import toast from "react-hot-toast";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { getErrorMessage } = useErrorMessage();
-  const from = location.state?.from?.pathname || "/";
+  const from = "/";
   const [userData, setUserData] = useState({ data: {}, error: "" });
   const [onUserLogin, setOnUserLogin] = useState({ email: "", password: "" });
   const [onUserSignUp, setOnUserSignUp] = useState({
@@ -25,9 +25,15 @@ export const AuthContextProvider = ({ children }) => {
     type: "",
     message: "",
   });
+  const [timer, setTimer] = useState(null);
+
+  const [emailOTP, setEmailOTP] = useState("");
   // show anime
   const [showAnim, setShowAnim] = useState(true);
+  const [seconds, setSeconds] = useState(59);
+
   const [isLogin, setIsLogin] = useState("log in");
+  const [otpVerification, setOTPVerification] = useState(false);
 
   //Snackbar alert
   const onSnackbarAlertClose = () => {
@@ -56,11 +62,7 @@ export const AuthContextProvider = ({ children }) => {
         method: "POST",
         data: body,
       });
-      console.log(res, "jbcjfjnvjfnjvnfjnj");
       if (res?.status === 200) {
-        // res.data.data.statusCode -- 200 success
-        // accessToken - res.data.data.accessToken
-        // accessToken - res.data.data.user._id
         const loginCredentials = {
           accessToken: res.data.data.accessToken,
           userId: res.data.data.user._id,
@@ -69,12 +71,9 @@ export const AuthContextProvider = ({ children }) => {
         };
         localStorage.setItem("userData", JSON.stringify(loginCredentials));
         setOnUserLogin({ email: "", password: "" });
-        navigate(from, { replace: true });
-        window.location.reload();
+        // navigate(from);
+        window.location.pathname = "/";
       } else if (res?.response?.data?.statusCode === 401) {
-        //res.response.data.statusCode - 401 - email not registered
-        // res.response.data.statusCode - 401 - incorrect password
-
         showSnackbarAlert("error", res?.response?.data?.message);
       } else {
         const message = getErrorMessage(res);
@@ -91,41 +90,57 @@ export const AuthContextProvider = ({ children }) => {
     setOnUserSignUp({ ...onUserSignUp, [name]: value });
   };
 
-  const handleUserSignUpSubmit = async () => {
-    const body = {
-      name: onUserSignUp?.fullName,
-      email: onUserSignUp?.email,
-      phone: onUserSignUp?.phone,
-      password: onUserSignUp?.password,
-    };
-    try {
-      const res = await request({
-        url: "/auth/sign-up",
-        method: "POST",
-        data: body,
+  // target
+  // specific for contest quiz
+
+  // company view -> create forms and can share the form to any candidate
+  // candidates view ->
+  // login, attempt quiz, can't leave screen,
+  const resendTimer = () => {
+    clearInterval(timer);
+    let newTimer = setInterval(() => {
+      setSeconds((prevSeconds) => {
+        if (prevSeconds === 0) {
+          clearInterval(newTimer);
+          return 0;
+        }
+        return prevSeconds - 1;
       });
-      if (res?.status === 200) {
-        showSnackbarAlert("success", "Account successfully created!");
-        setShowAnim(!showAnim);
-        setIsLogin("log in");
-        setOnUserSignUp({
-          fullName: "",
-          email: "",
-          password: "",
-          phone: "",
-        });
-        // handle complete profile show modal only one time
-        localStorage.setItem("showProfileCompleteModal", "true");
-      } else if (res?.response?.data?.statusCode === 403) {
-        // EMAIL OR PHONE ALREADY REGISTERED
-        showSnackbarAlert("error", res?.response?.data?.message);
-      } else {
-        //ALL OTHER ERRORS
-        const message = getErrorMessage(res);
-        throw new Error(message);
-      }
-    } catch (err) {
-      showSnackbarAlert("error", err?.message);
+    }, 1000);
+    setTimer(newTimer);
+  };
+
+  const onSignUpComplete = (res) => {
+    // handle complete profile show modal only one time
+    localStorage.setItem("showProfileCompleteModal", "true");
+    const userCredentials = {
+      accessToken: res.data.data.token,
+      userId: res.data.data.userData._id,
+      userName: res.data.data.userData.name,
+      role: res.data.data.userData.role,
+    };
+    localStorage.setItem("userData", JSON.stringify(userCredentials));
+    window.location.pathname = "/";
+  };
+
+  const handleOTPVerificationGoBack = () => {
+    setOTPVerification(false);
+    clearInterval(timer);
+    setTimer(null);
+    setSeconds(59);
+    setEmailOTP("");
+  };
+
+  const handleResendOTP = () => {
+    setSeconds(59);
+    setEmailOTP("");
+    resendTimer();
+  };
+
+  const handleOTPSubmit = () => {
+    if (emailOTP?.length === 6) {
+    } else {
+      toast.error("Please enter a valid OTP");
     }
   };
 
@@ -133,7 +148,6 @@ export const AuthContextProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         handleUserLoginSubmit,
-        handleUserSignUpSubmit,
         onUserSignUp,
         userData,
         handleUserSignUpCredentialChange,
@@ -145,6 +159,17 @@ export const AuthContextProvider = ({ children }) => {
         setShowAnim,
         isLogin,
         setIsLogin,
+        otpVerification,
+        seconds,
+        setOTPVerification,
+        emailOTP,
+        setEmailOTP,
+        handleOTPSubmit,
+        handleOTPVerificationGoBack,
+        resendTimer,
+        onSignUpComplete,
+        onSignUpComplete,
+        handleResendOTP,
       }}
     >
       {children}

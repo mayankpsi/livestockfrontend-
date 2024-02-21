@@ -21,7 +21,11 @@ export const request = async ({ ...options }) => {
       return error;
     }
   };
-  const allowedUrl = ["/auth/sign-in", "/auth/sign-up"];
+  const allowedUrl = [
+    "/auth/sign-in",
+    "/auth/sign-up",
+    "/auth/verifySignupOtp",
+  ];
   if (
     JSON.parse(localStorage.getItem("userData")) ||
     allowedUrl?.includes(options?.url)

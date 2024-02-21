@@ -31,12 +31,14 @@ const TabPane = ({
     setQuery(val);
     onSearch?.(val);
   };
+
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
         <TypographyPrimary
