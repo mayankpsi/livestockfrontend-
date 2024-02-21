@@ -82,7 +82,7 @@ const TabPane = ({
           disabled={loading}
           sx={{
             background: btnBgColor ? btnBgColor : "#B58B5D",
-            p: "13px 15px",
+            p: "8px 15px",
             color: `${btnColor ? btnColor : "#fff"}`,
             cursor: `${!hover ? "default" : "pointer"}`,
             display: "flex",
