@@ -35,6 +35,7 @@ export const ProfileContextProvider = ({ children }) => {
     type: "",
     message: "",
   });
+  const [cancelProfileChanges, setCancelProfileChanges] = useState(false);
   const [openBackdropLoader, setOpenBackdropLoader] = useState(false);
   const [pinCodeLoading, setPinCodeLoading] = useState(false);
   const { getErrorMessage } = useErrorMessage();
@@ -128,7 +129,7 @@ export const ProfileContextProvider = ({ children }) => {
         setOpenBackdropLoader(false);
         openSnackbarAlert("error", err.message);
       });
-  }, []);
+  }, [cancelProfileChanges]);
 
   useEffect(() => {
     const delayDebounceFnc = showProfileData?.pincode
@@ -254,6 +255,7 @@ export const ProfileContextProvider = ({ children }) => {
         onSnackbarAlertClose,
         openBackdropLoader,
         pinCodeLoading,
+        setCancelProfileChanges,
       }}
     >
       {children}

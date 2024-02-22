@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Typography, Paper, Stack, Box } from "@mui/material";
 import { GetMap, SkeletonLoader, CustomSelect } from "../../ComponentsV2";
 import { styled } from "@mui/system";
@@ -44,14 +44,8 @@ const CreateGeoFence = () => {
 
   const handleSubmit = () => {
     handleGeofenceSave();
-
-    // if (geofenceCoordinates?.radius) {
-    //   removeCustomError();
-    //   handleGeofenceSave();
-    // } else {
-    //   addCustomError("Please select the radius");
-    // }
   };
+
   return (
     <Stack
       direction="row"
@@ -186,6 +180,7 @@ const CreateGeoFence = () => {
           </>
         )}
       </Stack>
+      {console.log(geofenceCoordinates, "bjngknbkgnjbngjnbjgnbjg")}
       <Stack sx={{ width: { xl: "81%", lg: "75%", md: "75%", sm: "70%" } }}>
         <GetMap
           mapWidth="100%"

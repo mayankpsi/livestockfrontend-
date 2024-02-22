@@ -14,7 +14,6 @@ import { showProfileSchema } from "../../utils/validationSchema";
 import useProfileContext from "../../hooks/useProfileContext";
 import { useEffect } from "react";
 import ProfileSkeleton from "./ProfileSkeleton";
-import useGetProfile from "../../hooks/Profile/useGetProfile";
 
 const common = {
   fontSize: "1.5rem",
@@ -53,8 +52,6 @@ const ShowProfile = ({ userId }) => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(showProfileSchema) });
 
-  const { isLoading, error, profile } = useGetProfile(userId);
-
   const {
     editProfile,
     setEditProfile,
@@ -65,6 +62,7 @@ const ShowProfile = ({ userId }) => {
     handleProfileEdit,
     inputError,
     handleAccountDelete,
+    setCancelProfileChanges,
   } = useProfileContext(userId);
 
   const getTextFiled = (
@@ -87,7 +85,7 @@ const ShowProfile = ({ userId }) => {
         variant="outlined"
         size="large"
         sx={{ mr: 1 }}
-        value={value}
+        value={value ? value : ""}
         name={name}
         InputProps={{
           endAdornment: inputLoading ? (
@@ -115,6 +113,11 @@ const ShowProfile = ({ userId }) => {
     setValue("phoneNumber", showProfileData?.phoneNumber);
     setValue("fullName", showProfileData?.fullName);
   }, [showProfileData, pinCodeLoading]);
+
+  const handleCancelChanges = () => {
+    setEditProfile(true);
+    setCancelProfileChanges((prev) => !prev);
+  };
 
   return (
     <Stack width="100%">
@@ -218,15 +221,11 @@ const ShowProfile = ({ userId }) => {
                   <ButtonOutlined
                     variant="outlined"
                     sx={{ minWidth: "100px" }}
-                    onClick={() => setEditProfile(true)}
+                    onClick={handleCancelChanges}
                   >
                     Cancel Changes
                   </ButtonOutlined>
-                  <ButtonPrimary
-                    variant="contained"
-                    type="submit"
-                    onClick={() => {}}
-                  >
+                  <ButtonPrimary variant="contained" type="submit">
                     Save Changes
                   </ButtonPrimary>
                 </>

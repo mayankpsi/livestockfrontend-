@@ -80,7 +80,7 @@ const Location = ({ data }) => {
               circleLng: data?.centerLng,
               radius: data?.radius,
               polygon: data?.coordinates,
-              geoFenceType: data?.geofanceType,
+              geoFenceType: data?.geofenceType,
               address: data.Address,
             });
           } else {

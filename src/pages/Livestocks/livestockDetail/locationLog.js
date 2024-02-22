@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, Box, Paper} from "@mui/material";
+import { Stack, Box, Paper } from "@mui/material";
 import {
   GetMap,
   LocationStatusCard,
@@ -16,7 +16,6 @@ const tableColors = ["#06B95F", "#FC5555"];
 const tableHeadData = [];
 const LocationLog = ({ data, resentAlerts, geofenceData }) => {
   const { setShowLocationTab, openBackdropLoader } = useLivestockContext();
-
   return (
     <Stack
       justifyContent="space-between"
@@ -29,7 +28,11 @@ const LocationLog = ({ data, resentAlerts, geofenceData }) => {
       <Stack sx={{ width: { xl: "30%", lg: "30%", sm: "100%" } }} gap={3}>
         {openBackdropLoader ? (
           <Paper>
-          <Skeleton width={"19vw"} height={"10vh"} sx={{background:'#fff'}} />
+            <Skeleton
+              width={"19vw"}
+              height={"10vh"}
+              sx={{ background: "#fff" }}
+            />
           </Paper>
         ) : (
           <LocationStatusCard data={data} />
@@ -78,13 +81,16 @@ const LocationLog = ({ data, resentAlerts, geofenceData }) => {
         justifyContent="space-between"
         sx={{ width: "100%" }}
       >
-        {
-        openBackdropLoader?(
-            <Paper>
-              <Skeleton width={"58vw"} height={"554px"} sx={{background:'#fff'}} />
-            </Paper>
-          ):(
-            <GetMap
+        {openBackdropLoader ? (
+          <Paper>
+            <Skeleton
+              width={"58vw"}
+              height={"554px"}
+              sx={{ background: "#fff" }}
+            />
+          </Paper>
+        ) : (
+          <GetMap
             mapWidth="100%"
             mapHeight="545px"
             geofenceCoordinates={geofenceData}
@@ -100,9 +106,7 @@ const LocationLog = ({ data, resentAlerts, geofenceData }) => {
               },
             ]}
           />
-          )
-        }
-       
+        )}
       </Stack>
     </Stack>
   );

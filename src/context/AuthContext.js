@@ -70,6 +70,7 @@ export const AuthContextProvider = ({ children }) => {
           role: res.data.data.user.role,
         };
         localStorage.setItem("userData", JSON.stringify(loginCredentials));
+
         setOnUserLogin({ email: "", password: "" });
         // navigate(from);
         window.location.pathname = "/";

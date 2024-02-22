@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import AdminUIContainer from "../../layout/AdminUIContainer";
 import { CustomTabs, BackdropLoader } from "../../ComponentsV2";
 import { Typography, Container } from "@mui/material";
@@ -24,8 +24,21 @@ const Map = () => {
       link: "map",
     },
   ];
-  const { snackbarAlert, onSnackbarAlertClose, openBackdropLoader } =
-    useMapContext();
+  const {
+    snackbarAlert,
+    onSnackbarAlertClose,
+    openBackdropLoader,
+    geofenceCoordinates,
+  } = useMapContext();
+
+  useEffect(() => {
+    if (
+      geofenceCoordinates?.radius ||
+      geofenceCoordinates?.polygon.length > 2
+    ) {
+      localStorage.setItem("geofence", "done");
+    }
+  }, []);
   return (
     <AdminUIContainer
       openAlert={snackbarAlert.open}
