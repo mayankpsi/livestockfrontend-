@@ -26,3 +26,4 @@ export { default as CropFreeIcon } from "@mui/icons-material/CropFree";
 export { default as QrCodeIcon } from "@mui/icons-material/QrCode";
 export { default as DownloadIcon } from "@mui/icons-material/Download";
 export { default as GroupIcon } from "@mui/icons-material/Group";
+export { default as VisibilityOffIcon }  from '@mui/icons-material/VisibilityOff';

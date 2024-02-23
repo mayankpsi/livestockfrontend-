@@ -1,24 +1,17 @@
 import React, { useEffect } from "react";
-import {
-  Paper,
-  Stack,
-  Typography,
-  TextField,
-  Box,
-  InputAdornment,
-} from "@mui/material";
+import { Paper, Stack, Typography, Box } from "@mui/material";
 import { BtnGroup } from "../../ComponentsV2";
 import { ButtonPrimary } from "../../ComponentsV2/themeComponents";
 import { useTheme } from "@emotion/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../utils/validationSchema";
-import { DashboardNoData } from "../../assets";
 import { btnData } from "./Data";
-import { VisibilityOutlinedIcon } from "../../icons";
 import "./index.css";
 import { useState } from "react";
 import Logo from "./Logo";
+import useAuthContext from "../../hooks/useAuth";
+import CustomTextField from "./ui/CustomTextField";
 
 const LoginForm = ({
   setShowAnim,
@@ -28,6 +21,7 @@ const LoginForm = ({
   onUserLogin,
 }) => {
   const theme = useTheme();
+  const { setForgetPassword } = useAuthContext();
   const schema = loginSchema;
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,46 +32,6 @@ const LoginForm = ({
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  const getInput = (
-    placeholder,
-    disabled,
-    name,
-    select,
-    label,
-    value,
-    onInputChange
-  ) => (
-    <TextField
-      sx={{ background: "#fff", textTransform: "capitalize" }}
-      disabled={disabled}
-      fullWidth
-      id={name}
-      select={select}
-      label={label}
-      variant="outlined"
-      size="large"
-      value={value}
-      name={name}
-      type={name === "password" && !showPassword ? "password" : "text"}
-      placeholder={placeholder}
-      InputProps={{
-        sx: { borderRadius: "0 !important" },
-        endAdornment:
-          name === "password" ? (
-            <InputAdornment
-              position="end"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              <VisibilityOutlinedIcon />
-            </InputAdornment>
-          ) : null,
-      }}
-      {...register(name, { required: true })}
-      onChange={onInputChange}
-      error={errors?.[name] ? true : false}
-      helperText={errors?.[name]?.message}
-    />
-  );
   const submit = handleUserLoginSubmit;
   const change = handleUserCredentialChange;
 
@@ -113,31 +67,35 @@ const LoginForm = ({
         />
         <Logo />
         <Stack width={"100%"} gap={theme.spacing(2)}>
-          {getInput(
-            "Enter Email",
-            false,
-            "email",
-            false,
-            "Email",
-            onUserLogin?.email,
-            change
-          )}
-          {getInput(
-            "Enter Password",
-            false,
-            "password",
-            false,
-            "password",
-            onUserLogin?.password,
-            change
-          )}
+          <CustomTextField
+            placeholder={"Enter Email"}
+            name={"email"}
+            label={"Email"}
+            value={onUserLogin?.email}
+            onInputChange={change}
+            register={register}
+            errors={errors}
+          />
+          <CustomTextField
+            placeholder={"Enter Password"}
+            name={"password"}
+            label={"password"}
+            value={onUserLogin?.password}
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            onInputChange={change}
+            register={register}
+            errors={errors}
+          />
           <Typography
             variant="h6"
             sx={{
               fontWeight: "bold",
               textAlign: "right",
               cursor: "pointer",
+              marginLeft:'auto'
             }}
+            onClick={() => setForgetPassword(1)}
           >
             Forget password?
           </Typography>

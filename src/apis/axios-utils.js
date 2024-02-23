@@ -6,9 +6,10 @@ const BASE_URL_DEV = "http://shipment.psiborg.io:8085/api/v1";
 const client = axios.create({ baseURL: BASE_URL_LOCAL });
 const BEARER_TOKEN =
   `Bearer ${JSON.parse(localStorage.getItem("userData"))?.accessToken}` || "";
+const TEMP_TOKEN =  localStorage.getItem("forgetEmailAuth");
 
 export const request = async ({ ...options }) => {
-  client.defaults.headers.Authorization = BEARER_TOKEN;
+  client.defaults.headers.Authorization = TEMP_TOKEN || BEARER_TOKEN;
 
   const onSuccess = (response) => response;
   const onError = (error) => {
@@ -25,7 +26,9 @@ export const request = async ({ ...options }) => {
   const allowedUrl = [
     "/auth/sign-in",
     "/auth/sign-up",
-    "/auth/verifySignupOtp",
+    "/auth/verifyOtp",
+    "/auth/forgotOtp",
+    "/auth/createNewPassword"
   ];
   if (
     JSON.parse(localStorage.getItem("userData")) ||

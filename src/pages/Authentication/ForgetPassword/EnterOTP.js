@@ -1,6 +1,5 @@
 import React from "react";
-import Logo from "./Logo";
-import toast from "react-hot-toast";
+import Logo from "../Logo";
 import {
   Box,
   CircularProgress,
@@ -9,77 +8,72 @@ import {
   Typography,
 } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import { ButtonPrimary } from "../../ComponentsV2/themeComponents";
-import OtpInput from "./OTPInput";
-import ResendOTP from "./Resend";
+import { ButtonPrimary } from "../../../ComponentsV2/themeComponents";
+import OtpInput from "../OTPInput";
+import ResendOTP from "../Resend";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import useAuthContext from "../../hooks/useAuth";
-import useVerifyOTP from "./hooks/useVerifyOTP";
-import useSignup from "./hooks/useSignup";
+import useAuthContext from "../../../hooks/useAuth";
+import useVerifyOTP from "../hooks/useVerifyOTP";
+import useForgetPassword from "../hooks/useForgetPassword";
+import toast from "react-hot-toast";
 
-const OTPVerification = () => {
+const EnterOTP = () => {
   const {
-    handleOTPVerificationGoBack,
     emailOTP,
     setEmailOTP,
-    onUserSignUp,
-    onSignUpComplete,
     handleResendOTP,
+    setForgetPassword,
+    handleOTPVerificationGoBack,
+    forgetEmail,
+    resendTimer,
   } = useAuthContext();
+
   const theme = useTheme();
-
   const { isVerifying, verifyOTP } = useVerifyOTP();
-  const { isSigning, signUp } = useSignup();
-
-  const onOTPSubmit = () => {
-    const body = {
-      email: onUserSignUp?.email,
-      otp: Number(emailOTP),
-    };
-    if (emailOTP?.length === 6) {
-      verifyOTP(body, {
-        onSuccess: (data) => {
-          if (data?.status === 200) {
-            onSignUpComplete(data);
-          }
-        },
-      });
-    } else {
-      toast.error("Please enter a valid OTP");
-    }
-  };
+  const { isForgetting, forgetPassword } = useForgetPassword();
 
   const onResend = () => {
     const body = {
-      name: onUserSignUp?.fullName,
-      email: onUserSignUp?.email,
-      countryCode: "91",
-      phone: onUserSignUp?.phone,
-      password: onUserSignUp?.password,
+      email: forgetEmail,
     };
-
-    signUp(body, {
+    forgetPassword(body, {
       onSuccess: (data) => {
         if (data.status === 200) {
+          resendTimer();
           handleResendOTP();
         }
       },
     });
   };
 
-  const handleFormSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    onOTPSubmit();
+    const body = {
+      email: forgetEmail,
+      otp: emailOTP,
+    };
+    if (emailOTP?.length === 6) {
+      verifyOTP(body, {
+        onSuccess: (data) => {
+          if (data.status === 200) {
+            localStorage.setItem('forgetEmailAuth', data?.data?.data?.token)
+            setForgetPassword(3);
+          }
+        },
+      });
+    } else {
+      toast.error("Please Enter a valid OTP");
+    }
   };
+
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={onSubmit}>
       <Paper
         elevation={4}
         sx={{
-          minWidth: 600,
-          maxWidth: 700,
+          minWidth: 452,
           minHeight: 460,
-          p: theme.spacing(4, 5),
+          p: theme.spacing(4),
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -109,23 +103,10 @@ const OTPVerification = () => {
               mb: 1,
             }}
           >
-            Please enter the OTP to verify your account
-          </Typography>
-          <Typography
-            sx={{
-              color: "#fff",
-              fontWeight: "bold",
-              fontSize: "16px",
-              mt: "0",
-              textAlign: "center",
-            }}
-          >
-            Please enter the OTP to verify your account
+            Please enter the OTP
           </Typography>
         </Box>
-        <Box sx={{ maxWidth: "90%" }}>
-          <OtpInput value={emailOTP} onChange={setEmailOTP} />
-        </Box>
+        <OtpInput value={emailOTP} onChange={setEmailOTP} />
         <ButtonPrimary
           disabled={isVerifying}
           startIcon={
@@ -146,10 +127,10 @@ const OTPVerification = () => {
         >
           validate
         </ButtonPrimary>
-        <ResendOTP onClick={onResend} isLoading={isSigning} />
+        <ResendOTP onClick={onResend} isLoading={isForgetting} />
       </Paper>
     </form>
   );
 };
 
-export default OTPVerification;
+export default EnterOTP;

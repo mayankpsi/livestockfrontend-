@@ -44,7 +44,8 @@ const Location = ({ data }) => {
     radius: 0,
   });
   const userId = useUserId();
-  const tableColors = ["#06B95F", "#FC5555"];
+
+
 
   useEffect(() => {
     if (data?.id) {

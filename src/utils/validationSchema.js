@@ -62,6 +62,18 @@ export const showProfileSchema = Yup.object().shape({
   // country:Yup.string().required().matches(whiteSpace, "Cant'\t be white spaces only")
 });
 
+// RESEt Password 
+export const forgetPasswordSchema = Yup.object().shape({
+  email: emailValidation,
+});
+
+// NEW PASSWORD
+export const resetPassword = Yup.object().shape({
+  newPassword: createPassword,
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
+    .matches(whiteSpace, "Cant'\t be white spaces only"),
+}); 
 // LOGIN SCHEMA
 export const loginSchema = Yup.object().shape({
   email: emailValidation,
