@@ -100,7 +100,7 @@ const ShowProfile = ({ userId }) => {
         helperText={errors?.[name]?.message || inputError?.errorMessage}
         placeholder={`Please Enter your ${label}`}
         multiline={type === "textArea" ? true : false}
-        rows={type === "textArea" ? 6 : 2}
+        rows={type === "textArea" ? 5 : 2}
         maxRows={type === "textArea" ? 11 : 2}
       />
     );
