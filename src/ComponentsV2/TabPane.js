@@ -68,6 +68,7 @@ const TabPane = ({
             sx={{ mr: 1 }}
             value={query}
             InputProps={{
+              sx:{height:'5vh'},
               endAdornment: false ? (
                 <InputAdornment position="end">
                   <CircularProgress size={20} />
