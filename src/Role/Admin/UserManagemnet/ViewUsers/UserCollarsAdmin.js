@@ -16,6 +16,7 @@ import ShowLivestocks from "../../../../pages/Collars/viewCollarDetails/showLive
 import useGetUnassignDevices from "../hooks/useGetUnassignDevices";
 import useAssignCollar from "../hooks/useAssignCollar";
 import useUnassignDevice from "../hooks/useUnassignDevice";
+import {getTabText, handleSearchQuery} from "../utils/utils" 
 
 const headings = [
   "collar id",
@@ -55,15 +56,6 @@ const UserCollarsAdmin = () => {
   if (error) {
     toast.error(error?.message);
   }
-  let timeout;
-  const handleSearchQuery = (query, setter) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => setter(query), 1000);
-  };
-
-  const tabText = `Showing ${(dataLength > 10 ? 10 : dataLength) || 0} out of ${
-    dataLength || 0
-  } collars`;
 
   const handleCollarAssign = (selectedValue) => {
     const body = {
@@ -135,7 +127,7 @@ const UserCollarsAdmin = () => {
   return (
     <Stack my={4}>
       <TabPane
-        text={tabText}
+        text={getTabText('collar', dataLength)}
         btnText={"assign collar"}
         btnIcon={true}
         hover={true}

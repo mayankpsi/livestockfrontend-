@@ -14,6 +14,7 @@ import useAssignLivestock from "../hooks/useAssignLivestock";
 import useGetAllLivestock from "../hooks/useGetAllLivestock";
 import toast from "react-hot-toast";
 import useUnassignLivestock from "../hooks/useUnassignLivestock";
+import {getTabText, handleSearchQuery} from "../utils/utils";
 
 export const livestockTabData = (
   isLoading,
@@ -69,6 +70,7 @@ const UserLivestockAdmin = () => {
   const [modalContentType, setModalContentType] = useState("assign");
   const [unassignLivestockId, setUnassignLivestockId] = useState(null);
   const [unassignLivestockQuery, setUnassignLivestockQuery] = useState("");
+ 
   const { id } = useParams();
 
   const { isLoading, error, livestock, dataLength } = useGetAllLivestock(
@@ -89,16 +91,6 @@ const UserLivestockAdmin = () => {
   const { isAssigning, assignLivestock } = useAssignLivestock();
 
   const { isUnassign, unassignLivestock } = useUnassignLivestock();
-
-  const tabText = `Showing ${(dataLength > 10 ? 10 : dataLength) || 0} out of ${
-    dataLength || 0
-  } livestock`;
-
-  let timeout;
-  const handleSearchQuery = (query, setter) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => setter(query), 1000);
-  };
 
   const handleLivestockAssign = (selectedValue) => {
     const body = {
@@ -182,7 +174,7 @@ const UserLivestockAdmin = () => {
   return (
     <Stack my={4}>
       <TabPane
-        text={tabText}
+        text={getTabText("livestock", dataLength)}
         btnText={"assign livestock"}
         btnIcon={true}
         hover={true}

@@ -1,9 +1,9 @@
 import moment from "moment/moment";
 import { request } from "../../../../apis/axios-utils";
 
-export const fetchAllUsers = (pagination) => {
+export const fetchAllUsers = (pagination, searchTerm) => {
   return request({
-    url: `/user/getAll?page=${pagination}&limit=10`,
+    url: `/user/getAll?page=${pagination}&limit=10&searchTerm=${searchTerm}`,
   });
 };
 

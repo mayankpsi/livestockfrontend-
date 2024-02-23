@@ -27,12 +27,12 @@ const userFormattedData = (data, navigate, handleDeleteUser) => {
   }));
 };
 
-const useGetAllUsers = (pagination, handleDeleteUser) => {
+const useGetAllUsers = (pagination, handleDeleteUser, searchTerm) => {
   const {
     isLoading,
     error,
     data: users,
-  } = useQuery(["adminAllUsers", pagination], () => fetchAllUsers(pagination));
+  } = useQuery(["adminAllUsers", pagination, searchTerm], () => fetchAllUsers(pagination, searchTerm));
 
   const navigate = useNavigate();
   return {

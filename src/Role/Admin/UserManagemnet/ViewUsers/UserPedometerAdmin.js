@@ -16,6 +16,7 @@ import ShowLivestocks from "../../../../pages/Collars/viewCollarDetails/showLive
 import useGetUnassignDevices from "../hooks/useGetUnassignDevices";
 import useAssignCollar from "../hooks/useAssignCollar";
 import useUnassignDevice from "../hooks/useUnassignDevice";
+import {getTabText, handleSearchQuery} from "../utils/utils"
 
 const headings = [
   "pedometer id",
@@ -57,14 +58,7 @@ const UserPedometerAdmin = () => {
   if (error) {
     toast.error(error?.message);
   }
-  let timeout;
-  const handleSearchQuery = (query, setter) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => setter(query), 1000);
-  };
-  const tabText = `Showing ${(dataLength > 10 ? 10 : dataLength) || 0} out of ${
-    dataLength || 0
-  } pedometer`;
+
 
   const handlePedometerAssign = (selectedValue) => {
     const body = {
@@ -136,7 +130,7 @@ const UserPedometerAdmin = () => {
   return (
     <Stack my={4}>
       <TabPane
-        text={tabText}
+        text={getTabText("pedometer", dataLength)}
         btnText={"assign pedometer"}
         btnIcon={true}
         minWidth="19rem"

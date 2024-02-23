@@ -1,5 +1,4 @@
 import { Box, Stack } from "@mui/material";
-import React, { useState } from "react";
 import {
   ConfirmWindowModalContent,
   CustomModal,
@@ -8,9 +7,6 @@ import {
   NoData,
   TableSkeleton,
 } from "../../../ComponentsV2";
-import useGetAllUsers from "./hooks/useGetAllUsers";
-import toast from "react-hot-toast";
-import useDeleteUser from "./hooks/useDeleteUser";
 
 const userHeadings = [
   "username",
@@ -21,35 +17,18 @@ const userHeadings = [
   "actions",
 ];
 
-const ShowUsers = () => {
-  const [pagination, setPagination] = useState(1);
-  const [showModal, setShowModal] = useState();
-  const [deleteUserId, setDeleteUserId] = useState(null);
-  const { isLoading, error, data, dataLength } = useGetAllUsers(
-    pagination,
-    handleDeleteUser
-  );
-
-  const { isDeleting, deleteUser } = useDeleteUser();
-
-  if (error) {
-    toast.error("ERROR " + error?.message);
-  }
-
-  function handleDeleteUser(userId) {
-    setDeleteUserId(userId);
-    setShowModal(true);
-  }
-
-  const handleUserDeleteConfirm = () => {
-    deleteUser(deleteUserId, {
-      onSuccess: (data) => {
-        if (data?.status === 200) {
-          setShowModal(false);
-        }
-      },
-    });
-  };
+const ShowUsers = ({
+  isLoading,
+  data,
+  dataLength,
+  pagination,
+  setPagination,
+  isDeleting,
+  setShowModal,
+  setDeleteUserId,
+  handleUserDeleteConfirm,
+  showModal,
+}) => {
   return (
     <Box my={4}>
       {isLoading ? (
