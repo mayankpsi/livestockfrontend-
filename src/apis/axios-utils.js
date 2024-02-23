@@ -18,6 +18,7 @@ export const request = async ({ ...options }) => {
       localStorage.removeItem("geofence");
       localStorage.removeItem("prevGeofence");
       localStorage.removeItem("currentTab");
+      localStorage.removeItem('forgetEmailAuth')
       // window.location.reload();
     } else {
       return error;

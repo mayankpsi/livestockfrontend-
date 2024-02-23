@@ -31,6 +31,7 @@ export default function ProfileMenu() {
       localStorage.removeItem("geofence");
       localStorage.removeItem("prevGeofence");
       localStorage.removeItem("currentTab");
+      localStorage.removeItem('forgetEmailAuth')
       window.location.reload();
     }
     setAnchorEl(null);
