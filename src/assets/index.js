@@ -25,3 +25,4 @@ export { default as LivestockSidebar } from "./images/livestock-sidebar.svg";
 export { default as LivestockSidebarFade } from "./images/livestock-sidebar-fade.svg";
 export { default as LiveStockActivity } from "./images/activity.png";
 export { default as LiveStockTemperature } from "./images/temp.png";
+export { default as LivestockCoverPhoto } from "./images/livestock-cover-img.png";

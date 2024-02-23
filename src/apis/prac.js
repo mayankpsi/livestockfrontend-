@@ -13,7 +13,6 @@
  
 
 // Example 1:
-
 // Input: nums = [3,2,5,4], threshold = 5
 // Output: 3
 // Explanation: In this example, we can select the subarray that starts at l = 1 and ends at r = 3 => [2,5,4]. 

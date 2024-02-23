@@ -60,7 +60,7 @@ export const ProfileContextProvider = ({ children }) => {
       setOpenBackdropLoader(true);
       try {
         const res = await request({
-          url: `/auth/update-user`,
+          url: `/user/update-user`,
           method: "PATCH",
           data: body,
         });
@@ -106,7 +106,7 @@ export const ProfileContextProvider = ({ children }) => {
 
   useEffect(() => {
     setOpenBackdropLoader(true);
-    request({ url: `/auth/getUpdatedUserData` })
+    request({ url: `/user/getUpdatedUserData` })
       .then((res) => {
         if (res.status === 200) {
           setOpenBackdropLoader(false);
@@ -211,28 +211,6 @@ export const ProfileContextProvider = ({ children }) => {
     }
   };
 
-  const handleProfileSaveChanges = () => {
-    const body = {
-      name: showProfileData?.fullName,
-      email: showProfileData?.email,
-      pincode: showProfileData?.pincode,
-      address: {
-        lin: showProfileData?.address,
-        state: showProfileData?.state,
-        country: showProfileData?.country,
-      },
-    };
-    // try {
-    //   const res = request({
-    //     url: `/auth/update-user`,
-    //     method: "PATCH",
-    //     data: body,
-    //   });
-    //   if (res.status === 200) {
-    //   } else {
-    //   }
-    // } catch (error) {}
-  };
 
   return (
     <ProfileContext.Provider

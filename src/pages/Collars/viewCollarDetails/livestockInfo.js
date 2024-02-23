@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import { Stack, Box, TextField, MenuItem } from "@mui/material";
+import { Stack, TextField, MenuItem } from "@mui/material";
 import { TabPane, ImageUpload, Spinner } from "../../../ComponentsV2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addLivestockValidationSchema } from "../../../utils/validationSchema";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
-import { genderData } from "../../Data";
 import useFormattedImage from "../../../hooks/useFormatedImage";
 import useErrorMessage from "../../../hooks/useErrorMessage";
+import { LivestockCoverPhoto } from "../../../assets";
 
 const LivestockInfo = ({
   data,
@@ -194,7 +194,7 @@ const LivestockInfo = ({
               objectFit: "cover",
               borderRadius: "10px",
             }}
-            src={getImgUrl(data?.img)}
+            src={getImgUrl(data?.img) || LivestockCoverPhoto}
             alt="livestock image"
           />
         ) : (

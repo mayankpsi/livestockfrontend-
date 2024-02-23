@@ -74,8 +74,6 @@ export const AuthContextProvider = ({ children }) => {
           role: res.data.data.user.role,
         };
         localStorage.setItem("userData", JSON.stringify(loginCredentials));
-
-        setOnUserLogin({ email: "", password: "" });
         // navigate(from);
         window.location.pathname = "/";
       } else if (res?.response?.data?.statusCode === 401) {
@@ -95,12 +93,6 @@ export const AuthContextProvider = ({ children }) => {
     setOnUserSignUp({ ...onUserSignUp, [name]: value });
   };
 
-  // target
-  // specific for contest quiz
-
-  // company view -> create forms and can share the form to any candidate
-  // candidates view ->
-  // login, attempt quiz, can't leave screen,
   const resendTimer = () => {
     clearInterval(timer);
     let newTimer = setInterval(() => {
@@ -109,7 +101,7 @@ export const AuthContextProvider = ({ children }) => {
           clearInterval(newTimer);
           return 0;
         }
-        return prevSeconds - 1;
+        return prevSeconds - 1;  
       });
     }, 1000);
     setTimer(newTimer);
