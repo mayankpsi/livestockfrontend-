@@ -35,6 +35,10 @@ export const AuthContextProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState("log in");
   const [otpVerification, setOTPVerification] = useState(false);
 
+  //FORGET PASSWORD
+  const [forgetPassword, setForgetPassword] = useState(0);
+  const [forgetEmail, setForgetEmail] = useState("");
+
   //Snackbar alert
   const onSnackbarAlertClose = () => {
     setSnackbarAlert({ open: false, type: "", message: "" });
@@ -130,6 +134,7 @@ export const AuthContextProvider = ({ children }) => {
     setTimer(null);
     setSeconds(59);
     setEmailOTP("");
+    setForgetPassword(1)
   };
 
   const handleResendOTP = () => {
@@ -171,6 +176,8 @@ export const AuthContextProvider = ({ children }) => {
         onSignUpComplete,
         onSignUpComplete,
         handleResendOTP,
+        forgetPassword, setForgetPassword,
+        forgetEmail, setForgetEmail
       }}
     >
       {children}

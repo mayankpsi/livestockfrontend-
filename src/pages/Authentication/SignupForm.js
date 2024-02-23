@@ -3,9 +3,7 @@ import {
   Paper,
   Stack,
   Typography,
-  TextField,
   Box,
-  InputAdornment,
   CircularProgress,
 } from "@mui/material";
 import Logo from "./Logo";
@@ -16,17 +14,16 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "../../utils/validationSchema";
 import { btnData } from "./Data";
-import { VisibilityOutlinedIcon } from "../../icons";
 import "./index.css";
 import { useState } from "react";
 import useSignup from "./hooks/useSignup";
 import useAuthContext from "../../hooks/useAuth";
+import CustomTextField from "./ui/CustomTextField";
 
 const SignupForm = ({
   setShowAnim,
   isLogin,
   handleUserSignUpCredentialChange,
-  handleUserSignUpSubmit,
   onUserSignUp,
 }) => {
   const theme = useTheme();
@@ -51,46 +48,7 @@ const SignupForm = ({
     setValue("phone", onUserSignUp?.phone);
   }, [onUserSignUp]);
 
-  const getInput = (
-    placeholder,
-    disabled,
-    name,
-    select,
-    label,
-    value,
-    onInputChange
-  ) => (
-    <TextField
-      sx={{ background: "#fff", textTransform: "capitalize" }}
-      disabled={disabled}
-      fullWidth
-      id={name}
-      select={select}
-      label={label}
-      variant="outlined"
-      size="large"
-      value={value}
-      name={name}
-      type={name === "password" && !showPassword ? "password" : "text"}
-      placeholder={placeholder}
-      InputProps={{
-        sx: { borderRadius: "0 !important" },
-        endAdornment:
-          name === "password" ? (
-            <InputAdornment
-              position="end"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              <VisibilityOutlinedIcon />
-            </InputAdornment>
-          ) : null,
-      }}
-      {...register(name, { required: true })}
-      onChange={onInputChange}
-      error={errors?.[name] ? true : false}
-      helperText={errors?.[name]?.message}
-    />
-  );
+
   // const submit = handleUserSignUpSubmit;
   const change = handleUserSignUpCredentialChange;
 
@@ -142,44 +100,47 @@ const SignupForm = ({
         <Stack width={"100%"} gap={theme.spacing(2)}>
           <>
             <Stack direction="row" gap={2}>
-              {getInput(
-                "Full Name",
-                false,
-                "fullName",
-                false,
-                "Full Name",
-                onUserSignUp?.fullName,
-                change
-              )}
-              {getInput(
-                "Enter Email",
-                false,
-                "email",
-                false,
-                "Email",
-                onUserSignUp?.email,
-                change
-              )}
+
+              <CustomTextField
+               placeholder={"Full Name"}
+               name={"fullName"}
+               label={"Full Name"}
+               value={onUserSignUp?.fullName}
+               onInputChange={change}
+               register={register}
+               errors={errors}
+              />
+              <CustomTextField
+               placeholder={"Enter Email"}
+               name={"email"}
+               label={"Email"}
+               value={onUserSignUp?.email}
+               onInputChange={change}
+               register={register}
+               errors={errors}
+              />
             </Stack>
             <Stack direction="row" gap={2}>
-              {getInput(
-                "Phone",
-                false,
-                "phone",
-                false,
-                "phone",
-                onUserSignUp?.phone,
-                change
-              )}
-              {getInput(
-                "Enter Password",
-                false,
-                "password",
-                false,
-                "password",
-                onUserSignUp?.password,
-                change
-              )}
+            <CustomTextField
+               placeholder={"Phone"}
+               name={"phone"}
+               label={"phone"}
+               value={onUserSignUp?.phone}
+               onInputChange={change}
+               register={register}
+               errors={errors}
+              />
+               <CustomTextField
+               placeholder={"Enter Password"}
+               name={"password"}
+               label={"password"}
+               value={onUserSignUp?.password}
+               showPassword={showPassword}
+               setShowPassword={setShowPassword}
+               onInputChange={change}
+               register={register}
+               errors={errors}
+              />
             </Stack>
           </>
         </Stack>

@@ -2,17 +2,17 @@ import { toast } from "react-hot-toast";
 import { useMutation } from "react-query";
 import { request } from "../../../apis/axios-utils";
 
-const verifyOTPApi = (body) =>
-  request({ url: "/auth/verifyOtp", method: "POST", data: body });
+const changePasswordAPI = (body) =>
+  request({ url: "/auth/createNewPassword", method: "POST", data: body });
 
-const useVerifyOTP = () => {
-  const { isLoading: isVerifying, mutate: verifyOTP } = useMutation(
-    verifyOTPApi,
+const useChangePassword = () => {
+  const { isLoading: isChanging, mutate: changePassword } = useMutation(
+    changePasswordAPI,
     {
       onSuccess: (data) => {
         const err = data?.response?.data?.message || data?.statusText;
         if (data?.status === 200) {
-          toast.success("OTP Successfully verified");
+          toast.success("Password successfully changed");
         } else {
           toast.error("Error : " + err);
         }
@@ -22,7 +22,7 @@ const useVerifyOTP = () => {
       },
     }
   );
-  return { isVerifying, verifyOTP };
+  return { isChanging, changePassword };
 };
 
-export default useVerifyOTP;
+export default useChangePassword;

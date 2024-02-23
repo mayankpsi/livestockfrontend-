@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box, Stack } from "@mui/material";
 import "./index.css";
-import ShowForm from "./ShowForm";
 import useAuthContext from "../../hooks/useAuth";
 import { LoginBG } from "../../assets";
 import { SnackbarAlert } from "../../ComponentsV2";
@@ -9,6 +8,9 @@ import { motion } from "framer-motion";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import OTPVerification from "./OTPVerification";
+import EnterEmail from "./ForgetPassword/EnterEmail";
+import EnterOTP from "./ForgetPassword/EnterOTP";
+import EnterNewPassword from "./ForgetPassword/EnterNewPassword";
 
 const AuthPage = () => {
   const {
@@ -25,7 +27,10 @@ const AuthPage = () => {
     isLogin,
     setIsLogin,
     otpVerification,
+    forgetPassword
   } = useAuthContext();
+
+
 
   const loginVariants = {
     show: { x: 0, display: "block", transition: { duration: 0.5 } },
@@ -71,9 +76,30 @@ const AuthPage = () => {
         }}
       >
         <motion.div
+          variants={signupVariants}
+          initial={"hidden"}
+          animate={forgetPassword === 1? "visible":"hidden"}
+        >
+          <EnterEmail />
+        </motion.div>
+        <motion.div
+          variants={loginVariants}
+          initial={"hide"}
+          animate={forgetPassword === 2? "show":"hide"}
+        >
+          <EnterOTP/>
+        </motion.div>
+        <motion.div
+          variants={signupVariants}
+          initial={"hidden"}
+          animate={forgetPassword === 3? "visible":"hidden"}
+        >
+          <EnterNewPassword/>
+        </motion.div>
+        <motion.div
           variants={loginVariants}
           initial={"show"}
-          animate={login ? "show" : "hide"}
+          animate={login && forgetPassword === 0? "show" : "hide"}
         >
           <LoginForm
             showAnim={showAnim}
