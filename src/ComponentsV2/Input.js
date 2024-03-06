@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Box, TextField, MenuItem, Typography } from "@mui/material";
-import Spinner from "./Spinner";
 
 export default function CustomInput({
   label,
@@ -14,18 +13,19 @@ export default function CustomInput({
   select,
   selectData,
   type,
-  selectNoDataMsg
+  selectNoDataMsg,
+  removePadding,
 }) {
   return (
-    <Box sx={{ width: "100%", p: 1.5 }}>
+    <Box sx={{ width: "100%", p: removePadding ? 0 : 1.5}}>
       <TextField
-        sx={{ background: "#fff", textTransform: "capitalize" }}
+        sx={{ background: "#fff", textTransform: "capitalize", pt:0}}
         disabled={disabled}
         fullWidth
         id={name}
         select={select}
         label={label}
-        type={type?type:null}
+        type={type ? type : null}
         variant="outlined"
         size="large"
         value={value}
@@ -43,7 +43,9 @@ export default function CustomInput({
           ))
         ) : (
           <MenuItem disabled value="">
-           <Typography sx={{fontWeight:'bold', color:'black'}}>{selectNoDataMsg?selectNoDataMsg:"No data"}</Typography>
+            <Typography sx={{ fontWeight: "bold", color: "black" }}>
+              {selectNoDataMsg ? selectNoDataMsg : "No data"}
+            </Typography>
           </MenuItem>
         )}
       </TextField>

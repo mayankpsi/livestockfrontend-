@@ -10,10 +10,9 @@ import {
   YAxis,
 } from "recharts";
 import { Stack } from "@mui/material";
-import { chartData, activityFakeData, activityDayWise } from "./chartData";
+import { chartData } from "./chartData";
 import { renderLegend } from "../ChartSection/legend";
 import { activityLegends } from "../ChartSection/dataFormats";
-import useDateFormat from "../../../../hooks/useDateFormat";
 
 function ActivityChart({
   height = 200,
@@ -22,12 +21,11 @@ function ActivityChart({
   thresholds,
   selectedDate,
 }) {
-  const { paginationDateFormat } = useDateFormat();
   const colors = {
     steps: { stroke: "#4f46e5", fill: "#c7d2fe" },
     threshold: { stroke: "#16a34a", fill: "#dcfce7" },
     text: "#374151",
-    background: "#fff",
+    background: "#fff",    
   };
   const showInHour = Boolean(data?.length && "hour" in data?.[0]);
   const getData = data?.length ? data : chartData;
@@ -47,7 +45,7 @@ function ActivityChart({
             unit={xUnit}
           />
           <YAxis
-            domain={[0, Number(thresholds?.high) + 5]}
+            domain={[0, Number(data?.[0]?.highThreshold) + 20]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
             unit={data?.length ? (showInHour ? " min" : " hr") : " min"}
@@ -74,14 +72,14 @@ function ActivityChart({
             barSize={30}
           />
           <ReferenceLine
-            y={Number(thresholds?.high)}
+            y={Number(data?.[0]?.highThreshold)}
             label="Max"
             stroke="red"
             strokeWidth={1}
             strokeDasharray="10 20"
           />
           <ReferenceLine
-            y={Number(thresholds?.low)}
+            y={Number(data?.[0]?.lowThreshold)}
             label="Min"
             stroke="red"
             strokeWidth={1}

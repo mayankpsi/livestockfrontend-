@@ -4,7 +4,7 @@ import { AddBtn, CustomModal, Skeleton } from "../../../ComponentsV2";
 import ShowLivestocks from "../../Collars/viewCollarDetails/showLivestocks";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
-import { deviceInfoData, pedometerInfoData } from "../Data";
+import { deviceInfoData } from "../Data";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 import DeviceCard from "../components/DeviceCard";
 
@@ -150,7 +150,7 @@ const CollarInfo = ({
 
   return (
     <>
-      <Stack direction={"row"} gap={4} py={4}>
+      <Stack direction={"row"} gap={4} py={2}>
         {openBackdropLoader ? (
           <Skeleton width="50%" height={420} />
         ) : data?.collar?.uID ? (

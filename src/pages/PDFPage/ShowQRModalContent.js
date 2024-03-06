@@ -81,7 +81,7 @@ const ShowQRModalContent = ({ id, title }) => {
     </Stack>
   ) : (
     <Stack direction={"row"} alignItems={"center"}>
-      <TypographyPrimary>No {title} Found!!</TypographyPrimary>
+      <TypographyPrimary sx={{mx:2}}>No {title} Found!!</TypographyPrimary>
     </Stack>
   );
 };

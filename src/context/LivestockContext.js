@@ -6,6 +6,15 @@ import { request } from "../apis/axios-utils";
 import useDateFormat from "../hooks/useDateFormat";
 import useErrorMessage from "../hooks/useErrorMessage";
 
+const livestockInitial = {
+  collarUID: "",
+  pedometerUID: "",
+  livestockUID: "",
+  livestockName: "",
+  livestockGender: "",
+  livestockDOB: new Date(),
+};
+
 export const LivestockContext = createContext();
 
 export const LivestockContextProvider = ({ children }) => {
@@ -17,14 +26,12 @@ export const LivestockContextProvider = ({ children }) => {
   const [openAddLiveStockModal, setOpenAddLivestockModal] = useState(false);
   const [showLocationTab, setShowLocationTab] = useState("location");
   const [isError, setIsError] = useState({ error: false, message: "" });
+  const [livestockSort, setLivestockSort] = useState("recent");
+  const [livestockSearch, setLivestockSearch] = useState("");
+  const [livestockTabControl, setLivestockTabControl] = useState(0);
+
   // new livestock
-  const [addNewLivestock, setAddNewLivestock] = useState({
-    collarUID: "",
-    pedometerUID: "",
-    livestockUID: "",
-    livestockName: "",
-    livestockGender: "",
-  });
+  const [addNewLivestock, setAddNewLivestock] = useState(livestockInitial);
   const [addNewLivestockLoading, setAddNewLivestockLoading] = useState(false);
 
   //BACKDROP
@@ -48,7 +55,7 @@ export const LivestockContextProvider = ({ children }) => {
     id: null,
     type: null,
   });
-  const { formattedDate } = useDateFormat();
+  const { formattedDate, paginationDateFormat } = useDateFormat();
   const [liveStockImage, setLiveStockImage] = useState(null);
 
   // PAGINATION AND RANGE DATE
@@ -80,7 +87,7 @@ export const LivestockContextProvider = ({ children }) => {
     setOpenBackdropLoader(true);
     const stat = status?.toString()?.length ? `status=${status}` : ``;
     request({
-      url: `/liveStock/getAll?page=${pag}&limit=${10}&${stat}`,
+      url: `/liveStock/getAll?page=${pag}&limit=${10}&${stat}&searchTerm=${livestockSearch}&sortTerm=${livestockSort}`,
     })
       .then((res) => {
         if (res.status === 200) {
@@ -113,6 +120,13 @@ export const LivestockContextProvider = ({ children }) => {
                   onClick={() => {
                     navigate(`/livestocks/${col?._id}`);
                     localStorage.setItem("currentTab", 0);
+                    setLivestockTabControl(0)
+                    localStorage.setItem(
+                      "livestockBreadcrumb",
+                      JSON.stringify([
+                        { label: col?.uID, link: `livestocks/${col?._id}` },
+                      ])
+                    );
                   }}
                 />,
                 <DeleteOutlineOutlinedIcon
@@ -148,13 +162,7 @@ export const LivestockContextProvider = ({ children }) => {
   // handle livestock modal close
   const handleLivestockModalClose = () => {
     setOpenAddLivestockModal(false);
-    setAddNewLivestock({
-      collarUID: "",
-      pedometerUID: "",
-      livestockUID: "",
-      livestockName: "",
-      livestockGender: "",
-    });
+    setAddNewLivestock(livestockInitial);
   };
 
   //HANDLE LIVESTOCK DELETE
@@ -199,7 +207,8 @@ export const LivestockContextProvider = ({ children }) => {
     const formData = new FormData();
     formData.append("uID", addNewLivestock?.livestockUID);
     formData.append("name", addNewLivestock?.livestockName);
-    // formData.append("gender", addNewLivestock?.livestockGender);
+    formData.append("gender", addNewLivestock?.livestockGender);
+    formData.append("dob", paginationDateFormat(addNewLivestock?.livestockDOB));
     formData.append("pedometerID", addNewLivestock?.pedometerUID);
     formData.append("collarID", addNewLivestock?.collarUID);
     formData.append("liveStockImage", liveStockImage);
@@ -215,7 +224,7 @@ export const LivestockContextProvider = ({ children }) => {
         handleAddLivestockModalClose();
         const msg = res?.data?.message || "Livestock successfully Added!";
         openSnackbarAlert("success", msg);
-        setTimeout(() => window.location.reload(), 500);
+        getAllLivestock();
       } else {
         if (res?.response?.status === 409) {
           setIsError({
@@ -233,37 +242,9 @@ export const LivestockContextProvider = ({ children }) => {
     }
   };
 
-// Agro
-// set up the multiple role based routing width react router dom
-// well named url, dynamic url setup 
-// set up the reusable component - modal, pagination, buttons, typography with MUI
-// handing the theme of the project at one place with MUI Theme customization 
-// integration g-map and markers, info windows, and shapes validation & geoFence for multiple circles
-// handing all api request at one place with the help of axios interceptors -> help token expiry, error handling, logout
-// Use Context API, Custom hooks, best practices, scalable project structure for state management and scalable code
-
-// Livestock
-// Establish a routing structure, incorporating well-named URLs and dynamic parameters, using the react-router-dom library.
-// Centralize page layout management to ensure consistency across all pages. Reflection of changes throughout the app by modifying a single location
-// Implement reusable components, including modals, pagination, tables, buttons, and typography, utilizing the MUI library to enhance code reusability.
-// centralizing project themes through MUI theme customization, providing a singular point for adjusting fonts, theme colors, and various customizations, reflecting an efficient design management approach.
-// Integrate G-Map and implement GeoFence creation through geometric shapes (mainly circles) utilizing the GMap API.
-// Enable automatic location detection through the Geolocation API
-// Centralizing API request management through Axios interceptors, addressing token expiry, error management, and logout functionalities within a singular locus
-// Leverage the Context API and custom hooks, adhering to best practices and adopting a scalable project structure for state management.
-// Ensuring optimal application performance through the implementation of useMemo and useCallback hooks in relevant contexts and using advanced React patterns to achieve enhanced efficiency in the application architecture
-// recharts
-
-
-
-const handleAddLivestockModalClose = () => {
+  const handleAddLivestockModalClose = () => {
     handleLivestockModalClose();
-    setAddNewLivestock({
-      collarUID: "",
-      livestockUID: "",
-      livestockName: "",
-      livestockGender: "",
-    });
+    setAddNewLivestock(livestockInitial);
     setIsError({ error: false, message: "" });
   };
 
@@ -328,7 +309,7 @@ const handleAddLivestockModalClose = () => {
       if (res?.status === 200) {
         setOpenBackdropLoader(false);
         openSnackbarAlert("success", "All alert successfully deleted!");
-        setTimeout(() => window.location.reload(), 500);
+        getAllLivestock();
       } else {
         throw new Error(getErrorMessage(res));
       }
@@ -393,6 +374,12 @@ const handleAddLivestockModalClose = () => {
         setPaginationSafe,
         paginationUnsafe,
         setPaginationUnsafe,
+        livestockSort,
+        setLivestockSort,
+        livestockSearch,
+        setLivestockSearch,
+        livestockTabControl,
+        setLivestockTabControl,
       }}
     >
       {children}

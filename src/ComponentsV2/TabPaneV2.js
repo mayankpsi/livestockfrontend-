@@ -1,7 +1,6 @@
 import { Box, Button, Stack } from "@mui/material";
 import { TypographyPrimary, ButtonPrimary } from "./themeComponents";
 import CustomDateRangePicker from "./dateRangePicker";
-import { useTheme } from "@emotion/react";
 
 const TabPaneV2 = ({
   paneText,
@@ -9,7 +8,6 @@ const TabPaneV2 = ({
   isBtn,
   btnText,
   btnColor,
-  btnBg,
   datePicker,
   onBtnClick,
   selectedDate,
@@ -18,7 +16,6 @@ const TabPaneV2 = ({
   clearBtn,
   btnDisabled,
 }) => {
-  const theme = useTheme();
   const disabled = btnDisabled
     ? {
         cursor: "default",

@@ -10,10 +10,9 @@ import {
   YAxis,
 } from "recharts";
 import { Stack } from "@mui/material";
-import { chartData, ruminationfake, ruminationDayWise } from "./chartData";
+import { chartData } from "./chartData";
 import { renderLegend } from "../ChartSection/legend";
 import { ruminationLegends } from "../ChartSection/dataFormats";
-import useDateFormat from "../../../../hooks/useDateFormat";
 
 function RuminationChart({
   height = 200,
@@ -23,7 +22,6 @@ function RuminationChart({
   selectedDate,
   dayWise,
 }) {
-  const { paginationDateFormat } = useDateFormat();
   const colors = {
     rumination: {
       stroke: "rgba(97, 169, 255, 1)",
@@ -33,7 +31,11 @@ function RuminationChart({
     text: "#374151",
     background: "#fff",
   };
+  const showInHour = Boolean(data?.length && "hour" in data?.[0]);
   const getData = data?.length ? data : chartData;
+  const xLabel = data?.length ? (showInHour ? "hour" : "day") : "hour";
+  const xUnit = showInHour ? " hr" : "";
+  const dataLabel = showInHour ? "ruminationTimeInMinutes" : "ruminationTimeInHours";
 
   return (
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
@@ -54,16 +56,16 @@ function RuminationChart({
             </linearGradient>
           </defs>
           <XAxis
-            dataKey="hour"
+            dataKey={xLabel}
             tickSize={10}
             tickMargin={10}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
             height={47}
-            unit=" hr"
+            unit={xUnit}
           />
           <YAxis
-            domain={[0, Number(100) + 10]}
+            domain={[0, Number(data?.[0]?.highThreshold) + 50]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
             unit=" mins"
@@ -77,7 +79,7 @@ function RuminationChart({
             content={renderLegend(ruminationLegends)}
           />
           <Area
-            dataKey="rumination"
+            dataKey={dataLabel}
             stroke={colors.rumination.stroke}
             fill="url(#colorUv)"
             strokeWidth={2}
@@ -85,14 +87,14 @@ function RuminationChart({
             barSize={30}
           />
           <ReferenceLine
-            y={Number(80)}
+            y={Number(data?.[0]?.highThreshold)}
             label="Max"
             stroke="red"
             strokeWidth={1}
             strokeDasharray="10 20"
           />
           <ReferenceLine
-            y={Number(30)}
+            y={Number(data?.[0]?.lowThreshold)}
             label="Min"
             stroke="red"
             strokeWidth={1}

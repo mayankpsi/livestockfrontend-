@@ -1,5 +1,5 @@
 import { Box, Stack } from "@mui/material";
-import { CustomInput, ImageUpload } from "../../ComponentsV2";
+import { CustomInput, DatePicker, ImageUpload } from "../../ComponentsV2";
 import useLivestockContext from "../../hooks/useLivestockContext";
 import { AddCircleOutlineOutlinedIcon } from "../../icons";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -79,7 +79,9 @@ const AddLivestockModalContent = () => {
           Add Livestock
         </TypographyWithBg>
         <Stack>
-          <ImageUpload onUpload={setLiveStockImage} />
+          <Box p={2} pb={0}>
+            <ImageUpload onUpload={setLiveStockImage} />
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -111,17 +113,6 @@ const AddLivestockModalContent = () => {
               isError={getOneIsSelectedError(errors)}
               onChange={handleAddLivestockChange}
             />
-            {/* <CustomInput
-              label="Gender"
-              select
-              selectData={genderData}
-              register={register}
-              errors={errors}
-              value={addNewLivestock?.livestockGender}
-              name="livestockGender"
-              isError={{ error: false, message: "" }}
-              onChange={handleAddLivestockChange}
-            /> */}
           </Box>
           <Box
             sx={{
@@ -153,8 +144,43 @@ const AddLivestockModalContent = () => {
             sx={{
               display: "flex",
               width: "100%",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box width={"50%"} display={"flex"} alignItems={"center"}>
+              <CustomInput
+                label="Gender"
+                select
+                selectData={genderData}
+                register={register}
+                errors={errors}
+                value={addNewLivestock?.livestockGender}
+                name="livestockGender"
+                isError={{ error: false, message: "" }}
+                onChange={handleAddLivestockChange}
+              />
+            </Box>
+
+            <Box width={"50%"}  display={"flex"} alignItems={"center"} p={1.5}>
+              <DatePicker
+                activeFull={true}
+                label="Date of birth"
+                adornment="endAdornment"
+                InputProps={{ sx: { background: "#fff" } }}
+                top="55px"
+                left="350px"
+                selectedDate={addNewLivestock?.livestockDOB}
+                setSelectedDate={(date) => ({target:{name:"livestockDOB", value:date}})}
+              />
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
               justifyContent: "right",
               p: 2,
+              pt:1
             }}
           >
             <ButtonOutlinedRound

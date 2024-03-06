@@ -66,7 +66,6 @@ const ActivitySection = ({ thresholds }) => {
             </Stack>
           ) : (
             <ActivityChart
-              selectedDate={chartDateRange}
               data={chartData}
               height={500}
               thresholds={thresholds}

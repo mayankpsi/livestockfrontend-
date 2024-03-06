@@ -1,21 +1,24 @@
 import React, { useEffect } from "react";
 import AdminUIContainer from "../../../layout/AdminUIContainer";
-import { CustomTabs, BackdropLoader, Skeleton } from "../../../ComponentsV2";
+import { CustomTabs, Skeleton } from "../../../ComponentsV2";
 import { Container } from "@mui/material";
 import { TypographyPrimary } from "../../../ComponentsV2/themeComponents";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import Overview from "./overview";
+import Overview from "./overview/Overview";
 import Location from "./location";
 import Health from "./health";
 import Alerts from "./alerts";
 import CollarInfo from "./collarInfo";
 import { request } from "../../../apis/axios-utils";
 import useLivestockContext from "../../../hooks/useLivestockContext";
-import { alertsThresholdData } from "./alertThresholdData";
 import useDateFormat from "../../../hooks/useDateFormat";
 import LivestockLogs from "./LivestockLogs";
 import useErrorMessage from "../../../hooks/useErrorMessage";
+import LivestockAbout from "./about/LivestockAbout";
+import Breeding from "./breeding/Breeding";
+import Milk from "./milk/Milk";
+import Calf from "./calf";
 
 const LivestockDetails = () => {
   const [data, setData] = useState();
@@ -30,10 +33,12 @@ const LivestockDetails = () => {
     handleAlertDeleteConfirm,
     setOpenBackdropLoader,
     openSnackbarAlert,
+    livestockTabControl,
+    setLivestockTabControl
   } = useLivestockContext();
   const { formattedDate } = useDateFormat();
   const [collarLoading, setCollarLoading] = useState(false);
-  const [livestockEditLoading,setLivestockEditLoading ] = useState(false)
+  const [livestockEditLoading, setLivestockEditLoading] = useState(false);
   const [pedometerLoading, setPedometerLoading] = useState(false);
   const [alertsThreshold, setAlertsThreshold] = useState([]);
   const { id } = useParams();
@@ -94,7 +99,16 @@ const LivestockDetails = () => {
   const tabData = [
     {
       label: "overview",
-      child: <Overview data={data} setLivestockEditLoading={setLivestockEditLoading}/>,
+      child: (
+        <Overview
+          data={data}
+          setLivestockEditLoading={setLivestockEditLoading}
+        />
+      ),
+    },
+    {
+      label: "About",
+      child: <LivestockAbout />,
     },
     {
       label: "location",
@@ -103,6 +117,18 @@ const LivestockDetails = () => {
     {
       label: "health",
       child: <Health data={data} />,
+    },
+    {
+      label: "Breeding",
+      child: <Breeding />,
+    },
+    {
+      label: "milk",
+      child: <Milk />,
+    },
+    {
+      label: "calf",
+      child: <Calf />,
     },
     {
       label: "alerts",
@@ -132,16 +158,22 @@ const LivestockDetails = () => {
     },
   ];
 
-  const BreadcrumbData = [
-    {
-      label: "livestocks",
-      link: "livestocks",
-    },
-    {
-      label: data?.Uid ? data.Uid : "Collar UID",
-      link: `livestocks/${data?.Uid}`,
-    },
-  ];
+  const values = JSON.parse(localStorage.getItem("livestockBreadcrumb"))
+  const lastValueUID = values[values.length -1]?.label
+
+  const BreadcrumbData = () => {
+    const breadcrumb = JSON.parse(localStorage.getItem("livestockBreadcrumb"));
+    const jsonObject = breadcrumb.map(JSON.stringify);
+    const uniqueSet = new Set(jsonObject);
+    const uniqueArray = Array.from(uniqueSet).map(JSON.parse);
+    return [
+      {
+        label: "livestocks",
+        link: "livestocks",
+      },
+      ...uniqueArray,
+    ];
+  };
 
   return (
     <AdminUIContainer
@@ -157,9 +189,9 @@ const LivestockDetails = () => {
       alertMessage={snackbarAlert.message}
       alertType={snackbarAlert.type}
       closeAlert={onSnackbarAlertClose}
-      BreadcrumbData={BreadcrumbData}
+      BreadcrumbData={BreadcrumbData()}
     >
-      <Container maxWidth="xl" sx={{ marginTop: 8, pb: 5 }}>
+      <Container maxWidth="xl" sx={{ marginTop: 2, pb: 5 }}>
         {/* <BackdropLoader open={openBackdropLoader} /> */}
         {openBackdropLoader ? (
           <Skeleton
@@ -169,11 +201,10 @@ const LivestockDetails = () => {
           />
         ) : (
           <TypographyPrimary sx={{ fontSize: 21 }}>
-            {data?.Uid}
+            {lastValueUID}
           </TypographyPrimary>
         )}
-
-        <CustomTabs tabData={tabData} />
+        <CustomTabs tabData={tabData} tabValue={livestockTabControl} onTabChange={value => setLivestockTabControl(value)}/>
       </Container>
     </AdminUIContainer>
   );

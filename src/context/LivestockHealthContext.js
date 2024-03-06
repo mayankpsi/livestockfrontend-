@@ -60,7 +60,7 @@ export const LivestockHealthContextProvider = ({ children }) => {
     cardData: {},
     threshold: {},
   });
-  const [healthDataLoading, setHealthDataLoading] = useState(false)
+  const [healthDataLoading, setHealthDataLoading] = useState(false);
   const [singleSelectedDate, setSingleSelectedDate] = useState(new Date());
   const [logsDateRange, setLogsDateRange] = useState([
     {
@@ -91,13 +91,8 @@ export const LivestockHealthContextProvider = ({ children }) => {
     const start = paginationDateFormat(logsDateRange?.[0]?.startDate, "date");
     const end = paginationDateFormat(logsDateRange?.[0]?.endDate, "date");
     const page = healthLogData?.pagination;
-    const urls = [
-      `/liveStock/getTemperatureLogs?livestockId=${id}&startDate=${start}&endDate=${end}&page=${page}&limit=10`,
-      `/liveStock/getHeartbeatLogs?livestockId=${id}&startDate=${start}&endDate=${end}&page=${page}&limit=10`,
-      `/liveStock/getStepsLogs?livestockId=${id}&startDate=${start}&endDate=${end}&page=${page}&limit=10`,
-      `/liveStock/getActivityLogs?livestockId=${id}&startDate=${start}&endDate=${end}&page=${page}&limit=10`,
-    ];
-    return urls[activeTab - 1];
+
+    return `/liveStock/livestockHealthLogs?livestockId=${id}&startDate=${start}&endDate=${end}&page=${page}&limit=10&statusData=${activeTab}`;
   };
 
   const firstLoad =
@@ -111,7 +106,9 @@ export const LivestockHealthContextProvider = ({ children }) => {
     const start = !showDateRange
       ? chartDateRange[0]?.startDate
       : singleSelectedDate;
-    const end = !showDateRange ? chartDateRange[0]?.endDate : singleSelectedDate;
+    const end = !showDateRange
+      ? chartDateRange[0]?.endDate
+      : singleSelectedDate;
     return `/liveStock/getLiveStockHistory?LiveStockId=${id}&startDate=${paginationDateFormat(
       start,
       "date"
@@ -174,7 +171,7 @@ export const LivestockHealthContextProvider = ({ children }) => {
   };
 
   const getHealthCardData = (id) => {
-    setHealthDataLoading(true)
+    setHealthDataLoading(true);
     if (id) {
       request({
         url: `/liveStock/getLivestockInfoData?livestockId=${id}`,
@@ -201,17 +198,17 @@ export const LivestockHealthContextProvider = ({ children }) => {
               threshold,
               livestockLocationStatusTime,
               liveStocklocationStatus,
-              createdAt
+              createdAt,
             } = res?.data?.data;
             const formattedData = {
               temperature: temperature || "0",
               temperatureTime: temperatureTime || createdAt,
               temperatureAlertStatus,
               heartbeat: heartBeat || "0",
-              heartbeatTime: heartBeatTime || createdAt, 
+              heartbeatTime: heartBeatTime || createdAt,
               heartbeatAlertStatus: heartBeatAlertStatus,
               steps: stepsDataObject || "0",
-              stepsTime: stepsTime  || createdAt,
+              stepsTime: stepsTime || createdAt,
               stepsAlertStatus: stepsAlertStatus,
               activityHour: activeTimeInHours || "0",
               activityMin: activeTimeInMinutes || "0",
@@ -220,8 +217,9 @@ export const LivestockHealthContextProvider = ({ children }) => {
               rumination: rumination || "0",
               ruminationTime: ruminationTime || createdAt,
               ruminationAlertStatus,
-              livestockLocationStatusTime:livestockLocationStatusTime || createdAt,
-              liveStocklocationStatus
+              livestockLocationStatusTime:
+                livestockLocationStatusTime || createdAt,
+              liveStocklocationStatus,
             };
             setHealthCardData({ cardData: formattedData, threshold });
           } else {
@@ -233,8 +231,8 @@ export const LivestockHealthContextProvider = ({ children }) => {
           if (!firstLoad) openSnackbarAlert("error", err?.message);
         })
         .finally(() => {
-          dispatch({ type: actions.LOADING })
-          setHealthDataLoading(false)
+          dispatch({ type: actions.LOADING });
+          setHealthDataLoading(false);
         });
     }
   };
@@ -277,7 +275,7 @@ export const LivestockHealthContextProvider = ({ children }) => {
         getHealthCardData,
         healthCardData,
         handleRefreshButton,
-        healthDataLoading
+        healthDataLoading,
       }}
     >
       {children}

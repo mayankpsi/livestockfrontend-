@@ -3,11 +3,17 @@ import {
   CustomPagination,
   CustomTable,
   NoData,
+  TabPane,
   TableSkeleton,
 } from "../../ComponentsV2";
 import useLivestockContext from "../../hooks/useLivestockContext";
 import { showLivestockTableHeadData } from "./Data";
 import { useEffect } from "react";
+import {
+  getTabText,
+  handleSearchQuery,
+} from "../../Role/Admin/UserManagemnet/utils/utils";
+import { livestockFilterOptions } from "../../Data/data";
 
 const ShowLivestocks = ({ show }) => {
   const {
@@ -22,6 +28,10 @@ const ShowLivestocks = ({ show }) => {
     addNewLivestockLoading,
     getAllLivestock,
     openBackdropLoader,
+    livestockSort,
+    setLivestockSort,
+    livestockSearch,
+    setLivestockSearch,
   } = useLivestockContext();
 
   const activePag = (status) => {
@@ -34,13 +44,29 @@ const ShowLivestocks = ({ show }) => {
   };
   useEffect(() => {
     getAllLivestock(show);
-  }, [addNewLivestockLoading, activePag(show).get]);
+  }, [
+    addNewLivestockLoading,
+    activePag(show).get,
+    livestockSearch,
+    livestockSort,
+  ]);
 
   const livestockFiltering = () => {
     return allLivestocks?.map((el) => ({ ...el, status: null }));
   };
   return (
     <Box my={4}>
+      <Box sx={{ my: 4 }}>
+        <TabPane
+          text={getTabText("livestock", livestockDataLength)}
+          minWidth="18rem"
+          selectValue={livestockSort}
+          selectOptions={livestockFilterOptions}
+          onSelectChange={(value) => setLivestockSort(value)}
+          search={true}
+          onSearch={(term) => handleSearchQuery(term, setLivestockSearch)}
+        />
+      </Box>
       {openBackdropLoader ? (
         <TableSkeleton
           rowNumber={new Array(10).fill(0)}

@@ -3,6 +3,8 @@ import {
   Box,
   CircularProgress,
   InputAdornment,
+  MenuItem,
+  Select,
   Stack,
   TextField,
 } from "@mui/material";
@@ -23,6 +25,9 @@ const TabPane = ({
   search,
   onSearch,
   minWidth,
+  selectValue,
+  selectOptions,
+  onSelectChange,
 }) => {
   const [query, setQuery] = useState("");
 
@@ -33,14 +38,12 @@ const TabPane = ({
   };
 
   return (
-    <Stack direction="row" justifyContent="space-between" alignItems="center">
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Box>
         <TypographyPrimary
           sx={{ fontSize: "2rem", textTransform: "capitalize" }}
         >
@@ -61,46 +64,59 @@ const TabPane = ({
         {search && (
           <TextField
             fullWidth
-            id={"search-box"}
-            disabled={false}
             variant="outlined"
             size="large"
-            sx={{ mr: 1 }}
+            sx={{ mr: 1, minWidth: "18rem" }}
             value={query}
             InputProps={{
-              sx:{height:'5vh'},
-              endAdornment: false ? (
-                <InputAdornment position="end">
-                  <CircularProgress size={20} />
-                </InputAdornment>
-              ) : null,
+              sx: { height: "5vh" },
             }}
             onChange={handleSearch}
             placeholder={`Search by name...`}
           />
         )}
-        <ButtonPrimary
-          disabled={loading}
-          sx={{
-            background: btnBgColor ? btnBgColor : "#B58B5D",
-            p: "8px 15px",
-            color: `${btnColor ? btnColor : "#fff"}`,
-            cursor: `${!hover ? "default" : "pointer"}`,
-            display: "flex",
-            justifyContent: "center",
-            minWidth: `${minWidth || "auto"}`,
-            "&:hover": { backgroundColor: !hover ? btnBgColor : "" },
-          }}
-          onClick={onBtnClick}
-          type={type}
-          startIcon={
-            btnIcon
-              ? btnIcon || <AddCircleOutlineIcon fontSize="large" />
-              : null
-          }
-        >
-          {btnText}
-        </ButtonPrimary>
+
+        {selectValue ? (
+          <TextField
+            fullWidth
+            select
+            sx={{ minWidth: "10rem" }}
+            InputProps={{
+              sx: { height: "5vh" },
+            }}
+            value={selectValue}
+            onChange={(e) => onSelectChange(e.target.value)}
+          >
+            {selectOptions?.map((ele) => (
+              <MenuItem value={ele?.value}>{ele?.label}</MenuItem>
+            ))}
+          </TextField>
+        ) : null}
+
+        {btnText ? (
+          <ButtonPrimary
+            disabled={loading}
+            sx={{
+              background: btnBgColor ? btnBgColor : "#B58B5D",
+              p: "8px 15px",
+              color: `${btnColor ? btnColor : "#fff"}`,
+              cursor: `${!hover ? "default" : "pointer"}`,
+              display: "flex",
+              justifyContent: "center",
+              minWidth: `${minWidth || "auto"}`,
+              "&:hover": { backgroundColor: !hover ? btnBgColor : "" },
+            }}
+            onClick={onBtnClick}
+            type={type}
+            startIcon={
+              btnIcon
+                ? btnIcon || <AddCircleOutlineIcon fontSize="large" />
+                : null
+            }
+          >
+            {btnText}
+          </ButtonPrimary>
+        ) : null}
       </Box>
     </Stack>
   );

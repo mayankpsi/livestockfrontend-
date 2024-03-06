@@ -62,7 +62,7 @@ export const showProfileSchema = Yup.object().shape({
   // country:Yup.string().required().matches(whiteSpace, "Cant'\t be white spaces only")
 });
 
-// RESEt Password 
+// RESEt Password
 export const forgetPasswordSchema = Yup.object().shape({
   email: emailValidation,
 });
@@ -73,7 +73,7 @@ export const resetPassword = Yup.object().shape({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
     .matches(whiteSpace, "Cant'\t be white spaces only"),
-}); 
+});
 // LOGIN SCHEMA
 export const loginSchema = Yup.object().shape({
   email: emailValidation,
@@ -118,9 +118,58 @@ export const addLivestockValidationSchema = Yup.object()
     livestockName: Yup.string()
       .required()
       .min(3, "Livestock Name must be long"),
-    livestockGender: Yup.string(),
-  }).test(
+    livestockGender: Yup.string().required(),
+  })
+  .test(
     "one-is-selected",
     "At least one device must be selected",
     (values) => values.collarUID || values.pedometerUID
   );
+
+export const livestockInfoSchema = Yup.object().shape({
+  uid: Yup.string().required().min(3, "Livestock UID must be long"),
+  name: Yup.string().required().min(3, "Livestock name must be long"),
+  gender: Yup.string().required("Gender is required"),
+});
+
+export const livestockBirthDetails = Yup.object().shape({
+  dob: Yup.string().required("DOB is required"),
+});
+
+export const milkEntrySchema = Yup.object().shape({
+  entryQuantity: Yup.string().required("Quantity is required"),
+});
+
+export const aiAttemptSchema = Yup.object().shape({
+  aiAttemptNo: Yup.string().required("Attempt Name is required"),
+  sireNo: Yup.string().required("Sire No. is required"),
+});
+
+export const calfSchema = Yup.object().shape({
+  name: Yup.string()
+    .required()
+    .min(3, "Name must be long")
+    .matches(whiteSpace, "Cant'\t be white spaces only"),
+  uID: Yup.string()
+    .required()
+    .min(3, "UID must be long")
+    .matches(whiteSpace, "Cant'\t be white spaces only"),
+  gender: Yup.string()
+    .required()
+    .matches(whiteSpace, "Cant'\t be white spaces only"),
+  birthWeight: Yup.string()
+    .required("Birth Weight Is A Required Field")
+    .matches(whiteSpace, "Cant'\t be white spaces only"),
+  sireNo: Yup.string()
+    .required("Sire No. Is A Required Field")
+    .matches(whiteSpace, "Cant'\t be white spaces only"),
+  genoType: Yup.string()
+    .required("Genotype Is A Required Field")
+    .matches(whiteSpace, "Cant'\t be white spaces only"),
+  color: Yup.string()
+    .required()
+    .matches(whiteSpace, "Cant'\t be white spaces only"),
+  calvingType: Yup.string()
+    .required("Calving Time Is A Required Field")
+    .matches(whiteSpace, "Cant'\t be white spaces only"),
+});

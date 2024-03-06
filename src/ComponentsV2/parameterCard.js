@@ -14,7 +14,7 @@ const ParameterCard = ({
   return (
     <Paper
       className="flex-row-center border-1-gray"
-      sx={{ px: 2, py: 2.6, gap: "20px", flexGrow: 1 }}
+      sx={{ px: 2, py: 2, gap: "20px", flexGrow: 1 }}
     >
       <Box
           className="flex-row-center border-circle"

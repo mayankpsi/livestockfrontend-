@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomLabel } from "../ComponentsV2";
@@ -46,6 +46,8 @@ export const CollarContextProvider = ({ children }) => {
   const [pedometerPagination, setPedometerPagination] = useState(1);
   const [pedometerPaginationPageAssigned, setPedometerPaginationPageAssigned] =
     useState(1);
+  const [deviceSearch, setDeviceSearch] = useState("");
+  const [deviceSort, setDeviceSort] = useState("recent");
 
   const [
     pedometerPaginationPageNotAssigned,
@@ -89,7 +91,7 @@ export const CollarContextProvider = ({ children }) => {
     setOpenBackdropLoader(true);
     const pag = getPagination(activeDevice, status);
     request({
-      url: `/devices/getDeviceByUserId?deviceType=${activeDevice}&page=${pag}&limit=${10}&status=${status}`,
+      url: `/devices/getDeviceByUserId?deviceType=${activeDevice}&page=${pag}&limit=${10}&status=${status}&searchTerm=${deviceSearch}&sortTerm=${deviceSort}`,
     })
       .then((res) => {
         if (res.status === 200) {
@@ -281,6 +283,10 @@ export const CollarContextProvider = ({ children }) => {
         setPedometerPaginationPageAssigned,
         pedometerPaginationPageNotAssigned,
         setPedometerPaginationPageNotAssigned,
+        deviceSearch,
+        setDeviceSearch,
+        deviceSort,
+        setDeviceSort,
       }}
     >
       {children}

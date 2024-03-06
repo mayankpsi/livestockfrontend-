@@ -26,3 +26,10 @@ export { default as LivestockSidebarFade } from "./images/livestock-sidebar-fade
 export { default as LiveStockActivity } from "./images/activity.png";
 export { default as LiveStockTemperature } from "./images/temp.png";
 export { default as LivestockCoverPhoto } from "./images/livestock-cover-img.png";
+export { default as AiAttemptImg } from "./images/aiAttemptBreeding.svg";
+export { default as ParityImg } from "./images/parityBreeding.svg";
+export { default as SuccessRateImg } from "./images/successRateBreeding.svg";
+export { default as CalenderImg } from "./images/lastAiAttemptBreeding.svg";
+export { default as TotalMilkYield } from "./images/totalMilkYieldMilk.svg";
+export { default as AvgMilkYield } from "./images/avgDailyMilkYield.svg";
+export { default as PeakMilkYield } from "./images/peakMonthlyMilkYield.svg";

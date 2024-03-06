@@ -120,7 +120,7 @@ const OTPVerification = () => {
               textAlign: "center",
             }}
           >
-            Please enter the OTP to verify your account
+            we have sent you one time password on your Email
           </Typography>
         </Box>
         <Box sx={{ maxWidth: "90%" }}>

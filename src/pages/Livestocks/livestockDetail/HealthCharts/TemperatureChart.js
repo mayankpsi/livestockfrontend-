@@ -40,7 +40,7 @@ function TemperatureChart({ height = 200, data, width, thresholds }) {
           />
           <YAxis
             unit=" °F"
-            domain={[0, Number(thresholds?.high) + 5]}
+            domain={[0, Number(data?.[0]?.highThreshold) + 5]}
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
@@ -53,14 +53,14 @@ function TemperatureChart({ height = 200, data, width, thresholds }) {
             content={renderLegend(tempLegends)}
           />
           <ReferenceLine
-            y={thresholds?.high}
+            y={Number(data?.[0]?.highThreshold)}
             label="Max"
             stroke="red"
             strokeWidth={1}
             strokeDasharray="10 20"
           />
           <ReferenceLine
-            y={Number(thresholds?.low)}
+            y={Number(data?.[0]?.lowThreshold)}
             label="Min"
             stroke="red"
             strokeWidth={1}

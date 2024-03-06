@@ -24,14 +24,6 @@ import UserManagement from "./Role/Admin/UserManagemnet";
 import ViewUserDetails from "./Role/Admin/UserManagemnet/ViewUsers";
 
 function App() {
-  // const navigate = useNavigate();
-  // const user = window.localStorage.getItem("userData");
-
-  // useEffect(() => {
-  //   if (!user) {
-  //     navigate("/login");
-  //   }
-  // }, [user]);
 
   return (
     <Routes>

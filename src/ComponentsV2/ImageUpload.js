@@ -27,8 +27,7 @@ const ImageUpload = ({ onUpload }) => {
       alignItems="center"
       sx={{
         border: "1px solid #8F8F8F",
-        minHeight: "30vh",
-        m: 2,
+        minHeight: "22vh",
         borderRadius: "10px",
         position: "relative",
       }}

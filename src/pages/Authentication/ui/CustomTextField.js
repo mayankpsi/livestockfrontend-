@@ -8,6 +8,7 @@ const CustomTextField = ({
   select,
   label,
   value,
+  type,
   onInputChange,
   showPassword,
   setShowPassword,
@@ -29,11 +30,10 @@ const CustomTextField = ({
       type={
         name?.toLowerCase()?.includes("password") && !showPassword
           ? "password"
-          : "text"
+          : type || "text"
       }
       placeholder={placeholder}
       InputProps={{
-        sx: { borderRadius: "0 !important" },
         endAdornment: name?.toLowerCase()?.includes("password") ? (
           <InputAdornment
             position="end"
@@ -43,7 +43,7 @@ const CustomTextField = ({
           </InputAdornment>
         ) : null,
       }}
-      {...register(name, { required: true })}
+      {...register?.(name, { required: true })}
       onChange={onInputChange}
       error={errors?.[name] ? true : false}
       helperText={errors?.[name]?.message}

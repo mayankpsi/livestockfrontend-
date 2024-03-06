@@ -2,12 +2,18 @@ import {
   CustomPagination,
   CustomTable,
   NoData,
+  TabPane,
   TableSkeleton,
 } from "../../ComponentsV2";
 import { Box, Stack } from "@mui/material";
 import useCollarContext from "../../hooks/useCollarContext";
 import { showCollarTableHeadData } from "./Data";
 import { useEffect } from "react";
+import {
+  getTabText,
+  handleSearchQuery,
+} from "../../Role/Admin/UserManagemnet/utils/utils";
+import { filterOptions } from "../../Data/data";
 
 const ShowCollars = ({ show }) => {
   const {
@@ -23,6 +29,10 @@ const ShowCollars = ({ show }) => {
     setPaginationPageAssigned,
     paginationPageNotAssigned,
     setPaginationPageNotAssigned,
+    deviceSearch,
+    setDeviceSearch,
+    deviceSort,
+    setDeviceSort,
   } = useCollarContext();
 
   const activePag = (status) => {
@@ -41,7 +51,7 @@ const ShowCollars = ({ show }) => {
 
   useEffect(() => {
     getAllDevices(show);
-  }, [isLoading, activeDevice, activePag(show).get]);
+  }, [isLoading, activeDevice, activePag(show).get, deviceSearch, deviceSort]);
 
   const collarFiltering = () => {
     return collars?.map((el) => ({ ...el, status: null }));
@@ -49,6 +59,17 @@ const ShowCollars = ({ show }) => {
 
   return (
     <Box my={4}>
+      <Box sx={{ my: 4 }}>
+        <TabPane
+          text={getTabText("livestock", deviceDataLength)}
+          minWidth="18rem"
+          selectValue={deviceSort}
+          selectOptions={filterOptions}
+          onSelectChange={(value) => setDeviceSort(value)}
+          search={true}
+          onSearch={(term) => handleSearchQuery(term, setDeviceSearch)}
+        />
+      </Box>
       {openBackdropLoader ? (
         <TableSkeleton
           rowNumber={new Array(10).fill(0)}

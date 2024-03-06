@@ -97,7 +97,7 @@ const LivestockLogs = ({ livestockData }) => {
 
   return (
     <Box>
-      <Stack sx={{ width: "100%", pb: 3 }}>
+      <Stack sx={{ width: "100%", pb: 3, mt:2 }}>
         <Stack pb={2}>
           <TabPaneV2
             paneText="Manage Log"

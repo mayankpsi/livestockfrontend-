@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Typography, Breadcrumbs } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Breadcrumb = ({ data }) => {
+  const navigate = useNavigate();
+  const handleClick = (ele) => {
+    const breadcrumb = JSON.parse(localStorage.getItem("livestockBreadcrumb"));
+    const jsonObject = breadcrumb.map(JSON.stringify);
+    const uniqueSet = new Set(jsonObject);
+    const uniqueArray = Array.from(uniqueSet).map(JSON.parse);
+    const eleIndex = uniqueArray.findIndex((el) => el?.link === ele?.link);
+    const newArr = uniqueArray?.slice(0, eleIndex + 1);
+    localStorage.setItem("livestockBreadcrumb", JSON.stringify(newArr));
+    navigate(`/${ele?.link}`);
+  };
+
+  useEffect(() => {
+    const handleEve = () => {
+      const currentPath = window.location.pathname;
+      handleClick({ link: currentPath?.slice(1) });
+    };
+    window.addEventListener("popstate", handleEve);
+
+    return () => window.removeEventListener("popstate", handleEve);
+  }, []);
   return (
     <Grid container direction="row" justifyContent="start">
       <Breadcrumbs
@@ -20,7 +41,12 @@ const Breadcrumb = ({ data }) => {
           </Typography>
         </Link>
         {data?.map((ele) => (
-          <Link to={`/${ele.link}`} className="textDecorNone" key="2">
+          <Link
+            to={`/${ele.link}`}
+            className="textDecorNone"
+            key="2"
+            onClick={() => handleClick(ele)}
+          >
             <Typography
               className="bold "
               sx={{

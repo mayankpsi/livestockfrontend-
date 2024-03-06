@@ -1,24 +1,17 @@
 import ShowLivestocks from "./showLivestocks";
 import { Box } from "@mui/material";
 import {
-  NetworkCellOutlinedIcon,
   Battery5BarOutlinedIcon,
   ThermostatIcon,
   MonitorHeartIcon,
   PetsIcon,
 } from "../../icons";
 import {
-  LiveStockSteps,
-  LiveStockRumination,
   Steps,
   Rumination,
   LiveStockActivity,
   LiveStockTemperature,
 } from "../../assets";
-import TemperatureChart from "./livestockDetail/HealthCharts/TemperatureChart";
-import HeartBeatChart from "./livestockDetail/HealthCharts/HeartbeatChart";
-import StepsChart from "./livestockDetail/HealthCharts/StepsChart";
-import RuminationChart from "./livestockDetail/HealthCharts/RuminationChart";
 
 export const livestockTabData = [
   {
@@ -115,7 +108,9 @@ export const pedometerInfoData = [
 export const statusCardData = [
   {
     text: "pedometer battery",
-    status: "56",
+    key: "pedometerBatteryPercent",
+    status: "0",
+
     icon: (
       <Battery5BarOutlinedIcon
         fontSize="large"
@@ -127,7 +122,8 @@ export const statusCardData = [
   },
   {
     text: "collar battery",
-    status: "56",
+    key: "collarBatteryPercent",
+    status: "0",
     icon: (
       <Battery5BarOutlinedIcon
         fontSize="large"

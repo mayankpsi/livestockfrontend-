@@ -42,7 +42,6 @@ const btnData = [
 ];
 
 const ShowLivestockQR = ({ collarId, pedometerId }) => {
-  console.log(collarId, pedometerId, "vjjgjngjnbjngjngbjnjnj");
   return (
     <Stack direction={"row"} justifyContent={"center"}>
       <ShowQRModalContent id={collarId} title="Collar" />
@@ -143,7 +142,7 @@ const Health = ({ data }) => {
 
   const getParameterCardDate = (ele) => {
     const date = cardData?.[ele?.label?.toLowerCase() + "Time"];
-    if (date) {
+    if (date && date?.toString()?.toLowerCase() !== "n/a") {
       return formattedDate(date);
     } else {
       return "N/A";
@@ -213,7 +212,6 @@ const Health = ({ data }) => {
         onChange={(ele) => handleActiveTab(ele)}
       />
       {showSection(showHealthTab)}
-      {console.log(data, "hbhgbhhbhbhbhbhbh")}
       <CustomModal
         content={
           <ShowLivestockQR

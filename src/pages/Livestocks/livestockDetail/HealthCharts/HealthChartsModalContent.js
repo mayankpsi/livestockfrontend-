@@ -9,7 +9,7 @@ const HealthChartsModalContent = ({
   children,
   label,
   dateRange,
-  total
+  total,
 }) => {
   return (
     <Stack
@@ -28,29 +28,25 @@ const HealthChartsModalContent = ({
         justifyContent="space-between"
         width="100%"
       >
-        <Box sx={{display:'flex', flexDirection:'column', gap:1}}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <TypographyPrimary
             sx={{ fontSize: "18px", my: 0, textTransform: "capitalize" }}
           >
             {label} overview
           </TypographyPrimary>
-          {
-            total?(
-              <Typography
+          {total ? (
+            <Typography
               sx={{
                 fontSize: "15px",
                 textTransform: "capitalize",
                 fontWeight: 600,
-                
               }}
             >
-              Total {label}: <span style={{textTransform:'lowercase'}}>{total}</span>
+              Total {label}:{" "}
+              <span style={{ textTransform: "lowercase" }}>{total}</span>
             </Typography>
-            ):null
-          }
-         
+          ) : null}
         </Box>
-
         {dateRange ? (
           <CustomDateRangePicker
             selectedDate={selectedDate}
