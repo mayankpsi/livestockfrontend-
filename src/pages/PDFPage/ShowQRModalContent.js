@@ -20,6 +20,7 @@ const ShowQRModalContent = ({ id, title }) => {
 
     // Create a new Image element
     const img = new Image();
+    
     // Set up onload event handler to render SVG onto the Image element
     img.onload = function () {
       // Create a canvas element

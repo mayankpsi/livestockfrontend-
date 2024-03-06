@@ -1,7 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import { CustomInput, DatePicker, ImageUpload } from "../../ComponentsV2";
 import useLivestockContext from "../../hooks/useLivestockContext";
-import { AddCircleOutlineOutlinedIcon } from "../../icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   ButtonPrimaryRound,
@@ -87,6 +86,39 @@ const AddLivestockModalContent = () => {
               display: "flex",
               width: "100%",
               justifyContent: "space-between",
+            }}
+          >
+            <Box width={"50%"} display={"flex"} alignItems={"center"}>
+              <CustomInput
+                label="Gender"
+                select
+                selectData={genderData}
+                register={register}
+                errors={errors}
+                value={addNewLivestock?.livestockGender}
+                name="livestockGender"
+                isError={{ error: false, message: "" }}
+                onChange={handleAddLivestockChange}
+              />
+            </Box>
+            <Box width={"50%"}  display={"flex"} alignItems={"center"} p={1.5}>
+              <DatePicker
+                activeFull={true}
+                label="Date of birth"
+                adornment="endAdornment"
+                InputProps={{ sx: { background: "#fff" } }}
+                top="55px"
+                left="350px"
+                selectedDate={addNewLivestock?.livestockDOB}
+                setSelectedDate={(date) => ({target:{name:"livestockDOB", value:date}})}
+              />
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "space-between",
               mt: 1,
             }}
           >
@@ -140,40 +172,7 @@ const AddLivestockModalContent = () => {
               onChange={handleAddLivestockChange}
             />
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "space-between",
-            }}
-          >
-            <Box width={"50%"} display={"flex"} alignItems={"center"}>
-              <CustomInput
-                label="Gender"
-                select
-                selectData={genderData}
-                register={register}
-                errors={errors}
-                value={addNewLivestock?.livestockGender}
-                name="livestockGender"
-                isError={{ error: false, message: "" }}
-                onChange={handleAddLivestockChange}
-              />
-            </Box>
-
-            <Box width={"50%"}  display={"flex"} alignItems={"center"} p={1.5}>
-              <DatePicker
-                activeFull={true}
-                label="Date of birth"
-                adornment="endAdornment"
-                InputProps={{ sx: { background: "#fff" } }}
-                top="55px"
-                left="350px"
-                selectedDate={addNewLivestock?.livestockDOB}
-                setSelectedDate={(date) => ({target:{name:"livestockDOB", value:date}})}
-              />
-            </Box>
-          </Box>
+          
           <Box
             sx={{
               display: "flex",
