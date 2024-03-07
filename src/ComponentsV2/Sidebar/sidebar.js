@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { Box, Stack, Typography, Button, createTheme } from "@mui/material";
 import { SidebarComp } from "../themeComponents";
 import { routes } from "./routeData";
-import useUserId from "../../hooks/useUserId";
 
 const Sidebar = () => {
   const navigate = useNavigate();

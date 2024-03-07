@@ -130,22 +130,6 @@ const Alerts = ({ data }) => {
 
   const handleThresholdChange = (event, id) => {
     const { name, value } = event?.target;
-    const isActivity =
-      id === 4 && name === "low" ? (value >= 0 ? value : 0) : value;
-    // const a = id === 4? name === "low"?value >=0?value:0:name === "high"?value < 23?value:23:value
-    // const a = id === 4?name === "low"?value>=0?value:0:name==="high"?value<23?value:23:value
-    // let newValue;
-    // if(id  === 4){
-    //    if(name === "low"){
-    //      if(value <=0){
-    //       return va
-    //      }
-    //    }
-    // }else{
-    //   return value
-    // }
-
-    // console.log(name, value,id,alertsThresholds[id-1]?.value[`${name}`], "djbfhbfbhvbfhvbhbh")
     const updatedData = alertsThresholds?.map((ele) => {
       if (ele.id === id) {
         return {
@@ -175,6 +159,7 @@ const Alerts = ({ data }) => {
           data: body,
         });
         if (res?.status === 200) {
+          handleThresholdEdit(id);
           openSnackbarAlert("success", "Threshold successfully updated");
         } else {
           throw new Error(getErrorMessage(res));
@@ -185,7 +170,7 @@ const Alerts = ({ data }) => {
     } finally {
       setOpenBackdropLoader(false);
     }
-    handleThresholdEdit(id);
+    
   };
 
   const handleSnackBarAlert = () => {

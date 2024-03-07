@@ -119,6 +119,10 @@ const ShowProfile = ({ userId }) => {
     setCancelProfileChanges((prev) => !prev);
   };
 
+  const currentRole = Number(
+    JSON.parse(window?.localStorage?.getItem("userData"))?.role
+  );
+
   return (
     <Stack width="100%">
       <TypographyPrimary sx={{ fontSize: "2rem" }}>Profile</TypographyPrimary>
@@ -198,13 +202,16 @@ const ShowProfile = ({ userId }) => {
             <Box display="flex" justifyContent="flex-end" mt={5}>
               {editProfile ? (
                 <>
-                  <ButtonOutlined
-                    variant="outlined"
-                    sx={{ minWidth: "100px" }}
-                    onClick={handleAccountDelete}
-                  >
-                    Delete Profile
-                  </ButtonOutlined>
+                  {currentRole != 1 && (
+                    <ButtonOutlined
+                      variant="outlined"
+                      sx={{ minWidth: "100px" }}
+                      onClick={handleAccountDelete}
+                    >
+                      Delete Profile
+                    </ButtonOutlined>
+                  )}
+
                   <ButtonPrimary
                     variant="contained"
                     type="button"

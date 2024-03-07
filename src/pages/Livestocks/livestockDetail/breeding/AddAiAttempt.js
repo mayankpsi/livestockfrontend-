@@ -179,7 +179,7 @@ const AddAiAttempt = ({ onClose, type, selectedAttempt }) => {
                   variants={resultAnim}
                   initial={"start"}
                   animate={
-                    selectedResult === "pass"
+                    selectedResult === "success"
                       ? "active"
                       : selectedResult === "fail"
                       ? "inactivePass"
@@ -189,10 +189,10 @@ const AddAiAttempt = ({ onClose, type, selectedAttempt }) => {
                   <Alert
                     variant="filled"
                     severity="success"
-                    onClick={() => setSelectedResult("pass")}
+                    onClick={() => setSelectedResult("success")}
                   >
                     <Typography sx={{ fontSize: "18px" }}>
-                      {selectedResult === "pass" ? "Passed" : "Pass"}
+                      {selectedResult === "success" ? "Passed" : "Pass"}
                     </Typography>
                   </Alert>
                 </motion.div>
@@ -202,7 +202,7 @@ const AddAiAttempt = ({ onClose, type, selectedAttempt }) => {
                   animate={
                     selectedResult === "fail"
                       ? "active"
-                      : selectedResult === "pass"
+                      : selectedResult === "success"
                       ? "inactiveFail"
                       : "start"
                   }

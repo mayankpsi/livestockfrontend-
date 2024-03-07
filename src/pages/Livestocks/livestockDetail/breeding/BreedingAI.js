@@ -28,7 +28,7 @@ import useDeleteAttempt from "./hooks/useDeleteAttempt";
 const getLabel = (label) => {
   if (label?.toLowerCase() === "pending")
     return { text: "Pending", type: "warning" };
-  if (label?.toLowerCase() === "pass")
+  if (label?.toLowerCase() === "success")
     return { text: "Passed", type: "success" };
   if (label?.toLowerCase() === "fail") return { text: "Failed", type: "error" };
 };
