@@ -41,7 +41,7 @@ export const alertsThresholdData = [
   },
   {
     id: 5,
-    suffix: " min/day",
+    suffix: " hr/day",
     label: "rumination",
     value: {
       low: 100,

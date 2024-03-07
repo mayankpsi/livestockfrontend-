@@ -1,6 +1,7 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { breedingAICardData, breedingAITableData } from "./Data";
 import {
+  ConfirmWindowModalContent,
   CustomLabel,
   CustomModal,
   CustomPagination,
@@ -17,6 +18,12 @@ import { useState } from "react";
 import useGetAIAttempts from "./hooks/useGetAIAttempts";
 import { useParams } from "react-router-dom";
 import { getTabText } from "../../../../Role/Admin/UserManagemnet/utils/utils";
+import {
+  DeleteOutlineOutlinedIcon,
+  EditIcon,
+  VisibilityOutlinedIcon,
+} from "../../../../icons";
+import useDeleteAttempt from "./hooks/useDeleteAttempt";
 
 const getLabel = (label) => {
   if (label?.toLowerCase() === "pending")
@@ -41,28 +48,17 @@ const getFormattedData = (data, handleShowModal) => {
     ),
     action: [
       getLabel(ele?.result)?.type === "warning" ? (
-        <Button
-          variant="contained"
-          sx={{ fontSize: "16px", minWidth: "130px" }}
-          onClick={() => handleShowModal("update", ele)}
-        >
-          update
-        </Button>
+        <IconButton onClick={() => handleShowModal("update", ele)}>
+          <EditIcon fontSize="large" />
+        </IconButton>
       ) : (
-        <Button
-          variant="contained"
-          sx={{
-            fontSize: "16px",
-            minWidth: "130px",
-            background: "#ECDEC6",
-            color: "#B58B5D",
-            fontWeight: "bold",
-          }}
-          onClick={() => handleShowModal("view", ele)}
-        >
-          View
-        </Button>
+        <IconButton onClick={() => handleShowModal("view", ele)}>
+          <VisibilityOutlinedIcon fontSize="large" />
+        </IconButton>
       ),
+      <IconButton onClick={() => handleShowModal("delete", ele)}>
+        <DeleteOutlineOutlinedIcon fontSize="large" />
+      </IconButton>,
     ],
   }));
 };
@@ -70,11 +66,12 @@ const getFormattedData = (data, handleShowModal) => {
 const BreedingAI = () => {
   const { id } = useParams();
   const [addNewAttemptModal, setAddNewAiAttempt] = useState(false);
-  const [pagination, setPagination] = useState(1)
+  const [pagination, setPagination] = useState(1);
   const [selectedAttempt, setSelectedAttempt] = useState(null);
   const [contentType, setContentType] = useState(null);
 
-  const { isLoading, error, data } = useGetAIAttempts(id,pagination);
+  const { isLoading, error, data } = useGetAIAttempts(id, pagination);
+  const { isDeleting, deleteAttempt } = useDeleteAttempt(id);
 
   const handleModalClose = () => {
     setAddNewAiAttempt(false);
@@ -84,6 +81,16 @@ const BreedingAI = () => {
     setAddNewAiAttempt(true);
     setContentType(type);
     if (type !== "add") setSelectedAttempt(attempt);
+  };
+
+  const handleDeleteAttempt = () => {
+    deleteAttempt(selectedAttempt?._id, {
+      onSuccess: (data) => {
+        if (data?.status === 200) {
+          handleModalClose();
+        }
+      },
+    });
   };
 
   const getModalContent = (type) => {
@@ -101,6 +108,14 @@ const BreedingAI = () => {
           onClose={handleModalClose}
           type="view"
           selectedAttempt={selectedAttempt}
+        />
+      ),
+      delete: (
+        <ConfirmWindowModalContent
+          showConfirmBtn={true}
+          loading={isDeleting}
+          onCancel={handleModalClose}
+          onConfirm={handleDeleteAttempt}
         />
       ),
     };
@@ -164,7 +179,7 @@ const BreedingAI = () => {
           </Stack>
         ) : null
       ) : (
-        !isLoading && <NoData/>
+        !isLoading && <NoData />
       )}
       <CustomModal
         content={getModalContent(contentType)}

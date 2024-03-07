@@ -16,7 +16,6 @@ import useDateFormat from "../../../hooks/useDateFormat";
 import useUserId from "../../../hooks/useUserId";
 import { locationTableHeadData, locationBtnData } from "../Data";
 import useErrorMessage from "../../../hooks/useErrorMessage";
-import { SignalCellularNull } from "@mui/icons-material";
 
 const Location = ({ data }) => {
   const {
@@ -39,9 +38,14 @@ const Location = ({ data }) => {
   const [resentAlerts, setResentAlerts] = useState([]);
   const [dataLength, setDataLength] = useState(0);
   const [geofenceData, setGeofenceData] = useState({
-    lat: null,
-    lng: null,
+    farmLat: null,
+    farmLng: null,
+    circleLat: null,
+    circleLng: null,
     radius: 0,
+    polygon: [],
+    geoFenceType: null,
+    address: "",
   });
   const userId = useUserId();
 
@@ -75,14 +79,14 @@ const Location = ({ data }) => {
           if (res1?.value?.status === 200) {
             const { data } = res1.value?.data;
             setGeofenceData({
-              farmLat: data.farmLat,
-              farmLng: data.farmLng,
+              farmLat: data?.farmLat,
+              farmLng: data?.farmLng,
               circleLat: data?.centerLat,
               circleLng: data?.centerLng,
               radius: data?.radius,
               polygon: data?.coordinates,
               geoFenceType: data?.geofenceType,
-              address: data.Address,
+              address: data?.Address,
             });
           } else {
             setGeofenceData({

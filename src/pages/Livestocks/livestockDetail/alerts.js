@@ -179,11 +179,11 @@ const Alerts = ({ data }) => {
         } else {
           throw new Error(getErrorMessage(res));
         }
-        setOpenBackdropLoader(false);
       }
     } catch (error) {
-      setOpenBackdropLoader(false);
       openSnackbarAlert("error", error?.message);
+    } finally {
+      setOpenBackdropLoader(false);
     }
     handleThresholdEdit(id);
   };
@@ -215,7 +215,7 @@ const Alerts = ({ data }) => {
       </TypographyPrimary>
       <Stack direction="row" flexWrap="wrap" width="100%" gap={3}>
         {alertsThresholds?.map((ele) =>
-          healthDataLoading ? (
+          healthDataLoading || openBackdropLoader ? (
             <Skeleton width={"18.6%"} height={"170px"} />
           ) : (
             <AlertCard

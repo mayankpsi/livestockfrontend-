@@ -51,14 +51,14 @@ const LivestockLogs = ({ livestockData }) => {
               const keys = Object.keys(ele);
               keys?.forEach((key) => {
                 const checkFor =
-                  key === "address" ||
+                  key === "activityTime" ||
                   key === "heartBeat" ||
-                  key === "rumination" ||
+                  key === "ruminationTime" ||
                   key === "steps" ||
                   key === "temperature";
                 if (checkFor) {
                   formattedData.push({
-                    name: key,
+                    name: key === "activityTime"?"activity":key === "ruminationTime"?"rumination":key,
                     value: ele[key],
                     time: formattedDate(ele.createdAt),
                     alertValue: ele.alertStatus,
@@ -66,6 +66,7 @@ const LivestockLogs = ({ livestockData }) => {
                 }
               });
             });
+            console.log(data, formattedData, "vkfjnbvjnfjvnjfnvj")
             setLivestockLogs(formattedData);
             setDataLength(data?.dataLength);
             setPageCount(data?.pageCount);

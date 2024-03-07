@@ -16,17 +16,17 @@ const ConfirmWindowModalContent = ({
     <div>
       <Box>
         <TypographyWithBg
-          sx={{ background: "#fc5555" }}
+          sx={{ background: "#fc5555", fontSize:24 }}
           id="modal-modal-title"
           variant="h6"
           component="h2"
         >
           Warning
         </TypographyWithBg>
-        <Box sx={{ padding: "10px 30px", pb: 0 }}>
+        <Box sx={{ padding: "10px 18px", pb: 0 }}>
           {showConfirmBtn ? (
             <TypographyPrimary
-              sx={{ mb: 3, fontSize: 28, textAlign: "center" }}
+              sx={{ mb: 3, fontSize: 20, textAlign: "left" }}
             >
               Are you sure you want to delete?
             </TypographyPrimary>
@@ -53,6 +53,7 @@ const ConfirmWindowModalContent = ({
               width: "100%",
               justifyContent: "right",
               p: 2,
+              pt:0
             }}
           >
             <ButtonOutlinedRound

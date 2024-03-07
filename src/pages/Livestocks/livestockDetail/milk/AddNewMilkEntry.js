@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { milkEntrySchema } from "../../../../utils/validationSchema";
 import { useParams } from "react-router-dom";
+import useDateFormat from "../../../../hooks/useDateFormat";
 
 const initialState = {
   entryQuantity: null,
@@ -22,6 +23,7 @@ const initialState = {
 
 const AddNewMilkEntry = ({ onClose, isView, data }) => {
   const { id } = useParams();
+  const {paginationDateFormat} = useDateFormat();
   const [newEntry, setNewEntry] = useState(initialState);
   const { isAdding, addMilkEntry } = useAddMilkEntry(id);
 
@@ -52,7 +54,7 @@ const AddNewMilkEntry = ({ onClose, isView, data }) => {
   };
 
   const handleAddNewEntry = () => {
-    addMilkEntry(newEntry, {
+    addMilkEntry({...newEntry, entryDate:paginationDateFormat(newEntry?.entryDate)}, {
       onSuccess: (data) => {
         if (data.status === 200) {
           onClose();

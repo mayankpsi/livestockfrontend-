@@ -253,7 +253,6 @@ const GetMap = ({
     status?.toLowerCase() === "safe"
       ? SafeLivestockPointer
       : UnsafeLivestockPointer;
-
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={{
@@ -272,8 +271,8 @@ const GetMap = ({
           : null
       }
       center={{
-        lat: Number(geofenceCoordinates?.farmLat),
-        lng: Number(geofenceCoordinates?.farmLng),
+        lat: Number(geofenceCoordinates?.farmLat) || 0,
+        lng: Number(geofenceCoordinates?.farmLng) || 0,
       }}
       defaultZoom={15}
       zoom={15}
@@ -297,8 +296,8 @@ const GetMap = ({
         key="dcdcde323ddccddc3ded3de"
         title="marker"
         position={{
-          lat: Number(geofenceCoordinates?.farmLat),
-          lng: Number(geofenceCoordinates?.farmLng),
+          lat: Number(geofenceCoordinates?.farmLat)|| 0,
+          lng: Number(geofenceCoordinates?.farmLng) || 0,
         }}
       />
       {geofenceCoordinates?.geoFenceType?.toLowerCase() === "polygon" ? (

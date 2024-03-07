@@ -17,7 +17,7 @@ const CustomTextField = ({
 }) => {
   return (
     <TextField
-      sx={{ background: "#fff", textTransform: "capitalize" }}
+      sx={{ background: "#fff", textTransform: "capitalize", borderRadius:'8px' }}
       disabled={disabled}
       fullWidth
       id={name}
