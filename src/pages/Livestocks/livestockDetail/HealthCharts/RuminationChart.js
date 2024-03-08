@@ -41,7 +41,7 @@ function RuminationChart({
     <Stack sx={{ overflowX: "auto", overflowY: "hidden" }}>
       <ResponsiveContainer height={height} width={width}>
         <ComposedChart data={getData}>
-          <defs>
+          {/* <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="5%"
@@ -54,7 +54,7 @@ function RuminationChart({
                 stopOpacity={0}
               />
             </linearGradient>
-          </defs>
+          </defs> */}
           <XAxis
             dataKey={xLabel}
             tickSize={10}
