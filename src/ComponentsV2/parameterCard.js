@@ -14,13 +14,13 @@ const ParameterCard = ({
   return (
     <Paper
       className="flex-row-center border-1-gray"
-      sx={{ px: 2, py: 2, gap: "20px", flexGrow: 1 }}
+      sx={{ px: 2, py: 2, gap:{lg:2, md:2, sm:1}, flexGrow: 1 }}
     >
       <Box
           className="flex-row-center border-circle"
           sx={{
-            width: "60px",
-            height: "60px",
+            width: "50px",
+            height: "50px",
             background: `${colors?.bg}`,
             border: `1px solid ${colors?.main}`,
           }}
@@ -31,13 +31,13 @@ const ParameterCard = ({
         <Stack direction="row" justifyContent="space-between">
           <TypographySecondary
             className="flex-row-center"
-            sx={{ fontSize: "1.8rem", color: "#696969" }}
+            sx={{ fontSize: "14px", color: "#696969" }}
           >
             {label}
           </TypographySecondary>
           <TypographySecondary
             className="flex-row-center"
-            sx={{ fontSize: "1.2rem", color: "#696969", textAlign: "right" }}
+            sx={{ fontSize: "18px", color: "#696969", textAlign: "right" }}
           >
             {time}
           </TypographySecondary>

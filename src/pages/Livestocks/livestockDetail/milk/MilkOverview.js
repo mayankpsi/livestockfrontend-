@@ -121,9 +121,8 @@ const MilkOverview = () => {
       <Stack
         direction={"row"}
         justifyContent="space-between"
-        gap={2}
         flexWrap={"wrap"}
-        sx={{ py: 2 }}
+        sx={{ py: 2, gap:{lg:2, md:2, sm:1} }}
       >
         {isLoading ? (
           <>

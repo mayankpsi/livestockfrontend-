@@ -52,7 +52,7 @@ const DatePicker = ({
             value={paginationDateFormat(selectedDate, "date")}
             placeholder="MM/DD/YYYY"
             size={activeFull ? "large" : "small"}
-            sx={{ width: activeFull ? "100%" : 140 }}
+            sx={{ width: activeFull ? "100%" : 145 }}
             onClick={() => setOpen(!open)}
             InputProps={{
               ...InputProps,

@@ -24,16 +24,14 @@ const livestockData = (data, filter) => {
     }));
 };
 
-const useGeofenceAndLivestock = () => {
-  const { id } = useParams();
+const useGeofenceAndLivestock = (id) => {
   const { isLoading, error, data } = useQuery(["geofenceAndLivestock"], () =>
     getGeofenceAndLivestock(id)
   );
-
   return {
     isLoading,
     error,
-    geofenceData: data?.userGeofence || {},
+    geofenceData: data?.data?.data?.userGeofence || {},
     allLivestockMapData: formattedLivestockMapData(
       data?.data?.data?.livestock_info
     ),

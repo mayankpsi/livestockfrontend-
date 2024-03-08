@@ -42,7 +42,7 @@ const ViewPedometerDetails = () => {
           collarMacId: data?.macID,
           status: data?.status ? "online" : "offline",
           networkStrength: data?.NetworkStrength,
-          pedometerBattery : data?.pedometerBattery,
+          pedometerBattery: data?.batteryPercent,
           collarBattery:data?.collarBattery, 
           Uid: data?.liveStock?.uID,
           name: data?.liveStock?.name,

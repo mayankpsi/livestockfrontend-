@@ -124,7 +124,7 @@ const BreedingAI = () => {
   };
   return (
     <Stack width="100%">
-      <Stack direction={"row"} gap={2} flexWrap={"wrap"} sx={{ py: 2 }}>
+      <Stack direction={"row"} flexWrap={"wrap"} sx={{ py: 2, gap:{lg:2, md:2, sm:1} }}>
         {isLoading ? (
           <>
             <Skeleton width={"24%"} height={"10vh"} />

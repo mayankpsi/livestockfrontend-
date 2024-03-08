@@ -7,7 +7,7 @@ export default function CustomModal({
   customWidth,
 }) {
   const style = {
-    position: "absolute",
+    position: "absolute", 
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",

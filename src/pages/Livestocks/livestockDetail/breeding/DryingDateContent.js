@@ -14,7 +14,6 @@ const DryingDateContent = ({ onClose, onSubmit, isUpdating }) => {
       sx={{
         background: "#fff",
         width: "100%",
-        height: "52vh",
         position: "relative",
         p: 2,
         pt: 0,
@@ -47,7 +46,7 @@ const DryingDateContent = ({ onClose, onSubmit, isUpdating }) => {
         px={2}
         pt={1}
         pb={1}
-        mt="auto"
+        marginTop={"330px"}
       >
         <Button
           variant="outlined"

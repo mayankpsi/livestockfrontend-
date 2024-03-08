@@ -27,8 +27,7 @@ const BreedingOverview = () => {
       id: selectedPeriod?._id,
       dryingDate: paginationDateFormat(selectedDate),
     };
-
-    if (selectedDate > selectedPeriod?.reBreedingDate) {
+    if (selectedDate > new Date(selectedPeriod?.reBreedingDate)) {
       updateDryingDate(body);
     } else {
       toast?.error("Drying date must be greater than re-breeding date");
@@ -83,11 +82,14 @@ const BreedingOverview = () => {
             Inter-Calving Periods
           </Typography>
           <Stack
-            direction={"row"}
-            justifyContent={"space-between"}
-            gap={3}
-            alignItems={"flex-start"}
-            flexWrap={"wrap"}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              gap: 3,
+              alignItems: "flex-start",
+              flexWrap: "wrap",
+            }}
           >
             {isLoading ? (
               <>
@@ -97,7 +99,7 @@ const BreedingOverview = () => {
             ) : (
               <>
                 {data?.interCalvingData?.map((ele, ind) => (
-                  <Box width={"49%"}>
+                  <Box width={"48%"}>
                     <BreedingCard
                       data={{
                         heading: `${ordinalNumber(

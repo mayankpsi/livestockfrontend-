@@ -14,7 +14,7 @@ const LivestockInfo = ({ data }) => {
         <Stack width="40%">
           <img
             style={{
-              height: "25vh",
+              height: "100%",
               width: "100%",
               objectFit: "cover",
               borderRadius: "10px",
@@ -31,6 +31,7 @@ const LivestockInfo = ({ data }) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
+            gap:2
           }}
         >
           <Box display={"flex"} sx={{ display: "flex", gap: 2 }}>

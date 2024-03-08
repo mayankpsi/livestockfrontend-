@@ -109,7 +109,7 @@ const LiveStockInfoEdit = ({ livestockInfo, infoLoading }) => {
             alt="livestock image"
           />
         )}
-        <Stack direction={"column"} gap={3} mt={2}>
+        <Stack direction={"column"} gap={2} mt={2}>
           <CustomTextField
             disabled={!isEdit}
             name="uid"

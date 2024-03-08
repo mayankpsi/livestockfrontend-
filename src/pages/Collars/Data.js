@@ -62,12 +62,14 @@ export const statusCardData = [
   {
     text: "status",
     status: "online",
+    key:'deviceActiveStatus',
     icon: <InfoOutlinedIcon fontSize="large" sx={{ mr: 1 }} />,
     statusColor: "#347D00",
     suffix: "",
   },
   {
     text: "pedometer battery",
+    key:'batteryPercent',
     status: "56",
     icon: (
       <Battery5BarOutlinedIcon
@@ -80,6 +82,7 @@ export const statusCardData = [
   },
   {
     text: "collar battery",
+    key:'batteryPercent',
     status: "56",
     icon: (
       <Battery5BarOutlinedIcon

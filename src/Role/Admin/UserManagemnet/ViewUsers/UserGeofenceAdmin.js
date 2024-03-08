@@ -9,8 +9,11 @@ import {
 } from "../../../../ComponentsV2";
 import useGeofenceAndLivestock from "../hooks/useGeofenceAndLivestock";
 import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 const UserGeofenceAdmin = () => {
+  const { id } = useParams();
+
   const {
     isLoading,
     error,
@@ -18,15 +21,16 @@ const UserGeofenceAdmin = () => {
     allLivestockMapData,
     safeLivestock,
     unsafeLivestock,
-  } = useGeofenceAndLivestock();
+  } = useGeofenceAndLivestock(id);
 
   if (error) {
     toast.error(error?.message || "Server Error");
   }
+  console.log(geofenceData, "vjbfjnfjnjvnfjnjfvnjfnvjf");
 
   return (
     <>
-      {"id" in geofenceData ? (
+      {"_id" in geofenceData ? (
         <Stack>
           <Stack
             direction="row"

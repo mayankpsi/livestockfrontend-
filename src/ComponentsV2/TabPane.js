@@ -43,14 +43,14 @@ const TabPane = ({
       justifyContent="space-between"
       alignItems="center"
     >
-      <Box>
+      <Box p={1}>
         <TypographyPrimary
-          sx={{ fontSize: "2rem", textTransform: "capitalize" }}
+          sx={{ fontSize: "2rem", textTransform: "capitalize", m:0 }}
         >
           {text}
         </TypographyPrimary>
         {secondaryText && (
-          <TypographyPrimary sx={{ textTransform: "capitalize" }}>
+          <TypographyPrimary sx={{ textTransform: "capitalize", m:0 }}>
             {secondaryText}
           </TypographyPrimary>
         )}

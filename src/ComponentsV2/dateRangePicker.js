@@ -36,6 +36,7 @@ export default function CustomDateRangePicker({
         {selectedDate ? (
           <TextField
             size="small"
+            sx={{ minWidth : 250 }}
             value={`${format(
               selectedDate[0]?.startDate,
               "MM/dd/yyyy"

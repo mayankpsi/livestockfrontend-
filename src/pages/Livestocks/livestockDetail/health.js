@@ -177,7 +177,7 @@ const Health = ({ data }) => {
           </ButtonPrimary>
         </Stack>
       </Stack>
-      <Stack width="100%" direction={"row"} flexWrap={"wrap"} gap={2}>
+      <Stack width="100%" direction={"row"} justifyContent={'space-between'} flexWrap={"wrap"} gap={2}>
         {chartCardData
           ?.map((ele) => ({
             ...ele,
@@ -192,7 +192,7 @@ const Health = ({ data }) => {
           }))
           ?.map((ele) =>
             healthDataLoading ? (
-              <Skeleton width={"19%"} height={"121px"} />
+              <Skeleton width="18%" height={"121px"} sx={{minWidth:'195px'}} />
             ) : (
               <ChartCard
                 label={ele.label}

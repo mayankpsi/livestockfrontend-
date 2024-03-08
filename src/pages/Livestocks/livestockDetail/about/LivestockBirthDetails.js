@@ -92,7 +92,7 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
     <form onSubmit={handleSubmit(handleFormSubmit)} style={{ width: "100%" }}>
       <Stack
         width="100%"
-        sx={{ background: "#F7F8FD", p: 2, borderRadius: "10px" }}
+        sx={{ background: "#F7F8FD", p: 2, borderRadius: "10px", gap:1 }}
       >
         <TabPane
           text="Birth Details"
@@ -106,7 +106,7 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
           hover={true}
           type="submit"
         />
-        <Stack direction={"column"} gap={3}>
+        <Stack direction={"column"} gap={2} height="100%">
           <DatePicker
             activeFull={true}
             disabled={!isEdit}

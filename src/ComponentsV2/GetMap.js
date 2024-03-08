@@ -296,16 +296,22 @@ const GetMap = ({
         key="dcdcde323ddccddc3ded3de"
         title="marker"
         position={{
-          lat: Number(geofenceCoordinates?.farmLat)|| 0,
+          lat: Number(geofenceCoordinates?.farmLat) || 0,
           lng: Number(geofenceCoordinates?.farmLng) || 0,
         }}
       />
-      {geofenceCoordinates?.geoFenceType?.toLowerCase() === "polygon" ? (
+      {console.log(
+        geofenceCoordinates?.geoFenceType?.toLowerCase(),
+        geofenceCoordinates?.geofenceType?.toLowerCase(),
+        "vjbfjbvjfnjvnfvjnfj"
+      )}
+      {geofenceCoordinates?.geofenceType?.toLowerCase() === "polygon" ||
+      geofenceCoordinates?.geoFenceType?.toLowerCase() === "polygon" ? (
         <Polygon
           paths={
             localStorage.getItem("geofence") === "edit"
               ? []
-              : geofenceCoordinates?.polygon
+              : geofenceCoordinates?.polygon || geofenceCoordinates?.coordinates
           }
           options={{
             strokeColor: "#06B95F",
@@ -320,8 +326,8 @@ const GetMap = ({
         <Circle
           ref={circleRef}
           center={{
-            lat: Number(geofenceCoordinates?.circleLat),
-            lng: Number(geofenceCoordinates?.circleLng),
+            lat: Number(geofenceCoordinates?.circleLat|| geofenceCoordinates?.centerLat),
+            lng: Number(geofenceCoordinates?.circleLng|| geofenceCoordinates?.centerLng),
           }}
           radius={
             localStorage.getItem("geofence") === "edit"
