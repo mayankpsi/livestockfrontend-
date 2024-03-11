@@ -85,12 +85,14 @@ const DatePicker = ({
       >
         {open && !disabled && (
           <Calendar
-            date={new Date()}
             onChange={handleSelect}
+            date={selectedDate}
             className="calendarElement"
             minDate={minDate && addDays(new Date(), 0)}
             maxDate={
-              allowFutureDate ? null : !maxDate && addDays(new Date(), 0)
+              allowFutureDate
+                ? addDays(new Date(), 365 * 3)
+                : !maxDate && addDays(new Date(), 0)
             }
           />
         )}

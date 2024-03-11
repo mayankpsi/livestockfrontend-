@@ -91,8 +91,8 @@ const AddAiAttempt = ({ onClose, type, selectedAttempt }) => {
 
   useEffect(() => {
     if (isNotAdd) {
-      setValue('aiAttemptNo', selectedAttempt?.aiAttemptNo);
-      setValue('sireNo', selectedAttempt?.sireNo);
+      setValue("aiAttemptNo", selectedAttempt?.aiAttemptNo);
+      setValue("sireNo", selectedAttempt?.sireNo);
 
       setNewAttempt({
         aiAttemptNo: selectedAttempt?.aiAttemptNo,

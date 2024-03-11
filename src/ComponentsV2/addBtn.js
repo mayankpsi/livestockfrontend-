@@ -12,7 +12,7 @@ const AddBtn = ({ text1, text2, onClick, loading }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        width: { lg: "20%", md: "40%", sm: "60%" },
+        width: { lg: "25%", md: "40%", sm: "60%" },
         borderRadius: "10px",
       }}
     >
