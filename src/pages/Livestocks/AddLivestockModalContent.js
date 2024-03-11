@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { CustomInput, DatePicker, ImageUpload } from "../../ComponentsV2";
 import useLivestockContext from "../../hooks/useLivestockContext";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,6 +7,7 @@ import {
   ButtonOutlinedRound,
   LoadingBtn,
   TypographyWithBg,
+  TypographyPrimary,
 } from "../../ComponentsV2/themeComponents";
 import { useForm } from "react-hook-form";
 import { request } from "../../apis/axios-utils";
@@ -77,8 +78,9 @@ const AddLivestockModalContent = () => {
         <TypographyWithBg id="modal-modal-title" variant="h6" component="h2">
           Add Livestock
         </TypographyWithBg>
-        <Stack>
-          <Box p={2} pb={0}>
+        <Stack direction={'column'} justifyContent={'flex-start'}>
+          <Box p={2} pb={0} mb={1}>
+            <TypographyPrimary sx={{my:0,mb:1, fontSize:'16px'}}>Add Image</TypographyPrimary>
             <ImageUpload onUpload={setLiveStockImage} />
           </Box>
           <Box
@@ -86,6 +88,7 @@ const AddLivestockModalContent = () => {
               display: "flex",
               width: "100%",
               justifyContent: "space-between",
+              m:0
             }}
           >
             <Box width={"50%"} display={"flex"} alignItems={"center"}>
@@ -120,7 +123,7 @@ const AddLivestockModalContent = () => {
               display: "flex",
               width: "100%",
               justifyContent: "space-between",
-              mt: 1,
+              mt: 0,
             }}
           >
             <CustomInput

@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL_LOCAL = "http://localhost:8085/api/v1";
 const BASE_URL_DEV = "http://shipment.psiborg.io:8085/api/v1";
 
-const client = axios.create({ baseURL: BASE_URL_LOCAL });
+const client = axios.create({ baseURL: BASE_URL_DEV });
 const BEARER_TOKEN =
   `Bearer ${JSON.parse(localStorage.getItem("userData"))?.accessToken}` || "";
 const TEMP_TOKEN =  localStorage.getItem("forgetEmailAuth");
