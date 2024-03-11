@@ -25,7 +25,7 @@ export default function CustomTimePicker({
           disabled={disabled}
           sx={{ width: "100%", ...sx }}
           label={label}
-          value={time}
+          value={value}
           InputProps={InputProps}
           onChange={handleTimeChange}
         />

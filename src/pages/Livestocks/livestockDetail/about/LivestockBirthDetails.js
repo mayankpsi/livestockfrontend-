@@ -12,6 +12,7 @@ import CustomTextField from "../../../Authentication/ui/CustomTextField";
 import { livestockBirthDetails } from "../../../../utils/validationSchema";
 import useUpdateBirthDetails from "./hooks/useUpdateBirthDetails";
 import { useParams } from "react-router-dom";
+import useDateFormat from "../../../../hooks/useDateFormat";
 
 const initialState = {
   dob: new Date(),
@@ -26,6 +27,7 @@ const initialState = {
 
 const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
   const { id } = useParams();
+  const {formattedDate} = useDateFormat()
   const [isEdit, setIsEdit] = useState(false);
   const [birthDetails, setBirthDetails] = useState(initialState);
   const { isUpdating, updateLivestockBirthDetails } = useUpdateBirthDetails(id);
@@ -41,7 +43,7 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
             : livestockInfo?.dob,
         timeOfBirth:
           livestockInfo?.timeOfBirth?.toLowerCase() === "n/a"
-            ? "2022-04-17T15:30"
+            ? new Date()
             : livestockInfo?.timeOfBirth,
         birthWeight: livestockInfo?.birthWeight,
         sireNo: livestockInfo?.sireNo,
