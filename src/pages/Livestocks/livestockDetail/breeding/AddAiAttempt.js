@@ -163,7 +163,11 @@ const AddAiAttempt = ({ onClose, type, selectedAttempt }) => {
                 top="55px"
                 left="350px"
                 allowFutureDate={true}
-                selectedDate={selectedDate}
+                selectedDate={
+                  selectedDate?.toString()?.toLowerCase()?.includes("gmt")
+                    ? selectedDate
+                    : new Date(selectedDate)
+                }
                 setSelectedDate={setSelectedDate}
               />
             </Box>

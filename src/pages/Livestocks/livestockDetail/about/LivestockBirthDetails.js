@@ -12,10 +12,9 @@ import CustomTextField from "../../../Authentication/ui/CustomTextField";
 import { livestockBirthDetails } from "../../../../utils/validationSchema";
 import useUpdateBirthDetails from "./hooks/useUpdateBirthDetails";
 import { useParams } from "react-router-dom";
-import useDateFormat from "../../../../hooks/useDateFormat";
 
 const initialState = {
-  dob: new Intl.DateTimeFormat("en-US").format(new Date()),
+  dob: new Date(),
   timeOfBirth: "2022-04-17T15:30",
   birthWeight: "",
   sireNo: "",
@@ -30,7 +29,6 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [birthDetails, setBirthDetails] = useState(initialState);
   const { isUpdating, updateLivestockBirthDetails } = useUpdateBirthDetails(id);
-  const { formattedDate } = useDateFormat();
 
   useEffect(() => {
     if (livestockInfo) {
@@ -38,12 +36,12 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
 
       setBirthDetails({
         dob:
-          livestockInfo?.dob?.toLowerCase() === "n/a"
-            ? formattedDate(new Date(), "date")
-            : formattedDate(livestockInfo?.dob, "date"),
+          livestockInfo?.dob?.toString()?.toLowerCase() === "n/a"
+            ? new Date()
+            : livestockInfo?.dob,
         timeOfBirth:
           livestockInfo?.timeOfBirth?.toLowerCase() === "n/a"
-            ?"2022-04-17T15:30"
+            ? "2022-04-17T15:30"
             : livestockInfo?.timeOfBirth,
         birthWeight: livestockInfo?.birthWeight,
         sireNo: livestockInfo?.sireNo,
@@ -64,8 +62,7 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
 
   const handleChange = (e, name, value) => {
     if (e === "date") {
-      const date = formattedDate(value, "date");
-      setBirthDetails({ ...birthDetails, [name]: date });
+      setBirthDetails({ ...birthDetails, [name]: value });
     } else if (e === "time") {
       setBirthDetails({ ...birthDetails, [name]: value });
     } else {
@@ -76,14 +73,16 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
 
   const handleFormSubmit = async () => {
     if (isEdit) {
-      console.log(birthDetails, "cvkfnvjnfnvnfjnvjnfjnvfjnfjnvj");
-      updateLivestockBirthDetails(birthDetails, {
-        onSuccess: (data) => {
-          if (data.status === 200) {
-            setIsEdit((prev) => !prev);
-          }
-        },
-      });
+      updateLivestockBirthDetails(
+        { ...birthDetails, dobChange: true },
+        {
+          onSuccess: (data) => {
+            if (data.status === 200) {
+              setIsEdit((prev) => !prev);
+            }
+          },
+        }
+      );
     } else {
       setIsEdit((prev) => !prev);
     }
@@ -92,7 +91,7 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
     <form onSubmit={handleSubmit(handleFormSubmit)} style={{ width: "100%" }}>
       <Stack
         width="100%"
-        sx={{ background: "#F7F8FD", p: 2, borderRadius: "10px", gap:1 }}
+        sx={{ background: "#F7F8FD", p: 2, borderRadius: "10px", gap: 1 }}
       >
         <TabPane
           text="Birth Details"
@@ -116,7 +115,11 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
             top="55px"
             left="350px"
             allowFutureDate={true}
-            selectedDate={birthDetails?.dob}
+            selectedDate={
+              birthDetails?.dob?.toString()?.toLowerCase()?.includes("gmt")
+                ? birthDetails?.dob
+                : new Date(birthDetails?.dob)
+            }
             setSelectedDate={(date) => handleChange("date", "dob", date)}
           />
           <CustomTimePicker
