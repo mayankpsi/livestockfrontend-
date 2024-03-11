@@ -43,7 +43,6 @@ const getFormattedData = (data, handleShowModal) => {
         text={getLabel(ele?.result)?.text}
         type={getLabel(ele?.result)?.type}
         width={125}
-        sx={{ marginLeft: "auto" }}
       />
     ),
     action: [

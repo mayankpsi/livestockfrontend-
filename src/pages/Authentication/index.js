@@ -30,8 +30,6 @@ const AuthPage = () => {
     forgetPassword
   } = useAuthContext();
 
-
-
   const loginVariants = {
     show: { x: 0, display: "block", transition: { duration: 0.5 } },
     hide: { x: "-100vw", transition: { duration: 0.5 } },

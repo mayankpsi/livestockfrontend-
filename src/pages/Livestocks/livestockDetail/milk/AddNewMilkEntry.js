@@ -98,6 +98,7 @@ const AddNewMilkEntry = ({ onClose, isView, data }) => {
                 InputProps={{ sx: { background: "#fff" } }}
                 top="55px"
                 left="350px"
+                allowFutureDate={true}
                 selectedDate={newEntry?.entryDate}
                 setSelectedDate={(date) =>
                   handleChange({ target: { value: date, name: "entryDate" } })

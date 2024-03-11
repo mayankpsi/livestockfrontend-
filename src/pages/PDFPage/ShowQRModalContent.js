@@ -20,7 +20,7 @@ const ShowQRModalContent = ({ id, title }) => {
 
     // Create a new Image element
     const img = new Image();
-    
+
     // Set up onload event handler to render SVG onto the Image element
     img.onload = function () {
       // Create a canvas element
@@ -63,26 +63,30 @@ const ShowQRModalContent = ({ id, title }) => {
       gap={2}
       p={2}
     >
-      <TypographyPrimary
-        sx={{ mb: 0.3, fontSize: "2.5rem", textTransform: "capitalize" }}
-      >
-        {title} QR
-      </TypographyPrimary>
+      {title && (
+        <TypographyPrimary
+          sx={{ mb: 0.3, fontSize: "2.5rem", textTransform: "capitalize" }}
+        >
+          {title} QR
+        </TypographyPrimary>
+      )}
       <QRCode
         value={`${window.location.origin}/getLivestockHistory/${id}`}
         ref={qrRef}
       />
-      <Button
-        sx={{ fontSize: "1.5rem" }}
-        variant="contained"
-        onClick={downloadQRCode}
-      >
-        download
-      </Button>
+      {title && (
+        <Button
+          sx={{ fontSize: "1.5rem" }}
+          variant="contained"
+          onClick={downloadQRCode}
+        >
+          download
+        </Button>
+      )}
     </Stack>
   ) : (
     <Stack direction={"row"} alignItems={"center"}>
-      <TypographyPrimary sx={{mx:2}}>No {title} Found!!</TypographyPrimary>
+      <TypographyPrimary sx={{ mx: 2 }}>No {title} Found!!</TypographyPrimary>
     </Stack>
   );
 };

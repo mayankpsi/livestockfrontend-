@@ -18,8 +18,10 @@ import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import { useDeviceDetailContext } from "../../../context/DeviceDetailContext";
 import { QrCodeIcon } from "../../../icons";
 import ShowQRModalContent from "../../PDFPage/ShowQRModalContent";
+import useGetDeviceById from "../../../hooks/services/useGetDeviceById";
+import { useParams } from "react-router-dom";
 
-const Overview = ({ data }) => {
+const Overview = ({ data, deviceLoading }) => {
   const {
     handelCollarNewInfo,
     handleCollarInfoEditChange,
@@ -29,6 +31,7 @@ const Overview = ({ data }) => {
     loading,
   } = useDeviceDetailContext();
   const { openBackdropLoader } = useCollarContext();
+  const { id } = useParams();
   const [modal, setModal] = useState(false);
 
   const { isError } = useCollarContext();
@@ -69,7 +72,7 @@ const Overview = ({ data }) => {
   return (
     <form onSubmit={handleSubmit(onCollarEdit)}>
       <Stack my={4} direction="row" justifyContent="space-between">
-        {openBackdropLoader ? (
+        {deviceLoading ? (
           <Skeleton
             width="42vw"
             height={"245px"}

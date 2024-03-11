@@ -9,12 +9,12 @@ import useMapContext from "../../hooks/useMapContext";
 const Map = () => {
   const tabData = [
     {
-      label: "live location",
-      child: <LiveLocation />,
-    },
-    {
       label: "Geofence",
       child: <CreateGeoFence />,
+    },
+    {
+      label: "live location",
+      child: <LiveLocation />,
     },
   ];
 

@@ -53,7 +53,8 @@ const LoginForm = ({
           justifyContent: "center",
           alignItems: "center",
           gap: theme.spacing(3),
-          backgroundColor: `rgba(255,255,255,0.3)`,
+          backgroundColor: `rgba(0,0,0,0.2)`,
+          backdropFilter:'blur(5px)',
           position: "absolute",
           top: "50%",
           left: "50%",
@@ -93,7 +94,8 @@ const LoginForm = ({
               fontWeight: "bold",
               textAlign: "right",
               cursor: "pointer",
-              marginLeft:'auto'
+              marginLeft:'auto',
+              color:'#fff'
             }}
             onClick={() => setForgetPassword(1)}
           >

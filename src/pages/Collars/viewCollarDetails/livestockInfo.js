@@ -48,6 +48,7 @@ const LivestockInfo = ({
       livestockName: data?.name,
       livestockGender: data?.gender,
     });
+    console.log(data, "vfjbvfjbjvnfjnvjnfjvnjf")
     if (data) {
       setValue("collarUID", data?.collar?.uID || data?.collarUid || "N/A");
       setValue("pedometerUID", data?.pedometer?.uID || "N/A");
@@ -161,6 +162,9 @@ const LivestockInfo = ({
     }
     // return "http://livestock.psiborg.s3.ap-south-1.amazonaws.com/1702616270710-4437%204.png ";
   };
+
+
+  console.log(errors, "vjgnjbngjnbjngjbnjgnbj")
 
   return (
     <form onSubmit={handleSubmit(handelLivestockNewInfoSubmit)}>

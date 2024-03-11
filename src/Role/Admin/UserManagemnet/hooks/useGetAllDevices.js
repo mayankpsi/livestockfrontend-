@@ -25,7 +25,7 @@ const deviceFormattedData = (
         text={ele?.deviceActiveStatus ? "ON" : "OFF"}
         type={ele?.deviceActiveStatus ? "success" : "error"}
         width={80}
-        marginAuto={true}
+        marginAuto={false}
       />
     ),
     assignedStatus: (
@@ -33,7 +33,7 @@ const deviceFormattedData = (
         text={ele?.status ? "assigned" : "not assigned"}
         type={ele?.status ? "success" : "error"}
         width={125}
-        marginAuto={true}
+        marginAuto={false}
       />
     ),
     addedOn: formattedDate(ele?.createdAt, false),

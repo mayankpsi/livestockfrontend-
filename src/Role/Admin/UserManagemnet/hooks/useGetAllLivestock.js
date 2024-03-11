@@ -30,7 +30,7 @@ const deviceFormattedData = (
             : "error"
         }
         width={125}
-        marginAuto={true}
+        marginAuto={false}
       />
     ),
     lastUpdate: formattedDate(ele?.updatedAt, true),

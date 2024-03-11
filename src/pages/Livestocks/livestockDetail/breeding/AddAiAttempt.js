@@ -162,6 +162,7 @@ const AddAiAttempt = ({ onClose, type, selectedAttempt }) => {
                 disabled={isView}
                 top="55px"
                 left="350px"
+                allowFutureDate={true}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
               />

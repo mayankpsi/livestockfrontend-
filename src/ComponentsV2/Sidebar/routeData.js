@@ -23,7 +23,7 @@ export const routes = [
   },
   {
     icon: LocationOnOutlinedIcon,
-    title: "map",
+    title: "geofence",
     link: "/map",
     role: [1, 2],
   },

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import useErrorMessage from "../hooks/useErrorMessage";
 import useCollarContext from "../hooks/useCollarContext";
 import { request } from "../apis/axios-utils";
+import { useQueryClient } from "react-query";
 
 const DeviceDetailContext = createContext();
 
@@ -17,6 +18,8 @@ export const DeviceDetailContextProvider = ({ children }) => {
   const { getErrorMessage } = useErrorMessage();
 
   const { isError, setIsError, openSnackbarAlert } = useCollarContext();
+
+  const queryClient = useQueryClient();
 
   const handleCollarInfoEditChange = (e) => {
     const { name, value } = e.target;
@@ -45,6 +48,7 @@ export const DeviceDetailContextProvider = ({ children }) => {
             error: false,
             message: null,
           });
+          queryClient.invalidateQueries(["getDeviceById"]);
         } else if (editRes?.response?.data?.statusCode === 409) {
           setIsError({
             error: true,

@@ -103,6 +103,7 @@ const AddNewCalf = ({ onClose }) => {
                 top="55px"
                 left="350px"
                 selectedDate={newCalf?.dob}
+                allowFutureDate={true}
                 setSelectedDate={(date) =>
                   handleChange({ target: { value: date, name: "dob" } })
                 }

@@ -35,6 +35,7 @@ const DryingDateContent = ({ onClose, onSubmit, isUpdating }) => {
         <Calendar
           date={selectedDate}
           onChange={setSelectedDate}
+          maxDate={null}
           className="calendarElement"
         />
       </Stack>

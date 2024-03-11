@@ -82,7 +82,7 @@ const CollarLogs = () => {
 
   return (
     <Box>
-      <Stack sx={{ width: "100%", pb: 3 }}>
+      <Stack sx={{ width: "100%", py:4}}>
         <Stack pb={2}>
           <TabPaneV2
             paneText="Manage Log"

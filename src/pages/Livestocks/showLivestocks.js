@@ -54,13 +54,16 @@ const ShowLivestocks = ({ show }) => {
   const livestockFiltering = () => {
     return allLivestocks?.map((el) => ({ ...el, status: null }));
   };
+
+  const currentRole =
+  Number(JSON.parse(window?.localStorage?.getItem("userData"))?.role) || 2;
   return (
     <Box my={4}>
       <Box sx={{ my: 4 }}>
         <TabPane
           text={getTabText("livestock", livestockDataLength)}
           minWidth="18rem"
-          selectValue={livestockSort}
+          selectValue={currentRole === 1 && livestockSort}
           selectOptions={livestockFilterOptions}
           onSelectChange={(value) => setLivestockSort(value)}
           search={true}

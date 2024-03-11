@@ -12,9 +12,9 @@ const ParameterCard = ({
   suffix,
 }) => {
   return (
-    <Paper
-      className="flex-row-center border-1-gray"
-      sx={{ px: 2, py: 2, gap:{lg:2, md:2, sm:1}, flexGrow: 1 }}
+    <Stack
+      direction={'row'}
+      sx={{ px: 2, py: 2, gap:{lg:2, md:2, sm:1}, flexGrow: 1, border:'1px solid #ddd', borderRadius:'8px'}}
     >
       <Box
           className="flex-row-center border-circle"
@@ -49,7 +49,7 @@ const ParameterCard = ({
           {(value ? value: "0") + suffix}
         </Typography>
       </Box>
-    </Paper>
+    </Stack>
   );
 };
 

@@ -19,6 +19,7 @@ const DatePicker = ({
   label,
   maxDate,
   minDate,
+  allowFutureDate = false,
 }) => {
   const [open, setOpen] = useState(false);
   const calenderRef = useRef(null);
@@ -88,7 +89,9 @@ const DatePicker = ({
             onChange={handleSelect}
             className="calendarElement"
             minDate={minDate && addDays(new Date(), 0)}
-            maxDate={!maxDate && addDays(new Date(), 0)}
+            maxDate={
+              allowFutureDate ? null : !maxDate && addDays(new Date(), 0)
+            }
           />
         )}
       </Stack>

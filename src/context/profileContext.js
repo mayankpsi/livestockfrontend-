@@ -12,6 +12,7 @@ export const ProfileContextProvider = ({ children }) => {
     email: "",
     address: "",
     pincode: "",
+    city: "",
     state: "",
     country: "",
   });
@@ -52,6 +53,7 @@ export const ProfileContextProvider = ({ children }) => {
       address: {
         line: showProfileData?.address,
         pincode: showProfileData?.pincode,
+        city:showProfileData?.city,
         state: showProfileData?.state,
         country: showProfileData?.country,
       },
@@ -118,6 +120,7 @@ export const ProfileContextProvider = ({ children }) => {
             phoneNumber: data?.phone,
             address: data?.address?.line,
             pincode: data?.address?.pincode,
+            city:data?.address?.city,
             state: data?.address?.state,
             country: data?.address?.country,
           });
@@ -144,6 +147,7 @@ export const ProfileContextProvider = ({ children }) => {
                 //set the state and country
                 setShowProfileData({
                   ...showProfileData,
+                  city:res.data[0].PostOffice[0].Block,
                   state: res?.data[0]?.PostOffice[0]?.State,
                   country: res?.data[0]?.PostOffice[0]?.Country,
                 });
@@ -153,6 +157,7 @@ export const ProfileContextProvider = ({ children }) => {
               } else {
                 setShowProfileData({
                   ...showProfileData,
+                  city:'',
                   state: "",
                   country: "",
                 });
@@ -210,7 +215,6 @@ export const ProfileContextProvider = ({ children }) => {
       openSnackbarAlert("error", err.message);
     }
   };
-
 
   return (
     <ProfileContext.Provider

@@ -24,7 +24,6 @@ const ShowLivestocks = ({
   openSnackbarAlert,
   loading,
   title,
-  assigning,
 }) => {
   const [showLivestocks, setShowLivestocks] = useState(data);
   const [selectedValue, setSelectedValue] = useState();
@@ -56,25 +55,26 @@ const ShowLivestocks = ({
           onChange={(e) => onSearch(e.target.value)}
         />
       </Stack>
-      {!loading ? (
-        data?.length ? (
-          <Stack direction="row" flexWrap="wrap" justifyContent="space-evenly">
-            {showLivestocks?.map((el) => (
-              <LivestockCard
-                key={el._id}
-                name={isLivestock ? el?.name : el?.deviceName}
-                id={el.uID}
-                value={el._id}
-                handleChange={handleChange}
-                selectedValue={selectedValue === el._id}
-              />
-            ))}
-          </Stack>
-        ) : (
-          <NoData />
-        )
+      {/* {!loading ? (
+        
       ) : (
         <Spinner />
+      )} */}
+      {data?.length ? (
+        <Stack direction="row" flexWrap="wrap" justifyContent="space-evenly">
+          {showLivestocks?.map((el) => (
+            <LivestockCard
+              key={el._id}
+              name={isLivestock ? el?.name : el?.deviceName}
+              id={el.uID}
+              value={el._id}
+              handleChange={handleChange}
+              selectedValue={selectedValue === el._id}
+            />
+          ))}
+        </Stack>
+      ) : (
+        <NoData />
       )}
 
       {dataLength ? (
@@ -91,21 +91,15 @@ const ShowLivestocks = ({
           ) : null}
           <ButtonPrimary
             onClick={handleLivestockAssignSave}
-            disabled={!selectedValue || assigning}
+            disabled={!selectedValue || loading}
             startIcon={
-              assigning ? (
+              loading ? (
                 <CircularProgress size={20} sx={{ color: "#fff" }} />
               ) : null
             }
             sx={{
               position: "absolute",
               right: "35px",
-              background: "#05254C",
-              color: `${
-                !selectedValue || assigning
-                  ? "rgba(255,255,255,0.4) !important"
-                  : "#fff !important"
-              }`,
               padding: "5px 30px",
             }}
           >

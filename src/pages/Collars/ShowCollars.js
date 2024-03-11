@@ -57,6 +57,9 @@ const ShowCollars = ({ show }) => {
     return collars?.map((el) => ({ ...el, status: null }));
   };
 
+  const currentRole =
+    Number(JSON.parse(window?.localStorage?.getItem("userData"))?.role) || 2;
+
   return (
     <Box my={4}>
       <Box sx={{ my: 4 }}>
@@ -64,7 +67,9 @@ const ShowCollars = ({ show }) => {
           text={getTabText("livestock", deviceDataLength)}
           minWidth="18rem"
           selectValue={deviceSort}
-          selectOptions={filterOptions}
+          selectOptions={filterOptions?.filter((ele) =>
+            ele?.role?.includes(currentRole)
+          )}
           onSelectChange={(value) => setDeviceSort(value)}
           search={true}
           onSearch={(term) => handleSearchQuery(term, setDeviceSearch)}

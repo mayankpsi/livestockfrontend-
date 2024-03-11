@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { securityProfileSchema } from "../../utils/validationSchema";
 import useProfileContext from "../../hooks/useProfileContext";
+import CustomTextField from "../Authentication/ui/CustomTextField";
+import { useState } from "react";
 
 const common = {
   fontSize: "1.5rem",
@@ -28,6 +30,9 @@ const ButtonPrimary = styled(Button)({
 const ProfileSecurity = () => {
   const { changePassword, handlePasswordChange, handlePasswordEdit } =
     useProfileContext();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -35,26 +40,6 @@ const ProfileSecurity = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(securityProfileSchema) });
 
-  const getTextFiled = (label, name, value) => {
-    return (
-      <TextField
-        fullWidth
-        // disabled
-        id={name}
-        label={label}
-        variant="outlined"
-        size="large"
-        sx={{ mr: 1 }}
-        value={value}
-        name={name}
-        placeholder={`Please Enter your ${label}`}
-        {...register(name, { required: true })}
-        onChange={handlePasswordChange}
-        error={errors?.[name]}
-        helperText={errors?.[name]?.message}
-      ></TextField>
-    );
-  };
   return (
     <Stack width="100%">
       <TypographyPrimary sx={{ fontSize: "2rem" }}>
@@ -63,28 +48,43 @@ const ProfileSecurity = () => {
       <form onSubmit={handleSubmit(handlePasswordEdit)}>
         <Stack gap={2} p="20px 0">
           <Box display="flex" gap={2}>
-            {getTextFiled(
-              "Current Password",
-              "currentPassword",
-              changePassword?.currentPassword
-            )}
-            {getTextFiled(
-              "New Password",
-              "newPassword",
-              changePassword?.newPassword
-            )}
-            {getTextFiled(
-              "Confirm Password",
-              "confirmPassword",
-              changePassword?.confirmPassword
-            )}
+            <CustomTextField
+              placeholder={"Current Password"}
+              name={"currentPassword"}
+              label={"Current Password"}
+              value={changePassword?.currentPassword}
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
+              onInputChange={handlePasswordChange}
+              register={register}
+              errors={errors}
+            />
+            <CustomTextField
+              placeholder={"New Password"}
+              name={"newPassword"}
+              label={"New Password"}
+              value={changePassword?.newPassword}
+              showPassword={showNewPassword}
+              setShowPassword={setShowNewPassword}
+              onInputChange={handlePasswordChange}
+              register={register}
+              errors={errors}
+            />
+
+            <CustomTextField
+              placeholder={"Confirm Password"}
+              name={"confirmPassword"}
+              label={"Confirm Password"}
+              value={changePassword?.confirmPassword}
+              showPassword={showConfirmPassword}
+              setShowPassword={setShowConfirmPassword}
+              onInputChange={handlePasswordChange}
+              register={register}
+              errors={errors}
+            />
           </Box>
-          <Box>
-            <ButtonPrimary
-              variant="contained"
-              type="submit"
-              //   onClick={handleGeofenceSave}
-            >
+          <Box sx={{display:'flex', justifyContent:'flex-end'}}>
+            <ButtonPrimary variant="contained" type="submit">
               Change Password
             </ButtonPrimary>
           </Box>

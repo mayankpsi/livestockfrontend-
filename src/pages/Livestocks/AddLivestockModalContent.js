@@ -109,6 +109,7 @@ const AddLivestockModalContent = () => {
                 InputProps={{ sx: { background: "#fff" } }}
                 top="55px"
                 left="350px"
+                allowFutureDate={true}
                 selectedDate={addNewLivestock?.livestockDOB}
                 setSelectedDate={(date) => ({target:{name:"livestockDOB", value:date}})}
               />

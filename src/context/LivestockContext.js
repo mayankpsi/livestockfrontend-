@@ -110,7 +110,7 @@ export const LivestockContextProvider = ({ children }) => {
                       : "error"
                   }
                   width={125}
-                  marginAuto={true}
+                  marginAuto={false}
                 />
               ),
               lastUpdate: formattedDate(col?.updatedAt, true),

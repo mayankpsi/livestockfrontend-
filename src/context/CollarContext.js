@@ -87,7 +87,7 @@ export const CollarContextProvider = ({ children }) => {
     activeDevice?.slice(1)?.toLowerCase();
 
   // GET ALL DEVICES
-  const getAllDevices = (status) => {
+  const getAllDevices = (status="all") => {
     setOpenBackdropLoader(true);
     const pag = getPagination(activeDevice, status);
     request({
@@ -105,7 +105,7 @@ export const CollarContextProvider = ({ children }) => {
                 text={col?.deviceActiveStatus ? "ON" : "OFF"}
                 type={col?.deviceActiveStatus ? "success" : "error"}
                 width={80}
-                marginAuto={true}
+                marginAuto={false}
               />
             ),
             currentStatus: (
@@ -113,7 +113,7 @@ export const CollarContextProvider = ({ children }) => {
                 text={col?.status ? "assigned" : "not assigned"}
                 type={col?.status ? "success" : "error"}
                 width={125}
-                marginAuto={true}
+                marginAuto={false}
               />
             ),
             status: col?.status ? "assigned" : "not assigned",

@@ -6,34 +6,30 @@ import Spinner from "./Spinner";
 const AddBtn = ({ text1, text2, onClick, loading }) => {
   return (
     <Stack
-    height={385}
-    my={4}
+      height={385}
+      my={4}
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        width: { lg: "30%", md: "50%", sm: "70%" },
-        border: "1px solid #dddddd",
+        width: { lg: "20%", md: "40%", sm: "60%" },
         borderRadius: "10px",
       }}
     >
       <Stack
         direction={"column"}
-        justifyContent={"space-between"}
         alignItems={"center"}
-        sx={{ p: 2, width: "100%" }}
-        height="100%"
+        sx={{
+          p: 2,
+          width: "100%",
+          background: "#F7F8FD",
+          borderRadius: "10px",
+        }}
       >
         <AddCircleOutlineOutlinedIcon
-          sx={{ fontSize: 150, cursor: "default" }}
+          sx={{ fontSize: 150 }}
+          onClick={onClick}
         />
-        <TypographyPrimary sx={{ textAlign: "center" }}>
-          Assign this {text2} to available {text1}.
-        </TypographyPrimary>
-        <TypographyPrimary sx={{ textAlign: "center", m: 0 }}>
-          Note : If no {text1} is available then go to {text1} management - Add
-          new {text1}
-        </TypographyPrimary>
         <ButtonPrimary
           disabled={loading}
           sx={{
@@ -52,6 +48,13 @@ const AddBtn = ({ text1, text2, onClick, loading }) => {
           Assign {text1}
         </ButtonPrimary>
       </Stack>
+      <TypographyPrimary sx={{ textAlign: "center" }}>
+        Assign this {text2} to available {text1}.
+      </TypographyPrimary>
+      <TypographyPrimary sx={{ textAlign: "center", m: 0 }}>
+        Note : If no {text1} is available then go to {text1} management - Add
+        new {text1}
+      </TypographyPrimary>
     </Stack>
   );
 };

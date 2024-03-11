@@ -49,8 +49,13 @@ export default function CustomTable({
                 ?.map((col, ind) => (
                   <TableCellHead
                     key={col}
+                    align={ind === 0
+                      ? ""
+                      : ind == tableHeadData?.length - 1
+                      ? "right"
+                      : "left"}
                     sx={{
-                      textAlign: `${itemAlignment(ind)}`,
+                      // textAlign: `${itemAlignment(ind)}`,
                       textTransform: "capitalize",
                     }}
                   >
@@ -77,7 +82,12 @@ export default function CustomTable({
                   <TableCellBody
                     component="th"
                     scope="row"
-                    sx={{ textAlign: `${itemAlignment(ind)}` }}
+                    align={ind === 0
+                      ? ""
+                      : ind == tableHeadData?.length - 1
+                      ? "right"
+                      : "left"}
+                    // sx={{ textAlign: `${itemAlignment(ind)}` }}
                   >
                     {!Array.isArray(ele) ? (
                       ele

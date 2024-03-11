@@ -1,4 +1,4 @@
-import { Stack, Button } from "@mui/material";
+import { Stack, Button, Typography } from "@mui/material";
 import {
   ButtonPrimary,
   TypographyPrimary,
@@ -43,9 +43,19 @@ const btnData = [
 
 const ShowLivestockQR = ({ collarId, pedometerId }) => {
   return (
-    <Stack direction={"row"} justifyContent={"center"}>
-      <ShowQRModalContent id={collarId} title="Collar" />
-      <ShowQRModalContent id={pedometerId} title="Pedometer" />
+    <Stack direction={"column"} justifyContent={"center"} pb={1}>
+      <TypographyPrimary
+        sx={{
+          mb: 0.3,
+          px:1,
+          fontSize: "2.1rem",
+          textTransform: "capitalize",
+          textAlign: "center",
+        }}
+      >
+        Scan QR to download livestock historical data
+      </TypographyPrimary>
+      <ShowQRModalContent id={collarId} title="" />
     </Stack>
   );
 };
@@ -173,11 +183,17 @@ const Health = ({ data }) => {
             sx={{ p: "5px 15px" }}
             onClick={() => setModal(true)}
           >
-            Show QR
+            Export Historical Data
           </ButtonPrimary>
         </Stack>
       </Stack>
-      <Stack width="100%" direction={"row"} justifyContent={'space-between'} flexWrap={"wrap"} gap={2}>
+      <Stack
+        width="100%"
+        direction={"row"}
+        justifyContent={"space-between"}
+        flexWrap={"wrap"}
+        gap={2}
+      >
         {chartCardData
           ?.map((ele) => ({
             ...ele,
@@ -192,7 +208,11 @@ const Health = ({ data }) => {
           }))
           ?.map((ele) =>
             healthDataLoading ? (
-              <Skeleton width="18%" height={"121px"} sx={{minWidth:'195px'}} />
+              <Skeleton
+                width="18%"
+                height={"121px"}
+                sx={{ minWidth: "195px" }}
+              />
             ) : (
               <ChartCard
                 label={ele.label}
@@ -215,13 +235,15 @@ const Health = ({ data }) => {
       <CustomModal
         content={
           <ShowLivestockQR
-            collarId={data?.collar?.macID}
-            pedometerId={data?.pedometer?.macID}
+            collarId={data?.collar?.macID || data?.pedometer?.macID}
           />
         }
-        customWidth="45%"
-        customWidthMd="70%"
-        customWidthSm="90%"
+        customWidth="25%"
+        customWidthMd="40%"
+        customWidthSm="50%"
+        // customWidth="45%"
+        // customWidthMd="70%"
+        // customWidthSm="90%"
         openModal={modal}
         handleClose={() => setModal(false)}
       />

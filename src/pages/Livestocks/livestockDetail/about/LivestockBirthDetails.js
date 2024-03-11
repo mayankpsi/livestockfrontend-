@@ -40,7 +40,7 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
         dob:
           livestockInfo?.dob?.toLowerCase() === "n/a"
             ? formattedDate(new Date(), "date")
-            : livestockInfo?.dob,
+            : formattedDate(livestockInfo?.dob, "date"),
         timeOfBirth:
           livestockInfo?.timeOfBirth?.toLowerCase() === "n/a"
             ?"2022-04-17T15:30"
@@ -115,6 +115,7 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
             InputProps={{ sx: { background: "#fff" } }}
             top="55px"
             left="350px"
+            allowFutureDate={true}
             selectedDate={birthDetails?.dob}
             setSelectedDate={(date) => handleChange("date", "dob", date)}
           />

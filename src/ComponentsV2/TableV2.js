@@ -28,7 +28,8 @@ export default function TableV2({
       color =
         tableColors === undefined
           ? null
-          : ele?.toLowerCase()?.includes("pm") || ele?.toLowerCase()?.includes("am")
+          : ele?.toLowerCase()?.includes("pm") ||
+            ele?.toLowerCase()?.includes("am")
           ? null
           : row?.title?.toLowerCase() === "safe"
           ? tableColors[0]
@@ -44,20 +45,28 @@ export default function TableV2({
           <TableRow>
             {tableHeadData &&
               tableHeadData
-                ?.map((col, ind) => (
-                  <TableCell
-                    key={col}
-                    align={ind === 0 ? "" : "right"}
-                    sx={{
-                      fontWeight: "bold",
-                      textTransform: "capitalize",
-                      color: "#B0B0B0",
-                      fontSize: "1.3rem",
-                    }}
-                  >
-                    {col}
-                  </TableCell>
-                ))
+                ?.map((col, ind) => {
+                  return (
+                    <TableCell
+                      key={col}
+                      align={
+                        ind === 0
+                          ? ""
+                          : ind == tableHeadData?.length - 1
+                          ? "right"
+                          : "left"
+                      }
+                      sx={{
+                        fontWeight: "bold",
+                        textTransform: "capitalize",
+                        color: "#B0B0B0",
+                        fontSize: "1.3rem",
+                      }}
+                    >
+                      {col}
+                    </TableCell>
+                  );
+                })
                 .filter((count) => count != 0)}
           </TableRow>
         </TableHead>
@@ -73,7 +82,11 @@ export default function TableV2({
                   <TableCell
                     component={ind === 0 ? "th" : ""}
                     scope={ind === 0 ? "row" : ""}
-                    align={ind === 0 ? "" : "right"}
+                    align={ind === 0
+                      ? ""
+                      : ind == tableHeadData?.length - 1
+                      ? "right"
+                      : "left"}
                     sx={{
                       fontWeight: "bold",
                       textTransform: "uppercase",
@@ -85,11 +98,7 @@ export default function TableV2({
                     {!Array.isArray(ele) ? (
                       ele
                     ) : (
-                      <Box>
-                        {ele?.map((btn) => (
-                          btn
-                        ))}
-                      </Box>
+                      <Box>{ele?.map((btn) => btn)}</Box>
                     )}
                   </TableCell>
                 ))}

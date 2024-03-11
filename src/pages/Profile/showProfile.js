@@ -137,7 +137,7 @@ const ShowProfile = ({ userId }) => {
               borderRadius={"10px"}
               border="1px solid #dddddd"
             >
-              <Box display="flex" gap={5}>
+              <Box display="flex" gap={3}>
                 {getTextFiled(
                   "Full Name",
                   "fullName",
@@ -153,7 +153,8 @@ const ShowProfile = ({ userId }) => {
                   true
                 )}
               </Box>
-              <Box display="flex" gap={5}>
+              <Box display="flex" justifyContent={'space-between'} gap={3}>
+                <Box width="48.7%">
                 {getTextFiled(
                   "Phone Number",
                   "phoneNumber",
@@ -161,6 +162,8 @@ const ShowProfile = ({ userId }) => {
                   "number",
                   true
                 )}
+                </Box>
+                <Box width="49.1%" display={'flex'} gap={3}>
                 {getTextFiled(
                   "Pincode",
                   "pincode",
@@ -170,8 +173,16 @@ const ShowProfile = ({ userId }) => {
                   inputError,
                   pinCodeLoading
                 )}
+                {getTextFiled(
+                  "City",
+                  "city",
+                  showProfileData?.city,
+                  "text",
+                  editProfile,
+                )}
+                </Box>
               </Box>
-              <Box display="flex" gap={5}>
+              <Box display="flex" gap={3}>
                 <Box width="100%" display="flex" flexWrap="wrap">
                   {getTextFiled(
                     "Full Address",

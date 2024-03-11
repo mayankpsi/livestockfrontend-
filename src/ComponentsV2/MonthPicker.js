@@ -10,11 +10,13 @@ const MonthPicker = ({ label, value, setValue }) => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["DatePicker"]} sx={{ p: 0 }}>
         <DatePicker
-          views={["year", "month"]}
+          views={["month","year"]}
           label={label}
           value={value}
           onChange={setValue}
-          renderInput={(params) => <TextField {...params} sx={{width:'100px'}} />}
+          renderInput={(params) => (
+            <TextField {...params} sx={{ width: "100px" }} />
+          )}
         />
       </DemoContainer>
     </LocalizationProvider>
