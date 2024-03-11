@@ -4,7 +4,7 @@ import useDateFormat from "../../../../../hooks/useDateFormat";
 
 const milkOverviewDataApi = (livestockId, pagination, month) => {
   return request({
-    url: `/milkEntry/getMilkRecords?livestockId=${livestockId}&page=${pagination}&limit=10&startDate=${month}`,
+    url: `/milkEntry/getMilkRecords?livestockId=${livestockId}&page=${pagination}&limit=32&startDate=${month}`,
   });
 };
 

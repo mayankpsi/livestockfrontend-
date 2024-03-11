@@ -16,6 +16,7 @@ const formattedData = (data) => {
     status: data?.deviceActiveStatus ? "online" : "offline",
     networkStrength: data?.NetworkStrength,
     collarBattery: data?.batteryPercent,
+    pedometerBattery: data?.batteryPercent,
     Uid: data?.liveStock?.uID,
     name: data?.liveStock?.name,
     gender: data?.liveStock?.gender,

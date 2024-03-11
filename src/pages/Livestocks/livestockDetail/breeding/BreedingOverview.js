@@ -28,7 +28,13 @@ const BreedingOverview = () => {
       dryingDate: paginationDateFormat(selectedDate),
     };
     if (selectedDate > new Date(selectedPeriod?.reBreedingDate)) {
-      updateDryingDate(body);
+      updateDryingDate(body, {
+        onSuccess: (data) => {
+          if (data.status === 200) {
+            setShowModal(false);
+          }
+        },
+      });
     } else {
       toast?.error("Drying date must be greater than re-breeding date");
     }

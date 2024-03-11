@@ -6,8 +6,10 @@ import useDateFormat from "../../../../hooks/useDateFormat";
 const LivestockStatus = ({ data }) => {
   const { formattedDate } = useDateFormat();
 
-  const getDate = (label) =>
-    data?.label ? formattedDate(data?.label, "date") : "N/A";
+  const getDate = (label) => {
+    if (data?.[label]?.toLowerCase() === "n/a" || !data?.[label]) return "N/A";
+    return data?.[label] ? formattedDate(data?.[label], "date") : "N/A";
+  };
   return (
     <Stack
       width="100%"
@@ -31,6 +33,7 @@ const LivestockStatus = ({ data }) => {
             label={"Parity"}
             value={data?.parity || "N/A"}
           />
+          {console.log(data, "cfjvbfbvnfjnvjnfjnvjf")}
           <CustomTextField
             disabled={true}
             label={"Last calving date"}

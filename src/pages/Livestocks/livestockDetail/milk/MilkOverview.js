@@ -24,11 +24,10 @@ import AddNewMilkEntry from "./AddNewMilkEntry";
 import useDateFormat from "../../../../hooks/useDateFormat";
 import dayjs from "dayjs";
 import useDeleteMilkEntry from "./hooks/useDeleteMilkEntry";
-import { getTabText } from "../../../../Role/Admin/UserManagemnet/utils/utils";
 
 const milkRecordData = (data, formattedDate, handleModalOpen) => {
-  return data?.map((ele, ind) => ({
-    milkEntry: ind + 1,
+  return data?.map((ele) => ({
+    milkEntry: formattedDate(ele?.entryDate, "date")?.split("/")?.[0],
     entryDate: formattedDate(ele?.entryDate, "date"),
     quantity: `${ele?.entryQuantity} Ltr`,
     actions: [
@@ -101,6 +100,11 @@ const MilkOverview = () => {
         />
       );
   };
+
+  const text = `Showing ${(data?.dataLength > 32 ? 30 : data?.dataLength) || 0} out of ${
+    data?.dataLength || 0
+  } Milk entries`;
+
   return (
     <Stack width={"100%"}>
       <Stack
@@ -109,7 +113,7 @@ const MilkOverview = () => {
         alignItems={"center"}
       >
         <Typography sx={{ fontSize: "18px", fontWeight: "bold" }}>
-          {getTabText("Milk entries", data?.dataLength)}
+          {text}
         </Typography>
         <Box display={"flex"} gap={2}>
           <MonthPicker value={month || dayjs(new Date())} setValue={setMonth} />
@@ -165,7 +169,7 @@ const MilkOverview = () => {
       )}
 
       {data?.dataLength
-        ? data?.dataLength > 10 && (
+        ? data?.dataLength > 32 && (
             <Stack direction="row" justifyContent="center" p={2}>
               <CustomPagination
                 size="large"

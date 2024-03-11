@@ -19,8 +19,9 @@ import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 import { QrCodeIcon } from "../../../icons";
 import ShowQRModalContent from "../../PDFPage/ShowQRModalContent";
+import {  useQueryClient } from "react-query";
 
-const Overview = ({ data }) => {
+const Overview = ({ data, deviceLoading }) => {
   const [isEditCollarInfo, setIsEditCollarInfo] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(false);
@@ -52,6 +53,7 @@ const Overview = ({ data }) => {
     setValue,
     formState: { errors },
   } = useForm({ resolver: yupResolver(addCollarValidationSchema) });
+  const queryClient = useQueryClient()
 
   const handleCollarInfoEditChange = (e) => {
     const { name, value } = e.target;
@@ -80,6 +82,7 @@ const Overview = ({ data }) => {
             error: false,
             message: null,
           });
+          queryClient.invalidateQueries(["getDeviceById"]);
         } else if (editRes?.response?.data?.statusCode === 409) {
           setIsError({
             error: true,
@@ -112,7 +115,7 @@ const Overview = ({ data }) => {
   return (
     <form onSubmit={handleSubmit(handelCollarNewInfo)}>
       <Stack my={4} direction="row" justifyContent="space-between">
-        {!openBackdropLoader ? (
+        {!deviceLoading ? (
           <Stack
             sx={{
               width: "55%",

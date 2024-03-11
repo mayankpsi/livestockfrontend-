@@ -2,8 +2,10 @@ import { Box, Stack } from "@mui/material";
 import { TypographyPrimary } from "../../../../ComponentsV2/themeComponents";
 import { LivestockCoverPhoto } from "../../../../assets";
 import CustomTextField from "../../../Authentication/ui/CustomTextField";
+import { getCapitalize } from "../../../../Role/Admin/UserManagemnet/utils/utils";
 
 const LivestockInfo = ({ data }) => {
+
   return (
     <Stack
       width="100%"
@@ -31,19 +33,19 @@ const LivestockInfo = ({ data }) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            gap:2
+            gap: 2,
           }}
         >
           <Box display={"flex"} sx={{ display: "flex", gap: 2 }}>
             <CustomTextField
               disabled={true}
               label={"Livestock UID"}
-              value={data?.uID || "N/A"}
+              value={getCapitalize(data?.uID)}
             />
             <CustomTextField
               disabled={true}
               label={"Livestock name"}
-              value={data?.name || "N/A"}
+              value={getCapitalize(data?.name)}
             />
           </Box>
           <Box display={"flex"} sx={{ display: "flex", gap: 2 }}>
@@ -55,19 +57,19 @@ const LivestockInfo = ({ data }) => {
             <CustomTextField
               disabled={true}
               label={"Breed"}
-              value={data?.breed || "N/A"}
+              value={getCapitalize(data?.breed)}
             />
           </Box>
           <Box display={"flex"} sx={{ display: "flex", gap: 2 }}>
             <CustomTextField
               disabled={true}
               label={"Gender"}
-              value={data?.gender || "N/A"}
+              value={getCapitalize(data?.gender)}
             />
             <CustomTextField
               disabled={true}
               label={"Color"}
-              value={data?.color || "N/A"}
+              value={getCapitalize(data?.color)}
             />
           </Box>
         </Stack>

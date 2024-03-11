@@ -30,15 +30,15 @@ export const showCollarTableHeadData = [
 ];
 
 // SHOW COLLAR DETAIL DATA
-export const viewCollarDetailTabData = (data, loading, setLoading) => [
+export const viewCollarDetailTabData = (deviceData, isLoading) => [
   {
     label: "overview",
-    child: <Overview data={data} />,
+    child: <Overview data={deviceData} deviceLoading={isLoading} />,
   },
   {
     label: "assigned",
     child: (
-      <AssignLivestock data={data} loading={loading} setLoading={setLoading} />
+      <AssignLivestock data={deviceData} isLoading={isLoading} />
     ),
   },
   {

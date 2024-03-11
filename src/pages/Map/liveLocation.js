@@ -41,7 +41,7 @@ const LiveLocation = () => {
     const filteredData = data?.filter(
       (ele) => ele?.liveStocklocationStatus?.toLowerCase() === filter
     );
-    return filteredData;
+    return filteredData || [];
   };
 
   return (
@@ -101,7 +101,7 @@ const LiveLocation = () => {
                   ele?.assignedDevice?.pedometerDevice?.deviceName || "N/A",
               }))}
             />
-            {!getFilteredLivestock(getLivestockStatus, "safe").length && (
+            {!getFilteredLivestock(getLivestockStatus, "safe")?.length && (
               <NoData />
             )}
           </Box>
@@ -130,7 +130,7 @@ const LiveLocation = () => {
                   ele?.assignedDevice?.pedometerDevice?.deviceName || "N/A",
               }))}
             />
-            {!getFilteredLivestock(getLivestockStatus, "unsafe").length && (
+            {!getFilteredLivestock(getLivestockStatus, "unsafe")?.length && (
               <NoData />
             )}
           </Box>

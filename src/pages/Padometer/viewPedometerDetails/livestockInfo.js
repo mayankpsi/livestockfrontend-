@@ -9,6 +9,7 @@ import useLivestockContext from "../../../hooks/useLivestockContext";
 import { genderData } from "../../Data";
 import useFormattedImage from "../../../hooks/useFormatedImage";
 import useErrorMessage from "../../../hooks/useErrorMessage";
+import { LivestockCoverPhoto } from "../../../assets";
 
 const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
   const { getLivestockImg } = useFormattedImage();
@@ -141,6 +142,14 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
     );
   };
 
+  const getImgUrl = (str) => {
+    if (str?.toString()?.length) {
+      const img = str?.toString()?.split("://");
+      return "http://" + img[1];
+    }
+    // return "http://livestock.psiborg.s3.ap-south-1.amazonaws.com/1702616270710-4437%204.png ";
+  };
+
   return (
     <form onSubmit={handleSubmit(handelLivestockNewInfoSubmit)}>
       <Stack
@@ -172,7 +181,7 @@ const LivestockInfo = ({ data, btnText, btnBgColor, onBtnClick, loading }) => {
               objectFit: "cover",
               borderRadius: "10px",
             }}
-            src={data?.img}
+            src={getImgUrl(data?.img) || LivestockCoverPhoto}
             alt="livestock image"
           />
         ) : (

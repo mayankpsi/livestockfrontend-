@@ -26,3 +26,13 @@ export function ordinalNumber(i) {
   return i + "th";
 }
 
+
+export const getCapitalize = (str) => {
+  if (str?.toLowerCase() === "n/a" || !str) {
+    return "N/A";
+  }
+  return (
+    str?.toString()?.[0]?.toUpperCase() +
+    str?.toString()?.slice(1)?.toLowerCase()
+  );
+};
