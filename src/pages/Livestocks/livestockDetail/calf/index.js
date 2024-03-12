@@ -27,25 +27,26 @@ import {
 import AddNewCalf from "./AddNewCalf";
 import useDeleteCalf from "./hooks/useDeleteCalf";
 import useLivestockContext from "../../../../hooks/useLivestockContext";
+import useDateFormat from "../../../../hooks/useDateFormat";
 
 const headers = ["calf UID", "Sire No", "Dam No", "DOB", "actions"];
 
-const getExportFormattedData = (data) => {
+const getExportFormattedData = (data, formattedDate) => {
   return data?.map((ele) => ({
     calfUid: ele?.uID,
     sireNo: ele?.sireNo,
     damNo: ele?.damNo,
-    dob: ele?.dob,
+    dob: formattedDate(ele?.dob, "date"),
   }));
 };
 
 
-const getFormattedData = (data, handleModalOpen, handleView) => {
+const getFormattedData = (data, handleModalOpen, handleView, formattedDate) => {
   return data?.map((ele) => ({
     uID: ele?.uID,
     sireNo: ele?.sireNo,
     damNo: ele?.damNo,
-    dob: ele?.dob,
+    dob:formattedDate(ele?.dob, "date"),
     actions: [
       <IconButton onClick={() => handleView(ele)}>
         <VisibilityOutlinedIcon fontSize="large" />
@@ -61,6 +62,7 @@ const getFormattedData = (data, handleModalOpen, handleView) => {
 const Calf = () => {
   const { id } = useParams();
   const [query, setQuery] = useState("");
+  const {formattedDate} = useDateFormat()
   const navigate = useNavigate();
   const [modal, setModal] = useState();
   const [contentType, setContentType] = useState("");
@@ -131,7 +133,7 @@ const Calf = () => {
           exportable={true}
           csvFormate={{
             headers: headers,
-            data: getExportFormattedData( data?.data)||[],
+            data: getExportFormattedData( data?.data, formattedDate)||[],
             name: "livestock_calfs_data",
           }}
         />
@@ -151,7 +153,8 @@ const Calf = () => {
             tableRowData={getFormattedData(
               data?.data,
               handleModalOpen,
-              handleView
+              handleView,
+              formattedDate
             )}
           />
         </Box>

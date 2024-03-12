@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Stack } from "@mui/material";
+import dayjs from "dayjs";
 import {
   DatePicker,
   Spinner,
@@ -16,7 +17,7 @@ import useDateFormat from "../../../../hooks/useDateFormat";
 
 const initialState = {
   dob: new Date(),
-  timeOfBirth: "2022-04-17T15:30",
+  timeOfBirth: new Date(),
   birthWeight: "",
   sireNo: "",
   damNo: "",
@@ -27,7 +28,7 @@ const initialState = {
 
 const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
   const { id } = useParams();
-  const {formattedDate} = useDateFormat()
+  const { formattedDate } = useDateFormat();
   const [isEdit, setIsEdit] = useState(false);
   const [birthDetails, setBirthDetails] = useState(initialState);
   const { isUpdating, updateLivestockBirthDetails } = useUpdateBirthDetails(id);
@@ -127,7 +128,7 @@ const LivestockBirthDetails = ({ livestockInfo, infoLoading }) => {
           <CustomTimePicker
             disabled={!isEdit}
             label={"Time of birth"}
-            value={birthDetails?.timeOfBirth}
+            value={dayjs(birthDetails?.timeOfBirth)}
             sx={{ background: "#fff" }}
             name="timeOfBirth"
             onChange={(time) => handleChange("time", "timeOfBirth", time)}

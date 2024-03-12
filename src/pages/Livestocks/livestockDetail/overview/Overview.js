@@ -21,7 +21,9 @@ const Overview = () => {
   const { isLoading, error, data } = useGetOverviewData(id);
 
   const getDate = (label) =>
-    data?.label ? formattedDate(data?.label, "date") : "N/A";
+    data?.[label] && data?.[label]?.toString()?.toUpperCase() !== "N/A"
+      ? formattedDate(data?.[label], "date")
+      : "N/A";
   const isSafe = data?.locationStatus?.toLowerCase() === "safe";
 
   const isActivity = (ele) => ele?.label?.toLowerCase() === "activity";
@@ -43,7 +45,10 @@ const Overview = () => {
   const getCardOverviewData = (dataFormate) => {
     return dataFormate?.map((ele) => ({
       ...ele,
-      time: getDate(ele?.label?.toLowerCase() + "Time"),
+      time:
+        ele?.label?.toLowerCase() === "heartbeat"
+          ? getDate("heartBeatTime")
+          : getDate(ele?.label?.toLowerCase() + "Time"),
       value: getCardValue(ele),
       suffix: isActivity(ele) ? (isHour(ele) ? " hr" : " min") : ele?.suffix,
       valueColor: getAlertStatus(ele),
@@ -68,7 +73,7 @@ const Overview = () => {
       justifyContent={"space-between"}
       sx={{ pt: 3 }}
     >
-      <Stack width="80%" gap={isLoading?2:0}>
+      <Stack width="80%" gap={isLoading ? 2 : 0}>
         {isLoading ? getLoader("30") : <LivestockInfo data={data} />}
         {isLoading ? getLoader("22") : <LivestockStatus data={data} />}
         {isLoading ? (
@@ -118,8 +123,8 @@ const Overview = () => {
           >
             <TabPane
               text="Status"
-              secondaryText={`Last Update :  ${getDate("locationStatusTime")}`}
-              btnText={data?.locationStatus || "N/A"}
+              secondaryText={`Last Update :  ${getDate("livestockLocationStatusTime")}`}
+              btnText={data?.liveStocklocationStatus || "N/A"}
               hover={false}
               btnIcon={false}
               btnBgColor={isSafe ? "#47CD75" : "#FF5C33"}
