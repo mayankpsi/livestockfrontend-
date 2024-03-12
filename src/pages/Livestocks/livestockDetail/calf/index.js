@@ -28,7 +28,17 @@ import AddNewCalf from "./AddNewCalf";
 import useDeleteCalf from "./hooks/useDeleteCalf";
 import useLivestockContext from "../../../../hooks/useLivestockContext";
 
-const headers = ["calf UID", "Sire No.", "Dam No.", "DOB", "actions"];
+const headers = ["calf UID", "Sire No", "Dam No", "DOB", "actions"];
+
+const getExportFormattedData = (data) => {
+  return data?.map((ele) => ({
+    calfUid: ele?.uID,
+    sireNo: ele?.sireNo,
+    damNo: ele?.damNo,
+    dob: ele?.dob,
+  }));
+};
+
 
 const getFormattedData = (data, handleModalOpen, handleView) => {
   return data?.map((ele) => ({
@@ -118,6 +128,12 @@ const Calf = () => {
           onBtnClick={() => handleModalOpen("add")}
           search={true}
           onSearch={(term) => handleSearchQuery(term, setQuery)}
+          exportable={true}
+          csvFormate={{
+            headers: headers,
+            data: getExportFormattedData( data?.data)||[],
+            name: "livestock_calfs_data",
+          }}
         />
       </Box>
       {isLoading ? (

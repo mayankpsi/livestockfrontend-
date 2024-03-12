@@ -33,6 +33,16 @@ const getLabel = (label) => {
   if (label?.toLowerCase() === "fail") return { text: "Failed", type: "error" };
 };
 
+
+const getExportFormattedData = (data) => {
+  return data?.result?.map((ele) => ({
+    artificialInsemination: ele?.aiAttemptNo,
+    sireNo: ele?.sireNo,
+    date: ele?.attemptDate,
+    result: getLabel(ele?.result)?.text
+  }));
+}
+
 const getFormattedData = (data, handleShowModal) => {
   return data?.result?.map((ele) => ({
     aiAttemptNo: ele?.aiAttemptNo,
@@ -156,10 +166,9 @@ const BreedingAI = () => {
         exportable={true}
         csvFormate={{
           headers: breedingAITableData,
-          data: getFormattedData(data?.aiData)||[],
-          filename: "ai_attempts",
+          data: getExportFormattedData(data?.aiData)||[],
+          name: "ai_attempts",
         }}
-        secondaryBtnLoading={false}
       />
       {isLoading ? (
         <TableSkeleton

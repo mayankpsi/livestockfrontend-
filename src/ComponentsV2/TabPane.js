@@ -11,6 +11,7 @@ import {
 import { AddCircleOutlineIcon } from "../icons";
 import { ButtonPrimary, TypographyPrimary } from "./themeComponents";
 import ExportAsCSV from "./ExportAsCSV";
+import { toast } from "react-hot-toast";
 
 const TabPane = ({
   text,
@@ -30,7 +31,6 @@ const TabPane = ({
   selectOptions,
   onSelectChange,
   exportable,
-  secondaryBtnLoading,
   csvFormate,
 }) => {
   const [query, setQuery] = useState("");
@@ -39,6 +39,10 @@ const TabPane = ({
     let val = e.target?.value;
     setQuery(val);
     onSearch?.(val);
+  };
+
+  const handleEmpty = () => {
+    toast.error("Nothing to export");
   };
 
   return (
@@ -57,7 +61,7 @@ const TabPane = ({
       </Box>
       <Box
         display="flex"
-        justifyContent={"center"}
+        justifyContent={"flex-end"}
         alignItems={"center"}
         gap={2}
       >
@@ -119,25 +123,34 @@ const TabPane = ({
         ) : null}
         {exportable && (
           <ButtonPrimary
-            disabled={secondaryBtnLoading}
             sx={{
               background: btnBgColor ? btnBgColor : "#B58B5D",
-              p: "8px 15px",
+              p: "8px 0px",
               color: `${btnColor ? btnColor : "#fff"}`,
               cursor: `${!hover ? "default" : "pointer"}`,
               display: "flex",
               justifyContent: "center",
               minWidth: `${minWidth || "auto"}`,
+              width: "100px !important",
               "&:hover": { backgroundColor: !hover ? btnBgColor : "" },
             }}
+            onClick={() =>
+              csvFormate?.headers?.length && csvFormate?.data?.length
+                ? null
+                : handleEmpty()
+            }
           >
-            <ExportAsCSV
-              headers={csvFormate?.headers || []}
-              data={csvFormate?.data || []}
-              fileName={csvFormate?.name || "data-as-csv"}
-            >
-              Export
-            </ExportAsCSV>
+            {csvFormate?.headers?.length && csvFormate?.data?.length ? (
+              <ExportAsCSV
+                headers={csvFormate?.headers || []}
+                data={csvFormate?.data || []}
+                fileName={csvFormate?.name || "data-as-csv"}
+              >
+                Export
+              </ExportAsCSV>
+            ) : (
+              "Export"
+            )}
           </ButtonPrimary>
         )}
       </Box>

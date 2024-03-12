@@ -10,6 +10,7 @@ import {
   NoData,
   TableSkeleton,
   Skeleton,
+  ExportAsCSV,
 } from "../../../../ComponentsV2";
 import toast from "react-hot-toast";
 import useGetMilkOverviewData from "./hooks/useGetMilkOverviewData";
@@ -24,6 +25,14 @@ import AddNewMilkEntry from "./AddNewMilkEntry";
 import useDateFormat from "../../../../hooks/useDateFormat";
 import dayjs from "dayjs";
 import useDeleteMilkEntry from "./hooks/useDeleteMilkEntry";
+
+const milkRecordExportData = (data, formattedDate) => {
+  return data?.map((ele) => ({
+    milkEntry: formattedDate(ele?.entryDate, "date")?.split("/")?.[0],
+    date: formattedDate(ele?.entryDate, "date"),
+    quantity: `${ele?.entryQuantity} Ltr`,
+  }));
+};
 
 const milkRecordData = (data, formattedDate, handleModalOpen) => {
   return data?.map((ele) => ({
@@ -101,10 +110,13 @@ const MilkOverview = () => {
       );
   };
 
-  const text = `Showing ${(data?.dataLength > 32 ? 30 : data?.dataLength) || 0} out of ${
-    data?.dataLength || 0
-  } Milk entries`;
+  const text = `Showing ${
+    (data?.dataLength > 32 ? 30 : data?.dataLength) || 0
+  } out of ${data?.dataLength || 0} Milk entries`;
 
+  const handleEmpty = () => {
+    toast.error("Nothing to export");
+  };
   return (
     <Stack width={"100%"}>
       <Stack
@@ -120,13 +132,37 @@ const MilkOverview = () => {
           <ButtonPrimary sx={{ my: 0 }} onClick={() => handleModalOpen("add")}>
             Add New Entry
           </ButtonPrimary>
+          <ButtonPrimary
+            sx={{ my: 0 }}
+            onClick={() =>
+              milkRecordExportData(data?.milkRecordsData, formattedDate)?.length
+                ? null
+                : handleEmpty()
+            }
+          >
+            {milkRecordExportData(data?.milkRecordsData, formattedDate)
+              ?.length ? (
+              <ExportAsCSV
+                headers={milkOverviewTableHeaders}
+                data={
+                  milkRecordExportData(data?.milkRecordsData, formattedDate) ||
+                  []
+                }
+                fileName={"milk_entries_data"}
+              >
+                Export
+              </ExportAsCSV>
+            ) : (
+              "Export"
+            )}
+          </ButtonPrimary>
         </Box>
       </Stack>
       <Stack
         direction={"row"}
         justifyContent="space-between"
         flexWrap={"wrap"}
-        sx={{ py: 2, gap:{lg:2, md:2, sm:1} }}
+        sx={{ py: 2, gap: { lg: 2, md: 2, sm: 1 } }}
       >
         {isLoading ? (
           <>

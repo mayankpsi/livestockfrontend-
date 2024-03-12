@@ -53,6 +53,9 @@ const MilkAnalytics = () => {
             }
           )}
           onSelectChange={(value) => setLactationValue(value)}
+          btnText={'export'}
+          exportable={false}
+          csvFormate={{}}
         />
       </Box>
       <Stack

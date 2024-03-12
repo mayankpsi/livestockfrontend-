@@ -111,7 +111,7 @@ export const breedingAICardData = [
 
 export const breedingAITableData = [
   "Artificial Insemination",
-  "Sire No.",
+  "Sire No",
   "Date",
   "Result",
   "action",

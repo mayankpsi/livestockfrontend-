@@ -20,7 +20,7 @@ const StatusCard = ({ text, status, icon, statusColor, suffix, actions }) => {
         <TypographySecondary variant="h5">{text}</TypographySecondary>
       </Box>
       <TypographySecondary variant="h5" sx={{ color: statusColor}}>
-        {status?.toUpperCase() === "N/A" ? `${status}` : `${status}${suffix}`}
+        {status?.toString()?.toUpperCase() === "N/A" ? `${status}` : `${status}${suffix}`}
       </TypographySecondary>
       {actions?.length && (
         <Stack direction="row" gap={1}>
