@@ -123,7 +123,11 @@ const BreedingAI = () => {
   };
   return (
     <Stack width="100%">
-      <Stack direction={"row"} flexWrap={"wrap"} sx={{ py: 2, gap:{lg:2, md:2, sm:1} }}>
+      <Stack
+        direction={"row"}
+        flexWrap={"wrap"}
+        sx={{ py: 2, gap: { lg: 2, md: 2, sm: 1 } }}
+      >
         {isLoading ? (
           <>
             <Skeleton width={"24%"} height={"10vh"} />
@@ -149,6 +153,13 @@ const BreedingAI = () => {
         hover={true}
         btnIcon={true}
         onBtnClick={() => handleShowModal("add")}
+        exportable={true}
+        csvFormate={{
+          headers: breedingAITableData,
+          data: getFormattedData(data?.aiData)||[],
+          filename: "ai_attempts",
+        }}
+        secondaryBtnLoading={false}
       />
       {isLoading ? (
         <TableSkeleton

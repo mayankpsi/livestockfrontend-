@@ -1,21 +1,15 @@
 import { request } from "../../apis/axios-utils";
 import { useQuery } from "react-query";
 
-const unassignLivestockApi = (searchTerm = "", page = 1) =>
+const unassignLivestockApi = (device = "collar", searchTerm = "", page = 1) =>
   request({
-    url: `/liveStock/getAll?status=false&deviceType=collar&searchTerm=${searchTerm}&page=${page}&limit=${10}`,
+    url: `/liveStock/getAll?status=false&deviceType=${device}&searchTerm=${searchTerm}&page=${page}&limit=${10}`,
   });
 
-const useGetUnassignLivestock = (query, page) => {
-  const {
-    isLoading,
-    error,
-    data,
-    refetch,
-    isSuccess
-  } = useQuery(
-    ["getAllUnassignLivestock", query, page],
-    () => unassignLivestockApi(query, page),
+const useGetUnassignLivestock = (device, query, page) => {
+  const { isLoading, error, data, refetch, isSuccess } = useQuery(
+    ["getAllUnassignLivestock", device, query, page],
+    () => unassignLivestockApi(device, query, page),
     {
       enabled: true,
     }
@@ -24,9 +18,9 @@ const useGetUnassignLivestock = (query, page) => {
   return {
     isLoading,
     error,
-    allUnassignLivestock:data?.data?.data,
+    allUnassignLivestock: data?.data?.data,
     refetch,
-    isSuccess
+    isSuccess,
   };
 };
 

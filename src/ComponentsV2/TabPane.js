@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { AddCircleOutlineIcon } from "../icons";
 import { ButtonPrimary, TypographyPrimary } from "./themeComponents";
+import ExportAsCSV from "./ExportAsCSV";
 
 const TabPane = ({
   text,
@@ -28,6 +29,9 @@ const TabPane = ({
   selectValue,
   selectOptions,
   onSelectChange,
+  exportable,
+  secondaryBtnLoading,
+  csvFormate,
 }) => {
   const [query, setQuery] = useState("");
 
@@ -38,19 +42,15 @@ const TabPane = ({
   };
 
   return (
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-    >
+    <Stack direction="row" justifyContent="space-between" alignItems="center">
       <Box p={1}>
         <TypographyPrimary
-          sx={{ fontSize: "2rem", textTransform: "capitalize", m:0 }}
+          sx={{ fontSize: "2rem", textTransform: "capitalize", m: 0 }}
         >
           {text}
         </TypographyPrimary>
         {secondaryText && (
-          <TypographyPrimary sx={{ textTransform: "capitalize", m:0 }}>
+          <TypographyPrimary sx={{ textTransform: "capitalize", m: 0 }}>
             {secondaryText}
           </TypographyPrimary>
         )}
@@ -117,6 +117,29 @@ const TabPane = ({
             {btnText}
           </ButtonPrimary>
         ) : null}
+        {exportable && (
+          <ButtonPrimary
+            disabled={secondaryBtnLoading}
+            sx={{
+              background: btnBgColor ? btnBgColor : "#B58B5D",
+              p: "8px 15px",
+              color: `${btnColor ? btnColor : "#fff"}`,
+              cursor: `${!hover ? "default" : "pointer"}`,
+              display: "flex",
+              justifyContent: "center",
+              minWidth: `${minWidth || "auto"}`,
+              "&:hover": { backgroundColor: !hover ? btnBgColor : "" },
+            }}
+          >
+            <ExportAsCSV
+              headers={csvFormate?.headers || []}
+              data={csvFormate?.data || []}
+              fileName={csvFormate?.name || "data-as-csv"}
+            >
+              Export
+            </ExportAsCSV>
+          </ButtonPrimary>
+        )}
       </Box>
     </Stack>
   );

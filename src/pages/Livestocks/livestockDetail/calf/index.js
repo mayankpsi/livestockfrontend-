@@ -75,7 +75,7 @@ const Calf = () => {
     const bread = JSON.parse(localStorage.getItem("livestockBreadcrumb"));
     const newBread = [
       ...bread,
-      { label: ele?.uID, link: `/livestocks/${ele?._id}`},
+      { label: ele?.uID, link: `/livestocks/${ele?._id}`, tab:'true'},
     ];
 
     localStorage.setItem("livestockBreadcrumb", JSON.stringify(newBread));

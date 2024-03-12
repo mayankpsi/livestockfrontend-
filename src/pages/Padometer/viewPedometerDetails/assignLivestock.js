@@ -37,7 +37,7 @@ const AssignLivestock = ({ data, deviceLoading}) => {
   const { id } = useParams();
 
   const { isLoading, error, allUnassignLivestock, refetch, isSuccess } =
-  useGetUnassignLivestock(query, pagination);
+  useGetUnassignLivestock("pedometer",query, pagination);
 const { isAssigning, assignLivestock } = useAssignLivestock("pedometer");
 const { isRemoving, removeLivestock } = useRemoveLivestock("pedometer");
 

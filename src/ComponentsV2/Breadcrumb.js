@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import { Grid, Typography, Breadcrumbs } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import useLivestockContext from "../hooks/useLivestockContext";
 
 const Breadcrumb = ({ data }) => {
+  const { setLivestockTabControl } = useLivestockContext();
+
   const navigate = useNavigate();
   const handleClick = (ele) => {
     const breadcrumb = JSON.parse(localStorage.getItem("livestockBreadcrumb"));
@@ -11,6 +14,10 @@ const Breadcrumb = ({ data }) => {
     const uniqueArray = Array.from(uniqueSet).map(JSON.parse);
     const eleIndex = uniqueArray.findIndex((el) => el?.link === ele?.link);
     const newArr = uniqueArray?.slice(0, eleIndex + 1);
+    if (breadcrumb?.length && breadcrumb?.[breadcrumb?.length - 1]?.tab) {
+      setLivestockTabControl(6);
+      localStorage.setItem("currentTab", 6);
+    }
     localStorage.setItem("livestockBreadcrumb", JSON.stringify(newArr));
     navigate(`/${ele?.link}`);
   };

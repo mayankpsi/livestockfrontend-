@@ -24,6 +24,8 @@ const CollarInfo = ({
   const [choseDevice, setChoseDevice] = useState("");
   const [isInputChange, setIsInputChange] = useState(false);
   const [query, setQuery] = useState("");
+  const [collarLoader, setCollarLoader] = useState(false);
+  const [pedometerLoader, setPedometerLoader] = useState(false);
   const { openSnackbarAlert, getAllLivestock, openBackdropLoader } =
     useLivestockContext();
   const { getErrorMessage } = useErrorMessage();
@@ -35,12 +37,17 @@ const CollarInfo = ({
 
   const loadingOn = (type) =>
     type?.toLowerCase() === "collar"
-      ? setCollarLoading(true)
-      : setPedometerLoading(true);
+      ? setCollarLoader(true)
+      : setPedometerLoader(true);
   const loadingOff = (type) =>
     type?.toLowerCase() === "collar"
-      ? setCollarLoading(false)
-      : setPedometerLoading(false);
+      ? setCollarLoader(false)
+      : setPedometerLoader(false);
+
+  const loader = (type) =>
+    type?.toLowerCase() === "collar"
+      ? setCollarLoading(!collarLoading)
+      : setPedometerLoading(!pedometerLoading);
 
   useEffect(() => {
     if (query || isInputChange) {
@@ -65,6 +72,7 @@ const CollarInfo = ({
         data: body,
       });
       if (res.status === 200) {
+        loader(type);
         const msg = `${
           type?.charAt(0).toUpperCase() + type.slice(1).toLowerCase()
         } successfully Removed :)`;
@@ -108,7 +116,6 @@ const CollarInfo = ({
   };
 
   const handleCollarAssign = async (selectedValue, type) => {
-    setShowModal(false);
     loadingOn(choseDevice);
     const body = {
       liveStockID: data?.id,
@@ -121,6 +128,8 @@ const CollarInfo = ({
         data: body,
       });
       if (res.status === 200) {
+        loader(choseDevice);
+        setShowModal(false);
         const msg = `${
           choseDevice?.charAt(0).toUpperCase() +
           choseDevice.slice(1).toLowerCase()
@@ -157,7 +166,7 @@ const CollarInfo = ({
           <DeviceCard
             label="collar"
             data={getData(data?.collar)}
-            loading={collarLoading}
+            loading={collarLoader}
             deviceDataFormat={deviceInfoData}
             onRemove={() => handelCollarRemove("collar")}
           />
@@ -165,7 +174,8 @@ const CollarInfo = ({
           <AddBtn
             text1="collar"
             text2="livestock"
-            loading={!showModal && collarLoading}
+            // loading={!showModal && collarLoading}
+            loading={collarLoader}
             onClick={() => {
               setChoseDevice("collar");
               getUnassignCollars("collar");
@@ -179,14 +189,14 @@ const CollarInfo = ({
             label="pedometer"
             data={getData(data?.pedometer)}
             deviceDataFormat={deviceInfoData}
-            loading={pedometerLoading}
+            loading={pedometerLoader}
             onRemove={() => handelCollarRemove("pedometer")}
           />
         ) : (
           <AddBtn
             text1="Pedometer"
             text2="livestock"
-            loading={!showModal && pedometerLoading}
+            loading={pedometerLoader}
             onClick={() => {
               setChoseDevice("pedometer");
               getUnassignCollars("pedometer");
@@ -206,9 +216,7 @@ const CollarInfo = ({
             }}
             onSubmit={handleCollarAssign}
             setOpenAddLivestockModal={() => setShowModal(false)}
-            loading={
-              choseDevice === "collar" ? collarLoading : pedometerLoading
-            }
+            loading={choseDevice === "collar" ? collarLoader : pedometerLoader}
             openSnackbarAlert={() =>
               openSnackbarAlert(
                 "error",

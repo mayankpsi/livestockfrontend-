@@ -19,7 +19,7 @@ const AssignLivestock = ({ data, deviceLoading }) => {
 
 
   const { isLoading, error, allUnassignLivestock, refetch, isSuccess } =
-    useGetUnassignLivestock(query, pagination);
+    useGetUnassignLivestock("collar",query, pagination);
   const { isAssigning, assignLivestock } = useAssignLivestock("collar");
   const { isRemoving, removeLivestock } = useRemoveLivestock("collar");
 
