@@ -30,7 +30,6 @@ const Overview = ({ data, deviceLoading }) => {
     isEditCollarInfo,
     loading,
   } = useDeviceDetailContext();
-  const { openBackdropLoader } = useCollarContext();
   const { id } = useParams();
   const [modal, setModal] = useState(false);
 
@@ -152,7 +151,7 @@ const Overview = ({ data, deviceLoading }) => {
             </Stack>
           </Stack>
         )}
-        {openBackdropLoader ? (
+        {deviceLoading ? (
           <Skeleton
             width="33vw"
             height={"245px"}

@@ -19,7 +19,7 @@ import useGetCamelCase from "../../../hooks/useGetCamelCase";
 import useErrorMessage from "../../../hooks/useErrorMessage";
 import { QrCodeIcon } from "../../../icons";
 import ShowQRModalContent from "../../PDFPage/ShowQRModalContent";
-import {  useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 
 const Overview = ({ data, deviceLoading }) => {
   const [isEditCollarInfo, setIsEditCollarInfo] = useState(false);
@@ -53,7 +53,7 @@ const Overview = ({ data, deviceLoading }) => {
     setValue,
     formState: { errors },
   } = useForm({ resolver: yupResolver(addCollarValidationSchema) });
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const handleCollarInfoEditChange = (e) => {
     const { name, value } = e.target;
@@ -195,7 +195,7 @@ const Overview = ({ data, deviceLoading }) => {
             sx={{ background: "#F7F8FD" }}
           />
         )}
-        {openBackdropLoader ? (
+        {deviceLoading ? (
           <Skeleton
             width="33vw"
             height={"245px"}

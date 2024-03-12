@@ -26,7 +26,7 @@ const ChartCard = ({
       py="16px"
       px="4px"
     >
-      <Stack direction="row" alignItems="center" gap={1.5}>
+      <Stack width="100%" px={2} direction="row" alignItems="center" gap={1.5}>
         <Box
           className="flex-row-center border-circle"
           sx={{

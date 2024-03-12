@@ -19,8 +19,8 @@ const ParameterCard = ({
       <Box
           className="flex-row-center border-circle"
           sx={{
-            width: "50px",
-            height: "50px",
+            width: "60px",
+            height: "60px",
             background: `${colors?.bg}`,
             border: `1px solid ${colors?.main}`,
           }}
@@ -37,7 +37,7 @@ const ParameterCard = ({
           </TypographySecondary>
           <TypographySecondary
             className="flex-row-center"
-            sx={{ fontSize: "18px", color: "#696969", textAlign: "right" }}
+            sx={{ fontSize: "14px", color: "#696969", textAlign: "right" }}
           >
             {time}
           </TypographySecondary>

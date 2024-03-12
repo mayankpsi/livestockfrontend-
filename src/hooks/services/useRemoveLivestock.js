@@ -25,6 +25,7 @@ const useRemoveLivestock = (type) => {
         if (data?.status === 200) {
           toast.success(`${val} successfully removed`);
           queryClient.invalidateQueries("getDeviceById");
+          queryClient.invalidateQueries("getAllUnassignLivestock")
         } else {
           toast.error("Failed to removed : " + err);
         }
