@@ -32,6 +32,7 @@ const TabPane = ({
   onSelectChange,
   exportable,
   csvFormate,
+  maxWidth
 }) => {
   const [query, setQuery] = useState("");
 
@@ -108,6 +109,7 @@ const TabPane = ({
               display: "flex",
               justifyContent: "center",
               minWidth: `${minWidth || "auto"}`,
+              maxWidth:`${maxWidth || "auto"}`,
               "&:hover": { backgroundColor: !hover ? btnBgColor : "" },
             }}
             onClick={onBtnClick}
@@ -125,13 +127,12 @@ const TabPane = ({
           <ButtonPrimary
             sx={{
               background: btnBgColor ? btnBgColor : "#B58B5D",
-              p: "8px 0px",
+              p: "8px 10px",
               color: `${btnColor ? btnColor : "#fff"}`,
               cursor: `${!hover ? "default" : "pointer"}`,
               display: "flex",
               justifyContent: "center",
-              minWidth: `${minWidth || "auto"}`,
-              width: "100px !important",
+              width: "120px !important",
               "&:hover": { backgroundColor: !hover ? btnBgColor : "" },
             }}
             onClick={() =>

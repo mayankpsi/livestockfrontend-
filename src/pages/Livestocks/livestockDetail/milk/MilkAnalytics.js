@@ -1,17 +1,26 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
-import { ParameterCard, Skeleton, TabPane } from "../../../../ComponentsV2";
+import React, { useState, useRef } from "react";
+import {
+  CustomModal,
+  ParameterCard,
+  Skeleton,
+  TabPane,
+} from "../../../../ComponentsV2";
 import useGetMilkAnalyticsData from "./hooks/useGetMilkAnalyticsData";
 import { milkAnalyticsCardData } from "./Data";
 import MilkAnalyticsChart from "./MilkAnalyticsChart";
+import generatePDF from "react-to-pdf";
 import { useParams } from "react-router-dom";
-import useGetLactationPeriod from "./hooks/useGetLactationPeriod";
 import useDateFormat from "../../../../hooks/useDateFormat";
 import { ordinalNumber } from "../../../../Role/Admin/UserManagemnet/utils/utils";
+import PDFPreview from "./PDFPreview";
 
 const MilkAnalytics = () => {
   const { id } = useParams();
   const { paginationDateFormat } = useDateFormat();
+  const [pdfLoading, setPDFLoading] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [eleRef, useEleRef] = useState(null);
   const [lactationValue, setLactationValue] = useState("1");
   const { isLoading, error, data } = useGetMilkAnalyticsData(
     id,
@@ -25,7 +34,6 @@ const MilkAnalytics = () => {
   };
 
   const chartDummyData = () => {
-
     const data = Array.from({ length: 7 }, (_, ind) => ({
       label: paginationDateFormat(getPreviousDate(ind)),
       entryQuantity: 0,
@@ -34,12 +42,27 @@ const MilkAnalytics = () => {
     return data?.toReversed();
   };
 
+  const handlePDFDownload = () => {
+    setPDFLoading(true);
+    setTimeout(() => {
+      generatePDF(
+        { current: eleRef },
+        { filename: "livestock_milk_analytics.pdf" }
+      ).then((data) => {
+        if (data) {
+          setPDFLoading(false);
+        }
+      });
+    }, 1000);
+  };
+
   return (
     <Stack width="100%">
       <Box width={"100%"}>
         <TabPane
           text={"milk production analytics"}
-          minWidth="18rem"
+          minWidth="10rem"
+          hover={true}
           selectValue={
             data?.overviewData?.interCalvingDataLength ? lactationValue : false
           }
@@ -53,48 +76,56 @@ const MilkAnalytics = () => {
             }
           )}
           onSelectChange={(value) => setLactationValue(value)}
-          btnText={'export'}
-          exportable={false}
-          csvFormate={{}}
+          loading={pdfLoading}
+          btnText="export"
+          onBtnClick={() => setShowPreview(true)}
         />
       </Box>
-      <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
-        flexWrap={"wrap"}
-        sx={{ py: 2, gap:{lg:2, md:2, sm:1}}}
-      >
+      <Stack ref={useEleRef}>
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          flexWrap={"wrap"}
+          sx={{ py: 2, gap: { lg: 2, md: 2, sm: 1 } }}
+        >
+          {isLoading ? (
+            <>
+              <Skeleton width={"24%"} height={"10vh"} />
+              <Skeleton width={"24%"} height={"10vh"} />
+              <Skeleton width={"24%"} height={"10vh"} />
+              <Skeleton width={"24%"} height={"10vh"} />
+            </>
+          ) : (
+            milkAnalyticsCardData?.map((ele) => (
+              <ParameterCard
+                label={ele.label}
+                value={data?.overviewData?.[ele?.key]}
+                icon={ele.icon}
+                colors={ele.colors}
+                suffix={""}
+              />
+            ))
+          )}
+        </Stack>
         {isLoading ? (
-          <>
-            <Skeleton width={"24%"} height={"10vh"} />
-            <Skeleton width={"24%"} height={"10vh"} />
-            <Skeleton width={"24%"} height={"10vh"} />
-            <Skeleton width={"24%"} height={"10vh"} />
-          </>
+          <Skeleton width={"100%"} height={"40vh"} />
         ) : (
-          milkAnalyticsCardData?.map((ele) => (
-            <ParameterCard
-              label={ele.label}
-              value={data?.overviewData?.[ele?.key]}
-              icon={ele.icon}
-              colors={ele.colors}
-              suffix={""}
+          <Paper
+            sx={{ border: "1px solid rgba(0,0,0,0.1)", pt: 5, pb: 3, pr: 5 }}
+          >
+            <MilkAnalyticsChart
+              height={400}
+              data={data?.data?.length ? data?.data : chartDummyData()}
             />
-          ))
+          </Paper>
         )}
       </Stack>
-      {isLoading ? (
-        <Skeleton width={"100%"} height={"40vh"} />
-      ) : (
-        <Paper
-          sx={{ border: "1px solid rgba(0,0,0,0.1)", pt: 5, pb: 3, pr: 5 }}
-        >
-          <MilkAnalyticsChart
-            height={400}
-            data={data?.data?.length?data?.data: chartDummyData()}
-          />
-        </Paper>
-      )}
+      <CustomModal
+        content={<PDFPreview />}
+        openModal={showPreview}
+        // customWidth={contentType !== "delete" ? "50%" : "35%"}
+        handleClose={() => setShowPreview(false)}
+      />
     </Stack>
   );
 };
