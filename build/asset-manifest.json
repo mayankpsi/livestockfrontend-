@@ -1,0 +1,43 @@
+{
+  "files": {
+    "main.css": "/static/css/main.d992ff47.css",
+    "main.js": "/static/js/main.cce8cb19.js",
+    "static/js/213.3cacd2b4.chunk.js": "/static/js/213.3cacd2b4.chunk.js",
+    "static/js/455.c45966e2.chunk.js": "/static/js/455.c45966e2.chunk.js",
+    "static/media/auth-bg.png": "/static/media/auth-bg.d20bc7c9cb32bc18afa9.png",
+    "static/media/notification.gif": "/static/media/notification.5d30198e0c1568b992e1.gif",
+    "static/media/cow-img.webp": "/static/media/cow-img.387cda6e1e4f9861e578.webp",
+    "static/media/rejected.png": "/static/media/rejected.99494ccd3d90a9bea9db.png",
+    "static/media/no-data.svg": "/static/media/no-data.5a41e929edf427e8f012335bf1f241bc.svg",
+    "static/media/SuccessImg.png": "/static/media/SuccessImg.c7417bb7c2a47cc5bfc4.png",
+    "static/media/livestock-cover-img.png": "/static/media/livestock-cover-img.f16edc3fd0566a9db266.png",
+    "static/media/dashboard_no_data.png": "/static/media/dashboard_no_data.77abf9229e62f271323d.png",
+    "static/media/safe-livestock-dash.svg": "/static/media/safe-livestock-dash.07ceede4384c0c52c60e62bf5939100f.svg",
+    "static/media/unsafe-livestock-dash.svg": "/static/media/unsafe-livestock-dash.e5754547ef0e868087dc8e6d8273e431.svg",
+    "static/media/avgDailyMilkYield.svg": "/static/media/avgDailyMilkYield.d119ba3e91e992409f57d5ceea2e032d.svg",
+    "static/media/totalMilkYieldMilk.svg": "/static/media/totalMilkYieldMilk.daa7618d59147cc4412c5701834f74f0.svg",
+    "static/media/parityBreeding.svg": "/static/media/parityBreeding.f215776df0a7ebc07ff402896991f194.svg",
+    "static/media/livestock_steps.svg": "/static/media/livestock_steps.c05c1ddab6ace6103ca873dcffc1b439.svg",
+    "static/media/steps.svg": "/static/media/steps.60b22bf464ff01e0759b6955370ead24.svg",
+    "static/media/successRateBreeding.svg": "/static/media/successRateBreeding.4bf6a265c851ea0b36ca92bb050481c8.svg",
+    "static/media/livestock-dash.svg": "/static/media/livestock-dash.fe3d653568cc3955f383a7b213846b21.svg",
+    "static/media/aiAttemptBreeding.svg": "/static/media/aiAttemptBreeding.7efd9eec33941b4daa70032a5e99a320.svg",
+    "static/media/livestock_rumination.svg": "/static/media/livestock_rumination.2aae9890d3b2fdc381c3b360b351cdcc.svg",
+    "static/media/livestock-sidebar-fade.svg": "/static/media/livestock-sidebar-fade.7a49dcbf7405bcce0e5812ceef6754a3.svg",
+    "static/media/livestock-sidebar.svg": "/static/media/livestock-sidebar.195e2ade1be7aa2695ff725962d6ec14.svg",
+    "static/media/collar-dash.svg": "/static/media/collar-dash.56a275d9e2e4d67301a57febb314f2fa.svg",
+    "static/media/peakMonthlyMilkYield.svg": "/static/media/peakMonthlyMilkYield.ce814a9790afada2a65d5ccd0345b3c7.svg",
+    "static/media/rumination.svg": "/static/media/rumination.92556e9002217fea116eb54092395630.svg",
+    "static/media/lastAiAttemptBreeding.svg": "/static/media/lastAiAttemptBreeding.5cb3e7a6ea1857e1e6aa835a7a027208.svg",
+    "static/media/alerts-dash.svg": "/static/media/alerts-dash.46f31585432afedfc78f4b435a189794.svg",
+    "index.html": "/index.html",
+    "main.d992ff47.css.map": "/static/css/main.d992ff47.css.map",
+    "main.cce8cb19.js.map": "/static/js/main.cce8cb19.js.map",
+    "213.3cacd2b4.chunk.js.map": "/static/js/213.3cacd2b4.chunk.js.map",
+    "455.c45966e2.chunk.js.map": "/static/js/455.c45966e2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d992ff47.css",
+    "static/js/main.cce8cb19.js"
+  ]
+}
